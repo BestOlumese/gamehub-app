@@ -8,13 +8,16 @@
   ],
   "exports": {
     "./tokens.css": "./src/styles/tokens.css",
-    "./logo-mark": "./src/brand/logo-mark.tsx",
-    "./wordmark": "./src/brand/wordmark.tsx"
+    "./cx": "./src/cx.ts",
+    "./brand/*": "./src/brand/*.tsx",
+    "./forms/*": "./src/forms/*.tsx",
+    "./art/*": "./src/art/*.tsx"
   },
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "art": "tsx scripts/export-art.ts"
   },
   "peerDependencies": {
     "react": "^19"
@@ -22,11 +25,16 @@
   "devDependencies": {
     "@gamehub/config": "workspace:*",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "eslint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "@types/react-dom": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "tsx": "4.23.15",
+    "@types/node": "catalog:"
+  },
+  "dependencies": {
+    "lucide-react": "1.52.0"
   }
 }

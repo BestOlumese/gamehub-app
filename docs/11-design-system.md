@@ -28,6 +28,7 @@
 | `--accent-soft` | `#FCF1DD` | Turn banner background |
 | `--danger` | `#E05A47` | Penalties, errors |
 | `--danger-soft` | `#FBE7E3` | Error backgrounds |
+| `--danger-strong` | `#B3392A` | Error text on white/paper (5.6:1). `--danger` is fill-only, with `--ink` text |
 | `--info` | `#2F6FD6` | Info only (rare) |
 
 Contrast: `--ink` on `--paper` ≈ 16:1; white on `--brand` ≥ 5:1. Use `--accent` only as a fill/border with `--ink` text on it, never as text on white.
@@ -96,3 +97,11 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - Name: **GameHub** (wordmark in Bricolage Grotesque 800, "Game" in ink, "Hub" in brand green).
 - Mark: a simple rounded square split into four quadrants (nod to the Ludo board) with one quadrant in brand green. SVG, works at 16 px.
 - Favicon/PWA icon from the mark.
+
+## Marketing and auth pages (decided Oct 2026)
+
+- **Feel:** "warm Naija table". Paper background, drawn game pieces, and an Ankara-inspired geometric repeat used sparingly: behind the hero art, on the auth brand panel, and as thin divider strips.
+- **Landing:** hero with game-table art (Whot hand, Ludo board, dice, seeds) and "Your games. Your people. No wahala."; buttons "Play free" (→ sign up) and "I have a room code" (→ `/join`). Then: The games (5 tiles, Whot tile wide), How it works (3 steps), Built for real phones and networks (4 points), FAQ (native `<details>`), closing "Your table is waiting." band.
+- **Auth:** split screen on laptops (form left, green brand panel right with the table art and a line that changes per page); phones get the form only. Google button on top. Sign-up is one page: email, password (show/hide + live "at least 8 characters" tick, no confirm box), date of birth as Day/Month/Year native selects. Verify screen: envelope art, "Open Gmail" for Gmail addresses, spam hint, 60 s resend countdown, "Wrong email? Start again".
+- **Onboarding:** username with live availability check and 3 tap-to-use suggestions. Google users see a date-of-birth step first ("Step 1 of 2").
+- **Art pipeline:** drawings are React components in `packages/ui/src/art`. Decorative ones are exported to `apps/web/public/art/*.svg` with `pnpm art` (committed; a unit test fails if they drift) and shown with `<img>`, so they're cached once and kept out of page HTML/RSC payloads. The pattern is a CSS background (`bg-ankara`, `bg-ankara-brand`).

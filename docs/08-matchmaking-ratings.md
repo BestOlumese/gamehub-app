@@ -9,7 +9,7 @@
 5. Lobby shows seats, ready states, rules summary. Host can change rules until start, kick (lobby only), add/remove bots per seat.
 6. Start: host taps start when ≥ min players (humans + bots). Empty seats: filled by bots if host enabled "Fill with bots", else seat count shrinks to occupied seats (must stay ≥ game minimum).
 
-**Room codes**: no lookup table. A private room's Durable Object is **named by its code**, so `/r/ABC234` connects straight to `room/ABC234`. Codes are 6 random characters from a 31-symbol alphabet without look-alikes (`ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, ~887M combinations). On creation the Worker asks that DO whether it's already in use and regenerates on collision. Codes are freed when the room is cleaned up. Quick-match rooms are named by ULID.
+**Room codes**: no lookup table. A private room's Durable Object is **named by its code**, so `/r/ABC234` connects straight to `room/ABC234`. Codes are 6 random characters from a 32-symbol alphabet without look-alikes (`ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, ~1.07B combinations). On creation the Worker asks that DO whether it's already in use and regenerates on collision. Codes are freed when the room is cleaned up. Quick-match rooms are named by ULID.
 
 Private rooms are **never ranked**.
 

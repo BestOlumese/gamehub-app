@@ -15,7 +15,7 @@ Better Auth in `apps/web`, Drizzle adapter on Neon.
 ## Better Auth config
 
 ```ts
-// apps/web/src/server/auth.ts
+// apps/web/server/auth.ts (abridged; the real file is the source of truth)
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { after } from "next/server";
@@ -68,7 +68,7 @@ Check option names against the installed Better Auth version (1.7.x at time of w
 ## Email (Nodemailer + Gmail SMTP)
 
 ```ts
-// apps/web/src/server/email.ts
+// apps/web/server/email/send.ts (abridged)
 import nodemailer from "nodemailer";
 const transport = nodemailer.createTransport({
   host: "smtp.gmail.com", port: 465, secure: true,
@@ -130,3 +130,29 @@ Text version always included. Links expire: verify 24 h, reset 1 h (Better Auth 
 | `/settings/account` | Change password/email, delete account |
 | `/api/auth/[...all]` | Better Auth handler |
 | `/api/realtime/ticket` | Issues WS tickets (requires verified, adult, not banned, username set) |
+
+## As built (Phase 1)
+
+How the requirements above are implemented. Code wins if this drifts.
+
+| Concern | Where / how |
+|---|---|
+| 18+ at email sign-up | Client sends `dob` with `POST /sign-up/email`. A `hooks.before` middleware validates it (`lib/age.ts`, Lagos date) and throws `UNDER_18` before any row is written. `databaseHooks.user.create.before` sets `adultConfirmedAt` only for that path. The DOB is never stored. |
+| 18+ for Google | `adultConfirmedAt` stays null → proxy sends the user to `/onboarding` → `confirmAge` server action. Under 18: sign out + delete the user row (sessions/accounts cascade). |
+| Locked fields | `username`, `adultConfirmedAt`, `role`, `bannedUntil`, `chatMutedUntil` are `input: false`; Better Auth rejects them in sign-up/update bodies. Username is set only by the `saveUsername` server action. |
+| Turnstile | Better Auth `captcha` plugin (`cloudflare-turnstile`) on `/sign-up/email` and `/request-password-reset`; token in `x-captcha-response`. Widget uses `appearance: "interaction-only"`. Cloudflare test keys are the default outside production; production refuses to boot with them. |
+| Email quota | `hooks.before` refuses `/sign-up/email`, `/request-password-reset`, `/send-verification-email` with `EMAIL_QUOTA` once 480 sends in 24 h; the sign-up UI then highlights Google. `sendEmail` re-checks before sending. |
+| Resend limits | `addressThrottle`: 60 s cooldown and 5 verify emails per address per 24 h (`RESEND_LIMIT`, 429). Sign-in-triggered resends obey the same throttle silently. |
+| Enumeration | Taken email on sign-up returns a synthetic user shaped exactly like a real one (`customSyntheticUser`). Forgot-password always says "if an account exists". |
+| Sessions | 30 days, refreshed daily, `cookieCache` 5 min. `proxy.ts` routes on the cookie cache (no DB hit); pages and server actions re-check through `server/session.ts` (`requireUser`, `requirePlayer`). After changing the user, call `getSession({ fresh: true })` inside the server action so the new cookie cache is written. |
+| Rate limits | Better Auth limiter: 30/min default; sign-in 10, sign-up 5, reset 3, resend 3 per minute. `E2E_DISABLE_RATE_LIMIT=1` turns it off for Playwright only (all test browsers share one IP); refused when `VERCEL_ENV=production`. |
+| Change email | `changeEmail.enabled`; the link goes to the **new** address (template "email-change"). |
+| Delete account | Password users confirm with password; Google-only users need a sign-in from the last 10 minutes (`freshAge`). |
+| Local dev | `pnpm services:up` (Postgres :5433, Mailpit :1025/:8025), `SMTP_URL=smtp://localhost:1025`. With no SMTP configured in dev, links are printed to the server log. |
+
+### Gmail setup (production email)
+
+1. Create a dedicated Gmail account for GameHub (not your personal one).
+2. Google Account → Security → turn on 2-Step Verification.
+3. Google Account → Security → App passwords → create one named "GameHub". Copy the 16 characters.
+4. In Vercel → Settings → Environment Variables add `GMAIL_USER` (the address) and `GMAIL_APP_PASSWORD` (the 16 characters, no spaces).

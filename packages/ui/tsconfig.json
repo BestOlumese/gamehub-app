@@ -1,4 +1,7 @@
 {
   "extends": "@gamehub/config/tsconfig/react-library.json",
-  "include": ["src", "*.ts"]
+  "include": ["src", "scripts", "*.ts"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
 }

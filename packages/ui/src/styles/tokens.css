@@ -21,6 +21,7 @@
   --color-accent-soft: #fcf1dd;
   --color-danger: #e05a47;
   --color-danger-soft: #fbe7e3;
+  --color-danger-strong: #b3392a; /* error text on white: 5.6:1 */
   --color-info: #2f6fd6;
 
   /* Game pieces */

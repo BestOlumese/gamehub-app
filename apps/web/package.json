@@ -9,26 +9,37 @@
     "start": "next start --port 3000",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@gamehub/db": "workspace:*",
     "@gamehub/engine": "workspace:*",
     "@gamehub/protocol": "workspace:*",
     "@gamehub/ui": "workspace:*",
+    "better-auth": "1.7.7",
+    "drizzle-orm": "0.45.3",
+    "lucide-react": "1.52.0",
     "next": "16.3.8",
+    "nodemailer": "10.0.14",
+    "obscenity": "0.4.6",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "server-only": "0.0.1",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@gamehub/config": "workspace:*",
-    "@gamehub/db": "workspace:*",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "catalog:",
+    "@types/nodemailer": "8.0.2",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "catalog:",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

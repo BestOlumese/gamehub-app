@@ -2,3 +2,14 @@
 @import "@gamehub/ui/tokens.css";
 
 @source "../../../packages/ui/src";
+
+/* Ankara-inspired repeat (public/art, generated from @gamehub/ui AnkaraTile). */
+@utility bg-ankara {
+  background-image: url("/art/ankara-paper.svg");
+  background-size: 36px 36px;
+}
+
+@utility bg-ankara-brand {
+  background-image: url("/art/ankara-brand.svg");
+  background-size: 44px 44px;
+}

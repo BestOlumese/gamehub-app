@@ -1,0 +1,14 @@
+# Local services for dev and E2E (docs/12-testing.md). Not used in production.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: gamehub
+      POSTGRES_PASSWORD: gamehub
+      POSTGRES_DB: gamehub
+    ports: ["5433:5432"]
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # web inbox + API

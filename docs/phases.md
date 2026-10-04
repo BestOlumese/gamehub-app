@@ -16,13 +16,13 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** both apps deployed; landing scores ≥ 95 on Lighthouse mobile; CI green.
 
 ## Phase 1 — Auth & accounts
-- [ ] Better Auth with Drizzle adapter; email+password with required verification; Google.
-- [ ] Nodemailer + Gmail SMTP, templates, `email_log` quota guard (480/24 h), resend cooldowns.
-- [ ] Sign-up (DOB 18+ gate, Turnstile), login, verify-email page, forgot/reset password, change password/email, delete account.
-- [ ] Onboarding: DOB for Google users, username picker (profanity + reserved names).
-- [ ] Middleware: verified + adult + username required for app routes; bans.
-- [ ] Legal pages: terms, privacy.
-- [ ] E2E: sign-up/verify/reset flows with Mailpit.
+- [x] Better Auth with Drizzle adapter; email+password with required verification; Google.
+- [x] Nodemailer + Gmail SMTP, templates, `email_log` quota guard (480/24 h), resend cooldowns.
+- [x] Sign-up (DOB 18+ gate, Turnstile), login, verify-email page, forgot/reset password, change password/email, delete account.
+- [x] Onboarding: DOB for Google users, username picker (profanity + reserved names).
+- [x] Middleware: verified + adult + username required for app routes; bans.
+- [x] Legal pages: terms, privacy.
+- [x] E2E: sign-up/verify/reset flows with Mailpit.
 
 **Exit:** a new user can sign up with email or Google and reach `/home`; under-18 refused; all auth E2E green.
 

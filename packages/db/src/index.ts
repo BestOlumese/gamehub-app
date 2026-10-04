@@ -1,2 +1,2 @@
-export { createDb, type Db } from "./client";
+export { createDb, isLocalDatabase, type Db } from "./client";
 export * from "./schema";

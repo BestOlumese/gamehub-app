@@ -13,8 +13,12 @@ const KB = 1024;
 
 /** Route → budget in gzip bytes. Add routes as they ship. */
 const budgets = [
-  { group: "marketing", limit: 145 * KB, routes: ["/"] },
-  // { group: "app shell", limit: 195 * KB, routes: ["/home"] },
+  { group: "marketing", limit: 145 * KB, routes: ["/", "/legal/terms", "/legal/privacy", "/join"] },
+  {
+    group: "app shell",
+    limit: 195 * KB,
+    routes: ["/login", "/signup", "/verify-email", "/forgot-password", "/reset-password"],
+  },
   // { group: "game", limit: 195 * KB, routes: ["/play/demo"] },
 ];
 

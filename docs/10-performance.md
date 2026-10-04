@@ -31,7 +31,7 @@ Lighthouse measures page loads; gameplay smoothness is covered by INP and frame 
 - Server Components by default; `"use client"` only at leaves.
 - React Compiler on — no manual `useMemo` sprinkling.
 - `next/font` with **one** variable font family for UI + one display font, subsetted (Latin), `display: swap`.
-- No images on marketing pages except one optimised hero SVG; all game art is SVG.
+- No raster images on marketing pages; all art is SVG. Decorative SVGs are static files in `public/art` (generated from `@gamehub/ui`), loaded with `<img>` so they're cached across pages and not duplicated in the HTML and RSC payload.
 
 ## Game client
 

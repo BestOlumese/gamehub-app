@@ -31,6 +31,47 @@ jobs:
       - name: Lighthouse (mobile, median of 3)
         run: pnpm exec lhci autorun
 
+  # Auth flows end to end against `next start`, local Postgres and Mailpit (docs/12-testing.md).
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: gamehub
+          POSTGRES_PASSWORD: gamehub
+          POSTGRES_DB: gamehub
+        ports: ["5433:5432"]
+        options: >-
+          --health-cmd "pg_isready -U gamehub" --health-interval 2s --health-timeout 5s --health-retries 20
+      mailpit:
+        image: axllent/mailpit:latest
+        ports: ["1025:1025", "8025:8025"]
+    env:
+      DATABASE_URL: postgres://gamehub:gamehub@localhost:5433/gamehub
+      BETTER_AUTH_SECRET: ci-only-secret-not-used-anywhere-else-0123456789
+      SMTP_URL: smtp://localhost:1025
+      E2E_DISABLE_RATE_LIMIT: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter db migrate
+      - run: pnpm --filter web build
+      - run: pnpm --filter web exec playwright install --with-deps chromium
+      - run: pnpm --filter web test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: apps/web/test-results
+          retention-days: 7
+
   # Realtime Worker preview for PRs: a versioned upload with its own preview URL.
   realtime-preview:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
@@ -53,7 +94,7 @@ jobs:
   # The web app deploys through Vercel's Git integration (previews on every PR).
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: check
+    needs: [check, e2e]
     runs-on: ubuntu-latest
     concurrency: deploy-production
     steps:

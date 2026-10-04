@@ -33,14 +33,21 @@ Copy this folder into the root of the `gamehub` repo. Claude Code reads `AGENTS.
 
 ## Develop
 
-Node 24 and pnpm 12 (`corepack enable`).
+Node 24, pnpm 12 and Docker.
 
 ```bash
 pnpm i
-cp .env.example packages/db/.env                  # add DATABASE_URL (Neon)
+pnpm services:up                                  # Postgres :5433 + Mailpit (inbox at http://localhost:8025)
+cp .env.example apps/web/.env.local               # then set BETTER_AUTH_SECRET
+DATABASE_URL=postgres://gamehub:gamehub@localhost:5433/gamehub pnpm --filter db migrate
 cp apps/realtime/.dev.vars.example apps/realtime/.dev.vars
 pnpm dev                                          # web :3000, realtime :8787
+
 pnpm lint && pnpm typecheck && pnpm test
 pnpm build && pnpm budget                         # first-load JS budget
-pnpm exec lhci autorun                            # Lighthouse mobile (needs Chrome; set CHROME_PATH if not found)
+E2E_DISABLE_RATE_LIMIT=1 pnpm --filter web test:e2e   # Playwright against `next start`
+pnpm exec lhci autorun                            # Lighthouse mobile (set CHROME_PATH if Chrome isn't found)
+pnpm art                                          # re-export decorative SVGs after changing packages/ui/src/art
 ```
+
+Gmail, Google sign-in and Turnstile setup for production: see `docs/06-auth.md`.
