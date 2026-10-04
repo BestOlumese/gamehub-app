@@ -22,7 +22,7 @@
 
 ## Headers (web)
 
-- CSP: `default-src 'self'; connect-src 'self' wss://gamehub-realtime.<acct>.workers.dev https://challenges.cloudflare.com; script-src 'self' 'nonce-…' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://accounts.google.com; img-src 'self' data: https://lh3.googleusercontent.com; style-src 'self' 'unsafe-inline'`.
+- CSP: `default-src 'self'; connect-src 'self' wss://gamehub-realtime.gamehub-app.workers.dev https://challenges.cloudflare.com; script-src 'self' 'nonce-…' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://accounts.google.com; img-src 'self' data: https://lh3.googleusercontent.com; style-src 'self' 'unsafe-inline'`.
 - `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (no camera/mic/geolocation).
 
 ## Secrets

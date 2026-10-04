@@ -57,7 +57,7 @@ Static/cached HTML from Vercel edge → minimal JS → user sees content. Game c
 ### Opening a socket
 1. Client calls `GET /api/realtime/ticket?scope=room:<id>` (cookie session).
 2. `web` verifies the Better Auth session, returns a JWT (HS256, 60 s expiry) with `sub`, `name`, `avatar`, `scope`.
-3. Client opens `wss://gamehub-realtime.<acct>.workers.dev/parties/room/<id>?ticket=…` via partysocket.
+3. Client opens `wss://gamehub-realtime.gamehub-app.workers.dev/parties/room/<id>?ticket=…` via partysocket.
 4. Worker verifies the ticket (`jose`), checks `Origin`, then routes to the DO.
 5. On every reconnect, partysocket fetches a **fresh** ticket (query is an async function).
 

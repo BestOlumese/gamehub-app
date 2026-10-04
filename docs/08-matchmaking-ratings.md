@@ -4,7 +4,7 @@
 
 1. Host picks game → player count → rules (preset "Naija Standard" or customize) → turn timer → bots on/off and bot level → "Create room".
 2. `web` server action calls Worker `POST /rooms` (signed) → room DO initialised in `lobby` → returns `roomId` + 6-char code.
-3. Share sheet: **WhatsApp** (`https://wa.me/?text=…`), copy link, copy code. Link: `https://gamehub.vercel.app/r/<code>`.
+3. Share sheet: **WhatsApp** (`https://wa.me/?text=…`), copy link, copy code. Link: `https://gamehub-apps.vercel.app/r/<code>`.
 4. `/r/<code>` opens the room (see "Room codes" below).
 5. Lobby shows seats, ready states, rules summary. Host can change rules until start, kick (lobby only), add/remove bots per seat.
 6. Start: host taps start when ≥ min players (humans + bots). Empty seats: filled by bots if host enabled "Fill with bots", else seat count shrinks to occupied seats (must stay ≥ game minimum).

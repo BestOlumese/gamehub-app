@@ -28,7 +28,7 @@
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] }
   ],
-  "vars": { "ALLOWED_ORIGINS": "https://gamehub.vercel.app,http://localhost:3000", "WEB_ORIGIN": "https://gamehub.vercel.app" }
+  "vars": { "ALLOWED_ORIGINS": "https://gamehub-apps.vercel.app,http://localhost:3000", "WEB_ORIGIN": "https://gamehub-apps.vercel.app" }
   // secrets: REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET, CHAT_SIGN_SECRET
 }
 ```

@@ -34,7 +34,7 @@ import PartySocket from "partysocket";
 
 export function createRoomSocket(roomId: string, onMessage: (m: ServerMsg) => void) {
   const socket = new PartySocket({
-    host: process.env.NEXT_PUBLIC_REALTIME_HOST!,   // gamehub-realtime.<acct>.workers.dev
+    host: process.env.NEXT_PUBLIC_REALTIME_HOST!,   // gamehub-realtime.gamehub-app.workers.dev
     party: "room",
     room: roomId,
     // fresh ticket on EVERY (re)connect — tickets live 60 s
