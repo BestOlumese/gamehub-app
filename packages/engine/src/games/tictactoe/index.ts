@@ -1,21 +1,10 @@
 import { err, ok } from "../../result";
 import type { GameDefinition, GameEvent, SeatIndex } from "../../types";
 import { tttBots } from "./bots";
-import {
-  NEXT_ROUND_DELAY_MS,
-  SUDDEN_DEATH_ROUNDS,
-  tttNaija,
-  tttRulesSchema,
-  type TttRules,
-} from "./rules";
-import {
-  emptyCells,
-  tttActionSchema,
-  winningLine,
-  type TttAction,
-  type TttState,
-  type TttView,
-} from "./state";
+import { tttLegalActions } from "./core";
+import { NEXT_ROUND_DELAY_MS, SUDDEN_DEATH_ROUNDS, tttNaija, type TttRules } from "./rules";
+import { tttActionSchema, tttRulesSchema } from "./schemas";
+import { emptyCells, winningLine, type TttAction, type TttState, type TttView } from "./state";
 
 function freshRound(
   prev: Pick<TttState, "score" | "draws">,
@@ -58,10 +47,7 @@ export const tictactoe: GameDefinition<TttState, TttAction, TttView, TttRules> =
 
   currentSeats: (s) => (s.over || s.roundWinner !== null ? [] : [s.turn]),
 
-  legalActions(s, seat) {
-    if (s.over || s.roundWinner !== null || seat !== s.turn) return [];
-    return emptyCells(s.board).map((cell) => ({ type: "place", cell }));
-  },
+  legalActions: (s, seat) => tttLegalActions(s, seat),
 
   apply(s, { seat, action }, { rules }) {
     if (s.over) return err("GAME_OVER");
@@ -129,5 +115,6 @@ export const tictactoe: GameDefinition<TttState, TttAction, TttView, TttRules> =
   },
 };
 
-export { tttNaija, tttRulesSchema, type TttRules } from "./rules";
+export { tttNaija, type TttRules } from "./rules";
+export { tttRulesSchema } from "./schemas";
 export type { TttAction, TttState, TttView } from "./state";

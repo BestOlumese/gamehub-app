@@ -192,3 +192,11 @@ await fetch(`${env.WEB_ORIGIN}/api/internal/match-result`, {
 
 - `wrangler dev` runs DOs locally with SQLite.
 - Web points `NEXT_PUBLIC_REALTIME_HOST=localhost:8787`.
+
+## As built (Phase 2)
+
+- `POST /rooms` (HMAC from `web`) → Worker picks a random code → `stub.fetch("https://room/init")` with an internal header; the DO answers 409 if the code is in use and the Worker retries.
+- If the host chose "Play a bot", bots are seated at creation so the lobby shows them; otherwise empty seats are bot-filled only if `botLevel` is set.
+- Grace is the `GRACE_MS` var (60 s in `wrangler.jsonc`; tests use 150 ms / 3 s).
+- Seats are compacted on start (empty seats dropped). Connection state (user, seat) lives in partyserver connection state (socket attachment), so hibernation costs no writes.
+- Cost: ~2 rows per move (state + alarm); a best-of-3 TTT game ≈ 45 rows including lobby and start.

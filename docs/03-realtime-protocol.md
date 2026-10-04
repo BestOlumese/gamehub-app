@@ -133,3 +133,12 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 | 4008 | Kicked / banned | Show reason, don't reconnect |
 | 4029 | Rate limited | Reconnect after backoff |
 | other | Network | Reconnect with backoff |
+
+## As built (Phase 2)
+
+`packages/protocol/src/room.ts` is the source of truth. Differences from the tables above:
+
+- Client also sends `seat_bot { seat, level | null }` (host puts/removes a bot in an empty lobby seat) and `kick { seat }` (host, lobby only). `emote`, `chat` and `report` arrive with Phase 9.
+- `snapshot` carries `serverNow` so the client can estimate clock offset before the first `pong`.
+- Extra error codes: `NOT_HOST`, `NOT_ENOUGH_PLAYERS`, `WRONG_PHASE`.
+- Plain HTTP to `/parties/*` is always 404; rooms are created only through the HMAC-signed `POST /rooms`.

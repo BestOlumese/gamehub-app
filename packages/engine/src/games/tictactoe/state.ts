@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { SeatIndex } from "../../types";
 
 export type Cell = 0 | 1 | null;
@@ -17,11 +16,7 @@ export type TttState = {
   seriesWinner: SeatIndex | "draw" | null;
 };
 
-export const tttActionSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("place"), cell: z.number().int().min(0).max(8) }),
-  z.object({ type: z.literal("next_round") }),
-]);
-export type TttAction = z.infer<typeof tttActionSchema>;
+export type TttAction = { type: "place"; cell: number } | { type: "next_round" };
 
 /** No hidden information in Tic-tac-toe: everyone sees the whole state. */
 export type TttView = TttState;

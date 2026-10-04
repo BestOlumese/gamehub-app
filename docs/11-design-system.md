@@ -112,3 +112,13 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Avatar:** Google photo when there is one; otherwise the username's initials ("tunde_o" → "TO") on a game-piece colour derived from the username, with ink text where white would fail contrast.
 - **Settings:** left sidebar on laptops (Profile, Account, Security, Game preferences), each section its own URL under `/settings/*`; on phones `/settings` is a list of sections and each section has a "‹ Settings" back link. Sections are grouped cards of rows (label, value, action on the right). No forms on the page: "Change" opens a dialog (centred card on laptops, bottom sheet on phones; native `<dialog>`). Delete account sits alone at the bottom of Account in a red-bordered "Danger zone"; the outline-red button opens a dialog that needs the username typed (and the password, or a fresh Google sign-in).
 - **Preferences** save as each switch is flipped and flip back if the save fails.
+
+## Rooms and the game table (decided Oct 2026)
+
+- **Home:** game tiles first (art, name, players); playable games show "Play with friends", others "Soon". Room-code box above the tiles.
+- **Create room:** step-by-step sheet with progress dots — Rules (Naija Standard or Custom) → Empty seat (wait for a friend, or play a bot + level) → Review → Create.
+- **Lobby:** big room code (tap to copy), "Share on WhatsApp" and "Copy link", seat list (host crown; host can add a bot per empty seat or remove a player), rules summary, sticky Start for the host / "Waiting for @host to start…" for others.
+- **Table (portrait):** top bar (Home, code with connection dot, ☰ menu) → opponent card → round label → board → turn banner (accent "Your turn") → your card. Timer ring around the active avatar; away players greyed with an offline countdown; bot badge when a bot covers a seat.
+- **Game over:** result card slides up over the final board — "You won!" / "@x won" / "It's a draw", both scores, Rematch (back to the lobby, same room) and Back home.
+- **Menu:** Rules of this room, Sound on/off, Share room link, Leave game (confirm; a bot takes the seat mid-game).
+- **Connection:** nothing for blips under 3 s; then an amber "Reconnecting… your seat is held for 0:57" bar; after the grace, "A bot is playing for you…".

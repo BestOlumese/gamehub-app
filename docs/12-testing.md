@@ -10,7 +10,7 @@ Per game:
 - **Example tests** for every rule in the game doc (one test per row of the special-cards / options tables, both with the option on and off).
 - **Property tests** (fast-check), ≥ 1,000 runs each:
   - Random rule config (from `ruleSchema` arbitrary) + random seed + random legal actions until over → invariants hold after every step.
-  - Termination: game ends within a bound (Whot ≤ 2,000 actions, Ludo ≤ 5,000, Snakes ≤ 3,000, RPS ≤ 500, TTT ≤ 60).
+  - Termination: game ends within a bound (Whot ≤ 2,000 actions, Ludo ≤ 5,000, Snakes ≤ 3,000, RPS ≤ 500, TTT ≤ 80: best of 5 + 3 sudden-death rounds).
   - Every action outside `legalActions` is rejected; `apply` never throws.
   - `view(s, k)` never contains another seat's private data (serialise and search for card ids).
   - Determinism: same seed + same actions ⇒ identical states.
@@ -74,3 +74,9 @@ Run against `next start` + `wrangler dev` + local Postgres (Docker) + **Mailpit*
 3. Build + bundle budget check
 4. E2E (Playwright, Chromium only, mobile viewport)
 5. Lighthouse CI on Vercel preview URL
+
+## As built (Phase 2)
+
+- Playwright starts `next start` (:3000) **and** `wrangler dev` (:8787, `GRACE_MS=3000`) itself; CI writes throwaway secrets to `apps/realtime/.dev.vars`.
+- Disconnects are simulated by **closing the browser context** and reopening it with the saved login: Chromium's offline emulation does not close WebSockets that are already open.
+- DO tests shorten the grace with the `GRACE_MS` binding and fire alarms with `runDurableObjectAlarm`.

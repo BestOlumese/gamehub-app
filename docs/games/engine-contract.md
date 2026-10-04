@@ -20,11 +20,13 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   minPlayers: number; maxPlayers: number;
   presets: { naija: R } & Record<string, R>;
   ruleSchema: z.ZodType<R>;                       // validates host-custom rules
+  actionSchema: z.ZodType<A>;                     // validates client actions before apply()
   setup(players: number, ctx: Ctx<R>): S;
   currentSeats(s: S): SeatIndex[];                // whose input is awaited (RPS: many)
   legalActions(s: S, seat: SeatIndex, rules: R): A[];
   apply(s: S, input: { seat: SeatIndex; action: A }, ctx: Ctx<R>): Result<S, RuleErrorCode>;
-  timeoutAction(s: S, seat: SeatIndex, rules: R): A;   // what happens when a turn timer expires
+  timeoutAction(s: S, seat: SeatIndex, rules: R, rng: Rng): A; // what happens when a turn timer expires
+  autoAdvance(s: S, rules: R): { seat: SeatIndex; action: A; afterMs: number } | null; // server-made moves after a pause (e.g. TTT next round)
   view(s: S, viewer: SeatIndex | "spectator"): V;      // MUST strip hidden info
   isOver(s: S): boolean;
   ranking(s: S): SeatIndex[][];                    // places; inner arrays = ties
@@ -73,3 +75,7 @@ type RuleErrorCode =
 - `apply` rejects every action not in `legalActions`.
 - `view` leaks nothing.
 - Presets validate against `ruleSchema`.
+
+## Browser-safe entry points
+
+Zod schemas live in each game's `schemas.ts` and are only imported by the full `GameDefinition` (server). Each game also exposes a zod-free subpath for client previews, e.g. `@gamehub/engine/tictactoe` (`tttLegalActions`, `tttNaija`, types). Client components must import from these, never from the package root, or zod lands in the game bundle.

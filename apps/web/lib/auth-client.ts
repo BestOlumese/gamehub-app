@@ -1,7 +1,11 @@
 import { createAuthClient } from "better-auth/client";
+import { inferAdditionalFields } from "better-auth/client/plugins";
+import type { getAuth } from "@/server/auth";
 
-/** Browser-side Better Auth client. Same-origin, so no baseURL needed. */
-export const authClient = createAuthClient();
+/** Browser-side Better Auth client. Same-origin, so no baseURL needed. Knows our extra user fields. */
+export const authClient = createAuthClient({
+  plugins: [inferAdditionalFields<ReturnType<typeof getAuth>>()],
+});
 
 export type AuthError = { code?: string | undefined; message?: string | undefined; status: number };
 

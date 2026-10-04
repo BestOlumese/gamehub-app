@@ -5,6 +5,7 @@
 // Run after `pnpm build`: `pnpm budget`.
 
 import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 
 const PORT = Number(process.env.BUDGET_PORT ?? 3123);
@@ -19,8 +20,28 @@ const budgets = [
     limit: 195 * KB,
     routes: ["/login", "/signup", "/verify-email", "/forgot-password", "/reset-password"],
   },
-  // { group: "game", limit: 195 * KB, routes: ["/play/demo"] },
 ];
+
+/**
+ * Pages behind a login can't be fetched anonymously. Measure them from the build's
+ * client manifest instead: the framework scripts every page loads + the page's own chunks.
+ */
+const manifestBudgets = [{ group: "game (Tic-tac-toe)", limit: 195 * KB, page: "(app)/r/[code]" }];
+
+function pageChunks(page) {
+  const file = new URL(
+    `../apps/web/.next/server/app/${page}/page_client-reference-manifest.js`,
+    import.meta.url,
+  );
+  const sandbox = { self: {} };
+  new Function("self", "globalThis", readFileSync(file, "utf8"))(sandbox.self, sandbox.self);
+  const manifest = Object.values(sandbox.self.__RSC_MANIFEST ?? {})[0];
+  const key = Object.keys(manifest?.entryJSFiles ?? {}).find((k) =>
+    k.endsWith(`/app/${page}/page`),
+  );
+  if (!key) throw new Error(`no manifest entry for ${page}`);
+  return manifest.entryJSFiles[key].map((f) => `/_next/${f}`);
+}
 
 const server = spawn("pnpm", ["--filter", "web", "exec", "next", "start", "-p", String(PORT)], {
   stdio: ["ignore", "pipe", "pipe"],
@@ -98,6 +119,23 @@ try {
           `(${files} scripts ${fmt(external)} + inline ${fmt(inline)}) [${group}]`,
       );
     }
+  }
+  // Framework scripts = what an empty static page loads.
+  const shell = await fetch(new URL("/legal/terms", ORIGIN)).then((r) => r.text());
+  const framework = [...shell.matchAll(/<script\b([^>]*)>/g)]
+    .filter((m) => !/\bnomodule\b/i.test(m[1]))
+    .map((m) => /\bsrc="([^"]+)"/.exec(m[1])?.[1])
+    .filter(Boolean);
+  for (const { group, limit, page } of manifestBudgets) {
+    const files = [...new Set([...framework, ...pageChunks(page)])];
+    let total = 0;
+    for (const f of files) total += await gzipSize(f);
+    const ok = total <= limit;
+    failed ||= !ok;
+    console.log(
+      `${ok ? "PASS" : "FAIL"}  /${page.replace(/^\(.*?\)\//, "")}`.padEnd(30) +
+        ` ${fmt(total).padStart(9)} / ${fmt(limit)}  (${files.length} scripts) [${group}]`,
+    );
   }
   stopServer();
   process.exit(failed ? 1 : 0);

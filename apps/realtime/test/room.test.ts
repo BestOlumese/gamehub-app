@@ -337,3 +337,41 @@ describe("limits", () => {
     await c.next((m) => m.t === "error" && m.code === "WRONG_PHASE");
   });
 });
+
+describe("free-tier budget", () => {
+  it("a move costs at most 2 row writes (state + alarm)", async () => {
+    const code = await createRoom({
+      rules: { turnSeconds: 30, bestOf: 3, alternateStarter: true },
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+
+    // Count writes inside the object: each INSERT…room upsert and each setAlarm is one row.
+    const stub = env.Room.getByName(code);
+    const counts = { upserts: 0, alarms: 0 };
+    await runInDurableObject(stub, (_instance, state) => {
+      const sql = state.storage.sql;
+      const exec = sql.exec.bind(sql);
+      sql.exec = ((query: string, ...args: unknown[]) => {
+        if (/^\s*(INSERT|UPDATE|DELETE)/i.test(query)) counts.upserts++;
+        return exec(query, ...(args as []));
+      }) as typeof sql.exec;
+      const setAlarm = state.storage.setAlarm.bind(state.storage);
+      state.storage.setAlarm = ((t: number | Date) => {
+        counts.alarms++;
+        return setAlarm(t);
+      }) as typeof state.storage.setAlarm;
+    });
+
+    act(host, { type: "place", cell: 4 });
+    await host.next((m) => m.t === "ack");
+    expect(counts.upserts + counts.alarms).toBeLessThanOrEqual(2);
+    expect(counts.upserts).toBe(1);
+  });
+});

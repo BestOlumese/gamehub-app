@@ -14,6 +14,12 @@ const schema = z.object({
   /** Dev/E2E only: send mail to a local SMTP sink such as Mailpit (smtp://localhost:1025). */
   SMTP_URL: z.url().optional(),
   TURNSTILE_SECRET_KEY: z.string().min(1).default(TURNSTILE_TEST_SECRET),
+  /** Shared with the realtime Worker: signs 60 s WebSocket tickets. */
+  REALTIME_TICKET_SECRET: z.string().min(32).optional(),
+  /** Shared with the realtime Worker: signs web → Worker calls (POST /rooms). */
+  INTERNAL_HMAC_SECRET: z.string().min(32).optional(),
+  /** Worker base URL for server-side calls, e.g. https://gamehub-realtime.gamehub-app.workers.dev */
+  REALTIME_URL: z.url().optional(),
   /** E2E only: every test browser shares one IP. Refused in production. */
   E2E_DISABLE_RATE_LIMIT: z.enum(["1"]).optional(),
 });
@@ -38,4 +44,17 @@ export function env(): ServerEnv {
     cached = parsed.data;
   }
   return cached;
+}
+
+/** Realtime settings, required once games are used. */
+export function realtimeEnv() {
+  const e = env();
+  if (!e.REALTIME_TICKET_SECRET || !e.INTERNAL_HMAC_SECRET || !e.REALTIME_URL) {
+    throw new Error("REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET and REALTIME_URL must be set");
+  }
+  return {
+    ticketSecret: e.REALTIME_TICKET_SECRET,
+    hmacSecret: e.INTERNAL_HMAC_SECRET,
+    url: e.REALTIME_URL,
+  };
 }

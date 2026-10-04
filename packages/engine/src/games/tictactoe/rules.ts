@@ -1,12 +1,11 @@
-import { z } from "zod";
+// Plain values and types only (no zod), so the browser can import them cheaply.
 
-export const tttRulesSchema = z.object({
-  turnSeconds: z.number().int().min(10).max(120),
-  bestOf: z.union([z.literal(1), z.literal(3), z.literal(5)]),
-  alternateStarter: z.boolean(),
-});
-
-export type TttRules = z.infer<typeof tttRulesSchema>;
+export type TttRules = {
+  /** 10–120 */
+  turnSeconds: number;
+  bestOf: 1 | 3 | 5;
+  alternateStarter: boolean;
+};
 
 export const tttNaija: TttRules = { turnSeconds: 15, bestOf: 3, alternateStarter: true };
 

@@ -27,13 +27,13 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** a new user can sign up with email or Google and reach `/home`; under-18 refused; all auth E2E green.
 
 ## Phase 2 — Realtime core + Tic-tac-toe
-- [ ] `protocol`: envelopes, room messages, tickets, close codes.
-- [ ] Ticket endpoint + Worker verification (`jose`), Origin checks.
-- [ ] `GameRoom` DO: lobby, seats, start, action loop, single-row persistence, single-alarm deadline scheduler, per-seat views, idempotency, rate limits.
-- [ ] Engine contract + seeded RNG + **Tic-tac-toe** (rules, bots, tests).
-- [ ] Private room create/join (code, WhatsApp share, `/r/<code>`), lobby UI, game screen shell.
-- [ ] partysocket client with fresh tickets, reconnection UI, seat states, grace → bot, turn timers.
-- [ ] DO tests incl. hibernation and rows-written ≤ 2.
+- [x] `protocol`: envelopes, room messages, tickets, close codes.
+- [x] Ticket endpoint + Worker verification (`jose`), Origin checks.
+- [x] `GameRoom` DO: lobby, seats, start, action loop, single-row persistence, single-alarm deadline scheduler, per-seat views, idempotency, rate limits.
+- [x] Engine contract + seeded RNG + **Tic-tac-toe** (rules, bots, tests).
+- [x] Private room create/join (code, WhatsApp share, `/r/<code>`), lobby UI, game screen shell.
+- [x] partysocket client with fresh tickets, reconnection UI, seat states, grace → bot, turn timers.
+- [x] DO tests incl. hibernation and rows-written ≤ 2.
 
 **Exit:** two phones on mobile data play a TTT series; toggling airplane mode for 10 s and 70 s behaves exactly as `04-reconnection.md` says.
 

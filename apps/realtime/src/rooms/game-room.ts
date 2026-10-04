@@ -198,6 +198,8 @@ export class GameRoom extends Server<Env> {
       avatar: host.avatar,
       status: "away",
     };
+    // "Play a bot" at setup: seat the bots now so the lobby shows who you're playing.
+    if (botLevel) for (let i = 1; i < seats.length; i++) seats[i] = botSeat(botLevel);
     this.room = {
       roomId: code,
       code,

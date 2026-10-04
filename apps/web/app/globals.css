@@ -13,3 +13,50 @@
   background-image: url("/art/ankara-brand.svg");
   background-size: 44px 44px;
 }
+
+/* ── Game table motion (durations from tokens; reduced motion shortens them) ── */
+@keyframes draw-on {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ring-deplete {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 100;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    translate: 0;
+  }
+  25% {
+    translate: -6px;
+  }
+  75% {
+    translate: 6px;
+  }
+}
+
+@utility animate-draw-on {
+  stroke-dasharray: 100;
+  animation: draw-on var(--dur-card) var(--ease-standard) both;
+}
+
+@utility animate-shake {
+  animation: shake var(--dur-turn) ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shake {
+    animation: none;
+  }
+}
