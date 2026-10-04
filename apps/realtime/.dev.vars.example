@@ -1,0 +1,4 @@
+# Copy to .dev.vars for `wrangler dev`. Generate each with: openssl rand -base64 32
+REALTIME_TICKET_SECRET=
+INTERNAL_HMAC_SECRET=
+CHAT_SIGN_SECRET=

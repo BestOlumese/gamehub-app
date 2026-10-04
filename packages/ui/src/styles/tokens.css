@@ -1,0 +1,102 @@
+/*
+ * GameHub design tokens (docs/11-design-system.md).
+ * Tailwind v4 reads these through @theme; default palettes are cleared so only
+ * these colours exist. Import after `@import "tailwindcss";`.
+ */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+
+  --color-paper: #faf8f4;
+  --color-surface: #ffffff;
+  --color-surface-2: #f2efe8;
+  --color-line: #e4dfd4;
+  --color-ink: #1a1c20;
+  --color-ink-2: #55595f;
+  --color-ink-3: #8a8e94;
+  --color-brand: #0e7a4e;
+  --color-brand-strong: #0a5e3c;
+  --color-brand-soft: #e3f2ea;
+  --color-accent: #e6a23c;
+  --color-accent-soft: #fcf1dd;
+  --color-danger: #e05a47;
+  --color-danger-soft: #fbe7e3;
+  --color-info: #2f6fd6;
+
+  /* Game pieces */
+  --color-ludo-red: #d9473a;
+  --color-ludo-green: #1f9d5b;
+  --color-ludo-yellow: #e8b021;
+  --color-ludo-blue: #2f6fd6;
+  --color-token-purple: #8e5bd9;
+  --color-token-orange: #e07a2e;
+  --color-token-teal: #1aa3a3;
+  --color-token-pink: #c2417e;
+  --color-whot: #7a1f2b;
+  --color-board: #fffdf8;
+
+  /* Type: next/font sets --font-manrope and --font-bricolage on <html>. */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+  --text-4xl: 48px;
+
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-playing-card: 8px;
+
+  --shadow-*: initial;
+  --shadow-sm: 0 1px 2px rgb(26 28 32 / 0.06);
+  --shadow-lg: 0 8px 24px rgb(26 28 32 / 0.1);
+
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --container-content: 1120px;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+/* Motion durations. Components use these so reduced motion is one switch (÷ 3). */
+:root {
+  --dur-press: 80ms;
+  --dur-sheet: 200ms;
+  --dur-card: 260ms;
+  --dur-hop: 90ms;
+  --dur-dice: 600ms;
+  --dur-turn: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-press: 27ms;
+    --dur-sheet: 67ms;
+    --dur-card: 87ms;
+    --dur-hop: 30ms;
+    --dur-dice: 200ms;
+    --dur-turn: 100ms;
+  }
+}

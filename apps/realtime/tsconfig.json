@@ -1,0 +1,8 @@
+{
+  "extends": "@gamehub/config/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["ES2024"],
+    "types": ["@cloudflare/vitest-pool-workers/types"]
+  },
+  "include": ["worker-configuration.d.ts", "src", "test", "*.ts"]
+}

@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+docs
+AGENTS.md
+CLAUDE.md
+packages/db/drizzle
+apps/realtime/worker-configuration.d.ts

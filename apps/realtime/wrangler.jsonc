@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gamehub-realtime",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-15",
+  "observability": { "enabled": false },
+  "durable_objects": {
+    "bindings": [
+      { "name": "Room", "class_name": "GameRoom" },
+      { "name": "Match", "class_name": "Matchmaker" },
+      { "name": "Presence", "class_name": "Presence" },
+    ],
+  },
+  // SQLite must be on in the FIRST migration; it can't be enabled later.
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] }],
+  "vars": {
+    // Update both once the Vercel production URL is known.
+    "ALLOWED_ORIGINS": "https://gamehub.vercel.app,http://localhost:3000",
+    "WEB_ORIGIN": "https://gamehub.vercel.app",
+  },
+  // Secrets (wrangler secret put): REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET, CHAT_SIGN_SECRET
+}
