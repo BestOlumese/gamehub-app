@@ -11,7 +11,9 @@
     "./cx": "./src/cx.ts",
     "./brand/*": "./src/brand/*.tsx",
     "./forms/*": "./src/forms/*.tsx",
-    "./art/*": "./src/art/*.tsx"
+    "./art/*": "./src/art/*.tsx",
+    "./data-display/*": "./src/data-display/*.tsx",
+    "./overlays/*": "./src/overlays/*.tsx"
   },
   "scripts": {
     "lint": "eslint .",

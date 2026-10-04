@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cx } from "../cx";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "danger-outline";
 export type ButtonSize = "md" | "lg";
 
 const base =
@@ -14,6 +14,8 @@ const variants: Record<ButtonVariant, string> = {
   secondary: "border border-line bg-surface text-ink hover:border-ink-3 hover:bg-surface-2",
   ghost: "text-brand hover:bg-brand-soft",
   danger: "bg-danger text-ink hover:brightness-95",
+  /** Opens a destructive flow without being the final, irreversible click. */
+  "danger-outline": "border border-danger/60 bg-surface text-danger-strong hover:bg-danger-soft",
 };
 
 const sizes: Record<ButtonSize, string> = {

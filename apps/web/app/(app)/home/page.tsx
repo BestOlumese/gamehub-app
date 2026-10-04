@@ -11,7 +11,7 @@ async function Greeting() {
   const user = await requirePlayer();
   return (
     <>
-      <AppHeader username={user.username} />
+      <AppHeader user={user} />
       <section className="mx-auto w-full max-w-content px-4 pt-8 sm:px-8 sm:pt-12">
         <h1 className="font-display text-3xl leading-[1.1] font-extrabold tracking-tight">
           Hi, <span className="text-brand">@{user.username}</span>

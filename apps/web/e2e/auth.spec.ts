@@ -54,7 +54,8 @@ test("forgot password, reset, log in with the new password", async ({ page }) =>
   const username = uname();
   await signUpAndVerify(page, email);
   await pickUsername(page, username);
-  await page.getByRole("button", { name: "Log out" }).click();
+  await page.getByRole("button", { name: "Account menu" }).click();
+  await page.getByRole("menuitem", { name: "Log out" }).click();
   await expect(page).toHaveURL(/\/$/);
 
   await page.goto("/forgot-password");
@@ -100,6 +101,7 @@ test("delete account removes it for good", async ({ page }) => {
   await pickUsername(page, username);
 
   await page.goto("/settings/account");
+  await page.getByRole("button", { name: "Delete account…" }).click();
   await page.getByLabel(`Type ${username} to confirm`).fill(username);
   await page.getByLabel("Password", { exact: true }).fill(PASSWORD);
   await page.getByRole("button", { name: "Delete my account" }).click();
@@ -119,11 +121,33 @@ test("change email: confirm on the new address", async ({ page }) => {
   await pickUsername(page, uname());
 
   await page.goto("/settings/account");
+  await page.getByRole("button", { name: "Change" }).click();
   await page.getByLabel("New email").fill(newEmail);
   await page.getByRole("button", { name: "Send confirmation link" }).click();
-  await expect(page.getByText(`We sent a link to ${newEmail}`)).toBeVisible();
+  await expect(page.getByText("Check your new inbox")).toBeVisible();
 
   await page.goto(await linkFromEmail(newEmail, "Confirm your new GameHub email"));
   await expect(page).toHaveURL(/\/settings\/account\?email=changed/);
   await expect(page.getByText(`Your email is now ${newEmail}.`)).toBeVisible();
+});
+
+test("account menu reaches settings, and game preferences stick", async ({ page }) => {
+  await signUpAndVerify(page, uniqueEmail("prefs"));
+  await pickUsername(page, uname());
+
+  await page.getByRole("button", { name: "Account menu" }).click();
+  await page.getByRole("menuitem", { name: "Settings" }).click();
+  await expect(page).toHaveURL(/\/settings$/);
+
+  await page.goto("/settings/preferences");
+  const motion = page.getByRole("switch", { name: "Reduce motion" });
+  await expect(motion).toHaveAttribute("aria-checked", "false");
+  await motion.click();
+  await expect(motion).toHaveAttribute("aria-checked", "true");
+  await page.waitForTimeout(500); // let the save land
+  await page.reload();
+  await expect(page.getByRole("switch", { name: "Reduce motion" })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
 });
