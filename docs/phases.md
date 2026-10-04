@@ -5,13 +5,13 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 ---
 
 ## Phase 0 — Foundation
-- [ ] pnpm + Turborepo monorepo with `apps/web`, `apps/realtime`, `packages/{engine,protocol,db,ui,config}`.
-- [ ] TypeScript strict configs, ESLint, Prettier, Vitest wired in every package.
-- [ ] Next.js 16 app: fonts, Tailwind v4 tokens from `11-design-system.md`, base layout, landing page placeholder.
-- [ ] Worker + 3 empty SQLite DO classes, `wrangler.jsonc` with `new_sqlite_classes` migration.
-- [ ] Neon project (Frankfurt), Drizzle set up, first migration.
-- [ ] Vercel (fra1) + Cloudflare deploys from `main`; preview deploys for PRs.
-- [ ] CI: lint, typecheck, tests, bundle budget script, Lighthouse CI.
+- [x] pnpm + Turborepo monorepo with `apps/web`, `apps/realtime`, `packages/{engine,protocol,db,ui,config}`.
+- [x] TypeScript strict configs, ESLint, Prettier, Vitest wired in every package.
+- [x] Next.js 16 app: fonts, Tailwind v4 tokens from `11-design-system.md`, base layout, landing page placeholder.
+- [x] Worker + 3 empty SQLite DO classes, `wrangler.jsonc` with `new_sqlite_classes` migration.
+- [x] Neon project (Frankfurt), Drizzle set up, first migration.
+- [x] Vercel (fra1) + Cloudflare deploys from `main`; preview deploys for PRs.
+- [x] CI: lint, typecheck, tests, bundle budget script, Lighthouse CI.
 
 **Exit:** both apps deployed; landing scores ≥ 95 on Lighthouse mobile; CI green.
 
