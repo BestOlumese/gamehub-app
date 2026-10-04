@@ -20,5 +20,10 @@ export default tseslint.config(
       eqeqeq: ["error", "always"],
     },
   },
+  {
+    // Tests index into fixtures they just built; `!` is fine there.
+    files: ["**/*.test.{ts,tsx}", "**/e2e/**/*.ts"],
+    rules: { "@typescript-eslint/no-non-null-assertion": "off" },
+  },
   prettier,
 );

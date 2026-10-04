@@ -14,7 +14,9 @@
   "dependencies": {
     "@gamehub/engine": "workspace:*",
     "@gamehub/protocol": "workspace:*",
-    "partyserver": "0.5.10"
+    "jose": "6.2.12",
+    "partyserver": "0.5.10",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.22.0",

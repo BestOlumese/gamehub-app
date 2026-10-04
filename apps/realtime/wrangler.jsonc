@@ -16,6 +16,8 @@
   "vars": {
     "ALLOWED_ORIGINS": "https://gamehub-apps.vercel.app,http://localhost:3000",
     "WEB_ORIGIN": "https://gamehub-apps.vercel.app",
+    // Seat hold after a disconnect before a bot takes over (docs/04-reconnection.md).
+    "GRACE_MS": "60000",
   },
   // Secrets (wrangler secret put): REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET, CHAT_SIGN_SECRET
 }

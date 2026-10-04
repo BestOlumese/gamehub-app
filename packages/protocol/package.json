@@ -6,7 +6,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./constants": "./src/constants.ts"
+    "./constants": "./src/constants.ts",
+    "./hmac": "./src/hmac.ts"
   },
   "scripts": {
     "lint": "eslint .",

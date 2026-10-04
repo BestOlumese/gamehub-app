@@ -1,0 +1,17 @@
+import {
+  tictactoe,
+  type GameDefinition,
+  type GameSlug,
+  type RuleConfigBase,
+} from "@gamehub/engine";
+
+/** A game with its types erased; the room validates everything at the edges with each game's zod schemas. */
+export type AnyGame = GameDefinition<unknown, unknown, unknown, RuleConfigBase>;
+
+const registry: Partial<Record<GameSlug, AnyGame>> = {
+  tictactoe: tictactoe as unknown as AnyGame,
+};
+
+export function gameFor(slug: GameSlug): AnyGame | null {
+  return registry[slug] ?? null;
+}

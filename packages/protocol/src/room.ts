@@ -1,0 +1,121 @@
+import type { GameSlug, RuleErrorCode, SeatIndex } from "@gamehub/engine";
+import { z } from "zod";
+import { gameSlugSchema } from "./game-slug";
+
+// ── Shared shapes ────────────────────────────────────────────────────────────
+
+export const botLevelSchema = z.enum(["easy", "medium", "hard"]);
+export type BotLevel = z.infer<typeof botLevelSchema>;
+
+export const seatStatusSchema = z.enum(["empty", "connected", "away", "bot", "left"]);
+export type SeatStatus = z.infer<typeof seatStatusSchema>;
+
+export type TicketScope = "presence" | `match:${string}` | `room:${string}`;
+
+export type TicketClaims = {
+  sub: string;
+  name: string;
+  avatar: string | null;
+  scope: TicketScope;
+};
+
+/** What every client may know about a seat. */
+export type SeatPublic = {
+  index: SeatIndex;
+  userId: string | null;
+  name: string;
+  avatar: string | null;
+  status: SeatStatus;
+  botLevel: BotLevel | null;
+  ready: boolean;
+  host: boolean;
+};
+
+export type RoomPhase = "lobby" | "playing" | "ended";
+
+export type RoomMeta = {
+  roomId: string;
+  code: string | null;
+  kind: "private" | "quick";
+  game: GameSlug;
+  phase: RoomPhase;
+  ranked: boolean;
+  rules: unknown;
+  /** Seats the game will have when it starts. */
+  size: number;
+};
+
+// ── Client → server ──────────────────────────────────────────────────────────
+
+const id = z.string().min(1).max(64);
+
+export const clientRoomMsg = z.discriminatedUnion("t", [
+  z.object({ t: z.literal("hello"), lastV: z.number().int().nonnegative().optional() }),
+  z.object({ t: z.literal("act"), id, v: z.number().int().nonnegative(), a: z.unknown() }),
+  z.object({ t: z.literal("ready"), ready: z.boolean() }),
+  z.object({ t: z.literal("config"), rules: z.unknown() }),
+  z.object({
+    t: z.literal("seat_bot"),
+    seat: z.number().int().min(0).max(7),
+    level: botLevelSchema.nullable(),
+  }),
+  z.object({ t: z.literal("kick"), seat: z.number().int().min(0).max(7) }),
+  z.object({ t: z.literal("start") }),
+  z.object({ t: z.literal("rematch") }),
+  z.object({ t: z.literal("leave") }),
+  z.object({ t: z.literal("ping"), c: z.number() }),
+]);
+export type ClientRoomMsg = z.infer<typeof clientRoomMsg>;
+
+// ── Server → client ──────────────────────────────────────────────────────────
+
+export type Deadlines = { turnEndsAt?: number; graceEndsAt?: Partial<Record<SeatIndex, number>> };
+
+export type RoomErrorCode =
+  | "UNAUTHORIZED"
+  | "ROOM_FULL"
+  | "NOT_FOUND"
+  | "CAPACITY"
+  | "RATE_LIMIT"
+  | "BAD_MESSAGE"
+  | "NOT_HOST"
+  | "NOT_ENOUGH_PLAYERS"
+  | "WRONG_PHASE";
+
+export type ServerRoomMsg =
+  | {
+      t: "snapshot";
+      v: number;
+      room: RoomMeta;
+      seats: SeatPublic[];
+      you: SeatIndex | "spectator";
+      view: unknown;
+      deadlines: Deadlines;
+      serverNow: number;
+    }
+  | { t: "ack"; id: string; v: number }
+  | { t: "reject"; id: string; code: RuleErrorCode; v: number }
+  | { t: "event"; v: number; e: { type: string } & Record<string, unknown> }
+  | { t: "ended"; v: number; ranking: SeatIndex[][]; ranked: boolean }
+  | { t: "pong"; c: number; s: number }
+  | { t: "error"; code: RoomErrorCode };
+
+/** Light runtime check on the client: the server is trusted, but frames can be garbage. */
+export const serverRoomMsg = z.looseObject({ t: z.string() });
+
+// ── Room creation (web → Worker, HMAC-signed) ────────────────────────────────
+
+export const createRoomRequest = z.object({
+  game: gameSlugSchema,
+  rules: z.unknown(),
+  /** Bots for empty seats when the host starts; null = wait for humans. */
+  botLevel: botLevelSchema.nullable(),
+  host: z.object({
+    userId: z.string().min(1),
+    name: z.string().min(1),
+    avatar: z.string().nullable(),
+  }),
+});
+export type CreateRoomRequest = z.infer<typeof createRoomRequest>;
+
+export type CreateRoomResponse = { roomId: string; code: string };
