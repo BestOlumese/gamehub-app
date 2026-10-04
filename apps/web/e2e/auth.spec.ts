@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { fillDob, PASSWORD, pickUsername, signUpAndVerify, submitWithTurnstile } from "./flows";
+import { ageSessions } from "./db";
 import { linkFromEmail, uniqueEmail } from "./mailpit";
 
 const uname = () => `p_${Date.now().toString(36).slice(-6)}${Math.floor(Math.random() * 90 + 10)}`;
@@ -150,4 +151,21 @@ test("account menu reaches settings, and game preferences stick", async ({ page 
     "aria-checked",
     "true",
   );
+});
+
+test("security page works long after signing in", async ({ page }) => {
+  const email = uniqueEmail("stale");
+  await signUpAndVerify(page, email);
+  await pickUsername(page, uname());
+  // Regression: Better Auth's listSessions needs a sign-in from the last 10 minutes.
+  await ageSessions(email, 60);
+  // Drop the 5-minute session cookie cache so the server sees the real (old) sign-in time.
+  const cookies = await page.context().cookies();
+  await page
+    .context()
+    .clearCookies({ name: cookies.find((c) => c.name.endsWith("session_data"))?.name ?? "" });
+
+  await page.goto("/settings/security");
+  await expect(page.getByRole("heading", { name: "Security", exact: true })).toBeVisible();
+  await expect(page.getByText("This device")).toBeVisible();
 });
