@@ -39,7 +39,13 @@ export function SeatChip({ seat, mark, isYou, turn, graceEndsAt, offset, score }
           )}
         </div>
         {turn ? (
-          <TimerRing endsAt={turn.endsAt} totalMs={turn.totalMs} offset={offset} size={AVATAR} />
+          <TimerRing
+            key={turn.endsAt}
+            endsAt={turn.endsAt}
+            totalMs={turn.totalMs}
+            offset={offset}
+            size={AVATAR}
+          />
         ) : null}
       </div>
       <div className="min-w-0 flex-1">

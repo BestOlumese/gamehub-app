@@ -44,9 +44,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** 8-player RPS knockout with 5 bots completes; no pick leaks before reveal (test).
 
 ## Phase 4 — Whot
-- [ ] Full rules engine from `games/whot.md` with every option; bots (3 levels); property tests (54-card conservation, no leaks).
-- [ ] Rules sheet UI for all options with "Naija Standard" reset.
-- [ ] Card sprite, hand/pile/market UI, shape picker, LAST CARD button, penalty indicators, sounds.
+- [x] Full rules engine from `games/whot.md` with every option; bots (3 levels); property tests (54-card conservation, no leaks).
+- [x] Rules sheet UI for all options with "Naija Standard" reset.
+- [x] Card sprite, hand/pile/market UI, shape picker, LAST CARD button, penalty indicators, sounds.
 
 **Exit:** 4-player game (2 humans, 2 bots) to the end on low-end Android with no jank; all Whot tests green.
 

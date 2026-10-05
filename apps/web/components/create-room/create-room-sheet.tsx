@@ -2,6 +2,7 @@
 
 import { rpsNaija, type RpsRules } from "@gamehub/engine/rps";
 import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
+import { dealSize, whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import type { BotLevel } from "@gamehub/protocol";
 import { Alert } from "@gamehub/ui/forms/alert";
 import { Button } from "@gamehub/ui/forms/button";
@@ -16,8 +17,9 @@ import { createRoom } from "@/app/(app)/play/actions";
 import { describeRules, GAME_NAMES } from "@/lib/game-meta";
 import { RpsRulesStep } from "./rps-rules-step";
 import { TttRulesStep } from "./ttt-rules-step";
+import { WhotRulesStep } from "./whot-rules-step";
 
-export type CreatableGame = "tictactoe" | "rps";
+export type CreatableGame = "tictactoe" | "rps" | "whot";
 
 const LEVELS: ReadonlyArray<{ value: BotLevel; label: string }> = [
   { value: "easy", label: "Easy" },
@@ -37,12 +39,15 @@ type Props = { game: CreatableGame; open: boolean; onClose: () => void };
 
 /** Step-by-step room setup. Games with a choice of player count get an extra first step. */
 export function CreateRoomSheet({ game, open, onClose }: Props) {
-  const steps: Step[] =
-    game === "rps" ? ["players", "rules", "seats", "review"] : ["rules", "seats", "review"];
+  const multi = game !== "tictactoe";
+  const steps: Step[] = multi
+    ? ["players", "rules", "seats", "review"]
+    : ["rules", "seats", "review"];
   const [i, setI] = useState(0);
-  const [players, setPlayers] = useState(game === "rps" ? 4 : 2);
+  const [players, setPlayers] = useState(multi ? 4 : 2);
   const [tttRules, setTttRules] = useState<TttRules>(tttNaija);
   const [rpsRules, setRpsRules] = useState<RpsRules>(rpsNaija);
+  const [whotRules, setWhotRules] = useState<WhotRules>(whotNaija);
   // Two players: wait for a friend or play a bot. More: wait, optionally topping up with bots at start.
   const [seat, setSeat] = useState<"friend" | "bot">("friend");
   const [fillAtStart, setFillAtStart] = useState(true);
@@ -50,7 +55,7 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
   const step = steps[i] ?? "review";
-  const rules = game === "rps" ? rpsRules : tttRules;
+  const rules = game === "rps" ? rpsRules : game === "whot" ? whotRules : tttRules;
   const duel = players === 2;
 
   function close() {
@@ -124,9 +129,11 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
             </div>
           </fieldset>
           <p className="rounded-control bg-surface-2 px-4 py-3 text-sm text-ink-2">
-            {duel
-              ? "2 players: a one-on-one duel."
-              : `${players} players: a knockout bracket. Win your match to go through.`}
+            {game === "whot"
+              ? `${players} players, ${dealSize(players, whotRules.handSize)} cards each. First to empty their hand wins.`
+              : duel
+                ? "2 players: a one-on-one duel."
+                : `${players} players: a knockout bracket. Win your match to go through.`}
           </p>
         </div>
       ) : null}
@@ -134,6 +141,8 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
       {step === "rules" ? (
         game === "rps" ? (
           <RpsRulesStep rules={rpsRules} onChange={setRpsRules} />
+        ) : game === "whot" ? (
+          <WhotRulesStep rules={whotRules} onChange={setWhotRules} />
         ) : (
           <TttRulesStep rules={tttRules} onChange={setTttRules} />
         )
@@ -192,6 +201,7 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
             {[
               ["Game", GAME_NAMES[game]],
               ...(game === "rps" ? [["Players", duel ? "2 (duel)" : `${players} (knockout)`]] : []),
+              ...(game === "whot" ? [["Players", String(players)]] : []),
               ["Rules", describeRules(game, rules)],
               [duel ? "Other seat" : "Seats", otherSeats],
             ].map(([k, v]) => (

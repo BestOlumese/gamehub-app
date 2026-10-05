@@ -7,8 +7,14 @@ export function useNow(active: boolean, ms = 1000) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!active) return;
+    // Catch up at once: the stored time may be from long before this became active
+    // (a seat chip mounted turns ago would otherwise show a too-long countdown for a second).
+    const first = setTimeout(() => setNow(Date.now()), 0);
     const t = setInterval(() => setNow(Date.now()), ms);
-    return () => clearInterval(t);
+    return () => {
+      clearTimeout(first);
+      clearInterval(t);
+    };
   }, [active, ms]);
   return now;
 }

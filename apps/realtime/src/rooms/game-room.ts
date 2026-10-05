@@ -94,15 +94,26 @@ const emptySeat = (): SeatRec => ({
   timeouts: 0,
 });
 
+const levelName = (level: BotLevel) => `${level.charAt(0).toUpperCase()}${level.slice(1)}`;
+
 const botSeat = (level: BotLevel): SeatRec => ({
   userId: null,
-  name: `Bot (${level.charAt(0).toUpperCase()}${level.slice(1)})`,
+  name: `Bot (${levelName(level)})`,
   avatar: null,
   status: "bot",
   botLevel: level,
   ready: true,
   timeouts: 0,
 });
+
+/** With more than one bot at the table, number them in seat order so players can tell them apart. */
+function nameBots(seats: SeatRec[]) {
+  const bots = seats.filter((s) => !s.userId && s.status === "bot" && s.botLevel);
+  bots.forEach((s, k) => {
+    const level = levelName(s.botLevel as BotLevel);
+    s.name = bots.length > 1 ? `Bot ${k + 1} (${level})` : `Bot (${level})`;
+  });
+}
 
 /** Seats a bot plays: actual bots, and humans who are gone (grace expired or left). */
 const botControlled = (s: SeatRec) => s.status === "bot" || s.status === "left";
@@ -213,6 +224,7 @@ export class GameRoom extends Server<Env> {
     // "Play a bot" at setup: seat the bots now so the lobby shows who you're playing.
     if (botLevel && parsed.data.seatBotsNow)
       for (let i = 1; i < seats.length; i++) seats[i] = botSeat(botLevel);
+    nameBots(seats);
     this.room = {
       roomId: code,
       code,
@@ -393,6 +405,7 @@ export class GameRoom extends Server<Env> {
         const target = room.seats[msg.seat];
         if (!target || target.userId) return "BAD_MESSAGE";
         room.seats[msg.seat] = msg.level ? botSeat(msg.level) : emptySeat();
+        nameBots(room.seats);
         return this.commit();
       }
 
@@ -467,6 +480,7 @@ export class GameRoom extends Server<Env> {
     const filled = room.seats.filter((s) => s.status !== "empty");
     if (filled.length < def.minPlayers) return "NOT_ENOUGH_PLAYERS";
     room.seats = filled;
+    nameBots(room.seats);
 
     room.rngSeed = randomHex(16);
     room.rngCounter = 0;

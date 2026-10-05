@@ -8,6 +8,7 @@ import { BookOpen, LogOut, Menu, Share2, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { describeRules, GAME_NAMES } from "@/lib/game-meta";
 import { setSound } from "@/app/(app)/play/preferences";
+import { useRoom } from "@/lib/room/store";
 import { SharePanel } from "./share-panel";
 
 type Props = {
@@ -79,6 +80,7 @@ export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, on
               labelledBy="menu-sound"
               onChange={(v) => {
                 setSoundOn(v);
+                useRoom.setState({ soundOn: v });
                 void setSound(v);
               }}
             />
@@ -108,7 +110,9 @@ export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, on
         <p className="mt-3 text-sm text-ink-2">
           {game === "rps"
             ? "Rock blunts scissors, scissors cut paper, paper covers rock. Run out of time and a throw is made for you."
-            : "Get three in a row to win a round. If you run out of time, a move is made for you."}
+            : game === "whot"
+              ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."
+              : "Get three in a row to win a round. If you run out of time, a move is made for you."}
         </p>
       </Dialog>
       <Dialog open={dialog === "share"} onClose={() => setDialog(null)} title="Share this room">

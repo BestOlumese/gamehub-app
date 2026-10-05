@@ -132,3 +132,16 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Bracket:** rounds as tabs (Quarter-finals · Semi-finals · Final), one row per match with avatars, scores, a check for the winner, "Live" for matches in progress, "Bye, straight through".
 - **Waiting / knocked out:** status card ("You're through to the final", "You have a bye this round", "Knocked out in the semi-finals"), live match cards with thrown ticks and last throws, then the bracket.
 - **Results:** podium card (1st with crown icon, 2nd, joint 3rd) and a list for the rest; duels show the two scores. Rematch and Back home.
+
+## Whot (decided Oct 2026)
+
+- **Cards:** classic Nigerian Whot — white face, maroon (`--color-whot`) shape in the centre, number with a small shape in two opposite corners; Whot 20 shows "WHOT". Maroon back with "WHOT" written sideways (`WhotCardBackArt`). Drawn as inline SVG (`components/room/whot/whot-card.tsx`), no image files.
+- **Table (portrait):** opponents as a row of small cards on top (avatar with timer ring, name, card count with a tiny card back, amber "Last card" tag), scrolling sideways at 5+ opponents → event line ("General market!", "@ada picked 2") → market (face-down stack, count, accent ring when you can tap it) and the call card pile side by side (last 4 cards thrown at small angles) with a maroon "Calling ◆ Square" badge → turn banner → LAST CARD / Check up pills → your hand → your seat card.
+- **Hand:** overlapping gentle fan, sorted by shape then number. On your turn playable cards lift 6 px and the rest dim to 55 %. Tap a card to play it; a refused tap shakes the hand and says why ("Doesn't match", "Play a star").
+- **Penalties:** red "Pick 4" tag on the market and a red banner "Pick 4 or defend with a 2" (or "Pick 4. Tap the market").
+- **LAST CARD:** amber pill that pulses while you can declare; turns green with a tick once said.
+- **Shape picker:** bottom sheet "Call a shape" with five big shape buttons.
+- **Rules sheet:** grouped sections (Dealing, Special cards, Penalties, Last card, Ending) with switches and segmented choices; a strip on top shows "✓ Naija Standard" or "Custom rules · Reset to Naija Standard".
+- **Results:** sheet with every place, cards left and hand total; "Market finished. Lowest total wins." when it ended by count. Rematch and Back home.
+- **Sound:** short generated WebAudio tones (play, market, special, penalty, last card, your turn, win). Off when the player turned sound off.
+- **Bots** in a room with more than one are numbered ("Bot 2 (Hard)").

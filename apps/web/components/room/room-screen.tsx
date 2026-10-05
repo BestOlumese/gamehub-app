@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 // Each game's table is its own chunk (docs/10-performance.md: ≤ 60 KB per game).
 const TttTable = dynamic(() => import("./ttt-table").then((m) => m.TttTable));
 const RpsTable = dynamic(() => import("./rps/rps-table"));
+const WhotTable = dynamic(() => import("./whot/whot-table"));
 
 export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }) {
   const router = useRouter();
@@ -26,13 +27,14 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
 
   useEffect(() => {
     resetRoom();
+    useRoom.setState({ soundOn });
     const c = connectRoom(code);
     conn.current = c;
     return () => {
       c.close();
       conn.current = null;
     };
-  }, [code]);
+  }, [code, soundOn]);
 
   // Notices (like "not enough players") fade after a few seconds.
   useEffect(() => {
@@ -74,6 +76,8 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         <Lobby snap={snap} send={send} notice={notice} />
       ) : snap.room.game === "rps" ? (
         <RpsTable snap={snap} send={send} />
+      ) : snap.room.game === "whot" ? (
+        <WhotTable snap={snap} send={send} />
       ) : (
         <TttTable snap={snap} send={send} />
       )}

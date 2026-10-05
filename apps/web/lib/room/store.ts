@@ -20,7 +20,10 @@ type RoomState = {
   pending: { id: string; action: unknown } | null;
   /** Bumped on every rejected action so the board can shake. */
   rejects: number;
-  lastEvent: RoomEvent | null;
+  /** Recent game events, oldest first; `n` only ever goes up (one action can send several). */
+  events: Array<{ n: number; e: RoomEvent }>;
+  /** Mirrors the player's sound setting (the room menu can change it mid-game). */
+  soundOn: boolean;
   notice: RoomErrorCode | null;
 };
 
@@ -33,7 +36,8 @@ const initial: RoomState = {
   rtt: null,
   pending: null,
   rejects: 0,
-  lastEvent: null,
+  events: [],
+  soundOn: true,
   notice: null,
 };
 
@@ -61,7 +65,9 @@ export function receive(msg: ServerRoomMsg, now = Date.now()) {
       useRoom.setState({ pending: null, rejects: s.rejects + 1 });
       return;
     case "event":
-      useRoom.setState({ lastEvent: msg.e });
+      useRoom.setState({
+        events: [...s.events.slice(-11), { n: (s.events.at(-1)?.n ?? 0) + 1, e: msg.e }],
+      });
       return;
     case "pong": {
       const rtt = now - msg.c;

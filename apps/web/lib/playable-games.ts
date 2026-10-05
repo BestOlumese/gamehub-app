@@ -1,7 +1,7 @@
-import { rps, tictactoe, type GameSlug } from "@gamehub/engine";
+import { rps, tictactoe, whot, type GameSlug } from "@gamehub/engine";
 
 /** Games with an engine and a table UI. The rest show "Soon" on the home page. */
-const playable = { tictactoe, rps } as const;
+const playable = { tictactoe, rps, whot } as const;
 
 export type PlayableSlug = keyof typeof playable;
 

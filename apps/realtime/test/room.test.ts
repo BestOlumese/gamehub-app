@@ -1,4 +1,4 @@
-import type { TttState } from "@gamehub/engine";
+import { whotNaija, type TttState } from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
 import type { ServerRoomMsg } from "@gamehub/protocol";
 import { env, runDurableObjectAlarm, runInDurableObject } from "cloudflare:test";
@@ -501,4 +501,72 @@ describe("turn clocks", () => {
     const hostNext = after.t === "snapshot" ? after.deadlines.turns?.[0] : undefined;
     expect(Math.abs(hostNext! - next!)).toBeLessThan(50);
   });
+});
+
+describe("whot", () => {
+  type Hands = { state: { hands: string[][] } };
+  const CARD = /"((?:circle|triangle|cross|square|star)-\d+|whot-20-[a-e])"/g;
+
+  it("each player only ever receives their own hand; spectators get none", async () => {
+    const code = await createRoom({
+      game: "whot",
+      rules: { ...whotNaija, turnSeconds: 10 },
+      players: 3,
+      botLevel: "medium",
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const watcher = await connect(code, "u-watch", "watcher");
+    watcher.send({ t: "hello" });
+    await watcher.next((m) => m.t === "snapshot" && m.you === "spectator");
+
+    const stub = env.Room.getByName(code);
+    const hands = () =>
+      runInDurableObject(stub, (_i, state) => {
+        const row = state.storage.sql.exec<{ json: string }>("SELECT json FROM room").one();
+        return (JSON.parse(row.json) as Hands).state.hands;
+      });
+    // Everything a client was sent may name only cards in its own hand or on the public pile.
+    async function check(c: Client, seat: number | null) {
+      const all = await hands();
+      const others = new Set(all.filter((_, i) => i !== seat).flat());
+      for (const m of c.msgs) {
+        const pub = m.t === "snapshot" ? { ...m, view: { ...(m.view as object), you: null } } : m;
+        const json = JSON.stringify(pub)
+          .replace(/"top":"[^"]*"/g, "")
+          .replace(/"pileTop":\[[^\]]*\]/g, "")
+          .replace(/"card":"[^"]*"/g, ""); // played cards are public
+        for (const [, card] of json.matchAll(CARD)) expect(others.has(card!), card).toBe(false);
+      }
+      if (seat !== null) {
+        const v = c.last().view as { you: { hand: string[] } };
+        expect(v.you.hand).toEqual(all[seat]);
+      } else expect((c.last().view as { you: unknown }).you).toBeNull();
+    }
+
+    const startMarket = (host.last().view as { marketCount: number }).marketCount;
+    // Play a few turns: humans go to market, the bot moves on alarms.
+    for (let i = 0; i < 12 && host.last().room.phase === "playing"; i++) {
+      const turn = (host.last().view as { turn: number }).turn;
+      const c = turn === 0 ? host : turn === 1 ? guest : null;
+      if (c) {
+        act(c, { type: "market" });
+        await c.next((m) => m.t === "ack" || m.t === "reject");
+      } else {
+        await new Promise((r) => setTimeout(r, 950));
+        await runDurableObjectAlarm(stub);
+      }
+      await new Promise((r) => setTimeout(r, 50));
+      await check(host, 0);
+      await check(guest, 1);
+      await check(watcher, null);
+    }
+    expect((host.last().view as { marketCount: number }).marketCount).toBeLessThan(startMarket - 5);
+  }, 30_000);
 });

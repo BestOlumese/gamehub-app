@@ -5,7 +5,7 @@
 // Run after `pnpm build`: `pnpm budget`.
 
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 
 const PORT = Number(process.env.BUDGET_PORT ?? 3123);
@@ -27,6 +27,28 @@ const budgets = [
  * client manifest instead: the framework scripts every page loads + the page's own chunks.
  */
 const manifestBudgets = [{ group: "game shell", limit: 195 * KB, page: "(app)/r/[code]" }];
+
+/**
+ * Each game's table is a lazy chunk (≤ 60 KB gzip). Found by a string only that table shows.
+ * A missing marker fails too, so renaming the copy can't silently skip the check.
+ */
+const gameChunkLimit = 60 * KB;
+const gameMarkers = {
+  "Tic-tac-toe": "Sudden death",
+  "Rock Paper Scissors": "Your throw",
+  Whot: "Call a shape",
+};
+
+function gameChunks() {
+  const dir = new URL("../apps/web/.next/static/chunks/", import.meta.url);
+  const files = readdirSync(dir).filter((f) => f.endsWith(".js"));
+  return Object.entries(gameMarkers).map(([game, marker]) => {
+    const hits = files
+      .map((f) => readFileSync(new URL(f, dir)))
+      .filter((buf) => buf.includes(marker));
+    return { game, sizes: hits.map((buf) => gzipSync(buf, { level: 9 }).length) };
+  });
+}
 
 function pageChunks(page) {
   const file = new URL(
@@ -135,6 +157,15 @@ try {
     console.log(
       `${ok ? "PASS" : "FAIL"}  /${page.replace(/^\(.*?\)\//, "")}`.padEnd(30) +
         ` ${fmt(total).padStart(9)} / ${fmt(limit)}  (${files.length} scripts) [${group}]`,
+    );
+  }
+  for (const { game, sizes } of gameChunks()) {
+    const size = Math.max(0, ...sizes);
+    const ok = sizes.length > 0 && size <= gameChunkLimit;
+    failed ||= !ok;
+    console.log(
+      `${ok ? "PASS" : "FAIL"}  ${game} table`.padEnd(30) +
+        ` ${(sizes.length ? fmt(size) : "not found").padStart(9)} / ${fmt(gameChunkLimit)}  [game chunk]`,
     );
   }
   stopServer();

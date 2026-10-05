@@ -197,6 +197,92 @@ test("an 8-player rock paper scissors knockout with 5 bots plays to a podium", a
     }
   }
   for (const p of pages) await expect(podium(p)).toBeVisible();
-  await expect(host.page.getByText("1st")).toBeVisible();
+  await expect(podium(host.page).getByText("1st", { exact: true })).toBeVisible();
   for (const c of [host.ctx, g1.ctx, g2.ctx]) await c.close();
+});
+
+test("a 4-player Whot game with 2 bots plays to the end, hands kept private", async ({
+  browser,
+}) => {
+  test.setTimeout(240_000);
+  const host = await player(browser, "whot_h");
+  const guest = await player(browser, "whot_g");
+
+  const tile = host.page.locator("li").filter({ hasText: "Whot" });
+  await tile.getByRole("button", { name: "Play with friends" }).click();
+  await host.page.getByRole("button", { name: "4", exact: true }).click();
+  await expect(host.page.getByText("4 players, 6 cards each.")).toBeVisible();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await expect(host.page.getByText("Naija Standard")).toBeVisible();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Easy", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game · bots take 2 seats" }).click();
+
+  const pages = [host.page, guest.page];
+  for (const p of pages)
+    await expect(p.getByRole("group", { name: /Your hand, 6 cards/ })).toBeVisible();
+  await test
+    .info()
+    .attach("whot-start", { body: await host.page.screenshot(), contentType: "image/png" });
+
+  // Each player: say Last card when offered, else play the first playable card
+  // (calling Circle after a Whot), else go to market. Until both see the result.
+  const result = (p: Page) => p.getByRole("dialog").filter({ hasText: /won|tied/ });
+  const deadline = Date.now() + 200_000;
+  let shotMid = false;
+  while (Date.now() < deadline) {
+    if ((await Promise.all(pages.map((p) => result(p).isVisible()))).every(Boolean)) break;
+    for (const p of pages) {
+      const quick = { timeout: 800 };
+      const tap = (l: ReturnType<Page["getByRole"]>) =>
+        l
+          .click(quick)
+          .then(() => true)
+          .catch(() => false);
+      const lastCard = p.getByRole("button", { name: "Last card" });
+      if (
+        (await lastCard.isVisible()) &&
+        (await lastCard.isEnabled({ timeout: 200 }).catch(() => false))
+      ) {
+        await tap(lastCard);
+        continue;
+      }
+      const hand = p.getByRole("group", { name: /Your hand/ });
+      const playable = hand.locator('button:enabled:not([aria-label$="(can\'t play)"])');
+      if ((await playable.count()) > 0 && (await tap(playable.first()))) {
+        const circle = p.getByRole("button", { name: "Circle", exact: true });
+        if (await circle.isVisible().catch(() => false)) await tap(circle);
+      } else {
+        const market = p.getByRole("button", { name: /market/i }).and(p.locator(":enabled"));
+        if ((await market.count()) > 0) await tap(market.first());
+      }
+    }
+    if (!shotMid) {
+      shotMid = true;
+      await test
+        .info()
+        .attach("whot-mid", { body: await guest.page.screenshot(), contentType: "image/png" });
+    }
+    await host.page.waitForTimeout(250);
+  }
+  for (const [i, p] of pages.entries()) {
+    if (!(await result(p).isVisible())) {
+      await test
+        .info()
+        .attach(`whot-player-${i}`, { body: await p.screenshot(), contentType: "image/png" });
+    }
+  }
+  for (const p of pages) await expect(result(p)).toBeVisible();
+  await test
+    .info()
+    .attach("whot-end", { body: await host.page.screenshot(), contentType: "image/png" });
+  await expect(result(host.page).getByText("1st", { exact: true })).toBeVisible();
+  for (const c of [host.ctx, guest.ctx]) await c.close();
 });

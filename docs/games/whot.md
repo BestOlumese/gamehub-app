@@ -129,3 +129,16 @@ type WhotView = {
 - No duplicate card ids.
 - `pendingPick` only exists if the top card is 2 or 5.
 - A seat with 0 cards is in `finished`.
+
+## As built (Phase 4)
+
+- **Code:** `packages/engine/src/games/whot/` — `cards.ts` (deck, values), `rules.ts` (`WhotRules`, `whotNaija`), `core.ts` (zod-free: `whyNotPlayable`, `playableCards`, `dealSize`, `canDeclareLastCard`, `nextSeat`; the browser imports `@gamehub/engine/whot`), `index.ts` (the `GameDefinition`), `bots.ts`.
+- **Dealing:** `handSize` per player, but big tables get fewer cards so at least 10 stay in the market (`dealSize`: 8 players × 6 → 5 each).
+- **Reshuffle cap:** with `marketExhausted: "reshuffle"` the pile is reshuffled at most 3 times (`MAX_RESHUFFLES`); the next empty market ends the game by count. Without a cap, random play could cycle the same cards forever (found by the termination property test).
+- **Last card:** `declare_last_card` is allowed with 1 card (any time, even late, until the next player acts) or with 2 cards on your own turn. The penalty is applied at the start of the next player's action. Drawing a card back above 1 clears the declaration.
+- **Check up:** when `checkUpRequired` and you hold one card, the play must carry `checkUp: true`; the table shows a "Check up" button for it. `checkUp` on any other play is refused, as is `requestShape` on a non-Whot card (every action outside `legalActions` is rejected).
+- **Hold on / General market** on your last card: you're out, so the turn passes on.
+- **View additions:** `pileTop` (last 4 discards for the fanned pile), `lastCardDue`, `places`, `totals` (hand totals, only once the game is over), `players`. State also keeps `misses` (public: who went to market when a shape was wanted) for the Hard bot, and `reshuffles`.
+- **Events:** as listed above plus `reshuffled` and `market_empty`; no `dealt` event (the first snapshot is the deal).
+- **Room server:** no special handling; the generic room sends each socket `view(state, seat)`. A Durable Object test plays real turns and checks no message to a player or spectator ever names another seat's card.
+- **Bots:** Easy plays a random legal card and says Last card 70 % of the time. Medium/Hard as above; Hard reads `misses` to call the shape the next player lacks. Hard beats Easy in > 60 % of 1,000 head-to-head games (test).
