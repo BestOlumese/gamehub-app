@@ -68,6 +68,12 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * animation (e.g. the RPS reveal) doesn't eat into the next turn. Keyed by event type.
    */
   eventPauses?: Partial<Record<string, number>>;
+  /**
+   * How long a bot "thinks" before this move, as [min, max] ms (the room picks a time in
+   * between). Lets a quick move (going to market) be quick and a big one (a Whot) take a
+   * moment, so people can follow what bots do. Default: [300, 900].
+   */
+  botThinkMs?(s: S, action: A): readonly [number, number];
   /** MUST strip hidden info. The only engine output that reaches clients. */
   view(s: S, viewer: SeatIndex | "spectator"): V;
   isOver(s: S): boolean;

@@ -275,6 +275,14 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
   },
 
   timeoutAction: () => ({ type: "market" }),
+  botThinkMs(_s, a) {
+    if (a.type === "market") return [800, 1200];
+    if (a.type === "declare_last_card") return [500, 900];
+    const { n } = parseCard(a.card);
+    return n === 20 || n === 1 || n === 2 || n === 5 || n === 8 || n === 14
+      ? [1800, 2600]
+      : [1200, 2000];
+  },
   autoAdvance: () => null,
 
   view(s, viewer): WhotView {

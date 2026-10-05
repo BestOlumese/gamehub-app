@@ -141,4 +141,5 @@ type WhotView = {
 - **View additions:** `pileTop` (last 4 discards for the fanned pile), `lastCardDue`, `places`, `totals` (hand totals, only once the game is over), `players`. State also keeps `misses` (public: who went to market when a shape was wanted) for the Hard bot, and `reshuffles`.
 - **Events:** as listed above plus `reshuffled` and `market_empty`; no `dealt` event (the first snapshot is the deal).
 - **Room server:** no special handling; the generic room sends each socket `view(state, seat)`. A Durable Object test plays real turns and checks no message to a player or spectator ever names another seat's card.
+- **Bot pacing:** bots pause before moving so people can follow: market 0.8–1.2 s, plain card 1.2–2 s, special card or Whot 1.8–2.6 s, Last card 0.5–0.9 s (`botThinkMs`). Tic-tac-toe bots take 0.8–1.5 s; RPS keeps 0.3–0.9 s (throws are hidden until the reveal anyway). Same for a bot covering a dropped player.
 - **Bots:** Easy plays a random legal card and says Last card 70 % of the time. Medium/Hard as above; Hard reads `misses` to call the shape the next player lacks. Hard beats Easy in > 60 % of 1,000 head-to-head games (test).

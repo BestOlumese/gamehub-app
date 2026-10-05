@@ -28,6 +28,7 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   timeoutAction(s: S, seat: SeatIndex, rules: R, rng: Rng): A; // what happens when a turn timer expires
   autoAdvance(s: S, rules: R): { seat: SeatIndex; action: A; afterMs: number } | null; // server-made moves after a pause (e.g. TTT next round)
   eventPauses?: Partial<Record<string, number>>;   // delay turn clocks after an event, e.g. RPS { revealed: 2400 } to cover the reveal animation
+  botThinkMs?(s: S, action: A): readonly [number, number]; // bot pause before this move (default [300, 900]); the room previews the bot's move to size it
   view(s: S, viewer: SeatIndex | "spectator"): V;      // MUST strip hidden info
   isOver(s: S): boolean;
   ranking(s: S): SeatIndex[][];                    // places; inner arrays = ties

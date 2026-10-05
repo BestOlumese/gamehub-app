@@ -89,7 +89,7 @@ test("a solo player finishes a game against a bot", async ({ browser }) => {
 
   // Keep taking the first free cell until the game ends.
   const result = me.page.getByRole("dialog").filter({ hasText: /won|draw/ });
-  for (let i = 0; i < 30 && !(await result.isVisible()); i++) {
+  for (let i = 0; i < 80 && !(await result.isVisible()); i++) {
     if (await me.page.getByText("Your turn").isVisible()) {
       await me.page
         .getByRole("gridcell", { name: /: empty$/ })

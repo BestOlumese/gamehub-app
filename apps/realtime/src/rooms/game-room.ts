@@ -650,10 +650,26 @@ export class GameRoom extends Server<Env> {
       const prev = prevTurns[i];
       d.turns[i] = prev !== undefined && i !== fresh ? prev : start + room.rules.turnSeconds * 1000;
     }
-    if (current.some(isBot)) {
-      // Natural-feeling think time from the room's RNG, without consuming the game stream.
-      d.bot = prevBot ?? start + 300 + seededRng(`${room.rngSeed}:think`, room.v).int(600);
+    const bot = current.find(isBot);
+    if (bot !== undefined) d.bot = prevBot ?? start + this.botThinkMs(bot);
+  }
+
+  /**
+   * A natural-feeling pause before a bot moves, sized to the move it's about to make.
+   * The alarm will run the bot with this same state and RNG position, so previewing it
+   * here gives the very move it plays. The pause itself comes from a separate stream.
+   */
+  private botThinkMs(seat: SeatIndex): number {
+    const room = this.r;
+    const def = this.def();
+    let range: readonly [number, number] = [300, 900];
+    if (def.botThinkMs) {
+      const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
+      const rng = seededRng(room.rngSeed, room.rngCounter);
+      range = def.botThinkMs(room.state, def.bots[level](room.state, seat, room.rules, rng));
     }
+    const [min, max] = range;
+    return min + seededRng(`${room.rngSeed}:think`, room.v).int(Math.max(1, max - min + 1));
   }
 
   override async onAlarm() {

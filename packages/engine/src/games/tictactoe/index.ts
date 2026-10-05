@@ -93,6 +93,7 @@ export const tictactoe: GameDefinition<TttState, TttAction, TttView, TttRules> =
 
   // Spec: a timed-out turn plays an Easy-bot move.
   timeoutAction: (s, seat, _rules, rng) => tttBots.easy(s, seat, rng),
+  botThinkMs: () => [800, 1500],
 
   autoAdvance: (s) =>
     !s.over && s.roundWinner !== null

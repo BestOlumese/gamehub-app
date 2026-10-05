@@ -103,6 +103,20 @@ async function connect(code: string, sub: string, name: string): Promise<Client>
 }
 
 const snapshot = (m: ServerRoomMsg) => m.t === "snapshot";
+
+type RoomStub = ReturnType<typeof env.Room.getByName>;
+const botDue = (stub: RoomStub) =>
+  runInDurableObject(stub, (_i, state) => {
+    const row = state.storage.sql.exec<{ json: string }>("SELECT json FROM room").one();
+    return (JSON.parse(row.json) as { deadlines: { bot?: number } }).deadlines.bot;
+  });
+/** Waits out the bot's think time, then fires the alarm. */
+async function fireBot(stub: RoomStub) {
+  const due = await botDue(stub);
+  if (due !== undefined)
+    await new Promise((r) => setTimeout(r, Math.max(0, due - Date.now()) + 20));
+  await runDurableObjectAlarm(stub);
+}
 const view = (c: Client) => c.last().view as TttState;
 let actionSeq = 0;
 const act = (c: Client, a: unknown) =>
@@ -247,12 +261,15 @@ describe("bots, alarms and hibernation", () => {
     await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
     expect(host.last().seats[1]).toMatchObject({ status: "bot", botLevel: "hard", userId: null });
 
+    const movedAt = Date.now();
     act(host, { type: "place", cell: 4 });
     await host.next((m) => m.t === "ack");
     const stub = env.Room.getByName(code);
-    // The bot's think time is in the future; wait it out, then fire the alarm.
-    await new Promise((r) => setTimeout(r, 1000));
-    await runDurableObjectAlarm(stub);
+    // The bot takes a moment (0.8–1.5 s in tic-tac-toe) so people can see it move.
+    const due = (await botDue(stub)) ?? 0;
+    expect(due - movedAt).toBeGreaterThanOrEqual(800);
+    expect(due - movedAt).toBeLessThanOrEqual(1500 + 200);
+    await fireBot(stub);
     await host.next(
       (m) => m.t === "snapshot" && (m.view as TttState).board.filter((c) => c === 1).length === 1,
       "bot moved",
@@ -456,8 +473,7 @@ describe("rock paper scissors", () => {
         act(host, { type: "throw", pick: "rock" });
         await host.next((m) => m.t === "ack" || m.t === "reject");
       }
-      await new Promise((r) => setTimeout(r, 950));
-      await runDurableObjectAlarm(stub);
+      await fireBot(stub);
       await new Promise((r) => setTimeout(r, 50));
     }
     expect(host.last().room.phase).toBe("ended");
@@ -559,8 +575,11 @@ describe("whot", () => {
         act(c, { type: "market" });
         await c.next((m) => m.t === "ack" || m.t === "reject");
       } else {
-        await new Promise((r) => setTimeout(r, 950));
-        await runDurableObjectAlarm(stub);
+        // Bots pause 0.5–2.6 s depending on the move (market quick, a Whot slower).
+        const wait = ((await botDue(stub)) ?? 0) - Date.now();
+        expect(wait).toBeGreaterThan(200);
+        expect(wait).toBeLessThanOrEqual(2600);
+        await fireBot(stub);
       }
       await new Promise((r) => setTimeout(r, 50));
       await check(host, 0);
@@ -568,5 +587,5 @@ describe("whot", () => {
       await check(watcher, null);
     }
     expect((host.last().view as { marketCount: number }).marketCount).toBeLessThan(startMarket - 5);
-  }, 30_000);
+  }, 60_000);
 });

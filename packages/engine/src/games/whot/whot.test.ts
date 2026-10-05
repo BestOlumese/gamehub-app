@@ -526,3 +526,16 @@ describe("whot bots", () => {
     expect(hardWins / games).toBeGreaterThan(0.6);
   });
 });
+
+describe("whot bot pacing", () => {
+  it("bots go to market quickly and take a moment over special cards", () => {
+    const s = whot.setup(2, ctx(rules()));
+    const think = whot.botThinkMs!;
+    expect(think(s, { type: "market" })).toEqual([800, 1200]);
+    expect(think(s, { type: "play", card: "circle-7" })).toEqual([1200, 2000]);
+    expect(think(s, { type: "play", card: "whot-20-a", requestShape: "star" })).toEqual([
+      1800, 2600,
+    ]);
+    expect(think(s, { type: "play", card: "star-14" })).toEqual([1800, 2600]);
+  });
+});
