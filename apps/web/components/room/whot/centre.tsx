@@ -23,7 +23,7 @@ type Props = {
 export function Centre({ pile, callShape, marketCount, pendingPick, canMarket, onMarket }: Props) {
   const top = pile.at(-1) ?? "";
   return (
-    <div className="flex items-start justify-center gap-8">
+    <div className="flex items-start justify-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <button
           type="button"

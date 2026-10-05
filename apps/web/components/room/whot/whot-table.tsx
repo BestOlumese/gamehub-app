@@ -17,14 +17,14 @@ import { seatName } from "../rps/names";
 import { SeatChip } from "../seat-chip";
 import { Centre } from "./centre";
 import { Hand } from "./hand";
-import { Opponents } from "./opponents";
 import { placeLabels, ResultSheet } from "./result-sheet";
+import { DuelOpponent, TableSeats, type SeatInfo } from "./seats";
 import { ShapePicker } from "./shape-picker";
 import { useWhotFeed } from "./use-whot-feed";
 
 type Props = { snap: Snapshot; send: (m: ClientRoomMsg) => void };
 
-/** Opponents on top, market and call card in the middle, your fanned hand at the bottom. */
+/** Opponents round the table, market and call card in the middle, your fanned hand at the bottom. */
 export default function WhotTable({ snap, send }: Props) {
   const offset = useRoom((s) => s.offset);
   const pending = useRoom((s) => s.pending);
@@ -117,32 +117,31 @@ export default function WhotTable({ snap, send }: Props) {
               ? { text: "Nothing to play. Go to market", you: true }
               : { text: "Your turn", you: true };
 
-  const order =
-    me === null
-      ? snap.seats.map((_, i) => i)
-      : Array.from({ length: view.players - 1 }, (_, k) => (me + 1 + k) % view.players);
+  // Spectators sit "in" seat 0's place at the bottom and see everyone else round the table.
+  const bottom = me ?? 0;
   const places = placeLabels(view.finished.map((s) => [s]));
+  const info = (seat: number): SeatInfo => ({
+    seat,
+    count: view.counts[seat] ?? 0,
+    lastCard: !!view.lastCardDeclared[seat],
+    place: places.get(seat),
+    clock: clockFor(seat),
+  });
+  const opponents = Array.from({ length: view.players - 1 }, (_, k) =>
+    info((bottom + 1 + k) % view.players),
+  );
   // Nobody emptied their hand: the market ran out and hands were counted.
   const winner = view.places?.[0]?.[0];
   const byCount = winner !== undefined && (view.counts[winner] ?? 0) > 0;
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-1 flex-col gap-3 px-4 py-3">
-      <Opponents
+    <div className="mx-auto flex w-full max-w-md flex-1 flex-col gap-3 px-4 py-3 [@media(max-height:700px)]:gap-2 [@media(max-height:700px)]:py-2">
+      <TableSeats
+        opponents={opponents}
         seats={snap.seats}
-        order={order}
-        counts={view.counts}
-        turn={ended ? null : view.turn}
-        turnClock={clockFor(view.turn)}
         offset={offset}
-        lastCard={view.lastCardDeclared}
-        places={places}
-      />
-
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 py-2">
-        <p className="h-6 text-center text-sm font-semibold text-ink-2" aria-live="polite">
-          {hint?.text ?? feed ?? ""}
-        </p>
+        graceEndsAt={snap.deadlines.graceEndsAt}
+      >
         <Centre
           pile={view.pileTop}
           callShape={view.callShape}
@@ -151,7 +150,14 @@ export default function WhotTable({ snap, send }: Props) {
           canMarket={canAct}
           onMarket={() => canAct && act({ type: "market" })}
         />
-      </div>
+      </TableSeats>
+
+      <p
+        className="-mb-1 h-5 truncate text-center text-sm font-semibold text-ink-2"
+        aria-live="polite"
+      >
+        {hint?.text ?? feed ?? ""}
+      </p>
 
       <div className="h-11" aria-live="polite">
         {banner ? (
@@ -197,7 +203,7 @@ export default function WhotTable({ snap, send }: Props) {
             onPlay={(c) => play(c)}
           />
           <div
-            className={`rounded-card border bg-surface p-3 shadow-sm ${myTurn ? "border-accent" : "border-line"}`}
+            className={`rounded-card border bg-surface p-3 shadow-sm [@media(max-height:700px)]:py-1.5 ${myTurn ? "border-accent" : "border-line"}`}
           >
             {snap.seats[me] ? (
               <SeatChip
@@ -211,9 +217,15 @@ export default function WhotTable({ snap, send }: Props) {
           </div>
         </>
       ) : (
-        <p className="py-6 text-center text-sm text-ink-2">
-          You&apos;re watching. Hands stay hidden.
-        </p>
+        <div className="space-y-2">
+          <p className="text-center text-sm text-ink-2">You&apos;re watching. Hands stay hidden.</p>
+          <DuelOpponent
+            info={info(0)}
+            seats={snap.seats}
+            offset={offset}
+            graceEndsAt={snap.deadlines.graceEndsAt?.[0]}
+          />
+        </div>
       )}
 
       <ShapePicker open={!!whotCard} onPick={callShape} onClose={() => setWhotCard(null)} />
