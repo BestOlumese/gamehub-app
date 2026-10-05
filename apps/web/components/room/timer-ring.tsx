@@ -20,7 +20,8 @@ export function TimerRing({
   // Read the clock once when the ring appears (it's re-mounted per deadline via `key`).
   const [mountedAt] = useState(() => Date.now());
   const remaining = Math.max(0, endsAt - (mountedAt + offset));
-  const elapsed = totalMs - remaining;
+  // The clock may start a moment in the future (pause after an RPS reveal): never negative.
+  const elapsed = Math.max(0, totalMs - remaining);
   const low = remaining < 5000;
   return (
     <svg

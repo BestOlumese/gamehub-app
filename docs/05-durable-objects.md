@@ -200,3 +200,4 @@ await fetch(`${env.WEB_ORIGIN}/api/internal/match-result`, {
 - Grace is the `GRACE_MS` var (60 s in `wrangler.jsonc`; tests use 150 ms / 3 s).
 - Seats are compacted on start (empty seats dropped). Connection state (user, seat) lives in partyserver connection state (socket attachment), so hibernation costs no writes.
 - Cost: ~2 rows per move (state + alarm); a best-of-3 TTT game ≈ 45 rows including lobby and start.
+- Turn clocks are per seat. A seat still waiting on the same turn keeps its deadline; a new turn gets a full clock, and **the seat that just moved always gets a fresh clock if it's due again** (e.g. the last RPS player to throw, who is immediately due for the next throw). New clocks start after `GameDefinition.eventPauses` (RPS: 2.4 s after a reveal) so animations don't eat into the turn.

@@ -463,3 +463,42 @@ describe("rock paper scissors", () => {
     expect(host.last().room.phase).toBe("ended");
   }, 60_000);
 });
+
+describe("turn clocks", () => {
+  it("whoever throws last gets a full, fresh clock for the next throw (after the reveal pause)", async () => {
+    const T = 10;
+    const code = await createRoom({
+      game: "rps",
+      rules: { turnSeconds: T, bestOf: 3, maxTiesPerRound: 5 },
+      players: 2,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await guest.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const firstDeadline = guest.last().deadlines.turns?.[1];
+    expect(firstDeadline).toBeDefined();
+
+    act(host, { type: "throw", pick: "rock" });
+    await host.next((m) => m.t === "ack");
+    await new Promise((r) => setTimeout(r, 1500)); // the guest uses some of their time…
+    act(guest, { type: "throw", pick: "scissors" }); // …and throws last, completing the reveal
+    const after = await guest.next(
+      (m) => m.t === "snapshot" && JSON.stringify(m.view).includes('"history":[{'),
+      "reveal",
+    );
+    const next = after.t === "snapshot" ? after.deadlines.turns?.[1] : undefined;
+    expect(next).toBeDefined();
+    // Not the leftover clock from throw 1…
+    expect(next!).toBeGreaterThan(firstDeadline! + 1000);
+    // …but a full turn that starts after the ~2.4 s reveal animation.
+    expect(next! - Date.now()).toBeGreaterThan(T * 1000 + 1500);
+    // The other player (who threw first) gets the same fresh clock.
+    const hostNext = after.t === "snapshot" ? after.deadlines.turns?.[0] : undefined;
+    expect(Math.abs(hostNext! - next!)).toBeLessThan(50);
+  });
+});

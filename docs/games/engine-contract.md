@@ -27,6 +27,7 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   apply(s: S, input: { seat: SeatIndex; action: A }, ctx: Ctx<R>): Result<S, RuleErrorCode>;
   timeoutAction(s: S, seat: SeatIndex, rules: R, rng: Rng): A; // what happens when a turn timer expires
   autoAdvance(s: S, rules: R): { seat: SeatIndex; action: A; afterMs: number } | null; // server-made moves after a pause (e.g. TTT next round)
+  eventPauses?: Partial<Record<string, number>>;   // delay turn clocks after an event, e.g. RPS { revealed: 2400 } to cover the reveal animation
   view(s: S, viewer: SeatIndex | "spectator"): V;      // MUST strip hidden info
   isOver(s: S): boolean;
   ranking(s: S): SeatIndex[][];                    // places; inner arrays = ties

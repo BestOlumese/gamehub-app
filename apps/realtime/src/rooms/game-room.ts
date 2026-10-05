@@ -550,7 +550,10 @@ export class GameRoom extends Server<Env> {
     for (const e of res.events)
       this.broadcast(JSON.stringify({ t: "event", v: room.v, e } satisfies ServerRoomMsg));
     if (def.isOver(res.state)) this.finish();
-    else this.schedule();
+    else {
+      const pauseMs = Math.max(0, ...res.events.map((e) => def.eventPauses?.[e.type] ?? 0));
+      this.schedule({ fresh: seat, pauseMs });
+    }
     return true;
   }
 
@@ -598,7 +601,13 @@ export class GameRoom extends Server<Env> {
   }
 
   /** Recomputes the turn / bot / auto-advance deadlines from the current state. */
-  private schedule() {
+  /**
+   * Recomputes turn / bot / auto-advance deadlines.
+   * `fresh`: the seat that just moved. If it's due again (a new throw, a second move),
+   * that's a new turn, so it gets a full clock instead of whatever was left.
+   * `pauseMs`: delay before any new clock starts (see GameDefinition.eventPauses).
+   */
+  private schedule({ fresh, pauseMs = 0 }: { fresh?: SeatIndex; pauseMs?: number } = {}) {
     const room = this.r;
     const def = this.def();
     const d = room.deadlines;
@@ -619,14 +628,17 @@ export class GameRoom extends Server<Env> {
       const x = room.seats[i];
       return !!x && botControlled(x);
     };
-    // A seat that is still due keeps its deadline; a seat that just became due gets a fresh one.
-    // (Games where the same seat moves twice in a row will need an explicit "new turn" signal.)
+    // Seats still waiting on the same turn keep their deadline (another match's move must not
+    // reset them). New turns, including the mover's own next turn, get a full clock.
+    const start = now + pauseMs;
     for (const i of current) {
-      if (!isBot(i)) d.turns[i] = prevTurns[i] ?? now + room.rules.turnSeconds * 1000;
+      if (isBot(i)) continue;
+      const prev = prevTurns[i];
+      d.turns[i] = prev !== undefined && i !== fresh ? prev : start + room.rules.turnSeconds * 1000;
     }
     if (current.some(isBot)) {
       // Natural-feeling think time from the room's RNG, without consuming the game stream.
-      d.bot = prevBot ?? now + 300 + seededRng(`${room.rngSeed}:think`, room.v).int(600);
+      d.bot = prevBot ?? start + 300 + seededRng(`${room.rngSeed}:think`, room.v).int(600);
     }
   }
 

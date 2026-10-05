@@ -163,6 +163,10 @@ export const rps: GameDefinition<RpsState, RpsAction, RpsView, RpsRules> = {
 
   autoAdvance: () => null,
 
+  // The client plays "Rock… Paper… Scissors… Shoot!" and holds the flip (~2.3 s) after
+  // each reveal; the next throw's clock starts after that.
+  eventPauses: { revealed: 2400 },
+
   view: (s, viewer) => ({ ...s, rounds: s.rounds.map((r) => r.map((m) => hide(m, viewer))) }),
 
   isOver: (s) => s.over,

@@ -63,6 +63,11 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * after a round ends). The room applies it as `seat` once `afterMs` passes.
    */
   autoAdvance(s: S, rules: R): { seat: SeatIndex; action: A; afterMs: number } | null;
+  /**
+   * Optional pause (ms) before turn clocks start after an event, so a client-side
+   * animation (e.g. the RPS reveal) doesn't eat into the next turn. Keyed by event type.
+   */
+  eventPauses?: Partial<Record<string, number>>;
   /** MUST strip hidden info. The only engine output that reaches clients. */
   view(s: S, viewer: SeatIndex | "spectator"): V;
   isOver(s: S): boolean;
