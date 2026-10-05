@@ -174,12 +174,27 @@ test("an 8-player rock paper scissors knockout with 5 bots plays to a podium", a
     for (const [i, p] of pages.entries()) {
       const pick = order[turn[i]! % 3]!;
       const btn = p.getByRole("group", { name: "Your throw" }).getByRole("button", { name: pick });
-      if ((await btn.isVisible()) && (await btn.isEnabled())) {
-        await btn.click().catch(() => {});
-        turn[i]!++;
-      }
+      // Short timeouts: the picker can vanish at any moment (match over, knocked out), and an
+      // untimed isEnabled()/click() would wait for it to come back forever.
+      const ready =
+        (await btn.isVisible()) && (await btn.isEnabled({ timeout: 300 }).catch(() => false));
+      const clicked =
+        ready &&
+        (await btn
+          .click({ timeout: 1000 })
+          .then(() => true)
+          .catch(() => false));
+      if (clicked) turn[i]!++;
     }
     await host.page.waitForTimeout(250);
+  }
+  // If it didn't finish, keep a picture of every player's screen for the report.
+  for (const [i, p] of pages.entries()) {
+    if (!(await podium(p).isVisible())) {
+      await test
+        .info()
+        .attach(`player-${i}`, { body: await p.screenshot(), contentType: "image/png" });
+    }
   }
   for (const p of pages) await expect(podium(p)).toBeVisible();
   await expect(host.page.getByText("1st")).toBeVisible();
