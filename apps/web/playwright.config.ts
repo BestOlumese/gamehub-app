@@ -24,7 +24,7 @@ export default defineConfig({
         {
           // Run next directly: a `pnpm exec` wrapper doesn't forward the stop signal, which
           // left the server running and the CI step waiting on it forever.
-          command: "next start -p 3000",
+          command: "node_modules/.bin/next start -p 3000",
           url: baseURL,
           reuseExistingServer: !process.env.CI,
           timeout: 60_000,

@@ -45,7 +45,11 @@ type SeatRec = {
 };
 
 type Deadlines = {
-  turn?: number | undefined;
+  /**
+   * Per-seat turn deadlines. Several seats can be due at once (parallel RPS
+   * matches), and one player's move must not reset anyone else's clock.
+   */
+  turns?: Partial<Record<number, number>>;
   bot?: number | undefined;
   auto?: number | undefined;
   idle?: number | undefined;
@@ -155,9 +159,13 @@ export class GameRoom extends Server<Env> {
       JSON.stringify(room),
     );
     const d = room.deadlines;
-    const times = [d.turn, d.bot, d.auto, d.idle, ...Object.values(d.grace)].filter(
-      (t): t is number => typeof t === "number",
-    );
+    const times = [
+      d.bot,
+      d.auto,
+      d.idle,
+      ...Object.values(d.grace),
+      ...Object.values(d.turns ?? {}),
+    ].filter((t): t is number => typeof t === "number");
     const next = times.length ? Math.min(...times) : null;
     if (next !== this.lastAlarm) {
       if (next === null) await this.ctx.storage.deleteAlarm();
@@ -190,7 +198,11 @@ export class GameRoom extends Server<Env> {
     const rules = def.ruleSchema.safeParse(rawRules ?? def.presets.naija);
     if (!rules.success) return new Response("bad rules", { status: 400 });
 
-    const seats = Array.from({ length: def.maxPlayers }, emptySeat);
+    const size = Math.min(
+      def.maxPlayers,
+      Math.max(def.minPlayers, parsed.data.players ?? def.maxPlayers),
+    );
+    const seats = Array.from({ length: size }, emptySeat);
     seats[0] = {
       ...emptySeat(),
       userId: host.userId,
@@ -199,7 +211,8 @@ export class GameRoom extends Server<Env> {
       status: "away",
     };
     // "Play a bot" at setup: seat the bots now so the lobby shows who you're playing.
-    if (botLevel) for (let i = 1; i < seats.length; i++) seats[i] = botSeat(botLevel);
+    if (botLevel && parsed.data.seatBotsNow)
+      for (let i = 1; i < seats.length; i++) seats[i] = botSeat(botLevel);
     this.room = {
       roomId: code,
       code,
@@ -589,7 +602,9 @@ export class GameRoom extends Server<Env> {
     const room = this.r;
     const def = this.def();
     const d = room.deadlines;
-    d.turn = undefined;
+    const prevTurns = d.turns ?? {};
+    const prevBot = d.bot;
+    d.turns = {};
     d.bot = undefined;
     d.auto = undefined;
     if (room.phase !== "playing") return;
@@ -600,22 +615,18 @@ export class GameRoom extends Server<Env> {
       return;
     }
     const current = def.currentSeats(room.state);
-    if (
-      current.some((i) => {
-        const x = room.seats[i];
-        return !!x && botControlled(x);
-      })
-    ) {
-      // Natural-feeling think time from the room's RNG, without consuming the game stream.
-      d.bot = now + 300 + seededRng(`${room.rngSeed}:think`, room.v).int(600);
+    const isBot = (i: number) => {
+      const x = room.seats[i];
+      return !!x && botControlled(x);
+    };
+    // A seat that is still due keeps its deadline; a seat that just became due gets a fresh one.
+    // (Games where the same seat moves twice in a row will need an explicit "new turn" signal.)
+    for (const i of current) {
+      if (!isBot(i)) d.turns[i] = prevTurns[i] ?? now + room.rules.turnSeconds * 1000;
     }
-    if (
-      current.some((i) => {
-        const x = room.seats[i];
-        return !!x && !botControlled(x);
-      })
-    ) {
-      d.turn = now + room.rules.turnSeconds * 1000;
+    if (current.some(isBot)) {
+      // Natural-feeling think time from the room's RNG, without consuming the game stream.
+      d.bot = prevBot ?? now + 300 + seededRng(`${room.rngSeed}:think`, room.v).int(600);
     }
   }
 
@@ -657,20 +668,27 @@ export class GameRoom extends Server<Env> {
         else this.schedule();
         acted = true;
       } else if (d.bot !== undefined && d.bot <= now) {
-        const seat = def.currentSeats(room.state).find((i) => {
+        d.bot = undefined; // spent; schedule() sets the next one
+        const due = def.currentSeats(room.state).filter((i) => {
           const x = room.seats[i];
           return !!x && botControlled(x);
         });
-        if (seat !== undefined) {
+        for (const seat of due) {
+          if (room.phase !== "playing" || !def.currentSeats(room.state).includes(seat)) continue;
           const rng = seededRng(room.rngSeed, room.rngCounter);
           const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
           const action = def.bots[level](room.state, seat, room.rules, rng);
           room.rngCounter = rng.counter();
           this.applyAction(seat, action);
-        } else this.schedule();
+        }
+        if (!due.length) this.schedule();
         acted = true;
-      } else if (d.turn !== undefined && d.turn <= now) {
-        for (const seat of def.currentSeats(room.state)) {
+      } else if (Object.values(d.turns ?? {}).some((t) => t !== undefined && t <= now)) {
+        const overdue = Object.entries(d.turns ?? {})
+          .filter(([, t]) => t !== undefined && t <= now)
+          .map(([k]) => Number(k));
+        for (const seat of overdue) {
+          if (room.phase !== "playing" || !def.currentSeats(room.state).includes(seat)) continue;
           const s = room.seats[seat];
           if (!s || botControlled(s)) continue;
           const rng = seededRng(room.rngSeed, room.rngCounter);
@@ -723,6 +741,8 @@ export class GameRoom extends Server<Env> {
       ranked: false,
       rules: room.rules,
       size: room.seats.length,
+      minPlayers: this.def().minPlayers,
+      botFill: room.botLevel,
     };
   }
 
@@ -738,7 +758,7 @@ export class GameRoom extends Server<Env> {
       you,
       // Per-seat projection: never a shared payload, so hidden info can't leak.
       view: room.state === null ? null : def.view(room.state, you),
-      deadlines: { turnEndsAt: room.deadlines.turn, graceEndsAt: grace },
+      deadlines: { turns: { ...(room.deadlines.turns ?? {}) }, graceEndsAt: grace },
       serverNow: Date.now(),
     };
   }

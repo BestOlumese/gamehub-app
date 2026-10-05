@@ -57,3 +57,11 @@ Timeout action: random throw (server RNG) for each seat that hasn't thrown.
 
 ## UI
 Big three-button picker; after throwing, your choice is shown, the opponent's card is face-down with a "thrown" tick. Reveal: simultaneous flip.
+
+## As built (Phase 3)
+
+- **No server reveal pause.** `revealUntil` was dropped: a throw is revealed the moment both picks are in and the next throw's timer starts. The client plays "Rock… Paper… Scissors… Shoot!" (~0.9 s) and holds the flipped cards (~1.4 s) before the picker comes back. This keeps parallel bracket matches independent of each other and needs no per-match clock in the engine.
+- State keeps every revealed throw per match in `history` (bots read only this). Pending `picks` exist only in server state; `view()` turns them into `thrown: SeatIndex[]` plus the viewer's own `mine`.
+- Places come from `rpsPlaces()` (shared by the server ranking and the podium UI): champion, final loser, then losers grouped by the round they went out in.
+- Room setup asks for the player count first (2 = duel, 3–8 = knockout). For knockouts, "Fill empty seats with bots when I start" tops up the bracket at Start; in duels, "Play a bot" seats the bot immediately.
+- Bots: Easy uniform; Medium counters the opponent's most frequent revealed throw 60 % of the time; Hard models win-stay / lose-shift with 20 % noise.

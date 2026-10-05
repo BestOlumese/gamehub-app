@@ -11,7 +11,11 @@ import { Lobby } from "./lobby";
 import { RoomClosed } from "./room-closed";
 import { RoomMenu } from "./room-menu";
 import { RoomTopBar } from "./room-top-bar";
-import { TttTable } from "./ttt-table";
+import dynamic from "next/dynamic";
+
+// Each game's table is its own chunk (docs/10-performance.md: ≤ 60 KB per game).
+const TttTable = dynamic(() => import("./ttt-table").then((m) => m.TttTable));
+const RpsTable = dynamic(() => import("./rps/rps-table"));
 
 export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }) {
   const router = useRouter();
@@ -53,6 +57,7 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         menu={
           <RoomMenu
             code={code}
+            game={snap?.room.game ?? null}
             rules={snap?.room.rules}
             soundOn={soundOn}
             playing={playing}
@@ -67,6 +72,8 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         </div>
       ) : snap.room.phase === "lobby" ? (
         <Lobby snap={snap} send={send} notice={notice} />
+      ) : snap.room.game === "rps" ? (
+        <RpsTable snap={snap} send={send} />
       ) : (
         <TttTable snap={snap} send={send} />
       )}

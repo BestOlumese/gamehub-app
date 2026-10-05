@@ -38,8 +38,8 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** two phones on mobile data play a TTT series; toggling airplane mode for 10 s and 70 s behaves exactly as `04-reconnection.md` says.
 
 ## Phase 3 — Rock Paper Scissors
-- [ ] Simultaneous hidden picks, duel + knockout bracket, bots, tests.
-- [ ] Bracket UI and spectator view for eliminated players.
+- [x] Simultaneous hidden picks, duel + knockout bracket, bots, tests.
+- [x] Bracket UI and spectator view for eliminated players.
 
 **Exit:** 8-player RPS knockout with 5 bots completes; no pick leaks before reveal (test).
 

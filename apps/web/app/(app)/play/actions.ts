@@ -15,6 +15,9 @@ export async function createRoom(input: {
   game: GameSlug;
   rules: unknown;
   botLevel: BotLevel | null;
+  players: number;
+  /** Bots take the empty seats now ("play a bot") instead of when the host starts. */
+  seatBotsNow: boolean;
 }): Promise<CreateRoomResult> {
   const user = await requirePlayer();
   const def = gameFor(input.game);
@@ -27,6 +30,8 @@ export async function createRoom(input: {
       game: input.game,
       rules: rules.data,
       botLevel: input.botLevel,
+      players: input.players,
+      seatBotsNow: input.seatBotsNow,
       host: { userId: user.id, name: user.username, avatar: user.image ?? null },
     }),
   );

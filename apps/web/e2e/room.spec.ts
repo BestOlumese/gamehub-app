@@ -20,7 +20,11 @@ async function createRoom(
   page: Page,
   opts: { oneGame?: boolean; bot?: "Easy" | "Medium" | "Hard" } = {},
 ) {
-  await page.getByRole("button", { name: "Play with friends" }).click();
+  await page
+    .locator("li")
+    .filter({ hasText: "Tic-tac-toe" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
   if (opts.oneGame) {
     await page.getByText("Custom", { exact: true }).click();
     await page.getByText("1 game", { exact: true }).click();
@@ -131,4 +135,53 @@ test("a dropped player keeps their seat, then a bot covers once the grace ends",
   await expect(host.page.getByText("A bot is playing for them")).toBeVisible({ timeout: 20_000 });
   await expect(host.page.getByText("Your turn")).toBeVisible({ timeout: 15_000 });
   await host.ctx.close();
+});
+
+test("an 8-player rock paper scissors knockout with 5 bots plays to a podium", async ({
+  browser,
+}) => {
+  test.setTimeout(240_000);
+  const host = await player(browser, "rps_h");
+  const g1 = await player(browser, "rps_a");
+  const g2 = await player(browser, "rps_b");
+
+  const tile = host.page.locator("li").filter({ hasText: "Rock Paper Scissors" });
+  await tile.getByRole("button", { name: "Play with friends" }).click();
+  await host.page.getByRole("button", { name: "8", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats (bots fill at start: on)
+  await host.page.getByText("Easy", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+
+  for (const g of [g1, g2]) {
+    await g.page.goto(`/r/${code}`);
+    await expect(g.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  }
+  await host.page.getByRole("button", { name: "Start game · bots take 5 seats" }).click();
+
+  // Each player cycles rock → paper → scissors (so two humans don't tie forever)
+  // whenever they're allowed to throw, until everyone sees the podium.
+  const podium = (p: Page) => p.getByRole("dialog").filter({ hasText: /champion|won/ });
+  const pages = [host.page, g1.page, g2.page];
+  const order = ["Rock", "Paper", "Scissors"] as const;
+  const turn = [0, 1, 2];
+  const deadline = Date.now() + 200_000;
+  while (Date.now() < deadline) {
+    if ((await Promise.all(pages.map((p) => podium(p).isVisible()))).every(Boolean)) break;
+    for (const [i, p] of pages.entries()) {
+      const pick = order[turn[i]! % 3]!;
+      const btn = p.getByRole("group", { name: "Your throw" }).getByRole("button", { name: pick });
+      if ((await btn.isVisible()) && (await btn.isEnabled())) {
+        await btn.click().catch(() => {});
+        turn[i]!++;
+      }
+    }
+    await host.page.waitForTimeout(250);
+  }
+  for (const p of pages) await expect(podium(p)).toBeVisible();
+  await expect(host.page.getByText("1st")).toBeVisible();
+  for (const c of [host.ctx, g1.ctx, g2.ctx]) await c.close();
 });

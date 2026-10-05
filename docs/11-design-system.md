@@ -122,3 +122,13 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Game over:** result card slides up over the final board — "You won!" / "@x won" / "It's a draw", both scores, Rematch (back to the lobby, same room) and Back home.
 - **Menu:** Rules of this room, Sound on/off, Share room link, Leave game (confirm; a bot takes the seat mid-game).
 - **Connection:** nothing for blips under 3 s; then an amber "Reconnecting… your seat is held for 0:57" bar; after the grace, "A bot is playing for you…".
+
+## Rock Paper Scissors (decided Oct 2026)
+
+- **Art:** drawn objects (grey stone, sheet of paper, red-handled scissors), `ThrowArt` in `@gamehub/ui`. No hand gestures.
+- **Duel screen:** opponent card on top, their face-down card (Ankara-pattern back with the logo) with "✓ @x has thrown" / "@x is choosing…", the throw line ("Throw 2", "Paper covers rock. You win the throw"), the score, your card, then three big square throw buttons at the bottom and your seat card.
+- **Reveal:** "Rock… Paper… Scissors… Shoot!" beats, then both cards flip together; winner lifts with a green border, loser dims. The score stays hidden until the flip.
+- **Setup:** an extra first step "How many players?" (2–8; 2 = duel, 3–8 = knockout).
+- **Bracket:** rounds as tabs (Quarter-finals · Semi-finals · Final), one row per match with avatars, scores, a check for the winner, "Live" for matches in progress, "Bye, straight through".
+- **Waiting / knocked out:** status card ("You're through to the final", "You have a bye this round", "Knocked out in the semi-finals"), live match cards with thrown ticks and last throws, then the bracket.
+- **Results:** podium card (1st with crown icon, 2nd, joint 3rd) and a list for the rest; duels show the two scores. Rematch and Back home.

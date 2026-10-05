@@ -43,6 +43,10 @@ export type RoomMeta = {
   rules: unknown;
   /** Seats the game will have when it starts. */
   size: number;
+  /** The game's minimum players; with no bot fill, the host can start once this many are in. */
+  minPlayers: number;
+  /** Bots that take any empty seats when the host starts, or null. */
+  botFill: BotLevel | null;
 };
 
 // ── Client → server ──────────────────────────────────────────────────────────
@@ -69,7 +73,11 @@ export type ClientRoomMsg = z.infer<typeof clientRoomMsg>;
 
 // ── Server → client ──────────────────────────────────────────────────────────
 
-export type Deadlines = { turnEndsAt?: number; graceEndsAt?: Partial<Record<SeatIndex, number>> };
+export type Deadlines = {
+  /** Per-seat turn deadlines (server time). Several seats can be due at once in RPS brackets. */
+  turns?: Partial<Record<SeatIndex, number>>;
+  graceEndsAt?: Partial<Record<SeatIndex, number>>;
+};
 
 export type RoomErrorCode =
   | "UNAUTHORIZED"
@@ -110,6 +118,10 @@ export const createRoomRequest = z.object({
   rules: z.unknown(),
   /** Bots for empty seats when the host starts; null = wait for humans. */
   botLevel: botLevelSchema.nullable(),
+  /** Seats for this room (2–8, clamped to the game's range). Defaults to the game's maximum. */
+  players: z.number().int().min(2).max(8).optional(),
+  /** Put bots in every empty seat now ("play a bot"), rather than only when the host starts. */
+  seatBotsNow: z.boolean().default(false),
   host: z.object({
     userId: z.string().min(1),
     name: z.string().min(1),

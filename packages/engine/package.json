@@ -6,7 +6,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./tictactoe": "./src/games/tictactoe/core.ts"
+    "./tictactoe": "./src/games/tictactoe/core.ts",
+    "./rps": "./src/games/rps/core.ts"
   },
   "scripts": {
     "lint": "eslint .",

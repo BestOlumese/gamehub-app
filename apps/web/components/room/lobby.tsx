@@ -1,12 +1,11 @@
 "use client";
 
-import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
 import type { BotLevel, ClientRoomMsg } from "@gamehub/protocol";
 import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Alert } from "@gamehub/ui/forms/alert";
 import { Button } from "@gamehub/ui/forms/button";
 import { Bot, Crown, UserRoundPlus, X } from "lucide-react";
-import { describeTttRules } from "@/components/create-room/ttt-rules-step";
+import { describeRules, GAME_NAMES } from "@/lib/game-meta";
 import type { Snapshot } from "@/lib/room/store";
 import { SharePanel } from "./share-panel";
 
@@ -20,11 +19,21 @@ export function Lobby({ snap, send, notice }: Props) {
   const isHost = !!me?.host;
   const host = snap.seats.find((s) => s.host);
   const filled = snap.seats.filter((s) => s.status !== "empty").length;
-  const rules = (snap.room.rules ?? tttNaija) as TttRules;
+  const empty = snap.room.size - filled;
+  // Empty seats get bots at start (if the host chose that), or are dropped if enough people are in.
+  const canStart = empty === 0 || !!snap.room.botFill || filled >= snap.room.minPlayers;
+  const startLabel =
+    empty === 0
+      ? "Start game"
+      : snap.room.botFill
+        ? `Start game · bots take ${empty} ${empty === 1 ? "seat" : "seats"}`
+        : filled >= snap.room.minPlayers
+          ? `Start with ${filled} players`
+          : "Waiting for players";
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-6 px-4 py-6">
-      <SharePanel code={snap.room.code ?? ""} gameName="Tic-tac-toe" />
+      <SharePanel code={snap.room.code ?? ""} gameName={GAME_NAMES[snap.room.game]} />
 
       <section aria-labelledby="players-h">
         <div className="mb-2 flex items-baseline justify-between px-1">
@@ -118,7 +127,7 @@ export function Lobby({ snap, send, notice }: Props) {
 
       <section className="rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm">
         <span className="text-ink-2">Rules: </span>
-        <span className="font-semibold">{describeTttRules(rules)}</span>
+        <span className="font-semibold">{describeRules(snap.room.game, snap.room.rules)}</span>
       </section>
 
       {notice === "NOT_ENOUGH_PLAYERS" ? (
@@ -127,8 +136,8 @@ export function Lobby({ snap, send, notice }: Props) {
 
       <div className="sticky bottom-0 -mx-4 border-t border-line bg-paper/95 px-4 py-4 backdrop-blur">
         {isHost ? (
-          <Button block onClick={() => send({ t: "start" })} disabled={filled < snap.room.size}>
-            {filled < snap.room.size ? "Waiting for players" : "Start game"}
+          <Button block onClick={() => send({ t: "start" })} disabled={!canStart}>
+            {startLabel}
           </Button>
         ) : (
           <p className="py-3 text-center font-semibold text-ink-2">

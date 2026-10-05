@@ -142,3 +142,8 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 - `snapshot` carries `serverNow` so the client can estimate clock offset before the first `pong`.
 - Extra error codes: `NOT_HOST`, `NOT_ENOUGH_PLAYERS`, `WRONG_PHASE`.
 - Plain HTTP to `/parties/*` is always 404; rooms are created only through the HMAC-signed `POST /rooms`.
+
+### Phase 3 additions
+- `snapshot.deadlines.turns` is **per seat** (`{ [seat]: endsAt }`) instead of a single `turnEndsAt`: RPS bracket matches run in parallel and one player's move must not reset another's clock.
+- `RoomMeta` gains `minPlayers` and `botFill` (the level bots take empty seats at start, or null) so the lobby can label Start correctly.
+- `POST /rooms` takes `players` (2–8, clamped to the game) and `seatBotsNow` ("play a bot" seats bots immediately).

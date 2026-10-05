@@ -26,7 +26,7 @@ const budgets = [
  * Pages behind a login can't be fetched anonymously. Measure them from the build's
  * client manifest instead: the framework scripts every page loads + the page's own chunks.
  */
-const manifestBudgets = [{ group: "game (Tic-tac-toe)", limit: 195 * KB, page: "(app)/r/[code]" }];
+const manifestBudgets = [{ group: "game shell", limit: 195 * KB, page: "(app)/r/[code]" }];
 
 function pageChunks(page) {
   const file = new URL(

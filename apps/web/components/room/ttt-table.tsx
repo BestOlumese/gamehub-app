@@ -37,10 +37,12 @@ export function TttTable({ snap, send }: Props) {
   const top = (1 - bottom) as 0 | 1;
   const ended = snap.room.phase === "ended";
 
-  const turnFor = (seat: number) =>
-    !ended && state.roundWinner === null && state.turn === seat && snap.deadlines.turnEndsAt
-      ? { endsAt: snap.deadlines.turnEndsAt, totalMs: rules.turnSeconds * 1000 }
+  const turnFor = (seat: number) => {
+    const endsAt = snap.deadlines.turns?.[seat];
+    return !ended && state.roundWinner === null && state.turn === seat && endsAt
+      ? { endsAt, totalMs: rules.turnSeconds * 1000 }
       : null;
+  };
 
   const myTurn = mySeat !== null && !ended && state.roundWinner === null && state.turn === mySeat;
   const canPlay = myTurn && connection === "open" && pending === null;

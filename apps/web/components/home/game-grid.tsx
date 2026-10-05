@@ -31,8 +31,8 @@ export function GameGrid() {
                 <span className="text-sm whitespace-nowrap text-ink-2">{g.players}</span>
               </div>
               <div className="mt-4">
-                {playable ? (
-                  <PlayWithFriendsButton />
+                {isPlayable(g.slug) ? (
+                  <PlayWithFriendsButton game={g.slug} />
                 ) : (
                   <p className="text-sm text-ink-2">
                     We&apos;re building this table. It opens soon.

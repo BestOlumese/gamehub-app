@@ -4,9 +4,7 @@ import { ChoiceCard } from "@gamehub/ui/forms/choice-card";
 import { Segmented } from "@gamehub/ui/forms/segmented";
 import { Switch } from "@gamehub/ui/forms/switch";
 import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
-
-export const describeTttRules = (r: TttRules) =>
-  `Best of ${r.bestOf} · ${r.turnSeconds} s turns · ${r.alternateStarter ? "starter swaps each round" : "same starter every round"}`;
+import { describeTttRules } from "@/lib/game-meta";
 
 type Props = { rules: TttRules; onChange: (r: TttRules) => void };
 

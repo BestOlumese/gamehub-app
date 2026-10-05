@@ -1,17 +1,18 @@
 "use client";
 
-import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
+import type { GameSlug } from "@gamehub/engine";
 import { Button } from "@gamehub/ui/forms/button";
 import { Switch } from "@gamehub/ui/forms/switch";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
 import { BookOpen, LogOut, Menu, Share2, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { describeTttRules } from "@/components/create-room/ttt-rules-step";
+import { describeRules, GAME_NAMES } from "@/lib/game-meta";
 import { setSound } from "@/app/(app)/play/preferences";
 import { SharePanel } from "./share-panel";
 
 type Props = {
   code: string;
+  game: GameSlug | null;
   rules: unknown;
   soundOn: boolean;
   playing: boolean;
@@ -21,7 +22,7 @@ type Props = {
 const item =
   "flex w-full items-center gap-3 rounded-control px-3 py-2.5 text-left text-sm font-semibold hover:bg-surface-2 focus-visible:bg-surface-2 outline-none";
 
-export function RoomMenu({ code, rules, soundOn: initialSound, playing, onLeave }: Props) {
+export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, onLeave }: Props) {
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState<"rules" | "share" | "leave" | null>(null);
   const [soundOn, setSoundOn] = useState(initialSound);
@@ -103,13 +104,15 @@ export function RoomMenu({ code, rules, soundOn: initialSound, playing, onLeave 
       ) : null}
 
       <Dialog open={dialog === "rules"} onClose={() => setDialog(null)} title="Rules of this room">
-        <p>{describeTttRules((rules ?? tttNaija) as TttRules)}.</p>
+        <p>{game ? `${describeRules(game, rules)}.` : ""}</p>
         <p className="mt-3 text-sm text-ink-2">
-          Get three in a row to win a round. If you run out of time, a move is made for you.
+          {game === "rps"
+            ? "Rock blunts scissors, scissors cut paper, paper covers rock. Run out of time and a throw is made for you."
+            : "Get three in a row to win a round. If you run out of time, a move is made for you."}
         </p>
       </Dialog>
       <Dialog open={dialog === "share"} onClose={() => setDialog(null)} title="Share this room">
-        <SharePanel code={code} gameName="Tic-tac-toe" />
+        <SharePanel code={code} gameName={game ? GAME_NAMES[game] : "GameHub"} />
       </Dialog>
       <Dialog
         open={dialog === "leave"}

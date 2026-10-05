@@ -375,3 +375,91 @@ describe("free-tier budget", () => {
     expect(counts.upserts).toBe(1);
   });
 });
+
+describe("rock paper scissors", () => {
+  const RPS = { turnSeconds: 30, bestOf: 1, maxTiesPerRound: 5 };
+
+  it("a pending pick never reaches the opponent or spectators before the reveal", async () => {
+    const code = await createRoom({ game: "rps", rules: RPS, players: 2 });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const watcher = await connect(code, "u-watch", "watcher");
+    watcher.send({ t: "hello" });
+    await watcher.next((m) => m.t === "snapshot" && m.you === "spectator");
+
+    // Both seats are on the clock until they throw.
+    expect(Object.keys(host.last().deadlines.turns ?? {}).sort()).toEqual(["0", "1"]);
+
+    guest.msgs.length = 0;
+    watcher.msgs.length = 0;
+    act(host, { type: "throw", pick: "scissors" });
+    await host.next((m) => m.t === "ack");
+    await guest.next(
+      (m) => m.t === "snapshot" && JSON.stringify(m.view).includes('"thrown":[0]'),
+      "guest sees thrown",
+    );
+    await watcher.next(
+      (m) => m.t === "snapshot" && JSON.stringify(m.view).includes('"thrown":[0]'),
+    );
+    for (const m of [...guest.msgs, ...watcher.msgs])
+      expect(JSON.stringify(m)).not.toContain("scissors");
+    // Host sees their own pick; only the guest is still on the clock.
+    await host.next(
+      (m) => m.t === "snapshot" && JSON.stringify(m.view).includes('"mine":"scissors"'),
+      "host sees own pick",
+    );
+    expect(Object.keys(host.last().deadlines.turns ?? {})).toEqual(["1"]);
+
+    act(guest, { type: "throw", pick: "paper" });
+    const ended = await host.next((m) => m.t === "ended");
+    expect(ended).toMatchObject({ ranking: [[0], [1]] });
+    // Revealed now, to everyone.
+    await watcher.next(
+      (m) => m.t === "snapshot" && JSON.stringify(m.view).includes("scissors"),
+      "watcher sees reveal",
+    );
+  });
+
+  it("a 3-player bracket with bots plays to a champion", async () => {
+    const code = await createRoom({
+      game: "rps",
+      rules: { ...RPS, turnSeconds: 10 },
+      players: 3,
+      botLevel: "easy",
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    expect(host.last().seats).toHaveLength(3);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    expect(host.last().seats.filter((s) => s.status === "bot")).toHaveLength(2);
+
+    const stub = env.Room.getByName(code);
+    for (let i = 0; i < 40 && host.last().room.phase === "playing"; i++) {
+      const view = host.last().view as {
+        rounds: Array<
+          Array<{ a: number | null; b: number | null; winner: number | null; thrown: number[] }>
+        >;
+        round: number;
+      };
+      const mine = view.rounds[view.round]?.find(
+        (m) => (m.a === 0 || m.b === 0) && m.winner === null && m.a !== null && m.b !== null,
+      );
+      if (mine && !mine.thrown.includes(0)) {
+        act(host, { type: "throw", pick: "rock" });
+        await host.next((m) => m.t === "ack" || m.t === "reject");
+      }
+      await new Promise((r) => setTimeout(r, 950));
+      await runDurableObjectAlarm(stub);
+      await new Promise((r) => setTimeout(r, 50));
+    }
+    expect(host.last().room.phase).toBe("ended");
+  }, 60_000);
+});

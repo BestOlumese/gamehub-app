@@ -13,6 +13,8 @@ const snap = (v: number): Snapshot => ({
     ranked: false,
     rules: {},
     size: 2,
+    minPlayers: 2,
+    botFill: null,
   },
   seats: [],
   you: 0,

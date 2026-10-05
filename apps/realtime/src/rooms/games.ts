@@ -1,4 +1,5 @@
 import {
+  rps,
   tictactoe,
   type GameDefinition,
   type GameSlug,
@@ -10,6 +11,7 @@ export type AnyGame = GameDefinition<unknown, unknown, unknown, RuleConfigBase>;
 
 const registry: Partial<Record<GameSlug, AnyGame>> = {
   tictactoe: tictactoe as unknown as AnyGame,
+  rps: rps as unknown as AnyGame,
 };
 
 export function gameFor(slug: GameSlug): AnyGame | null {
