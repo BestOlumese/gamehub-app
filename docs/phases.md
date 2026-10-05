@@ -51,8 +51,8 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** 4-player game (2 humans, 2 bots) to the end on low-end Android with no jank; all Whot tests green.
 
 ## Phase 5 — Ludo
-- [ ] Engine from `games/ludo.md`, bots, tests.
-- [ ] SVG board, seed movement with hop animation, die, auto-move for single legal move.
+- [x] Engine from `games/ludo.md`, bots, tests.
+- [x] SVG board, seed movement with hop animation, die, auto-move for single legal move.
 
 **Exit:** 4-player Ludo game completes; reconnect mid-move works; rows written per game within budget estimate.
 

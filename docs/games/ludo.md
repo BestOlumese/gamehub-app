@@ -90,3 +90,15 @@ Entire state is public → `view` returns state as-is plus `legalSeeds` for the 
 - SVG board, 15×15 grid, colours from design system (`11-design-system.md`), star safe squares marked.
 - Tap a highlighted seed to move; or tap the destination ghost.
 - Die: CSS 3D cube, 600 ms roll animation (masks network latency).
+
+## As built (Phase 5)
+
+- **Code:** `packages/engine/src/games/ludo/` — `rules.ts`, `state.ts`, `core.ts` (zod-free: board constants, `target`, `legalSeeds`, `capturesAt`, playback timings; the browser imports `@gamehub/engine/ludo`), `index.ts`, `bots.ts`, `schemas.ts`.
+- **Seats and colours:** seat order is clockwise colour order (red, green, yellow, blue); 2 players are red v yellow, 3 players red, green, yellow.
+- **State** also keeps `movable` (seeds that can use the die, set when rolling), `lastRoll` (so the die keeps showing) and `places`. The whole state is public; `view` returns it as is.
+- **A six with nothing to move** still earns its roll. `maxConsecutiveSixes`: 0 (no limit) or 2–5 (1 would forfeit every six). `captureSendsHome: false` means no capturing at all (seeds share squares).
+- **Auto-move** also covers several seeds that can move but sit on the same spot (e.g. all in the yard on a 6) — no real choice. It's applied straight away (`afterMs: 0`) and chained into the same write as the roll; the client shows the die, then the hops.
+- **Chained turns:** a bot's whole turn (roll, move, bonus roll…) is one storage write; clients play the burst back (die 900 ms, 90 ms per hop, 250 ms settle). Measured: a 4-bot game is ~1,300 actions but ~1,050 row writes (528 turns), down from ~2,550.
+- **Timeouts:** roll, then move the seed furthest along. A human who times out gets a fresh clock for the move after the roll.
+- **Bots:** Easy random. Medium: capture > reach home > leave yard > reach safety > progress, minus 25 when the landing square is threatened. Hard scores each move: progress + capture value (victim's progress) + home/yard/home-column bonuses − (chance of being hit next round × what the seed would lose) + the same for the square it leaves. Hard beats Easy 93 % head to head and wins 79 % of 4-player games against three Easy bots (1,000 games each).
+- **Events** add `no_move{seat}`; `moved.path` is in the mover's progress values.

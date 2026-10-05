@@ -2,11 +2,11 @@
 
 import type { WhotView } from "@gamehub/engine/whot";
 import type { SeatPublic } from "@gamehub/protocol";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRoom, type RoomEvent } from "@/lib/room/store";
 import { seatName } from "../rps/names";
 import { SHAPE_NAMES } from "./whot-card";
-import { sfx } from "./sounds";
+import { sfx } from "../sounds";
 
 type Sound = keyof typeof sfx;
 const PRIORITY: Sound[] = ["penalty", "special", "lastCard", "market", "play"];
@@ -17,9 +17,15 @@ const PRIORITY: Sound[] = ["penalty", "special", "lastCard", "market", "play"];
  */
 export function useWhotFeed(seats: SeatPublic[], me: number | null) {
   const [line, setLine] = useState<{ text: string; n: number } | null>(null);
+  // Every snapshot brings a new seats array; read it through a ref so the subscription
+  // (and the timer that clears the line) isn't torn down on each update.
+  const seatsRef = useRef(seats);
+  useEffect(() => {
+    seatsRef.current = seats;
+  }, [seats]);
 
   useEffect(() => {
-    const who = (seat: unknown) => (seat === me ? "You" : seatName(seats, Number(seat)));
+    const who = (seat: unknown) => (seat === me ? "You" : seatName(seatsRef.current, Number(seat)));
     let timer: ReturnType<typeof setTimeout> | undefined;
     let seen = useRoom.getState().events.at(-1)?.n ?? 0;
 
@@ -59,7 +65,7 @@ export function useWhotFeed(seats: SeatPublic[], me: number | null) {
       unsub();
       clearTimeout(timer);
     };
-  }, [seats, me]);
+  }, [me]);
 
   return line?.text ?? null;
 }

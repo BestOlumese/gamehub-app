@@ -286,3 +286,94 @@ test("a 4-player Whot game with 2 bots plays to the end, hands kept private", as
   await expect(result(host.page).getByText("1st", { exact: true })).toBeVisible();
   for (const c of [host.ctx, guest.ctx]) await c.close();
 });
+
+test("Ludo: 2 people and 2 bots play, and a player who drops mid-move gets the same board back", async ({
+  browser,
+}) => {
+  test.setTimeout(240_000);
+  const host = await player(browser, "ludo_h");
+  const guest = await player(browser, "ludo_g");
+
+  const tile = host.page.locator("li").filter({ hasText: "Ludo" });
+  await tile.getByRole("button", { name: "Play with friends" }).click();
+  await host.page.getByRole("button", { name: "4", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await expect(host.page.getByText("Naija Standard")).toBeVisible();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Easy", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game · bots take 2 seats" }).click();
+  for (const p of [host.page, guest.page])
+    await expect(p.getByRole("img", { name: "Ludo board" })).toBeVisible();
+
+  // Play: roll when offered, move the first glowing seed. Stop once the guest has a seed out
+  // and is choosing a move (or has rolled plenty), to drop them mid-move.
+  const seedsOf = (p: Page) => p.getByRole("list", { name: "Seeds" }).innerText();
+  let guestRolls = 0;
+  let midMove = false;
+  const deadline = Date.now() + 150_000;
+  while (Date.now() < deadline && !midMove) {
+    for (const [i, p] of [host.page, guest.page].entries()) {
+      const die = p.getByRole("button", { name: "Roll the die" });
+      if (await die.isVisible()) {
+        if (
+          await die.click({ timeout: 800 }).then(
+            () => true,
+            () => false,
+          )
+        )
+          if (i === 1) guestRolls++;
+        continue;
+      }
+      const seeds = p.getByRole("button", { name: /^Move / });
+      if ((await seeds.count()) > 0) {
+        if (i === 1 && guestRolls >= 2) {
+          midMove = true;
+          break;
+        }
+        await seeds
+          .first()
+          .click({ timeout: 800 })
+          .catch(() => {});
+      }
+    }
+    if (!midMove && guestRolls >= 5) break; // no real choice came up; drop anyway
+    await host.page.waitForTimeout(300);
+  }
+  expect(guestRolls).toBeGreaterThan(0);
+
+  // The guest's phone dies, then comes back within the grace.
+  const choosing = midMove;
+  const login = await guest.ctx.storageState();
+  await guest.ctx.close();
+  await expect(host.page.getByText(/Offline|A bot is playing/).first()).toBeVisible({
+    timeout: 15_000,
+  });
+  const back = await browser.newContext({
+    ...devices["Pixel 7"],
+    baseURL: BASE_URL,
+    storageState: login,
+  });
+  const page = await back.newPage();
+  await page.goto(`/r/${code}`);
+  await expect(page.getByRole("img", { name: "Ludo board" })).toBeVisible({ timeout: 20_000 });
+  // Same board as everyone else (once any playback on either phone has settled).
+  await expect
+    .poll(async () => (await seedsOf(page)) === (await seedsOf(host.page)), { timeout: 15_000 })
+    .toBe(true);
+  // Back within the (3 s test) grace, it's still their move; if a bot covered, it's moved on.
+  if (choosing && (await page.getByText("Pick a seed to move").isVisible())) {
+    await page
+      .getByRole("button", { name: /^Move / })
+      .first()
+      .click();
+    await expect(page.getByText("Pick a seed to move")).toBeHidden();
+  }
+  await host.ctx.close();
+  await back.close();
+});

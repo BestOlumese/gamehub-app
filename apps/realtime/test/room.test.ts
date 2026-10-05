@@ -1,4 +1,4 @@
-import { whotNaija, type TttState } from "@gamehub/engine";
+import { ludoNaija, whotNaija, type TttState } from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
 import type { ServerRoomMsg } from "@gamehub/protocol";
 import { env, runDurableObjectAlarm, runInDurableObject } from "cloudflare:test";
@@ -588,4 +588,114 @@ describe("whot", () => {
     }
     expect((host.last().view as { marketCount: number }).marketCount).toBeLessThan(startMarket - 5);
   }, 60_000);
+});
+
+describe("ludo", () => {
+  type Ludo = {
+    phase: string;
+    turn: number;
+    lastRoll: { seat: number; value: number } | null;
+    seeds: number[][];
+  };
+
+  it("you roll, a single choice moves by itself, and the bot takes its turn", async () => {
+    const code = await createRoom({
+      game: "ludo",
+      rules: { ...ludoNaija, needSixToLeaveYard: false },
+      players: 2,
+      botLevel: "easy",
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const view = () => host.last().view as Ludo;
+    expect(view()).toMatchObject({ turn: 0, phase: "roll" });
+
+    act(host, { type: "roll" });
+    await host.next((m) => m.t === "event" && m.e.type === "rolled", "rolled");
+    // Every seed is in the yard, so they're all the same move: it's made in the same go.
+    await host.next((m) => m.t === "event" && m.e.type === "moved", "moved");
+    await host.next(
+      (m) => m.t === "snapshot" && (m.view as Ludo).seeds[0]!.some((p) => p >= 0),
+      "moved in snapshot",
+    );
+    const stub = env.Room.getByName(code);
+
+    // Keep going until the bot has rolled (our own bonus rolls on a six come first).
+    for (let i = 0; i < 20 && view().lastRoll?.seat !== 1; i++) {
+      if (view().turn === 0 && view().phase === "roll") {
+        act(host, { type: "roll" });
+        await host.next((m) => m.t === "ack" || m.t === "reject");
+      }
+      await new Promise((r) => setTimeout(r, 1000));
+      await runDurableObjectAlarm(stub);
+      await new Promise((r) => setTimeout(r, 50));
+    }
+    expect(view().lastRoll?.seat).toBe(1);
+  }, 40_000);
+
+  it("a 4-seat game plays to the end with every place filled, within the write budget", async () => {
+    const code = await createRoom({
+      game: "ludo",
+      rules: ludoNaija,
+      players: 4,
+      botLevel: "medium",
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    // The host leaves: a bot plays their seat too, so all four are bots.
+    host.send({ t: "leave" });
+    await host.closed;
+
+    const stub = env.Room.getByName(code);
+    // Count storage writes from here: each room upsert and each setAlarm is one row.
+    const writes = { rows: 0, alarms: 0 };
+    await runInDurableObject(stub, (_i, state) => {
+      const sql = state.storage.sql;
+      const exec = sql.exec.bind(sql);
+      sql.exec = ((query: string, ...args: unknown[]) => {
+        if (/^\s*(INSERT|UPDATE|DELETE)/i.test(query)) writes.rows++;
+        return exec(query, ...(args as []));
+      }) as typeof sql.exec;
+      const setAlarm = state.storage.setAlarm.bind(state.storage);
+      state.storage.setAlarm = ((t: number | Date) => {
+        writes.alarms++;
+        return setAlarm(t);
+      }) as typeof state.storage.setAlarm;
+    });
+    type Live = {
+      room: {
+        phase: string;
+        v: number;
+        state: { places: number[][] | null };
+        deadlines: { bot?: number; auto?: number };
+      };
+    };
+    // Skip the bots' thinking pauses: bring every deadline forward, then fire the alarm.
+    let info = { phase: "playing", v: 0, places: null as number[][] | null };
+    for (let i = 0; i < 3000 && info.phase === "playing"; i++) {
+      await runInDurableObject(stub, (inst) => {
+        const d = (inst as unknown as Live).room.deadlines;
+        if (d.bot !== undefined) d.bot = 0;
+        if (d.auto !== undefined) d.auto = 0;
+      });
+      await runDurableObjectAlarm(stub);
+      info = await runInDurableObject(stub, (inst) => {
+        const r = (inst as unknown as Live).room;
+        return { phase: r.phase, v: r.v, places: r.state.places };
+      });
+    }
+    expect(info.phase).toBe("ended");
+    expect(info.places?.flat().sort()).toEqual([0, 1, 2, 3]);
+    // A bot's whole turn is one state write + one alarm (docs/13 rule 4).
+    const total = writes.rows + writes.alarms;
+    console.log(`ludo 4 bots: ${info.v} actions, ${writes.rows} rows + ${writes.alarms} alarms`);
+    expect(total).toBeLessThan(info.v);
+  }, 120_000);
 });

@@ -56,6 +56,22 @@ export const sfx = {
       { f: 780, at: 0.07, dur: 0.12, type: "triangle" },
     ]),
   lastCard: () => tones([{ f: 988, dur: 0.25, gain: 0.1 }]),
+  dice: () =>
+    tones(
+      [0, 0.07, 0.15, 0.24, 0.34].map((at, i) => ({
+        f: 220 + i * 37,
+        at,
+        dur: 0.05,
+        type: "square" as const,
+        gain: 0.04,
+      })),
+    ),
+  hop: () => tones([{ f: 600, dur: 0.04, type: "triangle", gain: 0.05 }]),
+  capture: () =>
+    tones([
+      { f: 520, dur: 0.1, type: "square", gain: 0.06, to: 160 },
+      { f: 200, at: 0.1, dur: 0.18, type: "triangle", gain: 0.08 },
+    ]),
   win: () =>
     tones([523, 659, 784, 1047].map((f, i) => ({ f, at: i * 0.11, dur: 0.22, gain: 0.1 }))),
 };

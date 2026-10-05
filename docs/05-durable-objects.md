@@ -201,3 +201,9 @@ await fetch(`${env.WEB_ORIGIN}/api/internal/match-result`, {
 - Seats are compacted on start (empty seats dropped). Connection state (user, seat) lives in partyserver connection state (socket attachment), so hibernation costs no writes.
 - Cost: ~2 rows per move (state + alarm); a best-of-3 TTT game ≈ 45 rows including lobby and start.
 - Turn clocks are per seat. A seat still waiting on the same turn keeps its deadline; a new turn gets a full clock, and **the seat that just moved always gets a fresh clock if it's due again** (e.g. the last RPS player to throw, who is immediately due for the next throw). New clocks start after `GameDefinition.eventPauses` (RPS: 2.4 s after a reveal) so animations don't eat into the turn.
+
+## As built (Phase 5): fewer writes
+
+- **Lazy alarm.** `setAlarm` is a row write, so the room only moves its one alarm *earlier*. When a later deadline replaces an earlier one (a human acts and gets a fresh 30 s clock), the old alarm stays; it rings, finds nothing due and re-arms with no state write. Cost: ~1 alarm write per turn clock instead of one per action.
+- **Chained turns** (`chainTurns`, Ludo): after an action, a forced follow-up (auto-advance with `afterMs: 0`) and the rest of a bot's own turn are applied straight away in the same write. Events go out as one burst; the client queues and plays them at human speed (die 900 ms, 90 ms per hop, 250 ms settle), and turn clocks wait for that playback (`eventPauses`, summed).
+- A bot's move is previewed when its think time is set (same state and RNG position as the alarm will use), so the pause fits the move.

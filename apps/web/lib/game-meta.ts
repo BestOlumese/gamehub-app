@@ -2,6 +2,7 @@
 import type { GameSlug } from "@gamehub/engine";
 import type { RpsRules } from "@gamehub/engine/rps";
 import type { TttRules } from "@gamehub/engine/tictactoe";
+import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
 export const GAME_NAMES: Record<GameSlug, string> = {
@@ -52,9 +53,37 @@ export const describeWhotRules = (r: WhotRules) =>
     ...(whotRuleChanges(r).length ? whotRuleChanges(r) : ["Naija Standard"]),
   ].join(" · ");
 
+/** Ludo rules that differ from Naija Standard, in plain words. */
+export function ludoRuleChanges(r: LudoRules): string[] {
+  const n = ludoNaija;
+  const out: string[] = [];
+  if (!r.needSixToLeaveYard) out.push("Any roll comes out");
+  if (!r.sixRollsAgain) out.push("No extra roll on 6");
+  if (r.maxConsecutiveSixes !== n.maxConsecutiveSixes)
+    out.push(
+      r.maxConsecutiveSixes ? `${r.maxConsecutiveSixes} sixes end your turn` : "No limit on sixes",
+    );
+  if (!r.captureSendsHome) out.push("No capturing");
+  else if (!r.captureGivesBonusRoll) out.push("No roll for a capture");
+  if (!r.safeSquares) out.push("No safe squares");
+  if (r.blockades) out.push("Blockades");
+  if (!r.exactRollToFinish) out.push("Overshoot home allowed");
+  if (!r.homeGivesBonusRoll) out.push("No roll for getting home");
+  if (!r.autoMoveSingle) out.push("No auto-move");
+  if (r.endMode === "firstFinisherEnds") out.push("Ends when the first player is home");
+  return out;
+}
+
+export const describeLudoRules = (r: LudoRules) =>
+  [
+    `${r.turnSeconds} s turns`,
+    ...(ludoRuleChanges(r).length ? ludoRuleChanges(r) : ["Naija Standard"]),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
   if (game === "whot") return describeWhotRules(rules as WhotRules);
+  if (game === "ludo") return describeLudoRules(rules as LudoRules);
   return "";
 }

@@ -67,7 +67,13 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * Optional pause (ms) before turn clocks start after an event, so a client-side
    * animation (e.g. the RPS reveal) doesn't eat into the next turn. Keyed by event type.
    */
-  eventPauses?: Partial<Record<string, number>>;
+  eventPauses?: Partial<Record<string, number | ((e: GameEvent) => number)>>;
+  /**
+   * Play a whole turn in one go: an auto-advance with `afterMs: 0` and a bot's follow-up
+   * actions (same seat still to move) are applied straight away in the same storage write.
+   * The client paces the burst of events (docs/13 rule 4: a Ludo roll + move = 1 write).
+   */
+  chainTurns?: boolean;
   /**
    * How long a bot "thinks" before this move, as [min, max] ms (the room picks a time in
    * between). Lets a quick move (going to market) be quick and a big one (a Whot) take a

@@ -37,6 +37,7 @@ const gameMarkers = {
   "Tic-tac-toe": "Sudden death",
   "Rock Paper Scissors": "Your throw",
   Whot: "Call a shape",
+  Ludo: "Pick a seed to move",
 };
 
 function gameChunks() {

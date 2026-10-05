@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./tictactoe": "./src/games/tictactoe/core.ts",
     "./rps": "./src/games/rps/core.ts",
-    "./whot": "./src/games/whot/core.ts"
+    "./whot": "./src/games/whot/core.ts",
+    "./ludo": "./src/games/ludo/core.ts"
   },
   "scripts": {
     "lint": "eslint .",

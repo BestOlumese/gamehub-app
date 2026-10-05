@@ -390,10 +390,14 @@ describe("whot properties", () => {
     (players, r, seed) => {
       const s = randomGame(players, r, seed, (st) => {
         const all = [...st.hands.flat(), ...st.market, ...st.pile];
-        expect(all).toHaveLength(54);
-        expect(new Set(all).size).toBe(54);
-        if (st.pendingPick) expect(st.pile.at(-1)).toMatch(/-(2|5)$/);
-        st.hands.forEach((h, seat) => h.length === 0 && expect(st.finished).toContain(seat));
+        // Plain checks: expect() on every step of every game is too slow.
+        if (all.length !== 54 || new Set(all).size !== 54) throw new Error("cards lost or doubled");
+        if (st.pendingPick && !/-(2|5)$/.test(st.pile.at(-1) ?? ""))
+          throw new Error("penalty without a 2 or 5 on top");
+        st.hands.forEach((h, seat) => {
+          if (h.length === 0 && !st.finished.includes(seat))
+            throw new Error("empty hand not finished");
+        });
       });
       expect(
         whot
@@ -418,7 +422,7 @@ describe("whot properties", () => {
           for (const [, card] of json.matchAll(
             /"((?:circle|triangle|cross|square|star)-\d+|whot-20-[a-e])"/g,
           ))
-            expect(own.has(card!), `${String(viewer)} sees ${card}`).toBe(true);
+            if (!own.has(card!)) throw new Error(`${String(viewer)} sees ${card}`);
         }
       });
     },

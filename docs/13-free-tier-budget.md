@@ -30,7 +30,7 @@ Everything must fit these. Numbers checked October 2026 — re-check the provide
 
 ## The binding constraint: rows written
 
-Per move we write **~2 rows**: 1 state upsert + 1 `setAlarm` (turn timer). Chat, emotes, presence: **0 writes** (kept in memory / socket attachments).
+Per move we write **~1–2 rows**: 1 state upsert, plus 1 `setAlarm` only when the alarm must ring earlier (bot think times; a later turn clock reuses the alarm already set). Chat, emotes, presence: **0 writes** (kept in memory / socket attachments).
 
 | Game | Typical actions per game | Rows written / game (≈2×) | Games/day within 100k |
 |---|---|---|---|
@@ -38,11 +38,11 @@ Per move we write **~2 rows**: 1 state upsert + 1 `setAlarm` (turn timer). Chat,
 | RPS knockout 8p | ~40 | ~80 | ~1,250 |
 | Snakes & Ladders 4p | ~120 | ~240 | ~400 |
 | Whot 4p | ~120 | ~240 | ~400 |
-| Ludo 4p | ~300 (roll + move) | ~600 | ~160 |
+| Ludo 4p | ~1,300 (measured: rolls waiting for 6s add up) | ~900–1,050 (chained turns + lazy alarm; measured 1,056 for 4 bots) | ~100 |
 
 Requests: ~1 alarm per action + connects + messages/20 → roughly the same order as rows written, so requests (100k) bind at about the same point.
 
-**Realistic mixed capacity: ~300–600 completed games per day.** Fine for launch and early growth. Beyond that, Workers Paid ($5/month) is the upgrade path when you decide.
+**Realistic mixed capacity: ~250–500 completed games per day** (Ludo is the heaviest: ~100/day if every game were 4-player Ludo). Fine for launch and early growth. Beyond that, Workers Paid ($5/month) is the upgrade path when you decide.
 
 ## Write-saving rules (mandatory)
 

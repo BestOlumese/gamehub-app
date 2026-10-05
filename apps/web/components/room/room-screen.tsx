@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 const TttTable = dynamic(() => import("./ttt-table").then((m) => m.TttTable));
 const RpsTable = dynamic(() => import("./rps/rps-table"));
 const WhotTable = dynamic(() => import("./whot/whot-table"));
+const LudoTable = dynamic(() => import("./ludo/ludo-table"));
 
 export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }) {
   const router = useRouter();
@@ -78,6 +79,8 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         <RpsTable snap={snap} send={send} />
       ) : snap.room.game === "whot" ? (
         <WhotTable snap={snap} send={send} />
+      ) : snap.room.game === "ludo" ? (
+        <LudoTable snap={snap} send={send} />
       ) : (
         <TttTable snap={snap} send={send} />
       )}

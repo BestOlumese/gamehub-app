@@ -31,6 +31,8 @@ const LOBBY_IDLE_MS = 10 * 60_000;
 const ENDED_IDLE_MS = 5 * 60_000;
 const MAX_TIMEOUTS = 3;
 const MAX_ALARM_STEPS = 50;
+/** Safety cap on actions chained into one turn (see GameDefinition.chainTurns). */
+const MAX_CHAIN = 40;
 const RECENT_IDS = 64;
 const TAKEOVER_BOT: BotLevel = "medium";
 
@@ -161,7 +163,7 @@ export class GameRoom extends Server<Env> {
     this.room = row ? (JSON.parse(row.json) as PersistedRoom) : null;
   }
 
-  /** One row write, plus an alarm write only when the earliest deadline moved. */
+  /** One row write, plus an alarm write only when the alarm must ring earlier. */
   private async persist() {
     const room = this.room;
     if (!room) return;
@@ -169,6 +171,17 @@ export class GameRoom extends Server<Env> {
       "INSERT INTO room (id, json) VALUES (1, ?) ON CONFLICT(id) DO UPDATE SET json = excluded.json",
       JSON.stringify(room),
     );
+    await this.rearm();
+  }
+
+  /**
+   * Points the room's one alarm at the earliest deadline. Each setAlarm is a row write, so
+   * a later deadline leaves an earlier alarm in place: it rings, finds nothing due and
+   * re-arms (one write per turn clock, instead of one per action).
+   */
+  private async rearm() {
+    const room = this.room;
+    if (!room) return;
     const d = room.deadlines;
     const times = [
       d.bot,
@@ -178,9 +191,11 @@ export class GameRoom extends Server<Env> {
       ...Object.values(d.turns ?? {}),
     ].filter((t): t is number => typeof t === "number");
     const next = times.length ? Math.min(...times) : null;
-    if (next !== this.lastAlarm) {
-      if (next === null) await this.ctx.storage.deleteAlarm();
-      else await this.ctx.storage.setAlarm(next);
+    if (next === null) {
+      if (this.lastAlarm !== null) await this.ctx.storage.deleteAlarm();
+      this.lastAlarm = null;
+    } else if (this.lastAlarm === null || next < this.lastAlarm) {
+      await this.ctx.storage.setAlarm(next);
       this.lastAlarm = next;
     }
   }
@@ -541,6 +556,37 @@ export class GameRoom extends Server<Env> {
   }
 
   /** Applies one action through the engine. Returns false if it was rejected. */
+  /** The move a bot makes for `seat` now (consumes the game's RNG stream). */
+  private botAction(seat: SeatIndex): unknown {
+    const room = this.r;
+    const rng = seededRng(room.rngSeed, room.rngCounter);
+    const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
+    const action = this.def().bots[level](room.state, seat, room.rules, rng);
+    room.rngCounter = rng.counter();
+    return action;
+  }
+
+  /** Applies one action and sends its events. Returns them, or null if the engine refused. */
+  private step(seat: SeatIndex, action: unknown, onReject?: (code: RuleErrorCode) => void) {
+    const room = this.r;
+    const rng = seededRng(room.rngSeed, room.rngCounter);
+    const res = this.def().apply(
+      room.state,
+      { seat, action },
+      { rng, rules: room.rules, now: Date.now() },
+    );
+    if (!res.ok) {
+      onReject?.(res.error);
+      return null;
+    }
+    room.state = res.state;
+    room.rngCounter = rng.counter();
+    room.v++;
+    for (const e of res.events)
+      this.broadcast(JSON.stringify({ t: "event", v: room.v, e } satisfies ServerRoomMsg));
+    return res.events;
+  }
+
   private applyAction(
     seat: SeatIndex,
     action: unknown,
@@ -548,24 +594,33 @@ export class GameRoom extends Server<Env> {
   ): boolean {
     const room = this.r;
     const def = this.def();
-    const rng = seededRng(room.rngSeed, room.rngCounter);
-    const res = def.apply(
-      room.state,
-      { seat, action },
-      { rng, rules: room.rules, now: Date.now() },
-    );
-    if (!res.ok) {
-      onReject?.(res.error);
-      return false;
+    const events = this.step(seat, action, onReject);
+    if (!events) return false;
+    // Chained games (Ludo): a forced follow-up and the rest of a bot's turn happen now, in
+    // this same write; clients play the burst back at human speed (docs/13 rule 4).
+    if (def.chainTurns) {
+      for (let i = 0; i < MAX_CHAIN && !def.isOver(room.state); i++) {
+        const auto = def.autoAdvance(room.state, room.rules);
+        const current = def.currentSeats(room.state);
+        const next =
+          auto && auto.afterMs === 0
+            ? auto
+            : current.length === 1 && current[0] === seat && botControlled(this.seatAt(seat))
+              ? { seat, action: this.botAction(seat) }
+              : null;
+        if (!next) break;
+        const more = this.step(next.seat, next.action);
+        if (!more) break;
+        events.push(...more);
+      }
     }
-    room.state = res.state;
-    room.rngCounter = rng.counter();
-    room.v++;
-    for (const e of res.events)
-      this.broadcast(JSON.stringify({ t: "event", v: room.v, e } satisfies ServerRoomMsg));
-    if (def.isOver(res.state)) this.finish();
+    if (def.isOver(room.state)) this.finish();
     else {
-      const pauseMs = Math.max(0, ...res.events.map((e) => def.eventPauses?.[e.type] ?? 0));
+      // Clocks start once the client has played everything that just happened.
+      const pauseMs = events.reduce((t, e) => {
+        const p = def.eventPauses?.[e.type];
+        return t + (typeof p === "function" ? p(e) : (p ?? 0));
+      }, 0);
       this.schedule({ fresh: seat, pauseMs });
     }
     return true;
@@ -679,6 +734,7 @@ export class GameRoom extends Server<Env> {
     const def = gameFor(room.game);
     if (!def) return;
 
+    let changed = false;
     for (let step = 0; step < MAX_ALARM_STEPS; step++) {
       const now = Date.now();
       const d = room.deadlines;
@@ -717,11 +773,7 @@ export class GameRoom extends Server<Env> {
         });
         for (const seat of due) {
           if (room.phase !== "playing" || !def.currentSeats(room.state).includes(seat)) continue;
-          const rng = seededRng(room.rngSeed, room.rngCounter);
-          const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
-          const action = def.bots[level](room.state, seat, room.rules, rng);
-          room.rngCounter = rng.counter();
-          this.applyAction(seat, action);
+          this.applyAction(seat, this.botAction(seat));
         }
         if (!due.length) this.schedule();
         acted = true;
@@ -747,7 +799,10 @@ export class GameRoom extends Server<Env> {
         acted = true;
       }
       if (!acted) break;
+      changed = true;
     }
+    // Woken early (see persist): nothing happened, so just re-arm; no state write.
+    if (!changed) return this.rearm();
     await this.persist();
     this.broadcastSnapshots();
   }

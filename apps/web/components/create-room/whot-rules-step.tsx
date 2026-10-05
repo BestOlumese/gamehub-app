@@ -2,62 +2,12 @@
 
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import { Segmented } from "@gamehub/ui/forms/segmented";
-import { Switch } from "@gamehub/ui/forms/switch";
-import { Check, RotateCcw } from "lucide-react";
-import { useId, type ReactNode } from "react";
+import { PresetStrip, Section, Toggle } from "./rule-controls";
 
 type Props = { rules: WhotRules; onChange: (r: WhotRules) => void };
 type Flag = {
   [K in keyof WhotRules]: WhotRules[K] extends boolean ? K : never;
 }[keyof WhotRules];
-
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section>
-      <h3 className="mb-2 px-1 text-xs font-semibold tracking-wide text-ink-2 uppercase">
-        {title}
-      </h3>
-      <div className="divide-y divide-line rounded-card border border-line bg-surface">
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function Toggle({
-  label,
-  hint,
-  checked,
-  onChange,
-  disabled,
-}: {
-  label: ReactNode;
-  hint: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-  disabled?: boolean;
-}) {
-  const id = useId();
-  return (
-    <div className={`flex items-center gap-4 px-4 py-3 ${disabled ? "opacity-50" : ""}`}>
-      <div className="min-w-0 flex-1">
-        <p id={`${id}-l`} className="font-semibold">
-          {label}
-        </p>
-        <p id={`${id}-h`} className="text-sm text-ink-2">
-          {hint}
-        </p>
-      </div>
-      <Switch
-        checked={checked}
-        onChange={onChange}
-        labelledBy={`${id}-l`}
-        describedBy={`${id}-h`}
-        disabled={disabled}
-      />
-    </div>
-  );
-}
 
 const Num = ({ n }: { n: number }) => (
   <span className="mr-2 inline-flex size-6 items-center justify-center rounded-md bg-surface-2 font-display text-sm font-bold text-whot">
@@ -73,24 +23,7 @@ export function WhotRulesStep({ rules, onChange }: Props) {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between gap-3 rounded-card bg-surface-2 px-4 py-3">
-        {standard ? (
-          <p className="flex items-center gap-2 font-semibold">
-            <Check size={18} className="text-brand" aria-hidden="true" /> Naija Standard
-          </p>
-        ) : (
-          <>
-            <p className="font-semibold">Custom rules</p>
-            <button
-              type="button"
-              onClick={() => onChange(whotNaija)}
-              className="inline-flex items-center gap-1.5 rounded-control px-2 py-1 text-sm font-semibold text-brand-strong hover:bg-brand-soft"
-            >
-              <RotateCcw size={15} aria-hidden="true" /> Reset to Naija Standard
-            </button>
-          </>
-        )}
-      </div>
+      <PresetStrip standard={standard} onReset={() => onChange(whotNaija)} />
 
       <Section title="Dealing">
         <div className="space-y-4 px-4 py-4">

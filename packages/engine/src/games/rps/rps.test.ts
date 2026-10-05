@@ -148,10 +148,13 @@ describe("rps properties", () => {
           v.rounds.forEach((round, ri) =>
             round.forEach((mv, mi) => {
               const m = s.rounds[ri]![mi]!;
-              expect(mv).not.toHaveProperty("picks");
+              // Plain checks: expect() on every step of every game is too slow.
+              if ("picks" in mv) throw new Error(`${String(viewer)} sees picks`);
               const own = viewer === "spectator" ? undefined : m.picks[viewer];
-              expect(mv.mine).toBe(own);
-              expect([...mv.thrown].sort()).toEqual(Object.keys(m.picks).map(Number).sort());
+              if (mv.mine !== own) throw new Error(`${String(viewer)} sees the wrong pick`);
+              const thrown = [...mv.thrown].sort().join();
+              if (thrown !== Object.keys(m.picks).map(Number).sort().join())
+                throw new Error("thrown list doesn't match the picks");
             }),
           );
         }
