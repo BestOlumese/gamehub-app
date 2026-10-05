@@ -50,3 +50,29 @@ export function TimerRing({
     </svg>
   );
 }
+
+/** A bot's turn: no clock, just a spinning arc so you can see who's playing. */
+export function ThinkingRing({ size }: { size: number }) {
+  return (
+    <svg
+      viewBox="0 0 36 36"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 motion-safe:animate-spin"
+    >
+      <circle cx="18" cy="18" r="16.5" fill="none" stroke="var(--color-line)" strokeWidth="2" />
+      <circle
+        cx="18"
+        cy="18"
+        r="16.5"
+        fill="none"
+        stroke="var(--color-accent)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        pathLength={100}
+        strokeDasharray="30 70"
+      />
+    </svg>
+  );
+}

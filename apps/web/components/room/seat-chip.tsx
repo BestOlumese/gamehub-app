@@ -4,7 +4,7 @@ import type { SeatPublic } from "@gamehub/protocol";
 import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Bot, WifiOff } from "lucide-react";
 import type { ReactNode } from "react";
-import { TimerRing } from "./timer-ring";
+import { ThinkingRing, TimerRing } from "./timer-ring";
 import { mmss, useNow } from "./use-now";
 
 type SeatChipProps = {
@@ -13,6 +13,8 @@ type SeatChipProps = {
   isYou?: boolean;
   /** Turn deadline when it's this seat's move. */
   turn?: { endsAt: number; totalMs: number } | null;
+  /** A bot's turn (bots have no clock): show a spinning ring instead. */
+  thinking?: boolean;
   graceEndsAt?: number | undefined;
   offset: number;
   score?: number;
@@ -20,7 +22,16 @@ type SeatChipProps = {
 
 const AVATAR = 44;
 
-export function SeatChip({ seat, mark, isYou, turn, graceEndsAt, offset, score }: SeatChipProps) {
+export function SeatChip({
+  seat,
+  mark,
+  isYou,
+  turn,
+  thinking,
+  graceEndsAt,
+  offset,
+  score,
+}: SeatChipProps) {
   const now = useNow(!!turn || !!graceEndsAt) + offset;
   const away = seat.status === "away";
   const bot = seat.status === "bot" || seat.status === "left";
@@ -46,6 +57,8 @@ export function SeatChip({ seat, mark, isYou, turn, graceEndsAt, offset, score }
             offset={offset}
             size={AVATAR}
           />
+        ) : thinking ? (
+          <ThinkingRing size={AVATAR} />
         ) : null}
       </div>
       <div className="min-w-0 flex-1">
@@ -67,6 +80,8 @@ export function SeatChip({ seat, mark, isYou, turn, graceEndsAt, offset, score }
             "Left the game"
           ) : turn ? (
             <span className="font-semibold text-ink tabular-nums">{mmss(turn.endsAt - now)}</span>
+          ) : thinking ? (
+            <span className="font-semibold text-ink">Thinking…</span>
           ) : (
             " "
           )}

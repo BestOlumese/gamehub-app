@@ -6,7 +6,7 @@ import { Bot, WifiOff } from "lucide-react";
 import type { ReactNode } from "react";
 import { seatName } from "../rps/names";
 import { SeatChip } from "../seat-chip";
-import { TimerRing } from "../timer-ring";
+import { ThinkingRing, TimerRing } from "../timer-ring";
 import { CardBack } from "./whot-card";
 
 export type SeatInfo = {
@@ -14,6 +14,9 @@ export type SeatInfo = {
   count: number;
   lastCard: boolean;
   place: string | undefined;
+  /** It's this seat's move. */
+  active: boolean;
+  /** Their turn clock (humans only; bots have none). */
   clock: { endsAt: number; totalMs: number } | null;
 };
 
@@ -53,14 +56,21 @@ function OpponentSeat({
   return (
     <li
       className="flex w-16 flex-col items-center gap-1"
-      aria-label={`${seatName(seats, info.seat)}: ${info.place ? `finished ${info.place}` : `${info.count} ${info.count === 1 ? "card" : "cards"}`}${info.clock ? ", playing now" : ""}${info.lastCard ? ", last card" : ""}${away ? ", offline" : ""}`}
+      aria-label={`${seatName(seats, info.seat)}: ${info.place ? `finished ${info.place}` : `${info.count} ${info.count === 1 ? "card" : "cards"}`}${info.active ? ", playing now" : ""}${info.lastCard ? ", last card" : ""}${away ? ", offline" : ""}`}
     >
-      <div className="relative" style={{ width: AVATAR, height: AVATAR }} aria-hidden="true">
-        <div className={`absolute inset-[3px] ${away ? "opacity-40 grayscale" : ""}`}>
-          <Face seat={seat} size={AVATAR - 6} />
+      <div
+        className={`relative transition-transform duration-(--dur-turn) ease-standard ${info.active ? "scale-110" : ""}`}
+        style={{ width: AVATAR, height: AVATAR }}
+        aria-hidden="true"
+      >
+        {/* A paper-coloured gap keeps the ring readable on any avatar colour. */}
+        <div className={`absolute inset-[5px] ${away ? "opacity-40 grayscale" : ""}`}>
+          <Face seat={seat} size={AVATAR - 10} />
         </div>
-        {info.clock ? (
+        {info.active && info.clock ? (
           <TimerRing key={info.clock.endsAt} {...info.clock} offset={offset} size={AVATAR} />
+        ) : info.active ? (
+          <ThinkingRing size={AVATAR} />
         ) : null}
         {away || covered ? (
           <span className="absolute -top-1 -right-1 rounded-full bg-surface p-0.5 text-ink-2 shadow-sm">
@@ -74,7 +84,7 @@ function OpponentSeat({
         </span>
       </div>
       <span
-        className={`w-full truncate text-center text-xs ${info.clock ? "font-bold text-ink" : "font-semibold text-ink-2"}`}
+        className={`max-w-full truncate rounded-full px-1.5 text-center text-xs ${info.active ? "bg-accent font-bold text-ink" : "font-semibold text-ink-2"}`}
         aria-hidden="true"
       >
         {shortName(seats, info.seat)}
@@ -108,12 +118,13 @@ export function DuelOpponent({
   const shown = Math.min(info.count, 8);
   return (
     <div
-      className={`flex items-center gap-3 rounded-card border bg-surface p-3 shadow-sm ${info.clock ? "border-accent" : "border-line"}`}
+      className={`flex items-center gap-3 rounded-card border bg-surface p-3 shadow-sm ${info.active ? "border-accent" : "border-line"}`}
     >
       <div className="min-w-0 flex-1">
         <SeatChip
           seat={seat}
-          turn={info.clock}
+          turn={info.active ? info.clock : null}
+          thinking={info.active && !info.clock}
           graceEndsAt={graceEndsAt}
           offset={offset}
           mark={

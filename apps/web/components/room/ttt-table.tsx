@@ -44,6 +44,10 @@ export function TttTable({ snap, send }: Props) {
       : null;
   };
 
+  // Bots have no clock; show them thinking on their turn instead.
+  const thinkingFor = (seat: number) =>
+    !ended && state.roundWinner === null && state.turn === seat && !snap.deadlines.turns?.[seat];
+
   const myTurn = mySeat !== null && !ended && state.roundWinner === null && state.turn === mySeat;
   const canPlay = myTurn && connection === "open" && pending === null;
   const pendingCell =
@@ -89,6 +93,7 @@ export function TttTable({ snap, send }: Props) {
             seat={snap.seats[top]}
             mark={<Mark seat={top} />}
             turn={turnFor(top)}
+            thinking={thinkingFor(top)}
             graceEndsAt={snap.deadlines.graceEndsAt?.[top]}
             offset={offset}
             score={state.score[top]}
@@ -129,6 +134,7 @@ export function TttTable({ snap, send }: Props) {
             isYou={mySeat === bottom}
             mark={<Mark seat={bottom} />}
             turn={turnFor(bottom)}
+            thinking={thinkingFor(bottom)}
             graceEndsAt={snap.deadlines.graceEndsAt?.[bottom]}
             offset={offset}
             score={state.score[bottom]}

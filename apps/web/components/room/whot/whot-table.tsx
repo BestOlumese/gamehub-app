@@ -125,6 +125,7 @@ export default function WhotTable({ snap, send }: Props) {
     count: view.counts[seat] ?? 0,
     lastCard: !!view.lastCardDeclared[seat],
     place: places.get(seat),
+    active: !ended && view.turn === seat,
     clock: clockFor(seat),
   });
   const opponents = Array.from({ length: view.players - 1 }, (_, k) =>
