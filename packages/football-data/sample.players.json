@@ -1,0 +1,1677 @@
+{
+  "version": "2026.10.0",
+  "generatedAt": "2026-10-06",
+  "players": [
+    {
+      "id": "victor-osimhen",
+      "name": "Victor Osimhen",
+      "short": "Osimhen",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 86,
+      "stats": {
+        "spd": 89,
+        "fin": 89,
+        "pas": 65,
+        "skl": 79,
+        "def": 41,
+        "pow": 85
+      },
+      "nation": "NG",
+      "club": "Galatasaray",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1998,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "pressing_forward": "plus"
+      },
+      "basis": "Galatasaray's main striker (contract to 2029); 2023 African Footballer of the Year; Serie A title and Capocannoniere with Napoli 2022/23; elite runs and aerial power."
+    },
+    {
+      "id": "ademola-lookman",
+      "name": "Ademola Lookman",
+      "short": "Lookman",
+      "group": "current",
+      "positions": ["LW", "ST", "RW"],
+      "ovr": 84,
+      "stats": {
+        "spd": 88,
+        "fin": 84,
+        "pas": 76,
+        "skl": 87,
+        "def": 40,
+        "pow": 66
+      },
+      "nation": "NG",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1997,
+      "roles": {
+        "inside_forward": "plusplus",
+        "winger": "plus"
+      },
+      "basis": "Joined Atlético Madrid from Atalanta in July 2026; 2024 African Footballer of the Year; Europa League final hat-trick 2024; direct dribbler who scores."
+    },
+    {
+      "id": "alex-iwobi",
+      "name": "Alex Iwobi",
+      "short": "Iwobi",
+      "group": "current",
+      "positions": ["CM", "AM", "LM"],
+      "ovr": 79,
+      "stats": {
+        "spd": 78,
+        "fin": 74,
+        "pas": 84,
+        "skl": 84,
+        "def": 62,
+        "pow": 70
+      },
+      "nation": "NG",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1996,
+      "roles": {
+        "box_to_box": "plus",
+        "playmaker": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Fulham regular in midfield and wide; long-time Super Eagles starter (AFCON 2023 finalist); press-resistant carrier, steady passer."
+    },
+    {
+      "id": "calvin-bassey",
+      "name": "Calvin Bassey",
+      "short": "Bassey",
+      "group": "current",
+      "positions": ["CB", "LB"],
+      "ovr": 79,
+      "stats": {
+        "spd": 79,
+        "fin": 31,
+        "pas": 67,
+        "skl": 65,
+        "def": 80,
+        "pow": 83
+      },
+      "nation": "NG",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1999,
+      "roles": {
+        "stopper": "plus",
+        "full_back": "plus"
+      },
+      "basis": "Fulham centre-back, captained the club for the first time in Aug 2026; AFCON 2023 team of the tournament defender; strong, quick, left-footed."
+    },
+    {
+      "id": "ola-aina",
+      "name": "Ola Aina",
+      "short": "Aina",
+      "group": "current",
+      "positions": ["LB", "RB", "RWB"],
+      "ovr": 80,
+      "stats": {
+        "spd": 87,
+        "fin": 49,
+        "pas": 75,
+        "skl": 75,
+        "def": 81,
+        "pow": 77
+      },
+      "nation": "NG",
+      "club": "Nottingham Forest",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1996,
+      "roles": {
+        "full_back": "plus",
+        "attacking_full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Nottingham Forest first-choice full-back on either side; Super Eagles regular; quick, tidy and strong in duels."
+    },
+    {
+      "id": "samuel-chukwueze",
+      "name": "Samuel Chukwueze",
+      "short": "Chukwueze",
+      "group": "current",
+      "positions": ["RW", "RM"],
+      "ovr": 78,
+      "stats": {
+        "spd": 88,
+        "fin": 73,
+        "pas": 73,
+        "skl": 86,
+        "def": 33,
+        "pow": 61
+      },
+      "nation": "NG",
+      "club": "AC Milan",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1999,
+      "roles": {
+        "winger": "plus",
+        "inside_forward": "plusplus"
+      },
+      "basis": "AC Milan winger kept for 2026/27 after a loan at Fulham; Europa League winner with Villarreal 2021; left-footed dribbler cutting in from the right."
+    },
+    {
+      "id": "raphael-onyedika",
+      "name": "Raphael Onyedika",
+      "short": "Onyedika",
+      "group": "current",
+      "positions": ["DM", "CM"],
+      "ovr": 78,
+      "stats": {
+        "spd": 72,
+        "fin": 50,
+        "pas": 76,
+        "skl": 72,
+        "def": 80,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": "Eintracht Frankfurt",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 2001,
+      "roles": {
+        "ball_winner": "plus",
+        "anchor": "plus"
+      },
+      "basis": "Signed by Eintracht Frankfurt from Club Brugge in Aug 2026 (€9m reported); Champions League minutes with Brugge; ball-winning, energetic defensive midfielder."
+    },
+    {
+      "id": "stanley-nwabali",
+      "name": "Stanley Nwabali",
+      "short": "Nwabali",
+      "group": "current",
+      "positions": ["GK"],
+      "ovr": 74,
+      "stats": {
+        "stp": 76,
+        "rct": 75,
+        "hdl": 70,
+        "cmd": 70,
+        "dst": 64,
+        "agi": 74
+      },
+      "nation": "NG",
+      "club": "Chippa United",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1996,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Rejoined Chippa United (South Africa) in July 2026; Nigeria's No. 1 at AFCON 2023 (runners-up), several clean sheets; strong shot-stopper, average distribution."
+    },
+    {
+      "id": "wilfred-ndidi",
+      "name": "Wilfred Ndidi",
+      "short": "Ndidi",
+      "group": "current",
+      "positions": ["DM", "CM"],
+      "ovr": 78,
+      "stats": {
+        "spd": 67,
+        "fin": 53,
+        "pas": 73,
+        "skl": 71,
+        "def": 81,
+        "pow": 79
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1996,
+      "roles": {
+        "anchor": "plusplus",
+        "ball_winner": "plus"
+      },
+      "basis": "Super Eagles captain (Oct 2026 squad); years as Leicester's defensive midfielder with elite tackle and interception numbers; club after summer 2026 unverified."
+    },
+    {
+      "id": "moses-simon",
+      "name": "Moses Simon",
+      "short": "Simon",
+      "group": "current",
+      "positions": ["LM", "LW"],
+      "ovr": 76,
+      "stats": {
+        "spd": 88,
+        "fin": 70,
+        "pas": 76,
+        "skl": 82,
+        "def": 44,
+        "pow": 62
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1995,
+      "roles": {
+        "winger": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Experienced Super Eagles winger, led the Oct 2026 experimental squad; long spell as a Ligue 1 creator; club after summer 2026 unverified."
+    },
+    {
+      "id": "akor-adams",
+      "name": "Akor Adams",
+      "short": "Akor",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 76,
+      "stats": {
+        "spd": 82,
+        "fin": 78,
+        "pas": 58,
+        "skl": 70,
+        "def": 38,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 2000,
+      "roles": {
+        "advanced_forward": "plus",
+        "target_forward": "plus"
+      },
+      "basis": "Super Eagles forward (Sept and Oct 2026 squads); top-flight European scorer in recent seasons; strong runner; club after summer 2026 unverified."
+    },
+    {
+      "id": "bright-osayi-samuel",
+      "name": "Bright Osayi-Samuel",
+      "short": "Osayi-Samuel",
+      "group": "current",
+      "positions": ["RWB", "RB", "RM"],
+      "ovr": 75,
+      "stats": {
+        "spd": 88,
+        "fin": 51,
+        "pas": 69,
+        "skl": 75,
+        "def": 73,
+        "pow": 73
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1997,
+      "roles": {
+        "attacking_full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Super Eagles right-back (Oct 2026 squad); Turkish title and European nights with Fenerbahçe; very quick, attacking; club unverified."
+    },
+    {
+      "id": "george-ilenikhena",
+      "name": "George Ilenikhena",
+      "short": "Ilenikhena",
+      "group": "wonderkid",
+      "positions": ["ST"],
+      "ovr": 70,
+      "stats": {
+        "spd": 81,
+        "fin": 71,
+        "pas": 53,
+        "skl": 69,
+        "def": 31,
+        "pow": 71
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "high",
+      "foot": "R",
+      "birthYear": 2006,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Under-21 Super Eagles forward (Sept 2026 squad); scored in the Champions League as a teenager; current ability rated, high potential; club unverified."
+    },
+    {
+      "id": "godwin-obaje",
+      "name": "Godwin Obaje",
+      "short": "Obaje",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 66,
+      "stats": {
+        "spd": 70,
+        "fin": 70,
+        "pas": 52,
+        "skl": 62,
+        "def": 30,
+        "pow": 70
+      },
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-05",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Joint NPFL top scorer 2025/26 (14 goals) for champions Enugu Rangers; NPFL league factor 0.80 applied; finisher in the box."
+    },
+    {
+      "id": "victor-mbaoma",
+      "name": "Victor Mbaoma",
+      "short": "Mbaoma",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 67,
+      "stats": {
+        "spd": 73,
+        "fin": 71,
+        "pas": 53,
+        "skl": 63,
+        "def": 29,
+        "pow": 69
+      },
+      "nation": "NG",
+      "club": "Remo Stars",
+      "clubAsOf": "2026-05",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "roles": {
+        "poacher": "plus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Joint NPFL top scorer 2025/26 (14 goals) for Remo Stars; previously a prolific scorer in North Africa; NPFL factor applied."
+    },
+    {
+      "id": "jay-jay-okocha",
+      "name": "Austin 'Jay-Jay' Okocha",
+      "short": "Okocha",
+      "group": "legend",
+      "positions": ["AM", "CM"],
+      "ovr": 89,
+      "stats": {
+        "spd": 83,
+        "fin": 81,
+        "pas": 91,
+        "skl": 99,
+        "def": 43,
+        "pow": 67
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2003",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1973,
+      "roles": {
+        "classic_ten": "plusplus",
+        "advanced_playmaker": "plus"
+      },
+      "basis": "1996 Olympic gold; PSG and Fenerbahçe star; BBC African Footballer of the Year 2003 and 2004; among the most gifted dribblers of his era."
+    },
+    {
+      "id": "nwankwo-kanu",
+      "name": "Nwankwo Kanu",
+      "short": "Kanu",
+      "group": "legend",
+      "positions": ["ST", "AM"],
+      "ovr": 87,
+      "stats": {
+        "spd": 74,
+        "fin": 89,
+        "pas": 86,
+        "skl": 94,
+        "def": 38,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "false_nine": "plusplus",
+        "target_forward": "plus"
+      },
+      "basis": "1996 Olympic gold captain; African Footballer of the Year 1996 and 1999; Champions League (Ajax 1995) and Premier League titles with Arsenal; famous touch and flair."
+    },
+    {
+      "id": "rashidi-yekini",
+      "name": "Rashidi Yekini",
+      "short": "Yekini",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 86,
+      "stats": {
+        "spd": 84,
+        "fin": 94,
+        "pas": 62,
+        "skl": 76,
+        "def": 34,
+        "pow": 92
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1963,
+      "roles": {
+        "target_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Scored Nigeria's first World Cup goal (1994); AFCON 1994 winner and top scorer; 1993 African Footballer of the Year; powerful finisher."
+    },
+    {
+      "id": "daniel-amokachi",
+      "name": "Daniel Amokachi",
+      "short": "Amokachi",
+      "group": "legend",
+      "positions": ["ST", "LW"],
+      "ovr": 84,
+      "stats": {
+        "spd": 93,
+        "fin": 85,
+        "pas": 67,
+        "skl": 83,
+        "def": 37,
+        "pow": 83
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–1997",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "'The Bull': Club Brugge and Everton forward; 1995 FA Cup winner; scored at USA 1994; 1996 Olympic gold."
+    },
+    {
+      "id": "finidi-george",
+      "name": "Finidi George",
+      "short": "Finidi",
+      "group": "legend",
+      "positions": ["RM", "RW"],
+      "ovr": 86,
+      "stats": {
+        "spd": 95,
+        "fin": 81,
+        "pas": 89,
+        "skl": 95,
+        "def": 47,
+        "pow": 71
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–1998",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1971,
+      "roles": {
+        "winger": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Ajax's right winger in the 1995 Champions League win and three Eredivisie titles; Real Betis; AFCON 1994 winner."
+    },
+    {
+      "id": "sunday-oliseh",
+      "name": "Sunday Oliseh",
+      "short": "Oliseh",
+      "group": "legend",
+      "positions": ["DM", "CM"],
+      "ovr": 85,
+      "stats": {
+        "spd": 75,
+        "fin": 73,
+        "pas": 87,
+        "skl": 83,
+        "def": 85,
+        "pow": 81
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2000",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1974,
+      "roles": {
+        "deep_playmaker": "plusplus",
+        "anchor": "plus"
+      },
+      "basis": "Ajax, Juventus and Dortmund midfielder; famous strike vs Spain at France 1998; 1996 Olympic gold; AFCON 1994 winner."
+    },
+    {
+      "id": "celestine-babayaro",
+      "name": "Celestine Babayaro",
+      "short": "Babayaro",
+      "group": "legend",
+      "positions": ["LWB", "LB"],
+      "ovr": 83,
+      "stats": {
+        "spd": 91,
+        "fin": 57,
+        "pas": 79,
+        "skl": 81,
+        "def": 83,
+        "pow": 79
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1997–2004",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1978,
+      "roles": {
+        "attacking_full_back": "plusplus",
+        "wing_back": "plus"
+      },
+      "basis": "Chelsea left-back (Cup Winners' Cup 1998, FA Cup 2000); scored in the 1996 Olympic final, gold medal."
+    },
+    {
+      "id": "vincent-enyeama",
+      "name": "Vincent Enyeama",
+      "short": "Enyeama",
+      "group": "legend",
+      "positions": ["GK"],
+      "ovr": 85,
+      "stats": {
+        "stp": 89,
+        "rct": 89,
+        "hdl": 81,
+        "cmd": 75,
+        "dst": 71,
+        "agi": 87
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2008–2015",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Lille goalkeeper who set a Ligue 1 unbeaten run record (2013/14); AFCON 2013 winner; heroic World Cup displays (2010, 2014)."
+    },
+    {
+      "id": "john-obi-mikel",
+      "name": "John Obi Mikel",
+      "short": "Mikel",
+      "group": "legend",
+      "positions": ["DM", "CM"],
+      "ovr": 84,
+      "stats": {
+        "spd": 71,
+        "fin": 61,
+        "pas": 85,
+        "skl": 83,
+        "def": 83,
+        "pow": 83
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2013",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1987,
+      "roles": {
+        "anchor": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "Chelsea midfielder: 2012 Champions League and Premier League winner; AFCON 2013 winner; 2016 Olympic bronze captain."
+    },
+    {
+      "id": "taribo-west",
+      "name": "Taribo West",
+      "short": "West",
+      "group": "legend",
+      "positions": ["CB"],
+      "ovr": 84,
+      "stats": {
+        "spd": 83,
+        "fin": 33,
+        "pas": 65,
+        "skl": 65,
+        "def": 87,
+        "pow": 89
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2000",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1974,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Inter Milan and AC Milan centre-back; UEFA Cup with Inter 1998; 1996 Olympic gold; aggressive man-marker."
+    },
+    {
+      "id": "didier-drogba",
+      "name": "Didier Drogba",
+      "short": "Drogba",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 91,
+      "stats": {
+        "spd": 86,
+        "fin": 94,
+        "pas": 76,
+        "skl": 84,
+        "def": 42,
+        "pow": 96
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "target_forward": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Chelsea talisman: 2012 Champions League final equaliser and winning penalty; Premier League Golden Boot 2007 and 2010; twice African Footballer of the Year."
+    },
+    {
+      "id": "samuel-etoo",
+      "name": "Samuel Eto'o",
+      "short": "Eto'o",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 91,
+      "stats": {
+        "spd": 94,
+        "fin": 94,
+        "pas": 78,
+        "skl": 88,
+        "def": 44,
+        "pow": 82
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Three Champions League titles (Barcelona ×2, Inter); four-time African Footballer of the Year; AFCON 2000 and 2002 winner."
+    },
+    {
+      "id": "george-weah",
+      "name": "George Weah",
+      "short": "Weah",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 91,
+      "stats": {
+        "spd": 93,
+        "fin": 93,
+        "pas": 75,
+        "skl": 91,
+        "def": 41,
+        "pow": 87
+      },
+      "nation": "LR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–1998",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1966,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "1995 Ballon d'Or and FIFA World Player of the Year, the only African to win both; AC Milan and PSG striker."
+    },
+    {
+      "id": "yaya-toure",
+      "name": "Yaya Touré",
+      "short": "Yaya",
+      "group": "legend",
+      "positions": ["CM", "DM"],
+      "ovr": 90,
+      "stats": {
+        "spd": 83,
+        "fin": 87,
+        "pas": 91,
+        "skl": 91,
+        "def": 75,
+        "pow": 95
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2009–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1983,
+      "roles": {
+        "box_to_box": "plusplus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "African Footballer of the Year four years running (2011–2014); Manchester City title winner with 20 league goals in 2013/14; AFCON 2015 winner."
+    },
+    {
+      "id": "abedi-pele",
+      "name": "Abedi Pelé",
+      "short": "Abedi",
+      "group": "legend",
+      "positions": ["AM", "LW"],
+      "ovr": 88,
+      "stats": {
+        "spd": 87,
+        "fin": 83,
+        "pas": 89,
+        "skl": 95,
+        "def": 41,
+        "pow": 65
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1964,
+      "roles": {
+        "classic_ten": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Marseille's 1993 Champions League winner; three-time African Footballer of the Year; AFCON 1982 winner."
+    },
+    {
+      "id": "roger-milla",
+      "name": "Roger Milla",
+      "short": "Milla",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 86,
+      "stats": {
+        "spd": 81,
+        "fin": 91,
+        "pas": 75,
+        "skl": 87,
+        "def": 33,
+        "pow": 77
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1990",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1952,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Four goals at Italia 90 aged 38 (quarter-final run); oldest World Cup scorer in 1994; twice African Footballer of the Year."
+    },
+    {
+      "id": "mohamed-salah",
+      "name": "Mohamed Salah",
+      "short": "Salah",
+      "group": "current",
+      "positions": ["RW", "ST"],
+      "ovr": 87,
+      "stats": {
+        "spd": 88,
+        "fin": 92,
+        "pas": 82,
+        "skl": 88,
+        "def": 42,
+        "pow": 72
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1992,
+      "roles": {
+        "inside_forward": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Premier League Player of the Season and Golden Boot 2024/25; Liverpool departure announced March 2026; age 34 trims pace; club for 2026/27 unverified."
+    },
+    {
+      "id": "achraf-hakimi",
+      "name": "Achraf Hakimi",
+      "short": "Hakimi",
+      "group": "current",
+      "positions": ["RB", "RWB"],
+      "ovr": 86,
+      "stats": {
+        "spd": 97,
+        "fin": 75,
+        "pas": 85,
+        "skl": 87,
+        "def": 79,
+        "pow": 79
+      },
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1998,
+      "roles": {
+        "attacking_full_back": "plusplus",
+        "complete_wing_back": "plus"
+      },
+      "basis": "Champions League winner with PSG in 2025; Morocco's World Cup 2022 semi-final run; elite pace and attacking output; 2026/27 club not re-verified."
+    },
+    {
+      "id": "sadio-mane",
+      "name": "Sadio Mané",
+      "short": "Mané",
+      "group": "current",
+      "positions": ["LW", "ST"],
+      "ovr": 80,
+      "stats": {
+        "spd": 85,
+        "fin": 81,
+        "pas": 73,
+        "skl": 83,
+        "def": 41,
+        "pow": 69
+      },
+      "nation": "SN",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1992,
+      "roles": {
+        "inside_forward": "plus",
+        "pressing_forward": "plus"
+      },
+      "basis": "AFCON 2021 winner and twice African Footballer of the Year; Champions League winner 2019; now in his mid-30s; club unverified."
+    },
+    {
+      "id": "pele",
+      "name": "Pelé",
+      "short": "Pelé",
+      "group": "legend",
+      "positions": ["ST", "AM"],
+      "ovr": 95,
+      "stats": {
+        "spd": 92,
+        "fin": 98,
+        "pas": 90,
+        "skl": 98,
+        "def": 42,
+        "pow": 80
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1958–1970",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1940,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "classic_ten": "plus"
+      },
+      "basis": "Three World Cups (1958, 1962, 1970); Santos's all-time great; anchor for the top of the legend scale."
+    },
+    {
+      "id": "diego-maradona",
+      "name": "Diego Maradona",
+      "short": "Maradona",
+      "group": "legend",
+      "positions": ["AM", "ST"],
+      "ovr": 94,
+      "stats": {
+        "spd": 87,
+        "fin": 91,
+        "pas": 95,
+        "skl": 99,
+        "def": 39,
+        "pow": 73
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1990",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1960,
+      "roles": {
+        "classic_ten": "plusplus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Won the 1986 World Cup almost alone; two Serie A titles with Napoli; dribbling anchor at the top of the scale."
+    },
+    {
+      "id": "johan-cruyff",
+      "name": "Johan Cruyff",
+      "short": "Cruyff",
+      "group": "legend",
+      "positions": ["ST", "AM"],
+      "ovr": 93,
+      "stats": {
+        "spd": 95,
+        "fin": 95,
+        "pas": 97,
+        "skl": 99,
+        "def": 47,
+        "pow": 69
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1978",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1947,
+      "roles": {
+        "false_nine": "plusplus",
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Three Ballon d'Or awards; three straight European Cups with Ajax; 1974 World Cup finalist and total-football pioneer."
+    },
+    {
+      "id": "zinedine-zidane",
+      "name": "Zinedine Zidane",
+      "short": "Zidane",
+      "group": "legend",
+      "positions": ["AM", "CM"],
+      "ovr": 94,
+      "stats": {
+        "spd": 78,
+        "fin": 86,
+        "pas": 96,
+        "skl": 99,
+        "def": 58,
+        "pow": 84
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2006",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1972,
+      "roles": {
+        "classic_ten": "plusplus",
+        "playmaker": "plus"
+      },
+      "basis": "1998 World Cup (two goals in the final) and Euro 2000; 1998 Ballon d'Or; 2002 Champions League final volley."
+    },
+    {
+      "id": "ronaldo-nazario",
+      "name": "Ronaldo Nazário",
+      "short": "Ronaldo",
+      "group": "legend",
+      "positions": ["ST"],
+      "ovr": 94,
+      "stats": {
+        "spd": 96,
+        "fin": 96,
+        "pas": 76,
+        "skl": 96,
+        "def": 30,
+        "pow": 82
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2002",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Ballon d'Or 1997 and 2002; 2002 World Cup winner and top scorer (8 goals); explosive pace and finishing."
+    },
+    {
+      "id": "franz-beckenbauer",
+      "name": "Franz Beckenbauer",
+      "short": "Beckenbauer",
+      "group": "legend",
+      "positions": ["CB", "DM"],
+      "ovr": 93,
+      "stats": {
+        "spd": 83,
+        "fin": 65,
+        "pas": 91,
+        "skl": 89,
+        "def": 95,
+        "pow": 85
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1976",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1945,
+      "roles": {
+        "ball_playing_defender": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "1974 World Cup-winning captain; Ballon d'Or 1972 and 1976; three straight European Cups with Bayern; the original attacking libero."
+    },
+    {
+      "id": "paolo-maldini",
+      "name": "Paolo Maldini",
+      "short": "Maldini",
+      "group": "legend",
+      "positions": ["CB", "LB"],
+      "ovr": 93,
+      "stats": {
+        "spd": 86,
+        "fin": 48,
+        "pas": 82,
+        "skl": 82,
+        "def": 96,
+        "pow": 84
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–2003",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1968,
+      "roles": {
+        "covering_defender": "plusplus",
+        "full_back": "plus"
+      },
+      "basis": "Five European Cups/Champions Leagues with AC Milan; seven Serie A titles; benchmark for defending."
+    },
+    {
+      "id": "gianluigi-buffon",
+      "name": "Gianluigi Buffon",
+      "short": "Buffon",
+      "group": "legend",
+      "positions": ["GK"],
+      "ovr": 92,
+      "stats": {
+        "stp": 93,
+        "rct": 93,
+        "hdl": 89,
+        "cmd": 89,
+        "dst": 75,
+        "agi": 89
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2002–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "shot_stopper": "plusplus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "2006 World Cup winner (two goals conceded all tournament); record Serie A titles with Juventus; goalkeeper anchor."
+    },
+    {
+      "id": "lev-yashin",
+      "name": "Lev Yashin",
+      "short": "Yashin",
+      "group": "legend",
+      "positions": ["GK"],
+      "ovr": 92,
+      "stats": {
+        "stp": 92,
+        "rct": 92,
+        "hdl": 84,
+        "cmd": 92,
+        "dst": 74,
+        "agi": 86
+      },
+      "nation": "RU",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1956–1966",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1929,
+      "roles": {
+        "sweeper_keeper": "plusplus",
+        "shot_stopper": "plus"
+      },
+      "basis": "The only goalkeeper to win the Ballon d'Or (1963); played for the Soviet Union (shown under Russia's flag); 1960 European champion."
+    },
+    {
+      "id": "thierry-henry",
+      "name": "Thierry Henry",
+      "short": "Henry",
+      "group": "legend",
+      "positions": ["ST", "LW"],
+      "ovr": 93,
+      "stats": {
+        "spd": 96,
+        "fin": 94,
+        "pas": 86,
+        "skl": 94,
+        "def": 38,
+        "pow": 78
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Arsenal's record scorer; four Premier League Golden Boots; unbeaten 2003/04 title; 1998 World Cup and Euro 2000 winner."
+    },
+    {
+      "id": "ronaldinho",
+      "name": "Ronaldinho",
+      "short": "Ronaldinho",
+      "group": "legend",
+      "positions": ["LW", "AM"],
+      "ovr": 92,
+      "stats": {
+        "spd": 88,
+        "fin": 88,
+        "pas": 92,
+        "skl": 99,
+        "def": 36,
+        "pow": 76
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "wide_playmaker": "plusplus",
+        "classic_ten": "plus"
+      },
+      "basis": "2005 Ballon d'Or; 2006 Champions League with Barcelona; 2002 World Cup winner; peak creativity and skill."
+    },
+    {
+      "id": "kylian-mbappe",
+      "name": "Kylian Mbappé",
+      "short": "Mbappé",
+      "group": "current",
+      "positions": ["ST", "LW"],
+      "ovr": 91,
+      "stats": {
+        "spd": 98,
+        "fin": 93,
+        "pas": 81,
+        "skl": 91,
+        "def": 37,
+        "pow": 79
+      },
+      "nation": "FR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1998,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Real Madrid; La Liga top scorer and European Golden Shoe 2024/25; 2018 World Cup winner; anchor for the top of the current scale."
+    },
+    {
+      "id": "erling-haaland",
+      "name": "Erling Haaland",
+      "short": "Haaland",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 90,
+      "stats": {
+        "spd": 91,
+        "fin": 96,
+        "pas": 67,
+        "skl": 79,
+        "def": 41,
+        "pow": 93
+      },
+      "nation": "NO",
+      "club": "Manchester City",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "L",
+      "birthYear": 2000,
+      "roles": {
+        "poacher": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Manchester City's striker for a fifth Premier League season (41 goals in all competitions in 2025/26 per reports); record 36 league goals in 2022/23; Golden Boots 2022/23 and 2023/24."
+    },
+    {
+      "id": "jude-bellingham",
+      "name": "Jude Bellingham",
+      "short": "Bellingham",
+      "group": "current",
+      "positions": ["CM", "AM"],
+      "ovr": 88,
+      "stats": {
+        "spd": 83,
+        "fin": 87,
+        "pas": 89,
+        "skl": 91,
+        "def": 75,
+        "pow": 87
+      },
+      "nation": "GB-ENG",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 2003,
+      "roles": {
+        "box_to_box": "plusplus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Real Madrid; La Liga and Champions League double 2023/24 with 19 league goals; England regular; complete midfielder."
+    },
+    {
+      "id": "vinicius-junior",
+      "name": "Vinícius Júnior",
+      "short": "Vinícius",
+      "group": "current",
+      "positions": ["LW", "ST"],
+      "ovr": 88,
+      "stats": {
+        "spd": 95,
+        "fin": 86,
+        "pas": 80,
+        "skl": 92,
+        "def": 30,
+        "pow": 68
+      },
+      "nation": "BR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 2000,
+      "roles": {
+        "winger": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Real Madrid; FIFA The Best Men's Player 2024; scored in the 2022 and 2024 Champions League finals; explosive one-v-one winger."
+    },
+    {
+      "id": "harry-kane",
+      "name": "Harry Kane",
+      "short": "Kane",
+      "group": "current",
+      "positions": ["ST"],
+      "ovr": 89,
+      "stats": {
+        "spd": 72,
+        "fin": 96,
+        "pas": 88,
+        "skl": 84,
+        "def": 48,
+        "pow": 86
+      },
+      "nation": "GB-ENG",
+      "club": "Bayern Munich",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1993,
+      "roles": {
+        "advanced_forward": "plus",
+        "false_nine": "plusplus"
+      },
+      "basis": "Bayern Munich; Bundesliga top scorer 2023/24 and 2024/25; England's record goalscorer; drops deep to create as well as finish."
+    },
+    {
+      "id": "lamine-yamal",
+      "name": "Lamine Yamal",
+      "short": "Yamal",
+      "group": "wonderkid",
+      "positions": ["RW", "AM"],
+      "ovr": 89,
+      "stats": {
+        "spd": 89,
+        "fin": 85,
+        "pas": 89,
+        "skl": 97,
+        "def": 33,
+        "pow": 63
+      },
+      "nation": "ES",
+      "club": "Barcelona",
+      "clubAsOf": "2026-10",
+      "era": null,
+      "potential": "elite",
+      "foot": "L",
+      "birthYear": 2007,
+      "roles": {
+        "inside_forward": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Barcelona's No. 10; La Liga Player of the Season 2025/26 (16 goals, 11 assists reported); Euro 2024 winner at 17; rated on current ability."
+    },
+    {
+      "id": "virgil-van-dijk",
+      "name": "Virgil van Dijk",
+      "short": "Van Dijk",
+      "group": "current",
+      "positions": ["CB"],
+      "ovr": 85,
+      "stats": {
+        "spd": 72,
+        "fin": 50,
+        "pas": 74,
+        "skl": 68,
+        "def": 86,
+        "pow": 88
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1991,
+      "roles": {
+        "ball_playing_defender": "plusplus",
+        "covering_defender": "plus"
+      },
+      "basis": "Liverpool captain for the 2024/25 Premier League title; Ballon d'Or runner-up 2019; age 35 in 2026 trims pace; club not re-verified after summer 2026."
+    },
+    {
+      "id": "bukayo-saka",
+      "name": "Bukayo Saka",
+      "short": "Saka",
+      "group": "current",
+      "positions": ["RW", "RM"],
+      "ovr": 86,
+      "stats": {
+        "spd": 87,
+        "fin": 85,
+        "pas": 87,
+        "skl": 91,
+        "def": 55,
+        "pow": 69
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "L",
+      "birthYear": 2001,
+      "roles": {
+        "inside_forward": "plusplus",
+        "winger": "plus"
+      },
+      "basis": "Arsenal's long-time first-choice right winger with consistent double-figure goals and assists; England regular; club not re-verified after summer 2026."
+    },
+    {
+      "id": "rodri",
+      "name": "Rodri",
+      "short": "Rodri",
+      "group": "current",
+      "positions": ["DM", "CM"],
+      "ovr": 86,
+      "stats": {
+        "spd": 63,
+        "fin": 71,
+        "pas": 89,
+        "skl": 83,
+        "def": 85,
+        "pow": 87
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1996,
+      "roles": {
+        "deep_playmaker": "plusplus",
+        "anchor": "plus"
+      },
+      "basis": "2024 Ballon d'Or; Euro 2024 winner and player of the tournament; long ACL recovery from Sept 2024 slightly lowers current rating; club not re-verified."
+    },
+    {
+      "id": "alisson-becker",
+      "name": "Alisson Becker",
+      "short": "Alisson",
+      "group": "current",
+      "positions": ["GK"],
+      "ovr": 85,
+      "stats": {
+        "stp": 86,
+        "rct": 84,
+        "hdl": 82,
+        "cmd": 80,
+        "dst": 78,
+        "agi": 80
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1992,
+      "roles": {
+        "shot_stopper": "plus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "Liverpool goalkeeper through the 2024/25 title; Champions League 2019; Brazil No. 1; age 34 in 2026; club not re-verified."
+    },
+    {
+      "id": "pau-cubarsi",
+      "name": "Pau Cubarsí",
+      "short": "Cubarsí",
+      "group": "wonderkid",
+      "positions": ["CB"],
+      "ovr": 82,
+      "stats": {
+        "spd": 77,
+        "fin": 31,
+        "pas": 83,
+        "skl": 75,
+        "def": 85,
+        "pow": 77
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "elite",
+      "foot": "R",
+      "birthYear": 2007,
+      "roles": {
+        "ball_playing_defender": "plusplus"
+      },
+      "basis": "Barcelona centre-back regular since age 17; Spain senior caps as a teenager; exceptional passing from the back; current ability rated, elite potential."
+    },
+    {
+      "id": "warren-zaire-emery",
+      "name": "Warren Zaïre-Emery",
+      "short": "Zaïre-Emery",
+      "group": "wonderkid",
+      "positions": ["CM", "DM"],
+      "ovr": 80,
+      "stats": {
+        "spd": 78,
+        "fin": 66,
+        "pas": 82,
+        "skl": 82,
+        "def": 76,
+        "pow": 78
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "high",
+      "foot": "R",
+      "birthYear": 2006,
+      "roles": {
+        "box_to_box": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "PSG midfielder with hundreds of senior minutes before 20; France senior debut at 17; current ability rated, high potential."
+    },
+    {
+      "id": "estevao",
+      "name": "Estêvão",
+      "short": "Estêvão",
+      "group": "wonderkid",
+      "positions": ["RW"],
+      "ovr": 80,
+      "stats": {
+        "spd": 84,
+        "fin": 76,
+        "pas": 76,
+        "skl": 88,
+        "def": 30,
+        "pow": 56
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "elite",
+      "foot": "L",
+      "birthYear": 2007,
+      "roles": {
+        "inside_forward": "plus",
+        "winger": "plus"
+      },
+      "basis": "Brazilian left-footed right winger who moved to the Premier League in 2025; Brazil senior caps as a teenager; current ability rated, elite potential."
+    },
+    {
+      "id": "franco-mastantuono",
+      "name": "Franco Mastantuono",
+      "short": "Mastantuono",
+      "group": "wonderkid",
+      "positions": ["AM", "RW"],
+      "ovr": 78,
+      "stats": {
+        "spd": 78,
+        "fin": 72,
+        "pas": 80,
+        "skl": 84,
+        "def": 34,
+        "pow": 60
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "high",
+      "foot": "L",
+      "birthYear": 2007,
+      "roles": {
+        "classic_ten": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Joined Real Madrid from River Plate in 2025 at 18; Argentina senior debut at 17; current ability rated, high potential."
+    },
+    {
+      "id": "endrick",
+      "name": "Endrick",
+      "short": "Endrick",
+      "group": "wonderkid",
+      "positions": ["ST"],
+      "ovr": 76,
+      "stats": {
+        "spd": 84,
+        "fin": 78,
+        "pas": 58,
+        "skl": 78,
+        "def": 30,
+        "pow": 74
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": null,
+      "potential": "high",
+      "foot": "L",
+      "birthYear": 2006,
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Real Madrid forward since 2024; Brazil goals at Wembley and the Bernabéu as a teenager; limited minutes keep the current rating modest; high potential."
+    }
+  ]
+}

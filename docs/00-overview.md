@@ -22,6 +22,10 @@ A fast, free, web-only place to play Nigeria's favourite table games with friend
 | Language | English only. |
 | Age | 18+ only (date-of-birth gate at signup). |
 | Games at launch | Whot (2–8), Ludo (2–4), Snakes & Ladders (2–8), Tic-tac-toe (2), Rock Paper Scissors (2–8). |
+| Games after Snakes (in build order) | **Chess** (2; bullet/blitz/rapid clocks or no clock; ranked in quick-match) · **Draughts** (2; Naija 10×10 "draft" by default, English 8×8 option; ranked) · **Property-trading game** (2–8; our own name, board and cards; timed or classic; unranked) · **Football Draft** (1–8; draft real footballers, simulated matches; head-to-head, league, knockout, solo run; unranked). |
+| Modes | Private rooms; public quick-match (later phase); **Tournament mode**: private lobby, 4–32 entrants, host-defined stages using any game, bots may fill slots, unranked, no prizes (`16-tournaments.md`). |
+| Bots (strong) | Easy bots run in the room; Medium/Hard chess and Hard draughts run in a **bot service** on Vercel (Stockfish, server only) with a silent fallback (`15-bot-service.md`). |
+| Licences & IP | No GPL/AGPL in the browser; no third-party trademarks, trade dress or likenesses; real footballer names and public facts only in Football Draft (`concerns.md`). |
 | Rules | Every game has a "Naija Standard" preset; every rule is customizable per private room. |
 | Finding players | Private rooms (code + WhatsApp link), bots fill empty/abandoned seats, public quick-match (pick game + player count). |
 | Bots | Easy / Medium / Hard. Never cheat (no peeking at hidden info). |
@@ -37,7 +41,11 @@ A fast, free, web-only place to play Nigeria's favourite table games with friend
 
 ## Non-goals (v1)
 
-- Native apps, offline multiplayer, voice/video calls, tournaments with prizes, clans, cosmetics/shop, multiple languages, 6-player Ludo, Ludo/Whot variants beyond configurable rules.
+- Native apps, offline multiplayer, voice/video calls, tournaments with prizes (tournament mode exists but awards nothing), clans, cosmetics/shop, multiple languages, 6-player Ludo, Ludo/Whot variants beyond configurable rules.
+- Chess variants (960, crazyhouse…), UltraBullet, correspondence chess, engine analysis for players.
+- Draughts variants beyond Naija 10×10 and English 8×8 (Russian, Brazilian, Turkish…).
+- Football: live (in-match) control, player photos/badges/kits, trading players between managers, any rewards or unlocks, injuries (v1).
+- Public (matchmade) tournaments; ranked tournaments.
 
 ## Success criteria for v1
 
@@ -58,4 +66,8 @@ A fast, free, web-only place to play Nigeria's favourite table games with friend
 | Ticket | Short-lived signed token that proves who is opening a WebSocket. |
 | Market | Whot draw pile. |
 | Call card | Whot top card of the discard pile. |
-| Seed | A Ludo token. |
+| Seed | A Ludo token; also a draughts piece in Nigerian usage ("seeds"). |
+| Draft | The Nigerian name for 10×10 draughts — and, in Football Draft, picking players 1 of 5. |
+| Bot service | Vercel function running Stockfish / our draughts searcher for strong bots. |
+| Stage | One game step of a tournament (game, rules, table size, how many advance). |
+| Manager | A player in a Football Draft room. |

@@ -207,3 +207,55 @@ await fetch(`${env.WEB_ORIGIN}/api/internal/match-result`, {
 - **Lazy alarm.** `setAlarm` is a row write, so the room only moves its one alarm *earlier*. When a later deadline replaces an earlier one (a human acts and gets a fresh 30 s clock), the old alarm stays; it rings, finds nothing due and re-arms with no state write. Cost: ~1 alarm write per turn clock instead of one per action.
 - **Chained turns** (`chainTurns`, Ludo): after an action, a forced follow-up (auto-advance with `afterMs: 0`) and the rest of a bot's own turn are applied straight away in the same write. Events go out as one burst; the client queues and plays them at human speed (die 900 ms, 90 ms per hop, 250 ms settle), and turn clocks wait for that playback (`eventPauses`, summed).
 - A bot's move is previewed when its think time is set (same state and RNG position as the alarm will use), so the pause fits the move.
+
+## New games and modes (Phase 7 onward)
+
+### New classes — migration tag `v2` (never edit `v1`)
+```jsonc
+"durable_objects": { "bindings": [
+  { "name": "Room", "class_name": "GameRoom" },
+  { "name": "Match", "class_name": "Matchmaker" },
+  { "name": "Presence", "class_name": "Presence" },
+  { "name": "Tournament", "class_name": "Tournament" },
+  { "name": "Quota", "class_name": "Quota" }
+]},
+"migrations": [
+  { "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] },
+  { "tag": "v2", "new_sqlite_classes": ["Tournament", "Quota"] }
+]
+```
+Free plan allows 100 DO classes per account; we use 5.
+
+| Class | Instances | Name | Holds |
+|---|---|---|---|
+| `Tournament` | 1 per tournament | 7-char code | Entrants, stages, bracket, table index, football squads, placements, deadlines (one row) |
+| `Quota` | 1 global | `global` | Today's bot-service CPU, estimated rows/requests used, monthly bot CPU; in memory with a checkpoint row every 5 min |
+
+`GameRoom` gains: `kind: "tournament"` (fixed seats, auto-start, report to the Tournament by RPC), clocks for chess/draughts, a `chainTurns` bot loop for property, and the football dataset (loaded lazily, module scope).
+
+### Clock alarms (chess, draughts)
+- The room's single alarm is the earliest of: the **flag time** of the side to move (`turnStartedAt + remainingMs + min(quota, 2 s)`), the first-move **abort** deadline, grace deadlines, bot think times, idle.
+- On alarm: if the side to move is past its flag time → apply the server-only `flag` action (loss, or draw vs insufficient material). Bot moves for the bot service are made from the alarm with `await fetch(...)` (I/O, not CPU).
+- Lazy alarm (Phase 5) keeps writes down: a later flag time reuses the earlier alarm.
+
+### CPU budgeting (10 ms per invocation on Free — `13-free-tier-budget.md`)
+| Work | Typical CPU | Rule |
+|---|---|---|
+| Chess move (chess.js rebuild from FEN + 1 move + repetition key) | ≪ 1 ms (to measure) | One rebuild per action, no full replays |
+| Easy chess bot | ≤ 1,500 nodes ≈ 2–4 ms (to measure) | Node budget, not time (`Date.now()` doesn't advance during CPU work) |
+| Draughts Easy/Medium bot | ≤ 1,000 / 6,000 nodes | Same |
+| Property bot turn | < 1 ms | Arithmetic only |
+| Football option set | < 0.5 ms | Weighted sampling over ≤ ~300 candidates |
+| Football half simulation | < 1 ms | ~50 loop steps |
+| Football dataset parse (first use per isolate) | ~2–4 ms (estimate) | Lazy, module scope, compact tuples |
+Target ≤ 5 ms typical per invocation; anything heavier goes to the bot service or is split across invocations.
+
+### Persistence patterns
+- **Clocked games:** 1 row per move; alarm write only when the flag time moves earlier.
+- **Property:** bot turns chained (1 write); **auction bids in memory only** (persist start and result); trade *drafts* never persisted (an offer is an action).
+- **Football:** draft picks checkpointed (every 4th pick, last pick, `ready`; latest picks also in the socket attachment); match halves persisted once each (event log ≈ 1.5–3 KB) — never per event.
+- **Tournament:** one row per state change (join, seeding, table report, stage change); bracket updates are broadcast, not stored separately.
+
+### DO-to-DO calls
+- `Tournament → GameRoom.initTable(...)` and `GameRoom → Tournament.reportTable(...)` are RPC calls on DO stubs (`env.Room.getByName(code)`, `env.Tournament.getByName(code)`), retried from alarms until acknowledged. Each call is a DO request (counts toward the 100k/day).
+- `GameRoom → Quota.allowBot() / addBot(cpuMs)` before/after bot-service calls.

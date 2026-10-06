@@ -30,6 +30,13 @@ Versions: pin exact versions in `package.json` at project start; check npm for t
 | Unit tests | Vitest + fast-check | Property tests for rules | |
 | DO tests | `@cloudflare/vitest-pool-workers` | Runs DOs in workerd | |
 | E2E | Playwright | Multi-context games, offline simulation | Mailpit locally for emails |
+| Chess rules | **chess.js 1.4.0** (BSD-2-Clause) | Mature legality/SAN/FEN/PGN, pure and deterministic (fixed-seed Zobrist) | Inside `packages/engine`; our own draw/repetition counters on top. Verify at install |
+| Chess board UI | Our own SVG board | Small, our design, no GPL | **Not** chessground |
+| Chess pieces | **Cburnett** set from Wikimedia Commons, used under its **BSD 3-clause** option (also GFDL/CC BY-SA/GPL) | Classic, readable on small screens | Credit on `/legal/credits`; fallback set: `rhosgfx` (CC0) |
+| Strong chess bot | **Stockfish 19** via npm `stockfish` 19.0.0 (GPL-3.0), **lite single-threaded** WASM (≈ 1.8 MB) | Strong, adjustable (`UCI_LimitStrength`, `UCI_Elo` 1320–3190, `Skill Level`, `movetime`) | **Server only** (Vercel bot service). Never in the browser |
+| Easy chess bot | Our own TypeScript searcher (MIT, ours) | Runs inside the DO's CPU limit (node budget) | — |
+| Draughts engine + bots | Our own TypeScript (MIT, ours) | No suitable permissive library for Naija rules; majority-capture/flying kings are small to implement | Hard level also runs in the bot service |
+| Football data | `@gamehub/football-data` (ours) | Versioned JSON + Zod | Built in its own phase |
 
 ## Things deliberately NOT used
 
@@ -42,3 +49,8 @@ Versions: pin exact versions in `package.json` at project start; check npm for t
 | Inngest / queues | Not needed; email sent inline with `after()` |
 | Resend | Your choice: Nodemailer + Gmail |
 | Sentry / PostHog | Your choice: no monitoring |
+| chessground | GPL-3.0 — would put GPL code in the browser bundle (`AGENTS.md` §1) |
+| chessops / scalachess / lichess board assets under GPL/AGPL or CC BY-NC-SA | GPL family in the browser, or non-commercial-only licences |
+| Stockfish in the browser | GPL in the client; also 1.8–99 MB downloads on phones |
+| EA FC / FIFA / SoFIFA / FUTBIN data | Copying ratings/databases is a legal risk; our ratings are our own |
+| Transfermarkt bulk imports (incl. `transfermarkt-datasets`) | Database rights unclear; data paused since July 2026 — research aid only |

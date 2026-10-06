@@ -1,0 +1,116 @@
+# 15 — Bot service (strong bots on Vercel)
+
+Medium and Hard **chess** bots (Stockfish) and the Hard **draughts** bot need more CPU than a Durable Object may use on Workers Free (**10 ms per invocation**, `13-free-tier-budget.md`). They run in a small **Node function on Vercel Hobby**, called by the room DO with a signed request. Everything else (Easy chess, Easy/Medium draughts, all other games' bots) stays inside the DO.
+
+Sources: `docs/research/sources.md` → "Platform limits", "Chess".
+
+## Where it lives
+- **Route handlers in `apps/web`**: `app/api/bots/chess/move/route.ts` and `app/api/bots/draughts/move/route.ts`, `export const runtime = "nodejs"`, `export const maxDuration = 10`, region `fra1` (same as the rest of `web`, ~same city as the DOs in `weur`).
+- Stockfish files vendored in `apps/web/server/bots/stockfish/` (`stockfish-19-lite-single.js` ≈ 21 KB + `.wasm` ≈ 1.79 MB, plus `Copying.txt`), included in the function bundle with `outputFileTracingIncludes` (verify the Next.js 16 option name at install). Every bot module starts with `import "server-only"`.
+- **Why not a separate Vercel project?** Hobby limits (Active CPU 4 h, invocations 1M) are **per account**, so a second project buys no extra quota; it would add a second deploy, secret set and domain. A separate project only helps isolate *failures* — we get that with the fallback below. Revisit if the bot route ever needs a different runtime or region.
+
+## Endpoints
+
+```ts
+// packages/protocol/src/bots.ts
+export const botMoveRequest = z.object({
+  game: z.enum(["chess", "draughts"]),
+  level: z.enum(["medium", "hard"]),
+  position: z.string().max(200),          // chess: FEN; draughts: our compact position string
+  history: z.array(z.string().max(12)).max(120).optional(), // moves since the last irreversible move (repetition awareness)
+  movetimeMs: z.number().int().min(20).max(300),
+  rules: z.unknown().optional(),          // draughts variant/options
+  roomId: z.string().max(16),             // for logs/abuse limits only
+});
+export type BotMoveResponse =
+  | { ok: true; move: string; cpuMs: number; engine: "stockfish-19-lite" | "gh-draughts-1" }
+  | { ok: false; code: "BAD_REQUEST" | "UNAUTHORIZED" | "BUSY" | "QUOTA" | "ENGINE_ERROR" };
+```
+
+| Method + path | Body | Returns |
+|---|---|---|
+| `POST /api/bots/chess/move` | `botMoveRequest` with `game: "chess"` | `{ ok, move: "e7e8q" (UCI) }` |
+| `POST /api/bots/draughts/move` | `game: "draughts"` | `{ ok, move: "28x19x10" }` |
+
+## Auth (same HMAC scheme as other internal calls)
+- `x-gh-ts` + `x-gh-sig` = HMAC-SHA256 over `${ts}.${body}` with `packages/protocol/src/hmac.ts` (`signBody` / `verifyBody`, constant-time, ±5 min window).
+- **Separate secret `BOT_HMAC_SECRET`** (Wrangler + Vercel) so a leak can't be used to forge match results.
+- Requests without a valid signature → `401` immediately (no engine work). Body ≤ 4 KB.
+- The route is never called from browsers; CORS denies all origins.
+
+## Stockfish in Node
+```ts
+// apps/web/server/bots/stockfish.ts (sketch — verify the loader API of the installed package)
+import "server-only";
+let engine: Promise<Uci> | null = null;     // module scope: reused while the instance is warm (Fluid compute)
+const queue = new PQueue({ concurrency: 1 }); // single-threaded engine: one search at a time
+
+export async function bestMove(fen: string, level: "medium" | "hard", movetimeMs: number) {
+  if (queue.size >= 3) throw new BusyError();
+  return queue.add(async () => {
+    const uci = await (engine ??= start());  // loads stockfish-19-lite-single(.wasm), sends "uci", waits "uciok"
+    await uci.send(`setoption name Threads value 1`);
+    await uci.send(`setoption name Hash value 16`);
+    await uci.send(`setoption name UCI_LimitStrength value true`);
+    await uci.send(`setoption name UCI_Elo value ${STRENGTH[level].elo}`);
+    await uci.send(`position fen ${fen}`);
+    return uci.go(`go movetime ${Math.min(movetimeMs, STRENGTH[level].movetime)}`, { watchdogMs: 600 }); // sends "stop" on watchdog
+  });
+}
+```
+
+### Strength mapping
+| Level | `UCI_LimitStrength` | `UCI_Elo` | `go movetime` | Intended feel |
+|---|---|---|---|---|
+| Medium | true | **1500** | 100 ms | Club beginner–intermediate |
+| Hard | true | **2100** | 200 ms | Strong club player |
+
+- Stockfish's `UCI_Elo` range is **1320–3190**, calibrated on the CCRL blitz scale with the full network (`search.h`). We run the **lite** network, so real strength at a given Elo setting is ⚠️ unverified: calibrate in the Chess phase by playing 200 games of Medium vs Hard vs our Easy engine and adjusting the Elo numbers until Hard beats Medium ≥ 75 % and Medium beats Easy ≥ 85 %.
+- `Skill Level` (0–20) is the fallback knob if `UCI_Elo` behaves oddly with the lite net.
+- **Strict think limit:** `movetime` ≤ 300 ms (schema), watchdog `stop` at 600 ms; the DO's fetch timeout is **1.5 s**.
+
+### Draughts Hard (`gh-draughts-1`)
+Our own TypeScript searcher (MIT, `packages/engine`), run in Node: iterative deepening alpha-beta with a transposition table up to `movetimeMs` (150 ms). No WASM, no licence issues.
+
+## Cold starts
+- A cold instance loads ~1.8 MB of WASM and compiles it. ⚠️ Unverified cost: measure in the Chess phase (expect a few hundred ms). The first bot move after a quiet period may exceed the DO's 1.5 s timeout → that one move uses the built-in fallback; later moves hit a warm instance.
+- No warm-up cron (Hobby cron is limited and it would burn CPU for nothing).
+
+## Quota tracking (Vercel Hobby: 4 Active-CPU hours per month for the whole account)
+**If the account goes over a Hobby limit, Vercel pauses it until 30 days have passed — the whole site, not just bots.** So bots get a hard budget well below the limit:
+
+| Item | Value |
+|---|---|
+| Bot share of Active CPU | **2 CPU-hours / month** (50 %; the rest is for pages, auth, tickets, ingest) |
+| Daily bot budget | 2 h ÷ 30 = **240 CPU-seconds / day** |
+| Cost per Hard move | ≈ 0.2 s search + ≈ 0.02 s overhead → **≈ 1,100 Hard moves/day** (≈ 25–30 bot games); Medium ≈ 2,000 moves/day |
+
+**Where the counter lives:** not in Neon (a write per bot move would keep Neon awake and burn its 100 CU-hours). A tiny global **`Quota` Durable Object** (one instance, `05-durable-objects.md`) keeps the day's bot CPU in memory with a checkpoint row every 5 minutes:
+1. Before calling the service, the room asks `Quota.allowBot()` (RPC, ~0 CPU). Over budget → skip the call, use the fallback.
+2. The service returns `cpuMs` measured with `process.cpuUsage()` around the search; the room adds it with `Quota.addBot(cpuMs)`.
+3. The counter resets at 00:00 UTC; the monthly total is also kept so a heavy month tightens the daily budget (`daily = remainingMonthly ÷ daysLeft`).
+4. **Backstop on Vercel:** each instance refuses with `QUOTA` after 60 CPU-seconds in any rolling hour (in-memory), so a bug in the DO counter can't run away.
+
+Manual check: the Vercel usage page once a week during soft launch (`concerns.md`).
+
+## Fallback (silent)
+The room uses its **built-in engine** for that move when: the quota says no; the request times out (1.5 s); the response is `BUSY`, `QUOTA`, `ENGINE_ERROR` or non-200; or the returned move is illegal (validated with chess.js / our draughts engine). After 3 failures in a row, the room stops calling the service for 10 minutes. Players never see an error; only the logs do.
+
+| Game | Built-in fallback |
+|---|---|
+| Chess | "Easy+" — our Easy searcher with a 4,000-node budget and no random picks |
+| Draughts | Medium (depth 4) |
+
+## Licences (GPL boundary)
+- Stockfish and stockfish.js are **GPL-3.0**. They run **only on our server**; we don't distribute them to anyone, so GPL's source-offer duties (triggered by *conveying* copies) don't apply. GPL-3.0 (unlike AGPL) doesn't treat network use as conveying. We still keep `Copying.txt` next to the files and credit Stockfish on `/legal/credits`.
+- **Never** import anything from `server/bots/` into client code. CI check: the build output's `.next/static` must contain no file whose content matches `stockfish` (grep), and the bot route module is `server-only`.
+- chess.js (BSD-2) is fine on both sides.
+
+## Tests
+- Unit (Node, Vitest): signature checks (bad sig, stale ts, missing headers → 401); schema rejects big bodies; `bestMove` returns a **legal** move for 50 sample FENs (checked with chess.js); `movetime` respected within +150 ms; queue returns `BUSY` beyond 3 waiting; per-instance hourly backstop.
+- DO tests (`@cloudflare/vitest-pool-workers`, `fetchMock`): timeout → fallback move applied; 429 `QUOTA` → fallback; illegal move → fallback; `Quota` DO counts and resets at the day boundary.
+- E2E: a private chess game vs Hard completes (bot service running locally via `next start`).
+- Bundle check described above.
+
+## Cost on Cloudflare
+One bot move = 1 alarm (request) + 1 subrequest (`fetch`, free plan allows 50 per invocation) + 2 `Quota` RPCs (requests). Waiting for the response doesn't count as DO CPU.

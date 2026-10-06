@@ -6,8 +6,8 @@ Not microservices. One repo, shared packages, two things deployed:
 
 | Deployable | Platform (free) | Owns |
 |---|---|---|
-| `apps/web` | Vercel Hobby | Pages, auth, profiles, friends, leaderboards, admin, match-result ingestion, all Postgres access |
-| `apps/realtime` | Cloudflare Workers Free | WebSocket connections, rooms, matchmaking queues, presence, turn timers, bots |
+| `apps/web` | Vercel Hobby | Pages, auth, profiles, friends, leaderboards, admin, match/tournament-result ingestion, all Postgres access, **bot service** (`/api/bots/*`: Stockfish + strong draughts, server only) |
+| `apps/realtime` | Cloudflare Workers Free | WebSocket connections, rooms, **tournaments**, matchmaking queues, presence, turn timers and chess clocks, Easy/Medium bots, `Quota` counter |
 
 ```mermaid
 flowchart LR
@@ -22,6 +22,11 @@ flowchart LR
     PRES[(PresenceDO\n1 global)]
     MM[(MatchmakerDO\n1 per game+size)]
     ROOM[(GameRoomDO\n1 per room)]
+    TOUR[(TournamentDO\n1 per tournament)]
+    QUOTA[(QuotaDO\n1 global)]
+  end
+  subgraph BOT["Vercel: bot service"]
+    SF["Bot routes /api/bots\nStockfish 19 lite + our draughts search"]
   end
   NEON[(Neon Postgres\nFree, aws-eu-central-1)]
   GMAIL[[Gmail SMTP]]
@@ -29,7 +34,11 @@ flowchart LR
   UI -- HTTPS --> WEB
   UI -- "GET /api/realtime/ticket" --> WEB
   UI -- "WSS ?ticket=" --> W
-  W --> PRES & MM & ROOM
+  W --> PRES & MM & ROOM & TOUR
+  TOUR -- "RPC initTable / reportTable" --> ROOM
+  ROOM -- "signed POST (HMAC, 1.5 s timeout)" --> SF
+  ROOM -- "RPC allowBot / addBot" --> QUOTA
+  TOUR -- "signed POST /api/internal/tournament-result" --> WEB
   ROOM -- "signed POST /api/internal/match-result" --> WEB
   MM -- "signed POST /api/internal/room-created" --> WEB
   WEB --> NEON
@@ -77,6 +86,7 @@ DO computes final ranking → POSTs signed result to `web` → `web` writes `mat
 | `engine` | Game definitions, rule configs/presets, reducers, view projection, bots, seeded RNG | Worker + browser + tests |
 | `protocol` | Zod schemas for every WS message and internal HTTP payload; shared constants (limits, codes) | Worker + browser + web server |
 | `db` | Drizzle schema, migrations, query helpers | web server only |
+| `football-data` | Football Draft player database: versioned JSON, Zod schema, validator, compact build | Worker (option sets) + web server (types, profile/browse pages) — never shipped whole to browsers |
 | `ui` | Design tokens, primitives, game pieces (Card, Board, Die, Seed) | browser |
 | `config` | tsconfig/eslint/tailwind presets | build |
 
@@ -86,3 +96,11 @@ DO computes final ranking → POSTs signed result to `web` → `web` writes `mat
 2. PresenceDO hot → shard by `hash(userId) % N`.
 3. Matchmaking slow → add rating bands once concurrent players justify it.
 4. Nothing in this design needs Redis, queues, or Kubernetes.
+
+## New pieces (games and modes after Snakes & Ladders)
+
+- **Bot service** (`15-bot-service.md`): Medium/Hard chess (Stockfish 19 lite single-threaded WASM in a Node route) and Hard draughts. The room DO calls it from its alarm with an HMAC-signed `POST` and a 1.5 s timeout; waiting on the network doesn't count as DO CPU. Any failure or quota limit → the room's built-in engine plays that move. Stockfish never reaches browsers.
+- **Tournament DO** (`16-tournaments.md`): one per tournament (7-char code). Owns the bracket, creates `GameRoom` tables by RPC, receives table results by RPC, advances players, pushes live updates over its own lobby socket, and posts final standings to `web`.
+- **Quota DO**: one global object that counts the day's bot-service CPU and Durable Object usage estimates in memory (checkpoint every 5 min) so rooms can fall back and tournament hosts can be warned before the free limits are hit.
+- **Football data** (`packages/football-data`): the realtime Worker imports the compact dataset and passes it into `createFootballGame(dataset)` so `packages/engine` stays dependency-free. The browser only ever receives the cards in the manager's current option set.
+- **Clocks**: chess and draughts clocks run on server time in the room; the DO's single alarm is set to the flag time of the side to move (`games/chess.md`).

@@ -66,3 +66,20 @@ Lighthouse measures page loads; gameplay smoothness is covered by INP and frame 
 - A low-end Android (e.g. 2–3 GB RAM device) on Chrome: full Whot 4p game, no jank > 100 ms during card plays (Chrome DevTools performance trace).
 - Throttled "Slow 4G" + toggling offline mid-game: reconnect works.
 - INP ≤ 200 ms on all interactions.
+
+## New games (Phase 7 onward)
+
+| Game chunk (lazy, `next/dynamic`) | Budget (gzip) | Contents | Notes |
+|---|---|---|---|
+| Chess | ≤ 60 KB | board, clocks, move list, premove logic, **chess.js** (≈ 107 KB raw ESM → measure gzip at install), Cburnett sprite | If chess.js pushes past budget, load it in a second lazy chunk after the board paints (legal-move dots appear a moment later) |
+| Draughts | ≤ 40 KB | board, our move generator (shared engine code), clocks | |
+| Property | ≤ 60 KB | board (40 tiles from data), trade composer, auction panel | Board drawn from data, no images |
+| Football Draft | ≤ 60 KB | pick screens, pitch, cards, commentary player, ticker | **No player database in the browser**: option sets (≤ 5 cards) arrive in the view. A future "browse players" page lazy-loads a JSON slice per nation/league (≤ 30 KB each) |
+| Tournament lobby | ≤ 40 KB | bracket, stage list, entrant list | App-shell route, not a game chunk |
+
+- The bundle-budget script (`scripts/check-bundle-budget.mjs`) gets one marker string per new table chunk, as for the existing games.
+- **Chess board rendering:** one `<svg>` with 64 `<rect>`s drawn once; pieces as `<use href="#wK">` from a single inline sprite (12 symbols, ≈ 8–10 KB gzip for Cburnett — measure); moves animate with CSS `transform` on the `<use>` only; legal-move dots are a separate layer re-rendered from a selector. No re-render of all 64 squares per move. Clocks update text nodes once per 100 ms (once per second above 10 s).
+- **Football playback:** events revealed with one `setTimeout` chain per half; the ticker updates numbers only; commentary list virtualised (≤ 60 lines rendered).
+- **Property:** 40 tiles render once; per-move updates touch only token positions, owner bands and cash numbers (Zustand selectors).
+- **Worker side:** the football dataset is ~35–45 KB gzip (estimate) inside the realtime bundle; parsed lazily on first use per isolate (cold-start CPU, `13-free-tier-budget.md`).
+- **PWA precache:** add each new game chunk and its sprite to the precache list after first visit (not on install, to keep install light).

@@ -13,7 +13,7 @@ export interface Rng {
   counter(): number;                     // draws consumed so far (persisted)
 }
 
-export interface Ctx<R> { rng: Rng; rules: R; now: number /* injected, for logging only */ }
+export interface Ctx<R> { rng: Rng; rules: R; now: number /* injected server time: logging only, EXCEPT clocked games (chess, draughts, timed property, football windows) which use it as the authoritative clock — still pure, because the room injects it */ }
 
 export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   slug: GameSlug;
@@ -82,3 +82,13 @@ type RuleErrorCode =
 ## Browser-safe entry points
 
 Zod schemas live in each game's `schemas.ts` and are only imported by the full `GameDefinition` (server). Each game also exposes a zod-free subpath for client previews, e.g. `@gamehub/engine/tictactoe` (`tttLegalActions`, `tttNaija`, types). Client components must import from these, never from the package root, or zod lands in the game bundle.
+
+## As built and new-game notes
+
+- **Bots receive the full state `S` today** (`bots: Record<level, (s: S, …) => A>` in `packages/engine/src/types.ts`), not the projected view described in "Bots" above. Hidden-information games rely on each bot reading only its own seat's private data (Whot bots read only their own hand and public `misses`). New hidden-info games (property decks, football option sets) must follow the same rule, and their bot tests assert it by running the bot on a state whose other seats' private fields are scrambled.
+- **Clocked games** (chess, draughts): `ctx.now` is the server receive time and the move action carries `mt` (client think time, copied from `act.m` by the room). A server-only `flag` action ends a game on time; `apply` rejects it from clients.
+- **Remote bots** (bot service): the contract's `bots` stay synchronous and pure. For levels that use the bot service, the room checks `GameDefinition.remoteBot?(s, seat, level) → { game, level, position, movetimeMs } | null` before calling the local bot; on any failure it calls the local `bots[level]` (which is the documented fallback engine).
+- **Injected data:** `createFootballGame(dataset)` returns the football `GameDefinition` with the dataset closed over, so `packages/engine` keeps zero dependencies.
+- `GAME_SLUGS` gains `chess`, `draughts`, `property`, `football` (engine, protocol `game-slug.ts` and the Postgres enum together, one game at a time).
+- New `RuleErrorCode`s are listed in `03-realtime-protocol.md`.
+- Per-game termination bounds for property tests: chess ≤ 600 plies (with automatic fivefold/75-move); draughts ≤ 600 plies; property timed by its clock, classic ≤ 600 turns (3-hour cap); football: fixed length (≤ 120 minutes + penalties).

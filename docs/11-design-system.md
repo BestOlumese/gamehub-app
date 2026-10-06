@@ -160,3 +160,33 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Playback:** a bot's turn (or your forced move) arrives at once and plays back in order: die, hops, capture as the hopper lands, message line ("Bot 2 sent you home", "You rolled a 6", "Three sixes. Your turn is over").
 - **Results:** sheet with every place, colour dot and seeds home; Rematch and Back home.
 - **Accessibility:** a screen-reader list describes every player's seeds (in the yard / on the board / home).
+
+## New games (Phase 7 onward) — design rules (UI questions with mockups go to Best before each game's UI is built)
+
+### Chess
+- Squares: light `#F2E6D0`, dark `#B88A5A` (warm wood within our paper palette); last move `--accent` at 35 %; check ring `--danger`; legal dots `--ink` at 25 %.
+- Pieces: Cburnett set (BSD, credited). Board turned so your pieces are at the bottom; coordinates in `--ink-3` on the board edge.
+- Player cards above/below the board with **clock** (tabular, `--font-display` 28 px; running clock filled `--accent-soft`, ≤ 10 s `--danger-soft`).
+- Components: `ChessBoard`, `ChessClock`, `MoveList`, `PromotionPicker`, `DrawOfferBanner`, `ClaimSheet`.
+
+### Draughts
+- Board: dark squares `#7A5A3A`, light `#EAD9BC`; Naija orientation by default with a small "Naija board" label.
+- Seeds: cream `#F4EBD9` with ink rim and ink `#2B2D31` with cream rim (readable for colour-blind players: also different rims); king = two stacked discs with a crown mark.
+- Components: `DraughtsBoard`, `Seed`, `CaptureHint` ("You must take 3").
+
+### Property game
+- Board: square loop, round-cornered tiles with a colour band on the inner edge; our group colours (`games/property.md`): Clay `#A0674B`, Sky `#5BB5E0`, Coral `#E4717A`, Sunset `#EE8A2B`, Palm `#3E9B5F`, Gold `#D9A520`, Forest `#1F6F4A`, Royal `#3B4BA8`. Transport tiles with a simple vehicle glyph; utilities with a bulb / tap glyph. **No red banner, no Monopoly-like typography or tokens.**
+- Tokens: the 8 game-piece colours + initials (as in Snakes).
+- Money always "₦38k", "₦1.2M".
+- Components: `PropertyBoard`, `Tile`, `TitleDeedSheet` (our name: "Plot card"), `AuctionPanel`, `TradeComposer`, `NetWorthStrip`.
+
+### Football Draft
+- **No FC look-alike.** No shiny gold/blue/purple card tiers, no shield-shaped card, no "FUT"-style rating corner. Our card: a **rounded rectangle** on `--surface` with a thin top band in the tier colour (Elite `#1A1C20`, Star `#0E7A4E`, Strong `#2F6FD6`, Solid `#8A8E94`, Squad `#C9BFAF`; Legends get an Ankara-pattern band; Wonderkids a small sprout icon), OVR as a plain big number left, short name, position chip, nation flag, club as small text, six face stats in two rows of three. No photos — a monogram (initials) in a circle.
+- Pitch: flat green `#2E7D4F` with white lines at 60 % opacity, slot dots with the player's monogram, chemistry pips under each.
+- Match screen: scoreboard bar (team names are the managers' names), minute, ticker row; commentary feed (newest on top, big moments as cards); half-time sheet with subs and tactics.
+- Components: `PlayerCard`, `OptionSet` (5 cards in a scroll-snap row), `Pitch`, `FormationPicker`, `TacticsSheet`, `CommentaryFeed`, `MatchTicker`, `LeagueTable`.
+
+### Tournaments
+- Lobby: stage list as numbered cards ("1 · Whot · tables of 4 · top 2"), projected flow "32 → 16 → 8 → 1", entrant list, capacity estimate line.
+- Live bracket: per-stage tabs (reuse RPS `Bracket` patterns); multiplayer stages shown as table cards with finishing order and "Advanced" ticks; 1v1 stages as the RPS bracket.
+- "Your table is ready" sheet with a 5 s countdown and **Go now**.

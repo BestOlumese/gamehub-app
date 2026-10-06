@@ -65,3 +65,18 @@ Verify the exact `openskill` JS API at install time.
 - Friend request → accept/decline. Block removes friendship and hides chat both ways.
 - Friends list shows online / in game (via Presence) with "Invite" and "Watch" buttons.
 - Invite → toast + in-page notification on the friend's screen (if online); invite expires in 2 min.
+
+## New games (Phase 7 onward)
+
+| Game | Quick-match | Ranked | Queue name | Rating pool |
+|---|---|---|---|---|
+| Chess | Yes — player picks a time control (any preset except No clock) | **Yes**, separate **bullet / blitz / rapid** ratings (category = base + 40 × increment: < 180 s bullet, < 480 s blitz, else rapid; lichess's "classical" folded into rapid) | `chess-<preset>` e.g. `chess-3+2` | `rating(game="chess", variant=<category>)` |
+| Draughts | Yes — player picks variant; time control 5+3 (Proposal) | **Yes**, separate **naija10** and **english8** ratings | `draughts-naija10-5+3`, `draughts-english8-5+3` | `rating(game="draughts", variant)` |
+| Property | Yes (2–8 players, timed 45 min) | **No** (unranked) | `property-<size>` | — |
+| Football Draft | Yes (2 managers, single match) | **No** (unranked) | `football-2` | — |
+| Tournaments | No public tournaments in v1 | No | — | — |
+
+- Chess/draughts quick-match: colours by coin flip; `takebacks` forced off; the ranked **disconnect rule** applies (no bot takeover; opponent may claim the win after the 60 s grace — `games/chess.md`).
+- Bot fill after 20 s still applies to every game (Medium bot) and makes the game unranked. For chess the bot is the bot service's Medium level (falls back to the built-in engine).
+- openskill for two-player games is equivalent to a Bayesian Elo; one rating per `(game, variant)`. Display rating formula unchanged.
+- Pair-farming cap counts per game (not per variant).

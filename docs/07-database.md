@@ -127,3 +127,90 @@ Well within 0.5 GB for a long time. Prune `email_log` > 30 days on each sign-up 
 ## Migrations
 
 `drizzle-kit generate` → commit SQL → `drizzle-kit migrate` in CI before deploy. Never `push` against prod.
+
+## New games and modes (Phase 7 onward)
+
+> As built today (Phase 5) only the Better Auth tables, `email_log` and the `game_slug` enum exist. `match`, `rating` etc. above arrive with the first ingest phase. The **Tournament** phase now comes before quick-match (`phases.md`), so it creates the first result tables (`match`, `match_player`, `tournament*`) and the quick-match phase adds `rating` and leaderboards.
+
+### Enum change
+`game_slug` gains `chess`, `draughts`, `property`, `football`. Postgres enums need `ALTER TYPE game_slug ADD VALUE 'chess';` etc. — drizzle-kit generates these; values can't be removed later, so add them only when each game ships. `match.kind` gains `"tournament"`.
+
+### Ratings keyed by game **and variant**
+```ts
+export const rating = pgTable("rating", {
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  game: gameSlug("game").notNull(),
+  variant: text("variant").notNull().default("standard"),   // chess: bullet|blitz|rapid · draughts: naija10|english8 · others: standard
+  mu: real("mu").notNull().default(25),
+  sigma: real("sigma").notNull().default(25 / 3),
+  ordinal: real("ordinal").notNull().default(0),
+  played: integer("played").notNull().default(0),
+  won: integer("won").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [primaryKey({ columns: [t.userId, t.game, t.variant] }), index("rating_board_idx").on(t.game, t.variant, t.ordinal)]);
+```
+`match` gains `variant text not null default 'standard'` and `timeControl text` (e.g. `"3+2"`, null for untimed); `user_stats` gains `variant` in its key the same way. Migration: add the column with default `'standard'`, then widen the primary key (`drizzle-kit generate` → review SQL → migrate). Leaderboards filter by `(game, variant)`.
+
+### Tournaments
+```ts
+export const tournament = pgTable("tournament", {
+  id: text("id").primaryKey(),                                  // ULID
+  code: text("code").notNull(),                                 // 7 chars
+  name: text("name").notNull(),
+  hostId: text("host_id").references(() => user.id, { onDelete: "set null" }),
+  entrants: smallint("entrants").notNull(),
+  botFill: text("bot_fill"),                                    // level or null
+  dataVersion: text("data_version"),                            // football data version if any stage used it
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull(),
+  endedAt: timestamp("ended_at", { withTimezone: true }).notNull(),
+}, (t) => [uniqueIndex("tournament_code_start_uq").on(t.code, t.startedAt)]);
+
+export const tournamentStage = pgTable("tournament_stage", {
+  tournamentId: text("tournament_id").notNull().references(() => tournament.id, { onDelete: "cascade" }),
+  idx: smallint("idx").notNull(),
+  game: gameSlug("game").notNull(),
+  rules: jsonb("rules").notNull(),
+  tableSize: smallint("table_size").notNull(),
+  advancePerTable: smallint("advance_per_table").notNull(),
+}, (t) => [primaryKey({ columns: [t.tournamentId, t.idx] })]);
+
+export const tournamentEntry = pgTable("tournament_entry", {
+  tournamentId: text("tournament_id").notNull().references(() => tournament.id, { onDelete: "cascade" }),
+  entrant: smallint("entrant").notNull(),
+  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),   // null = bot or deleted
+  isBot: boolean("is_bot").notNull(),
+  displayName: text("display_name").notNull(),
+  place: smallint("place").notNull(),                           // shared places allowed
+  outAtStage: smallint("out_at_stage"),                         // null = champion/finalist
+  playedByBot: boolean("played_by_bot").notNull().default(false),
+}, (t) => [primaryKey({ columns: [t.tournamentId, t.entrant] }), index("te_user_idx").on(t.userId)]);
+```
+Each finished table is also a `match` row (`kind: "tournament"`, `ranked: false`) with `match.tournamentId` (nullable FK). Profile: tournament **wins** (`place = 1`) and **podiums** (`place ≤ 3`).
+
+### Football solo runs
+```ts
+export const footballSoloRun = pgTable("football_solo_run", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  wins: smallint("wins").notNull(),                             // 0–4
+  teamRating: smallint("team_rating").notNull(),
+  luck: text("luck").notNull(),                                 // balanced | wild | elite
+  dataVersion: text("data_version").notNull(),
+  finishedAt: timestamp("finished_at", { withTimezone: true }).notNull(),
+}, (t) => [index("fsr_user_idx").on(t.userId, t.wins)]);
+```
+Profile: "Best run 4/4", runs played, total wins. Head-to-head football matches are ordinary `match` rows (`game: "football"`, unranked) with the score in `match_player` (add `score smallint` nullable for games with scores).
+
+### Match records for the new games
+| Game | `variant` | Extra stored | Ranked? |
+|---|---|---|---|
+| Chess | bullet / blitz / rapid / untimed | `timeControl`, termination reason, optional PGN (≤ 8 KB, kept 90 days, then dropped to save the 0.5 GB) | Quick-match only |
+| Draughts | naija10 / english8 | termination reason | Quick-match only |
+| Property | standard | final net worth per player | Never |
+| Football | standard | score, mode (single/league/knockout/solo) | Never |
+
+### Size check
+PGNs are the only new large field: 10k chess games × ~3 KB ≈ 30 MB → pruned after 90 days. Tournaments and solo runs are tiny.
+
+### Bot-service usage
+Not stored in Postgres (it would keep Neon awake). Counted in the `Quota` Durable Object (`15-bot-service.md`).

@@ -147,3 +147,44 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 - `snapshot.deadlines.turns` is **per seat** (`{ [seat]: endsAt }`) instead of a single `turnEndsAt`: RPS bracket matches run in parallel and one player's move must not reset another's clock.
 - `RoomMeta` gains `minPlayers` and `botFill` (the level bots take empty seats at start, or null) so the lobby can label Start correctly.
 - `POST /rooms` takes `players` (2–8, clamped to the game) and `seatBotsNow` ("play a bot" seats bots immediately).
+
+## New games and modes (Phase 7 onward)
+
+Rule of thumb: **game moves stay inside `act`** (each game's `actionSchema` validates them on the server, and the shared engine validates them on the client). New envelope fields and new channels are listed here; game action shapes live in each game doc.
+
+### `act` metrics (clocked games)
+```ts
+z.object({ t: z.literal("act"), id, v, a: z.unknown(),
+  m: z.object({ mt: z.number().int().min(0).max(3_600_000) }).optional() }) // client-measured think time, ms; 0 for premoves
+```
+The room copies `m.mt` into chess/draughts move actions before `apply` (clients can't inject other clock fields). Lag compensation: `games/chess.md`.
+
+### Game actions added (all via `act`)
+| Game | Actions (`a.type`) | Notes |
+|---|---|---|
+| Chess | `move {uci, mt?}`, `resign`, `offer_draw`, `accept_draw`, `decline_draw`, `claim_draw`, `request_takeback`, `accept_takeback`, `decline_takeback`, `abort`, `claim_victory`, `claim_absent_draw` | `flag` is server-only (timeout action) and rejected from clients |
+| Draughts | `move {from, path, mt?}`, `huff {square}`, `resign`, draw offers, takebacks | |
+| Property | `roll`, `buy`, `decline`, `bid {amount}`, `pass_bid`, `build`, `sell_building`, `mortgage`, `unmortgage`, `pay_fine`, `use_bail`, `offer {offer}`, `accept_offer`, `decline_offer`, `cancel_offer`, `declare_bankruptcy`, `end_turn` | Bids and offers are actions; drafts of offers never leave the client |
+| Football Draft | `pick_formation {id}`, `pick_player {id, slot?}`, `arrange {...}`, `ready`, `half_time {subs, formation?, roles?, tactics?, ready}`, `skip_playback` (solo) | Option sets arrive **only in the picking manager's view** |
+
+### Snapshot additions
+- `snapshot.view` is per seat as before. New per-game view content: chess/draughts `clock` (server time) and `legal`; property `netWorth`, `decksLeft`, the viewer's own offers; football the viewer's `DraftSeat` (others reduced to `{ pick, ready }`) and the current half's events with `startedAt`.
+- `snapshot.room.tournament?: { code, stage, table }` for tournament tables.
+- `snapshot.deadlines.turns` continues to carry per-seat deadlines (draft picks, half-time windows, auctions use per-room `windowEndsAt` inside the view).
+
+### Tournament lobby channel
+`/parties/tournament/<code>`, ticket scope `tournament:<code>` — messages `t_hello`, `t_join`, `t_leave`, `t_config`, `t_kick`, `t_start`, `t_cancel` (client) and `t_snapshot`, `t_event`, `t_go`, `error` (server). Zod shapes and states: `16-tournaments.md`. `POST /tournaments` (HMAC from `web`) creates one.
+
+### Rate limits (added; per socket, on top of the 10/s action bucket)
+| What | Limit | Why |
+|---|---|---|
+| Chess/draughts moves | 1 per 100 ms | Premoves are single, no bursts needed |
+| Draw offers / takeback requests | 3 per game each, ≥ 10 plies apart after a decline | Anti-spam |
+| Property bids | 4 per second | Fast auctions without floods |
+| Property trade offers | 1 per 2 s, ≤ 2 open sent per player | Anti-spam |
+| Football picks | 1 per 300 ms | Accidental double taps |
+| Tournament lobby messages | 2 per second | |
+| Tournament `t_config` | 1 per second, host only, lobby only | |
+
+### New error codes
+`TOURNAMENT_FULL`, `BAD_STAGES`, `NOT_IN_TOURNAMENT`, `TABLE_NOT_READY`. Rule errors added to `RuleErrorCode`: `NOT_ENOUGH_CASH`, `MUST_RAISE_CASH`, `UNEVEN_BUILDING`, `NO_SUCH_OFFER`, `OFFER_EXPIRED`, `PICK_NOT_ACTIVE`, `BAD_FORMATION`, `ILLEGAL_CAPTURE`, `MUST_CAPTURE`, `TAKEBACK_DENIED`, `CLOCK_FLAGGED`.

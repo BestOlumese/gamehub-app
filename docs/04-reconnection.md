@@ -168,6 +168,11 @@ On `hello`, always send a full `snapshot` for that connection's seat (or spectat
 | Snakes & Ladders | Roll and move |
 | Tic-tac-toe | Bot (easy) picks a cell |
 | RPS | Random throw (server RNG) |
+| Chess / draughts (clock) | The **clock** decides: the side to move flags at its flag time (draw if the opponent can't mate). No separate turn timer |
+| Chess / draughts (no clock) | Per-move limit `moveLimitSeconds` → an Easy-bot move |
+| Property | Per phase: roll → `roll`; buy/decline → `decline` (auction); auction → `pass_bid`; raise cash → auto-sell/mortgage least valuable, else bankruptcy; manage → `end_turn`; offers to you expire (declined) |
+| Football Draft | Draft pick → server auto-pick (best fit); arrange / half-time / between matches → keep the current team |
+| Tournament tables | Same as the game; the seat always stays the player's |
 
 Connected player who times out 3 consecutive turns → `left` (AFK) → bot.
 
@@ -177,3 +182,15 @@ Connected player who times out 3 consecutive turns → `left` (AFK) → bot.
 - Offline 70 s → bot played at least one turn → rejoin → player controls seat at next turn.
 - Two tabs same user → older tab gets 4001 screen.
 - DO test: hibernate (evict) between moves → state reloads identically.
+
+## New games and modes: disconnect policy
+
+| Situation | Policy |
+|---|---|
+| **Ranked chess** (public quick-match) | Clock keeps running. **No bot takeover.** After the 60 s grace the opponent may **Claim win** (or **Claim draw** if they lack mating material) or keep waiting; if the absent player returns first, play continues; otherwise they flag. |
+| Unranked / private / tournament chess and draughts | Standard: after the 60 s grace a **Medium** bot plays the seat **on that player's remaining clock** until they return (hand-back at the next move boundary). Ranked draughts follows the ranked-chess rule. |
+| Property **auction** in progress | A disconnected player simply doesn't bid; a bot-covered seat bids with the bot valuation. Auctions are never paused. |
+| Property **trade offers** | Offers to an away player stay open until they expire (60 s); offers *from* them stay open too. A bot-covered seat answers by valuation. |
+| Football **draft** | Pick clocks never pause; missed picks are auto-picked; on return the manager continues from the current pick. Picks are checkpointed (every 4th pick + socket attachment, `football-draft/draft.md`). |
+| Football **match** | Nothing to do during a half; the snapshot carries the half's events and `startedAt` so the client jumps to "now". Missed half-time window → no changes. |
+| **Tournament** seats | The seat stays the player's at every table: grace → bot, the bot can advance; the lobby sends a returning player to their current table. Nobody is eliminated by a drop alone (`16-tournaments.md`). |

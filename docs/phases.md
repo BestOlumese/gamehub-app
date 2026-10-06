@@ -62,34 +62,88 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 
 **Exit:** 8-player game completes; presets pass simulation.
 
-## Phase 7 — Quick-match, ratings, history
-- [ ] `Matchmaker` DO with FIFO, 20 s bot-fill (unranked) + "keep waiting" option.
-- [ ] Signed match-result ingest, `match`/`match_player`/`user_stats`/`rating`, openskill updates, pair-farming cap.
-- [ ] Profile page: stats, ratings, last 20 matches.
-- [ ] Leaderboards: weekly + all-time per game, cached + tag revalidation.
+## Phase 7 — Chess (+ bot service)
+- [ ] Engine `games/chess` on chess.js 1.4.0 (BSD): FEN + move list state, our repetition map and counters, all draw rules (`drawClaims` auto/claim), abort, draw offers, takebacks (private only), resign.
+- [ ] Server-authoritative clocks: presets 1+0 … 30+0 and No clock (`moveLimitSeconds`), lichess-style lag quota, flag alarm, `act.m.mt`, premoves (client queue, `mt = 0`).
+- [ ] Engine contract update: `ctx.now` authoritative for clocked games; server-only `flag` action.
+- [ ] Easy bot (our searcher, node budget) in the DO; perft tests for both move generators.
+- [ ] **Bot service** in `apps/web` (`/api/bots/chess/move`): Stockfish 19 lite single-threaded, HMAC (`BOT_HMAC_SECRET`), strength mapping, queue, watchdog; `Quota` DO (migration `v2`) with daily budget; silent fallback in the room.
+- [ ] Our SVG board + Cburnett pieces (BSD, credited on `/legal/credits`), move list, PGN export, FEN copy, promotion picker, clocks, sounds, keyboard moves, screen-reader announcements. **Design questions with mockups to Best first.**
+- [ ] CPU benchmark route (`BENCH=1`) and report for chess actions and the Easy bot.
+- [ ] Disconnect rules: unranked → Medium bot on the player's clock; the ranked claim-win flow is built here behind the `ranked` flag and DO-tested (used from Phase 13).
 
-**Exit:** two accounts quick-match, finish a ranked game, both see rating changes and leaderboard entries.
+**Exit:** two phones play a 3+2 game to a flag and another to checkmate with premoves; a private game vs Hard finishes (bot service live, and the fallback path proven by switching the service off); perft passes; benchmark p95 ≤ 5 ms per action; no GPL file in `.next/static`.
 
-## Phase 8 — Friends, presence, invites, spectating
-- [ ] `Presence` DO (socket tags), friend requests/accept/block, online + in-game status.
-- [ ] Invites to rooms (toast), watch a friend's game, spectator mode with limits.
+## Phase 8 — Draughts
+- [ ] Engine `games/draughts`: `naija10` (mirrored board, random first move, men capture backward, flying kings, majority/free capture, Turkish strike, promotion only at end, huffing option) and `english8`; notation 1–50 / 1–32; FMJD and English draw rules.
+- [ ] Bots: Easy/Medium in the DO (node budgets), Hard in the bot service (`/api/bots/draughts/move`); clocks reused from chess (No clock default, 5+3 for quick-match).
+- [ ] Board UI with capture hints and hop-by-hop multi-captures. **Design questions with mockups to Best first.**
+- [ ] **Best confirms the majority-capture default** (research says Nigerian club play is often free-choice — `games/draughts.md`).
 
-**Exit:** friend A invites B from the friends list; B joins in two taps; C spectates without seeing hands.
+**Exit:** a Naija draft game and an English game complete between two phones; all capture/promotion edge-case tests green; Hard beats Easy > 60 %.
 
-## Phase 9 — Chat & moderation
+## Phase 9 — Property-trading game
+- [ ] **Best picks the name** (5 proposals in `games/property.md`); a proper trademark check before any promotion.
+- [ ] Engine `games/property`: board, economy from the formula, both decks, police post, building rules with supply and shortages, mortgages, bankruptcy, timed (net worth) and classic modes, trading protocol, auctions (bids in memory), all options.
+- [ ] Bots with valuation (Easy/Medium/Hard; Hard proposes trades); chained bot turns.
+- [ ] Money and building conservation property tests; **Monte Carlo balance job** passing all bands, then regenerate the rent table.
+- [ ] UI: board, plot cards, auction panel, trade composer, net-worth strip. **Design questions with mockups to Best first.**
+
+**Exit:** a 4-player timed game (2 humans, 2 bots) ends by the clock with correct net worth places; an 8-player game runs smoothly on a low-end phone; balance report attached; rows per game within the estimate.
+
+## Phase 10 — Football data (batches)
+- [ ] `packages/football-data`: Zod schema, validator (quotas, distribution, banned words), compact build, the 60-player sample passing.
+- [ ] Batches, each researched online with `basis` + `sources` and reviewed: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
+- [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
+- [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
+
+**Exit:** validator green on the full set; reviewer sign-off on 10 random players per batch; data version `YYYY.MM.1` tagged.
+
+## Phase 11 — Football Draft
+- [ ] Engine `games/football`: draft (option-set sampler, guarantees, presets, auto-pick), tactics/roles/chemistry, match engine, extra time/penalties, commentary templates, bot managers; `createFootballGame(dataset)`.
+- [ ] Draft distribution test and match Monte Carlo bands passing; tuning logs filled in the docs.
+- [ ] Modes: 1v1 (single / best of 3), mini league, knockout, solo run (+ `football_solo_run` record); checkpointed picks; per-half persistence.
+- [ ] UI: option-set cards (no FC look-alike), pitch, tactics sheet, commentary feed + ticker, league table. **Design questions with mockups to Best first.**
+
+**Exit:** two phones draft and play a full match with half-time changes; an 8-manager league (bots) finishes; a solo run of 4 matches works; hidden-info test proves no option leaks; CPU benchmark p95 ≤ 5 ms.
+
+## Phase 12 — Tournament mode
+- [ ] `Tournament` DO (migration `v2`), 7-char codes, lobby socket, stage editor with validation and projected flow, capacity estimate warning.
+- [ ] Seeding, table spreading, byes (fewest-byes first), tie-breaks, RPC `initTable` / `reportTable`, auto-navigation, bots that can advance, football squads kept across stages.
+- [ ] First result-ingest endpoint in `web` (`/api/internal/tournament-result`, HMAC) + `match`, `match_player`, `tournament`, `tournament_stage`, `tournament_entry` tables; profile shows tournament wins and podiums.
+- [ ] Bracket UI. **Design questions with mockups to Best first.**
+
+**Exit:** a 16-entrant tournament (6 humans across phones + 10 bots) with three stages of different games finishes with correct placements stored in Neon; a player who drops mid-stage is advanced by their bot and gets their seat back; bracket property tests green.
+
+## Phase 13 — Quick-match, ratings, history (was Phase 7)
+- [ ] `Matchmaker` DO with FIFO, 20 s bot-fill (unranked) + "keep waiting" option; queues for every game incl. `chess-<preset>`, `draughts-<variant>-5+3`, `property-<size>`, `football-2`.
+- [ ] Signed match-result ingest (extends Phase 12's), `match`/`match_player`/`user_stats`/`rating` keyed by **game and variant**, openskill updates, pair-farming cap.
+- [ ] Ranked chess (bullet/blitz/rapid) and draughts (naija10/english8) incl. the ranked disconnect claim-win flow; property and football stay unranked.
+- [ ] Profile page: stats, ratings per variant, last 20 matches (incl. tournament tables), football solo-run record, tournament wins/podiums.
+- [ ] Leaderboards: weekly + all-time per game **and variant**, cached + tag revalidation.
+
+**Exit:** two accounts quick-match chess blitz, finish a ranked game, both see rating changes in the blitz pool; a draughts ranked game updates the naija10 pool; leaderboards show both.
+
+## Phase 14 — Friends, presence, invites, spectating (was Phase 8)
+- [ ] `Presence` DO (socket tags), friend requests/accept/block, online + in-game status (incl. "in a tournament").
+- [ ] Invites to rooms and tournaments (toast), watch a friend's game, spectator mode with limits — chess/draughts spectators see the clocks; property spectators see public state only; football spectators never see option sets or unrevealed teams.
+
+**Exit:** friend A invites B from the friends list; B joins in two taps; C spectates without seeing hands or draft options.
+
+## Phase 15 — Chat & moderation (was Phase 9)
 - [ ] Emote bar + voice lines (record your clips).
-- [ ] Text chat (private + public, per-user toggle), obscenity + Naija list, link/phone masking, signed messages.
+- [ ] Text chat (private + public, per-user toggle), obscenity + Naija list, link/phone masking, signed messages; chat in tournament lobbies.
 - [ ] Mute/block/report, auto chat-mute rules.
-- [ ] `/admin`: report queue, actions, ban flow closing sockets.
+- [ ] `/admin`: report queue, actions, ban flow closing sockets; trade logs for property gifting reports.
 
 **Exit:** E2E report → ban → banned user disconnected and can't get tickets.
 
-## Phase 10 — Polish & launch
-- [ ] PWA (manifest, icons, Serwist precache, offline page).
-- [ ] Capacity guard (`CAPACITY` error, matchmaker soft limit), email quota UX.
-- [ ] Accessibility pass (keyboard play for all games, screen-reader labels for cards/seeds, focus rings).
-- [ ] Performance pass on a real low-end Android; budgets green.
-- [ ] Final copy review (plain, Nigerian-English friendly).
-- [ ] Soft launch with friends; watch Cloudflare dashboard daily usage numbers manually for a week.
+## Phase 16 — Polish & launch (was Phase 10)
+- [ ] PWA (manifest, icons, Serwist precache incl. every game chunk and sprite after first visit, offline page).
+- [ ] Capacity guard (`CAPACITY` error, matchmaker soft limit, tournament host warning wired to the `Quota` DO), email quota UX.
+- [ ] Accessibility pass for **every** game: keyboard play (chess/draughts move entry, property actions, football picks), screen-reader labels and live announcements, focus rings.
+- [ ] Performance pass on a real low-end Android for every game; budgets green (incl. new game chunks); CPU benchmark green for every game.
+- [ ] Final copy review (plain, Nigerian-English friendly); credits page (Cburnett, Stockfish, data sources); football disclaimer.
+- [ ] Soft launch with friends; watch the Cloudflare and Vercel usage numbers manually for a week.
 
 **Exit:** all success criteria in `00-overview.md` met.
