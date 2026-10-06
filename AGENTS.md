@@ -1,7 +1,7 @@
 # AGENTS.md — GameHub
 
 You are working on **GameHub**, a free-to-play, Nigeria-first, web-only multiplayer game platform.
-Players (2–8 per room, depending on the game) play **Whot, Ludo, Snakes & Ladders, Tic-tac-toe and Rock Paper Scissors** in real time over WebSockets.
+Players (2–8 per room, depending on the game) play **Whot, Ludo, Snakes & Ladders, Tic-tac-toe, Rock Paper Scissors, Chess, Draughts ("draft"), a property-trading game and Football Draft** in real time over WebSockets, and can string any of them together in a private **tournament** (4–32 entrants).
 
 Read this file fully before writing code. Then read the doc(s) for the area you are touching.
 
@@ -19,6 +19,8 @@ Read this file fully before writing code. Then read the doc(s) for the area you 
 8. **18+ only.** Signup requires date-of-birth confirmation of 18+. We store only the confirmation timestamp, not the DOB.
 9. **Light theme only.** Follow `docs/11-design-system.md`. No generic AI-looking UI, no AI-sounding copy.
 10. **English only** for UI copy.
+11. **No GPL/AGPL code in anything shipped to the browser.** GPL code may run only on our own servers (e.g. Stockfish in the bot service, `docs/15-bot-service.md`). Chessground (GPL-3.0) is not used.
+12. **No third-party trademarks, trade dress or likeness images:** no "Monopoly" name, board layout or card names; no EA/FC terms ("FUT", "Ultimate Team", "Icons", "Draft Token", packs); no player photos, club badges, kits or league logos. Real player **names and public facts** are allowed only in Football Draft, as specified in `docs/games/football-draft/player-database.md`.
 
 ## 2. Stack (locked)
 
@@ -33,7 +35,9 @@ Read this file fully before writing code. Then read the doc(s) for the area you 
 | Email | Nodemailer over Gmail SMTP (App Password) |
 | DB | Neon Postgres (Free) + Drizzle ORM |
 | Validation | Zod (shared in `packages/protocol`) |
-| Ratings | openskill (Weng-Lin, multiplayer) |
+| Ratings | openskill (Weng-Lin, multiplayer), keyed by game **and variant** |
+| Chess rules | chess.js (BSD-2) in `packages/engine`; our own SVG board (no chessground) |
+| Strong bots | Bot service: Node route in `apps/web` running Stockfish 19 lite (GPL-3.0, **server only**) + our draughts searcher |
 | Profanity | obscenity + custom Naija word list |
 | Bot protection | Cloudflare Turnstile on signup |
 | Tests | Vitest + fast-check (engine), @cloudflare/vitest-pool-workers (DOs), Playwright (E2E) |
@@ -53,11 +57,12 @@ gamehub/
 │  ├─ engine/                 pure game rules + bots (no I/O)
 │  ├─ protocol/               zod schemas for every WS message + shared types
 │  ├─ db/                     Drizzle schema, migrations, queries
+│  ├─ football-data/          Football Draft player database (versioned JSON + Zod schema + validator)
 │  ├─ ui/                     shared React components + design tokens
 │  └─ config/                 tsconfig, eslint, tailwind presets
 ```
 
-Dependency direction: `web → protocol, engine (client-side preview only), db, ui` · `realtime → protocol, engine` · `engine → nothing` · `protocol → engine (types only)`.
+Dependency direction: `web → protocol, engine (client-side preview only), db, ui, football-data (types/profile pages only)` · `realtime → protocol, engine, football-data` · `engine → nothing` (the football game receives the dataset by injection: `createFootballGame(dataset)`) · `protocol → engine (types only)` · `football-data → nothing` (zod only).
 **`realtime` never imports `db`.** It reports results to `web` over a signed internal HTTP call.
 
 ## 4. Docs map
@@ -81,6 +86,13 @@ Dependency direction: `web → protocol, engine (client-side preview only), db, 
 | A specific game | `docs/games/engine-contract.md` + `docs/games/<game>.md` |
 | What to build next | `docs/phases.md` |
 | Known risks | `docs/concerns.md` |
+| Chess | `docs/games/chess.md` + `docs/15-bot-service.md` |
+| Draughts | `docs/games/draughts.md` |
+| Property-trading game | `docs/games/property.md` |
+| Football Draft | `docs/games/football-draft/README.md` (+ `draft.md`, `player-database.md`, `tactics.md`, `match-engine.md`, `modes.md`) and `packages/football-data/README.md` |
+| Bot service (Stockfish, strong bots) | `docs/15-bot-service.md` |
+| Tournaments | `docs/16-tournaments.md` |
+| Where a fact came from | `docs/research/sources.md` |
 
 ## 5. Coding conventions
 
