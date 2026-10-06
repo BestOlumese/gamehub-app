@@ -1,12 +1,13 @@
 "use client";
 
-import { HOP_MS, ROLL_SHOW_MS, SETTLE_MS, type LudoState } from "@gamehub/engine/ludo";
+import { ROLL_SHOW_MS, type LudoState } from "@gamehub/engine/ludo";
 import type { SeatPublic } from "@gamehub/protocol";
 import { useEffect, useRef, useState } from "react";
 import { useRoom, type RoomEvent } from "@/lib/room/store";
 import { seatName } from "../rps/names";
 import { sfx } from "../sounds";
 import { ROLL_MS } from "./die";
+import { LudoPlayback } from "./playback";
 
 type Roll = { seat: number; value: number; key: number; stale: boolean };
 
@@ -48,98 +49,71 @@ export function useLudoFeed(seats: SeatPublic[], me: number | null) {
       lineTimer = setTimeout(() => setLine((l) => (l?.n === n ? null : l)), 2400);
     };
 
-    const queue: RoomEvent[] = [];
-    let board: number[][] | null = null; // the board as shown so far
-    let running = false;
     let rolls = 0;
     let seen = useRoom.getState().events.at(-1)?.n ?? 0;
 
-    const show = () => setSeeds(board ? board.map((s) => [...s]) : null);
-
-    function next() {
-      const e = queue.shift();
-      if (!e) {
-        running = false;
-        board = null;
-        setSeeds(null);
-        setActor(null);
-        return;
-      }
+    // What each event looks and sounds like when its moment comes in the playback.
+    const happen = (e: RoomEvent) => {
       const seat = Number(e.seat);
       switch (e.type) {
         case "rolled": {
           const value = Number(e.d);
           const key = ++rolls;
-          setActor(seat);
           setRoll({ seat, value, key, stale: false });
           later(ROLL_SHOW_MS + 1200, () =>
             setRoll((r) => (r?.key === key ? { ...r, stale: true } : r)),
           );
           sound(sfx.dice);
           if (value === 6) later(ROLL_MS, () => say(`${who(seat)} rolled a 6`));
-          return later(reduce ? 300 : ROLL_SHOW_MS, next);
-        }
-        case "moved": {
-          const path = (e.path as number[] | undefined) ?? [Number(e.to)];
-          const seed = Number(e.seed);
-          const hops = reduce ? [path.at(-1) ?? Number(e.to)] : path;
-          hops.forEach((p, i) =>
-            later(i * HOP_MS, () => {
-              if (board?.[seat]) board[seat][seed] = p;
-              show();
-              sound(sfx.hop);
-            }),
-          );
-          return later(hops.length * HOP_MS + SETTLE_MS, next);
+          return;
         }
         case "captured": {
           const victim = Number(e.victimSeat);
-          const seed = Number(e.seed);
-          if (board?.[victim]) board[victim][seed] = -1;
-          show();
           sound(sfx.capture);
-          say(
+          return say(
             Number(e.by) === me
               ? `You sent ${who(victim)} home!`
               : `${who(e.by)} sent ${victim === me ? "you" : who(victim)} home`,
           );
-          return next();
         }
         case "six_forfeit":
-          say(
+          return say(
             seat === me
               ? "Three sixes. Your turn is over"
               : `Three sixes. ${who(seat)}'s turn is over`,
           );
-          return next();
         case "no_move":
-          say(seat === me ? "No move this time" : `${who(seat)} can't move`);
-          return next();
+          return say(seat === me ? "No move this time" : `${who(seat)} can't move`);
         case "entered_home":
-          say(seat === me ? "Seed home!" : `${who(seat)} got a seed home`);
           sound(sfx.special);
-          return next();
+          return say(seat === me ? "Seed home!" : `${who(seat)} got a seed home`);
         case "finished":
-          say(seat === me ? "All your seeds are home!" : `${who(seat)} is home and dry`);
-          return next();
-        default:
-          return next();
+          return say(seat === me ? "All your seeds are home!" : `${who(seat)} is home and dry`);
       }
-    }
+    };
+
+    const playback = new LudoPlayback(
+      {
+        board: setSeeds,
+        actor: setActor,
+        event: happen,
+        hop: () => sound(sfx.hop),
+        wait: later,
+      },
+      reduce,
+    );
 
     const unsub = useRoom.subscribe((s, prev) => {
       if (s.events !== prev.events) {
-        for (const { n, e } of s.events.filter((x) => x.n > seen)) {
-          seen = n;
-          queue.push(e);
-        }
-        if (!running && queue.length) {
-          // Events arrive before their snapshot, so this is still the board before them.
-          const view = s.snap?.view as LudoState | undefined;
-          board = view ? view.seeds.map((x) => [...x]) : null;
-          running = true;
-          next();
-        }
+        const fresh = s.events.filter((x) => x.n > seen);
+        seen = s.events.at(-1)?.n ?? seen;
+        // Events arrive before their snapshot, so this is still the board before them.
+        const view = s.snap?.view as LudoState | undefined;
+        if (fresh.length)
+          playback.push(
+            fresh.map((x) => x.e),
+            view?.seeds,
+          );
       }
       const v = s.snap?.view as LudoState | undefined;
       const pv = prev.snap?.view as LudoState | undefined;

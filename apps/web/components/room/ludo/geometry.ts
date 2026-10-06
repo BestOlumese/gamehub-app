@@ -6,7 +6,7 @@ import { HOME, LAST_TRACK, square, START, type Colour } from "@gamehub/engine/lu
 type Cell = readonly [row: number, col: number];
 
 /** Track squares 0–51 as grid cells, starting at red's start square. */
-const TRACK_CELLS: readonly Cell[] = [
+export const TRACK_CELLS: readonly Cell[] = [
   ...[1, 2, 3, 4, 5].map((c) => [6, c] as const),
   ...[5, 4, 3, 2, 1, 0].map((r) => [r, 6] as const),
   [0, 7],
@@ -23,7 +23,7 @@ const TRACK_CELLS: readonly Cell[] = [
 ];
 
 /** Home column cells (progress 51–55) per colour. */
-const COLUMN: Record<Colour, readonly Cell[]> = {
+export const COLUMN: Record<Colour, readonly Cell[]> = {
   red: [1, 2, 3, 4, 5].map((c) => [7, c] as const),
   green: [1, 2, 3, 4, 5].map((r) => [r, 7] as const),
   yellow: [13, 12, 11, 10, 9].map((c) => [7, c] as const),
@@ -44,7 +44,7 @@ export const YARD_ORIGIN: Record<Colour, readonly [number, number]> = {
   yellow: [90, 90],
   blue: [0, 90],
 };
-const YARD_SPOTS = [
+export const YARD_SPOTS = [
   [22, 22],
   [38, 22],
   [22, 38],
@@ -82,4 +82,12 @@ export const TURNS: Record<Colour, number> = { red: 1, green: 2, yellow: 3, blue
 export function cornerOf(colour: Colour, turns: number) {
   const base = { red: 0, green: 1, yellow: 2, blue: 3 }[colour];
   return (base + 3 * turns) % 4;
+}
+
+/** A colour mixed with white: amount 1 is the colour, 0 is white. */
+export function tint(hex: string, amount: number) {
+  const n = parseInt(hex.slice(1), 16);
+  const mix = (c: number) => Math.round(255 - (255 - c) * amount);
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(mix) as [number, number, number];
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }

@@ -152,9 +152,10 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 
 - **Layout:** board fills the width; each player's panel sits outside their corner — two above the board, two below (like Ludo King). Panel: avatar with timer ring (people) or thinking arc (bots), a colour dot, name (amber pill on their go), "2/4 home" (or "Offline 0:42" / "Bot playing" / place), and the die when it's their go.
 - **Board turned** so your colour is always bottom-left; everyone sees it from their own side. Spectators see seat 0's side.
-- **Board:** classic Naija board from `LudoBoardArt` — coloured yards, home columns and centre triangles, coloured start squares, grey stars on the safe squares.
+- **Board (soft and light, Oct 2026):** no grid lines — every square is a soft rounded tile with a small gap; yards in a pale tint of their colour with a thin coloured border and pale resting spots; colour only where it means something: start squares, home lanes, and soft centre triangles; faint stars on safe squares (`board-base.tsx`).
 - **Seeds:** flat discs in the player's colour with a white rim and the seed number (dark text on yellow); seeds of one colour on one square stack into one disc with a count badge; mixed colours on a safe square shrink and sit side by side.
-- **Moving:** after you roll, seeds that can move glow (soft pulse + dark ring) and a faint dot shows where each would land; tap one and it hops square by square (90 ms a hop). One real choice: it moves by itself.
+- **Moving:** after you roll, seeds that can move bob gently (a steady thin ring instead with reduced motion) and a faint dot shows where each would land; tap one and it hops square by square (90 ms a hop). One real choice: it moves by itself.
+- **Playback never jumps:** the board freezes at the position before a turn while the die spins, then only moves forward with the hops (`playback.ts`, tested).
 - **Die:** white die with pips, border in the player's colour, in the panel of whoever is playing; yours pulses amber when it's time to roll. Tumbles 600 ms on a roll.
 - **Playback:** a bot's turn (or your forced move) arrives at once and plays back in order: die, hops, capture as the hopper lands, message line ("Bot 2 sent you home", "You rolled a 6", "Three sixes. Your turn is over").
 - **Results:** sheet with every place, colour dot and seeds home; Rematch and Back home.

@@ -1,10 +1,9 @@
 "use client";
 
-import { SAFE_SQUARES, START, type Colour, type LudoState } from "@gamehub/engine/ludo";
-import { LudoBoardArt } from "@gamehub/ui/art/ludo-board-art";
-import { COLOUR_HEX, seedXY, startCell, trackCell } from "./geometry";
+import { type Colour, type LudoState } from "@gamehub/engine/ludo";
+import { BoardBase } from "./board-base";
+import { COLOUR_HEX, seedXY, tint } from "./geometry";
 
-const STAR = "M0 -3.4L1 -1.1L3.3 -1L1.5 0.6L2.1 2.9L0 1.6L-2.1 2.9L-1.5 0.6L-3.3 -1L-1 -1.1Z";
 /** Yellow needs dark text to be readable. */
 const TEXT_ON: Record<Colour, string> = {
   red: "#fff",
@@ -56,17 +55,7 @@ export function LudoBoard({ state, turns, mover, targets, onSeed }: Props) {
       aria-label="Ludo board"
     >
       <g transform={`rotate(${angle} 75 75)`}>
-        <LudoBoardArt seeds={false} />
-        {(Object.keys(START) as Colour[]).map((c) => {
-          const [x, y] = startCell(c);
-          return <rect key={c} x={x - 5} y={y - 5} width="10" height="10" fill={COLOUR_HEX[c]} />;
-        })}
-        {[...SAFE_SQUARES]
-          .filter((sq) => !Object.values(START).includes(sq))
-          .map((sq) => {
-            const [x, y] = trackCell(sq);
-            return <path key={sq} d={STAR} transform={`translate(${x} ${y})`} fill="#8A8E94" />;
-          })}
+        <BoardBase />
 
         {/* Where each of your seeds would land. */}
         {mover !== null
@@ -78,9 +67,8 @@ export function LudoBoard({ state, turns, mover, targets, onSeed }: Props) {
                   key={`t${seed}`}
                   cx={x}
                   cy={y}
-                  r="2"
-                  fill={COLOUR_HEX[colour]}
-                  opacity="0.35"
+                  r="2.2"
+                  fill={tint(COLOUR_HEX[colour], 0.5)}
                 />
               );
             })
@@ -91,12 +79,12 @@ export function LudoBoard({ state, turns, mover, targets, onSeed }: Props) {
           const sameColour = group.every((d) => d.colour === first.colour);
           const layout =
             group.length === 1 || sameColour
-              ? [{ d: group.find(movable) ?? first, dx: 0, dy: 0, r: 4.3, count: group.length }]
+              ? [{ d: group.find(movable) ?? first, dx: 0, dy: 0, r: 4.6, count: group.length }]
               : group.map((d, i) => ({
                   d,
                   dx: [-2.3, 2.3, 2.3, -2.3][i % 4] ?? 0,
                   dy: [-2.3, 2.3, -2.3, 2.3][i % 4] ?? 0,
-                  r: 2.8,
+                  r: 3,
                   count: 1,
                 }));
           return layout.map(({ d, dx, dy, r, count }) => {
@@ -121,63 +109,65 @@ export function LudoBoard({ state, turns, mover, targets, onSeed }: Props) {
                     }
                   : { "aria-hidden": true })}
               >
-                {can ? (
-                  <>
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={r + 2.2}
-                      fill={COLOUR_HEX[d.colour]}
-                      opacity="0.25"
-                      className="motion-safe:animate-pulse"
-                    />
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={r + 1.6}
-                      fill="none"
-                      stroke="#1A1C20"
-                      strokeWidth="0.7"
-                    />
-                    <circle cx={cx} cy={cy} r="7" fill="transparent" />
-                  </>
-                ) : null}
-                <circle cx={cx} cy={cy + 0.5} r={r} fill="#1A1C20" opacity="0.15" />
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={r}
-                  fill={COLOUR_HEX[d.colour]}
-                  stroke="#fff"
-                  strokeWidth="1"
-                />
+                {can ? <circle cx={cx} cy={cy} r="7" fill="transparent" /> : null}
+                {/* Counter-turned so numbers read upright and the bob goes up on screen. */}
                 <g transform={`rotate(${-angle} ${cx} ${cy})`}>
-                  <text
-                    x={cx}
-                    y={cy + r * 0.36}
-                    fontSize={r * 1.05}
-                    fontWeight="800"
-                    textAnchor="middle"
-                    fill={TEXT_ON[d.colour]}
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {d.seed + 1}
-                  </text>
-                  {count > 1 ? (
-                    <>
-                      <circle cx={cx + r * 0.85} cy={cy - r * 0.85} r="2.1" fill="#1A1C20" />
-                      <text
-                        x={cx + r * 0.85}
-                        y={cy - r * 0.85 + 0.85}
-                        fontSize="2.6"
-                        fontWeight="800"
-                        textAnchor="middle"
-                        fill="#fff"
-                      >
-                        {count}
-                      </text>
-                    </>
-                  ) : null}
+                  {/* Shadow stays on the square; the disc bobs above it when it can move. */}
+                  <ellipse
+                    cx={cx}
+                    cy={cy + r * 0.55}
+                    rx={r * 0.85}
+                    ry={r * 0.35}
+                    fill="#1A1C20"
+                    opacity="0.15"
+                  />
+                  <g className={can ? "animate-seed-bob" : undefined}>
+                    {can ? (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={r + 1.4}
+                        fill="none"
+                        stroke="#1A1C20"
+                        strokeWidth="0.6"
+                        className="hidden motion-reduce:block"
+                      />
+                    ) : null}
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={r}
+                      fill={COLOUR_HEX[d.colour]}
+                      stroke="#fff"
+                      strokeWidth="1"
+                    />
+                    <text
+                      x={cx}
+                      y={cy + r * 0.36}
+                      fontSize={r * 1.05}
+                      fontWeight="800"
+                      textAnchor="middle"
+                      fill={TEXT_ON[d.colour]}
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {d.seed + 1}
+                    </text>
+                    {count > 1 ? (
+                      <>
+                        <circle cx={cx + r * 0.85} cy={cy - r * 0.85} r="2.1" fill="#1A1C20" />
+                        <text
+                          x={cx + r * 0.85}
+                          y={cy - r * 0.85 + 0.85}
+                          fontSize="2.6"
+                          fontWeight="800"
+                          textAnchor="middle"
+                          fill="#fff"
+                        >
+                          {count}
+                        </text>
+                      </>
+                    ) : null}
+                  </g>
                 </g>
               </g>
             );

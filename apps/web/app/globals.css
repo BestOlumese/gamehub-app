@@ -51,11 +51,29 @@
   animation: draw-on var(--dur-card) var(--ease-standard) both;
 }
 
+/* Ludo: a seed you can move bobs gently (user units inside the board's SVG). */
+@keyframes seed-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -1.8px;
+  }
+}
+
+@utility animate-seed-bob {
+  animation: seed-bob 700ms ease-in-out infinite;
+}
+
 @utility animate-shake {
   animation: shake var(--dur-turn) ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-seed-bob {
+    animation: none;
+  }
   .animate-shake {
     animation: none;
   }
