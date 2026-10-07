@@ -110,7 +110,9 @@ export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, on
         <p className="mt-3 text-sm text-ink-2">
           {game === "rps"
             ? "Rock blunts scissors, scissors cut paper, paper covers rock. Run out of time and a throw is made for you."
-            : game === "ludo"
+            : game === "snakes"
+              ? "Roll and move that many squares. A ladder takes you up, a snake brings you down. First to 100 wins. Run out of time and the die rolls for you."
+              : game === "ludo"
               ? "Roll, then move a seed that many squares. Bring all four seeds home first to win. Land on a rival to send it back to its yard. Run out of time and a move is made for you."
               : game === "whot"
                 ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."

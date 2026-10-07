@@ -161,6 +161,14 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Results:** sheet with every place, colour dot and seeds home; Rematch and Back home.
 - **Accessibility:** a screen-reader list describes every player's seeds (in the yard / on the board / home).
 
+## Snakes & Ladders (decided Oct 2026)
+
+- **Layout:** players in a row on top (4 per row, 2 rows for 5–8), board full width, status line, your panel with the big die at the bottom. No turn banner: "Your turn" sits in your panel. The board caps its width by screen height so the die never drops off a 360 × 640 phone.
+- **Board:** soft and light like Ludo: rounded tiles in pale bands (`#E8F3EC`, `#FCEEE1`, `#E8F0FB`, `#F4EAF5`, `#FAF2D9`), ladders in warm wood (`#B9824F` rails, `#CF9D6C` rungs), tapered snakes with belly spots and eyes, a gold star on 100.
+- **Tokens:** pin markers, the head shaped by seat (circle, triangle, square, diamond, star, hexagon, cross, pentagon) with the player's initial. Shape + colour + initial: never colour alone.
+- **Motion:** hop 110 ms a square, slide 700 ms along the ladder or snake curve, die tumbles 600 ms. Reduced motion: no tumble, no bob.
+- Full details: `games/snakes-and-ladders.md`.
+
 ## New games (Phase 7 onward) — design rules (UI questions with mockups go to Best before each game's UI is built)
 
 ### Chess

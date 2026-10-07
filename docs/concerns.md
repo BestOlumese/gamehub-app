@@ -15,7 +15,7 @@ Known risks, what we decided, and what would trigger a change. Keep this file cu
 | 9 | **Public text chat with strangers** | Harassment, scams | Filter, link/phone masking, reports, auto-mute, admin bans, per-user chat off | Moderation workload too high → default public chat off |
 | 10 | **Collusion in multi-player ranked Whot** | Unfair ratings | Quick-match only, pair cap; accepted residual risk | Patterns in reports |
 | 11 | **Library API drift** (partyserver/partysocket, Better Auth, openskill, Serwist + Turbopack) | Snippets in these docs may not match | Docs say "verify at install"; pin versions | Each major upgrade |
-| 12 | **Snakes classic layout accuracy** | Wrong board | Verify against a reference image before Phase 6 ships | — |
+| 12 | ~~**Snakes classic layout accuracy**~~ | — | Closed (Oct 2026): we ship four boards of our own instead of the 1943 layout (checked: 39.2 expected rolls, but a copied layout is a trade-dress risk). Each board passes the simulation test | — |
 | 13 | **"GameHub" name** is generic and may collide with existing apps/trademarks | Confusion; possible takedown if ever commercial | Keep for free project on free subdomains | Before any branding spend |
 | 14 | **No monitoring** | Bugs found only by users | Manual Cloudflare/Vercel dashboard checks; "Report a problem" link that opens a prefilled email | Repeated silent failures |
 | 15 | **workers.dev / vercel.app subdomains** | Look less trustworthy; can't share cookies (handled by tickets) | Accepted | Free domain options change |

@@ -10,7 +10,7 @@ Per game:
 - **Example tests** for every rule in the game doc (one test per row of the special-cards / options tables, both with the option on and off).
 - **Property tests** (fast-check), ≥ 1,000 runs each:
   - Random rule config (from `ruleSchema` arbitrary) + random seed + random legal actions until over → invariants hold after every step.
-  - Termination: game ends within a bound (Whot ≤ 2,000 actions, Ludo ≤ 5,000, Snakes ≤ 3,000, RPS ≤ 500, TTT ≤ 80: best of 5 + 3 sudden-death rounds).
+  - Termination: game ends within a bound (Whot ≤ 2,000 actions, Ludo ≤ 5,000, Snakes ≤ 6,000 rolls, RPS ≤ 500, TTT ≤ 80: best of 5 + 3 sudden-death rounds).
   - Every action outside `legalActions` is rejected; `apply` never throws.
   - `view(s, k)` never contains another seat's private data (serialise and search for card ids).
   - Determinism: same seed + same actions ⇒ identical states.

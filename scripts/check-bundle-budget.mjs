@@ -38,6 +38,7 @@ const gameMarkers = {
   "Rock Paper Scissors": "Your throw",
   Whot: "Call a shape",
   Ludo: "Pick a seed to move",
+  "Snakes & Ladders": "Snakes and Ladders board",
 };
 
 function gameChunks() {

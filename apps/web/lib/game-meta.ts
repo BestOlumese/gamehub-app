@@ -3,6 +3,7 @@ import type { GameSlug } from "@gamehub/engine";
 import type { RpsRules } from "@gamehub/engine/rps";
 import type { TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
+import { BOARDS, snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
 export const GAME_NAMES: Record<GameSlug, string> = {
@@ -80,10 +81,35 @@ export const describeLudoRules = (r: LudoRules) =>
     ...(ludoRuleChanges(r).length ? ludoRuleChanges(r) : ["Naija Standard"]),
   ].join(" · ");
 
+/** Snakes & Ladders rules that differ from Naija Standard, in plain words. */
+export function snakesRuleChanges(r: SnakesRules): string[] {
+  const n = snakesNaija;
+  const out: string[] = [];
+  if (!r.sixRollsAgain) out.push("No extra roll on 6");
+  else if (r.maxConsecutiveSixes !== n.maxConsecutiveSixes)
+    out.push(
+      r.maxConsecutiveSixes ? `${r.maxConsecutiveSixes} sixes end your turn` : "No limit on sixes",
+    );
+  if (r.needSixToStart) out.push("Need a 6 to start");
+  if (r.bump) out.push("Bump");
+  if (!r.exactRollToFinish) out.push("Overshoot 100 allowed");
+  if (r.firstFinisherEnds) out.push("Ends when the first player reaches 100");
+  if (r.autoRoll) out.push("Auto roll");
+  return out;
+}
+
+export const describeSnakesRules = (r: SnakesRules) =>
+  [
+    `${BOARDS[r.board].name} board`,
+    `${r.turnSeconds} s turns`,
+    ...(snakesRuleChanges(r).length ? snakesRuleChanges(r) : ["Naija Standard"]),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
   if (game === "whot") return describeWhotRules(rules as WhotRules);
   if (game === "ludo") return describeLudoRules(rules as LudoRules);
+  if (game === "snakes") return describeSnakesRules(rules as SnakesRules);
   return "";
 }

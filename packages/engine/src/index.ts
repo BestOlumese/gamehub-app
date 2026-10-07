@@ -9,3 +9,12 @@ export { whot, whotNaija, whotRulesSchema } from "./games/whot";
 export type { Shape, WhotAction, WhotRules, WhotState, WhotView } from "./games/whot";
 export { ludo, ludoNaija, ludoRulesSchema } from "./games/ludo";
 export type { Colour, LudoAction, LudoRules, LudoState, LudoView } from "./games/ludo";
+export { snakes, snakesNaija, snakesRulesSchema, BOARDS, BOARD_IDS } from "./games/snakes";
+export type {
+  Board,
+  BoardId,
+  SnakesAction,
+  SnakesRules,
+  SnakesState,
+  SnakesView,
+} from "./games/snakes";

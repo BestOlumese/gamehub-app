@@ -1,4 +1,4 @@
-import { ludoNaija, whotNaija, type TttState } from "@gamehub/engine";
+import { ludoNaija, snakesNaija, whotNaija, type TttState } from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
 import type { ServerRoomMsg } from "@gamehub/protocol";
 import { env, runDurableObjectAlarm, runInDurableObject } from "cloudflare:test";
@@ -596,6 +596,7 @@ describe("ludo", () => {
     turn: number;
     lastRoll: { seat: number; value: number } | null;
     seeds: number[][];
+    movable: number[];
   };
 
   it("you roll, a single choice moves by itself, and the bot takes its turn", async () => {
@@ -629,6 +630,10 @@ describe("ludo", () => {
       if (view().turn === 0 && view().phase === "roll") {
         act(host, { type: "roll" });
         await host.next((m) => m.t === "ack" || m.t === "reject");
+      } else if (view().turn === 0 && view().phase === "move") {
+        // A six's bonus roll can leave a real choice: take the first seed, don't wait for the clock.
+        act(host, { type: "move", seed: view().movable[0] });
+        await host.next((m) => m.t === "ack" || m.t === "reject");
       }
       await new Promise((r) => setTimeout(r, 1000));
       await runDurableObjectAlarm(stub);
@@ -655,20 +660,7 @@ describe("ludo", () => {
 
     const stub = env.Room.getByName(code);
     // Count storage writes from here: each room upsert and each setAlarm is one row.
-    const writes = { rows: 0, alarms: 0 };
-    await runInDurableObject(stub, (_i, state) => {
-      const sql = state.storage.sql;
-      const exec = sql.exec.bind(sql);
-      sql.exec = ((query: string, ...args: unknown[]) => {
-        if (/^\s*(INSERT|UPDATE|DELETE)/i.test(query)) writes.rows++;
-        return exec(query, ...(args as []));
-      }) as typeof sql.exec;
-      const setAlarm = state.storage.setAlarm.bind(state.storage);
-      state.storage.setAlarm = ((t: number | Date) => {
-        writes.alarms++;
-        return setAlarm(t);
-      }) as typeof state.storage.setAlarm;
-    });
+    const writes = await countWrites(stub);
     type Live = {
       room: {
         phase: string;
@@ -697,5 +689,73 @@ describe("ludo", () => {
     const total = writes.rows + writes.alarms;
     console.log(`ludo 4 bots: ${info.v} actions, ${writes.rows} rows + ${writes.alarms} alarms`);
     expect(total).toBeLessThan(info.v);
+  }, 120_000);
+});
+
+/** Counts storage writes in a room from now on: each room upsert and each setAlarm is one row. */
+async function countWrites(stub: DurableObjectStub) {
+  const writes = { rows: 0, alarms: 0 };
+  await runInDurableObject(stub, (_i, state) => {
+    const sql = state.storage.sql;
+    const exec = sql.exec.bind(sql);
+    sql.exec = ((query: string, ...args: unknown[]) => {
+      if (/^\s*(INSERT|UPDATE|DELETE)/i.test(query)) writes.rows++;
+      return exec(query, ...(args as []));
+    }) as typeof sql.exec;
+    const setAlarm = state.storage.setAlarm.bind(state.storage);
+    state.storage.setAlarm = ((t: number | Date) => {
+      writes.alarms++;
+      return setAlarm(t);
+    }) as typeof state.storage.setAlarm;
+  });
+  return writes;
+}
+
+describe("snakes and ladders", () => {
+  it("an 8-player game plays to the end with every place filled, within the write budget", async () => {
+    const code = await createRoom({
+      game: "snakes",
+      rules: snakesNaija,
+      players: 8,
+      botLevel: "easy",
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    expect(host.last().seats).toHaveLength(8);
+    host.send({ t: "leave" }); // a bot plays the host's seat too
+    await host.closed;
+
+    const stub = env.Room.getByName(code);
+    const writes = await countWrites(stub);
+    type Live = {
+      room: {
+        phase: string;
+        v: number;
+        state: { places: number[][] | null };
+        deadlines: { bot?: number; auto?: number };
+      };
+    };
+    let info = { phase: "playing", v: 0, places: null as number[][] | null };
+    for (let i = 0; i < 4000 && info.phase === "playing"; i++) {
+      await runInDurableObject(stub, (inst) => {
+        const d = (inst as unknown as Live).room.deadlines;
+        if (d.bot !== undefined) d.bot = 0;
+        if (d.auto !== undefined) d.auto = 0;
+      });
+      await runDurableObjectAlarm(stub);
+      info = await runInDurableObject(stub, (inst) => {
+        const r = (inst as unknown as Live).room;
+        return { phase: r.phase, v: r.v, places: r.state.places };
+      });
+    }
+    expect(info.phase).toBe("ended");
+    expect(info.places?.flat().sort()).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+    // Chained turns: a bot's whole turn (bonus rolls included) is one state write + one alarm.
+    const total = writes.rows + writes.alarms;
+    console.log(`snakes 8 bots: ${info.v} actions, ${writes.rows} rows + ${writes.alarms} alarms`);
+    expect(total).toBeLessThan(info.v * 2);
   }, 120_000);
 });

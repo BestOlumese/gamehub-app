@@ -3,6 +3,7 @@
 import { rpsNaija, type RpsRules } from "@gamehub/engine/rps";
 import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
+import { snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { dealSize, whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import type { BotLevel } from "@gamehub/protocol";
 import { Alert } from "@gamehub/ui/forms/alert";
@@ -18,10 +19,11 @@ import { createRoom } from "@/app/(app)/play/actions";
 import { describeRules, GAME_NAMES } from "@/lib/game-meta";
 import { RpsRulesStep } from "./rps-rules-step";
 import { LudoRulesStep } from "./ludo-rules-step";
+import { SnakesRulesStep } from "./snakes-rules-step";
 import { TttRulesStep } from "./ttt-rules-step";
 import { WhotRulesStep } from "./whot-rules-step";
 
-export type CreatableGame = "tictactoe" | "rps" | "whot" | "ludo";
+export type CreatableGame = "tictactoe" | "rps" | "whot" | "ludo" | "snakes";
 
 const LEVELS: ReadonlyArray<{ value: BotLevel; label: string }> = [
   { value: "easy", label: "Easy" },
@@ -51,6 +53,7 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
   const [rpsRules, setRpsRules] = useState<RpsRules>(rpsNaija);
   const [whotRules, setWhotRules] = useState<WhotRules>(whotNaija);
   const [ludoRules, setLudoRules] = useState<LudoRules>(ludoNaija);
+  const [snakesRules, setSnakesRules] = useState<SnakesRules>(snakesNaija);
   // Two players: wait for a friend or play a bot. More: wait, optionally topping up with bots at start.
   const [seat, setSeat] = useState<"friend" | "bot">("friend");
   const [fillAtStart, setFillAtStart] = useState(true);
@@ -65,7 +68,9 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
         ? whotRules
         : game === "ludo"
           ? ludoRules
-          : tttRules;
+          : game === "snakes"
+            ? snakesRules
+            : tttRules;
   const counts = game === "ludo" ? [2, 3, 4] : [2, 3, 4, 5, 6, 7, 8];
   const duel = players === 2;
 
@@ -143,15 +148,17 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
             </div>
           </fieldset>
           <p className="rounded-control bg-surface-2 px-4 py-3 text-sm text-ink-2">
-            {game === "ludo"
-              ? players === 2
-                ? "2 players sit opposite each other: red v yellow."
-                : `${players} players, 4 seeds each. First to get all 4 home wins.`
-              : game === "whot"
-                ? `${players} players, ${dealSize(players, whotRules.handSize)} cards each. First to empty their hand wins.`
-                : duel
-                  ? "2 players: a one-on-one duel."
-                  : `${players} players: a knockout bracket. Win your match to go through.`}
+            {game === "snakes"
+              ? `${players} players race from 1 to 100. Climb the ladders, dodge the snakes.`
+              : game === "ludo"
+                ? players === 2
+                  ? "2 players sit opposite each other: red v yellow."
+                  : `${players} players, 4 seeds each. First to get all 4 home wins.`
+                : game === "whot"
+                  ? `${players} players, ${dealSize(players, whotRules.handSize)} cards each. First to empty their hand wins.`
+                  : duel
+                    ? "2 players: a one-on-one duel."
+                    : `${players} players: a knockout bracket. Win your match to go through.`}
           </p>
         </div>
       ) : null}
@@ -163,6 +170,8 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
           <WhotRulesStep rules={whotRules} onChange={setWhotRules} />
         ) : game === "ludo" ? (
           <LudoRulesStep rules={ludoRules} onChange={setLudoRules} />
+        ) : game === "snakes" ? (
+          <SnakesRulesStep rules={snakesRules} onChange={setSnakesRules} />
         ) : (
           <TttRulesStep rules={tttRules} onChange={setTttRules} />
         )
@@ -221,7 +230,9 @@ export function CreateRoomSheet({ game, open, onClose }: Props) {
             {[
               ["Game", GAME_NAMES[game]],
               ...(game === "rps" ? [["Players", duel ? "2 (duel)" : `${players} (knockout)`]] : []),
-              ...(game === "whot" || game === "ludo" ? [["Players", String(players)]] : []),
+              ...(game === "whot" || game === "ludo" || game === "snakes"
+                ? [["Players", String(players)]]
+                : []),
               ["Rules", describeRules(game, rules)],
               [duel ? "Other seat" : "Seats", otherSeats],
             ].map(([k, v]) => (

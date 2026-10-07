@@ -34,7 +34,7 @@ jobs:
   # Auth flows end to end against `next start`, local Postgres and Mailpit (docs/12-testing.md).
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     services:
       postgres:
         image: postgres:17-alpine

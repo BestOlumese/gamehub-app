@@ -11,7 +11,7 @@ export default defineConfig({
   testDir: "e2e",
   timeout: 90_000,
   // Hard stop for the whole run so a stuck server can never hang CI.
-  globalTimeout: 15 * 60_000,
+  globalTimeout: 20 * 60_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,

@@ -13,7 +13,7 @@ import { useRoom, type Snapshot } from "@/lib/room/store";
 import { placeLabels } from "../places";
 import { seatName } from "../rps/names";
 import { LudoBoard } from "./board";
-import { Die } from "./die";
+import { Die } from "../die";
 import { COLOUR_HEX, cornerOf, TURNS } from "./geometry";
 import { Panel } from "./panel";
 import { LudoResult } from "./result-sheet";

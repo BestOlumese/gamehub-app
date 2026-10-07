@@ -62,7 +62,7 @@ Per move we write **~1–2 rows**: 1 state upsert, plus 1 `setAlarm` only when t
 |---|---|---|---|
 | Tic-tac-toe (best of 3) | ~20 | ~40 | ~2,500 |
 | RPS knockout 8p | ~40 | ~80 | ~1,250 |
-| Snakes & Ladders 4p | ~120 | ~240 | ~400 |
+| Snakes & Ladders 4p | ~130 | ~260 (chained bot turns; measured 424 for an 8-bot game of 254 actions) | ~380 |
 | Whot 4p | ~120 | ~240 | ~400 |
 | Ludo 4p | ~1,300 (measured: rolls waiting for 6s add up) | ~900–1,050 (chained turns + lazy alarm; measured 1,056 for 4 bots) | ~100 |
 | Chess (≈ 80 plies) | ~80 | ~120–160 (flag-time alarm often moves earlier) | ~700 |

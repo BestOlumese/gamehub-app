@@ -6,8 +6,12 @@ const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:3000";
 const uname = (tag: string) =>
   `${tag}_${Date.now().toString(36).slice(-5)}${Math.floor(Math.random() * 90 + 10)}`;
 
-async function player(browser: Browser, tag: string) {
-  const ctx = await browser.newContext({ ...devices["Pixel 7"], baseURL: BASE_URL });
+async function player(browser: Browser, tag: string, viewport?: { width: number; height: number }) {
+  const ctx = await browser.newContext({
+    ...devices["Pixel 7"],
+    ...(viewport ? { viewport } : {}),
+    baseURL: BASE_URL,
+  });
   const page = await ctx.newPage();
   const username = uname(tag);
   await signUpAndVerify(page, uniqueEmail(tag));
@@ -49,6 +53,78 @@ async function move(page: Page, label: string) {
   await cell(page, label).click();
   await expect(cell(page, label)).toHaveAccessibleName(/: (X|O)$/);
 }
+
+test("Snakes & Ladders: 2 people and 6 bots play an 8-player game to the end", async ({
+  browser,
+}) => {
+  // The longest test: it runs first so it never holds up the end of the suite.
+  test.setTimeout(720_000);
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  const host = await player(browser, "snk_h");
+  // The guest is on a small phone, so the 8-player layout is checked at 360 × 640 too.
+  const guest = await player(browser, "snk_g", { width: 360, height: 640 });
+
+  const tile = host.page.locator("li").filter({ hasText: "Snakes & Ladders" });
+  await tile.getByRole("button", { name: "Play with friends" }).click();
+  await host.page.getByRole("button", { name: "8", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await expect(host.page.getByText("Naija Standard")).toBeVisible();
+  // Quick board, no exact finish, first to 100 ends it: an 8-player game in a few minutes.
+  await host.page.getByRole("button", { name: /^Quick/ }).click();
+  await shot(host.page, "snakes-boards");
+  await host.page.getByRole("switch", { name: "Exact roll to finish" }).click();
+  await host.page.getByRole("switch", { name: "First to 100 ends it" }).click();
+  await shot(host.page, "snakes-rules");
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Easy", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(host.page.getByText(/Quick board/)).toBeVisible();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game · bots take 6 seats" }).click();
+
+  const pages = [host.page, guest.page];
+  for (const p of pages) {
+    await expect(p.getByRole("img", { name: "Snakes and Ladders board" })).toBeVisible();
+    await expect(p.getByRole("list", { name: "Players" }).getByRole("listitem")).toHaveCount(8);
+  }
+
+  // Roll whenever the die is offered, until both see the result.
+  const result = (p: Page) => p.getByRole("dialog").filter({ hasText: /won/ });
+  const deadline = Date.now() + 600_000;
+  let shots = 0;
+  const start = Date.now();
+  while (Date.now() < deadline) {
+    if ((await Promise.all(pages.map((p) => result(p).isVisible()))).every(Boolean)) break;
+    for (const p of pages) {
+      const die = p.getByRole("button", { name: "Roll the die" });
+      if (await die.isVisible()) await die.click({ timeout: 800 }).catch(() => {});
+    }
+    if (shots < 3 && Date.now() > start + 25_000 * (shots + 1)) {
+      for (const [i, p] of pages.entries()) await shot(p, `snakes-mid-${shots}-${i}`);
+      shots++;
+    }
+    await host.page.waitForTimeout(300);
+  }
+  for (const [i, p] of pages.entries()) {
+    if (!(await result(p).isVisible())) {
+      await shot(p, `snakes-player-${i}`);
+    }
+  }
+  for (const p of pages) await expect(result(p)).toBeVisible();
+  for (const [i, p] of pages.entries()) await shot(p, `snakes-end-${i}`);
+  // Every seat gets a place, 1st to 8th.
+  await expect(result(host.page).getByRole("listitem")).toHaveCount(8);
+  await expect(result(host.page).getByText("1st", { exact: true })).toBeVisible();
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});
 
 test("two friends play a game, see the result, and rematch", async ({ browser }) => {
   const host = await player(browser, "host");
@@ -204,7 +280,7 @@ test("an 8-player rock paper scissors knockout with 5 bots plays to a podium", a
 test("a 4-player Whot game with 2 bots plays to the end, hands kept private", async ({
   browser,
 }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(360_000); // bots take ~3 s a turn (Phase 4 pacing)
   const host = await player(browser, "whot_h");
   const guest = await player(browser, "whot_g");
 
@@ -290,7 +366,7 @@ test("a 4-player Whot game with 2 bots plays to the end, hands kept private", as
 test("Ludo: 2 people and 2 bots play, and a player who drops mid-move gets the same board back", async ({
   browser,
 }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(360_000); // bots take ~3 s a turn (Phase 4 pacing)
   const host = await player(browser, "ludo_h");
   const guest = await player(browser, "ludo_g");
 

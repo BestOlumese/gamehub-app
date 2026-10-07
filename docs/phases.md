@@ -57,8 +57,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** 4-player Ludo game completes; reconnect mid-move works; rows written per game within budget estimate.
 
 ## Phase 6 — Snakes & Ladders
-- [ ] Engine, classic board (verified), 3 designed presets passing the simulation test.
-- [ ] Data-driven SVG board, 8 tokens.
+- [x] Engine and four boards of our own (Naija Classic, Quick, Lagos Traffic, Balanced) passing the simulation test. The 1943 classic layout was checked and dropped (trade dress, `concerns.md` #12).
+- [x] Data-driven SVG board, 8 pin tokens (shape + colour + initial), hop-and-slide playback, shared die, rules step with board previews.
+- [x] DO test: 8-bot game ends with every place, within the write budget. E2E: 2 people + 6 bots finish an 8-player game (Pixel 7 and 360 × 640).
 
 **Exit:** 8-player game completes; presets pass simulation.
 

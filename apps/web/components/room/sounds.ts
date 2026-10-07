@@ -72,6 +72,17 @@ export const sfx = {
       { f: 520, dur: 0.1, type: "square", gain: 0.06, to: 160 },
       { f: 200, at: 0.1, dur: 0.18, type: "triangle", gain: 0.08 },
     ]),
+  ladder: () =>
+    tones(
+      [440, 554, 659, 880].map((f, i) => ({
+        f,
+        at: i * 0.08,
+        dur: 0.12,
+        type: "triangle" as const,
+        gain: 0.08,
+      })),
+    ),
+  snake: () => tones([{ f: 700, dur: 0.6, type: "sawtooth", gain: 0.04, to: 140 }]),
   win: () =>
     tones([523, 659, 784, 1047].map((f, i) => ({ f, at: i * 0.11, dur: 0.22, gain: 0.1 }))),
 };
