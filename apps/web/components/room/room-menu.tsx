@@ -113,10 +113,10 @@ export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, on
             : game === "snakes"
               ? "Roll and move that many squares. A ladder takes you up, a snake brings you down. First to 100 wins. Run out of time and the die rolls for you."
               : game === "ludo"
-              ? "Roll, then move a seed that many squares. Bring all four seeds home first to win. Land on a rival to send it back to its yard. Run out of time and a move is made for you."
-              : game === "whot"
-                ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."
-                : "Get three in a row to win a round. If you run out of time, a move is made for you."}
+                ? "Roll, then move a seed that many squares. Bring all four seeds home first to win. Land on a rival to send it back to its yard. Run out of time and a move is made for you."
+                : game === "whot"
+                  ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."
+                  : "Get three in a row to win a round. If you run out of time, a move is made for you."}
         </p>
       </Dialog>
       <Dialog open={dialog === "share"} onClose={() => setDialog(null)} title="Share this room">
