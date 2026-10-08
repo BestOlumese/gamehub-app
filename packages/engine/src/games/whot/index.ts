@@ -174,6 +174,7 @@ function playDeck(
 
   const special = isActiveSpecial(action.card, rules);
   let again = false;
+  let generalMarket = false;
   if (special && (card.n === 2 || card.n === 5)) {
     k.pick += card.n === 2 ? 2 : 3;
     k.pickKind = card.n;
@@ -185,21 +186,26 @@ function playDeck(
     again = true;
   } else if (special && card.n === 14) {
     events.push({ type: "general_market" });
-    for (const other of stillIn(d)) {
-      if (other === seat) continue;
-      if (!drawInto(d, other, 1, rules, rng, events)) return ok(d, events);
-    }
+    generalMarket = true;
     again = true;
   } else if (card.shape === "whot") {
     d.callShape = action.requestShape ?? null;
     events.push({ type: "whot", shape: d.callShape });
   }
 
+  // Going out comes first, as in a normal play: a 14 as your last card can't strand you
+  // with an empty hand if everyone's draw empties the market.
   if (hand.length === 0) {
     finish(d, seat, rules, events);
     if (d.over) return ok(d, events);
   } else if (hand.length === 1 && rules.mustDeclareLastCard && !d.lastCardDeclared[seat]) {
     d.lastCardDue = seat;
+  }
+  if (generalMarket) {
+    for (const other of stillIn(d)) {
+      if (other === seat) continue;
+      if (!drawInto(d, other, 1, rules, rng, events)) return ok(d, events);
+    }
   }
 
   // Keep the deck open while there's a card to continue it (a Whot always ends it).

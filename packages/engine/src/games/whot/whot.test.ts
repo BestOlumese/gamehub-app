@@ -518,6 +518,21 @@ describe("whot decking", () => {
     expect([after.turn, after.pendingPick]).toEqual([1, { amount: 6, kind: 2 }]);
   });
 
+  it("going out on a 14 counts even when everyone's draw empties the market", () => {
+    // Found by the property test: the general market ran the market dry before the player
+    // was marked finished, leaving an empty hand that hadn't won.
+    const r = rules({ decking: "numberOrShape" });
+    const s = position({
+      hands: [["square-3", "square-14"], ["cross-1"], ["star-1"], ["circle-1"], ["triangle-1"]],
+      top: "square-7",
+      marketSize: 2,
+    });
+    const after = act(act(s, 0, playCard("square-3"), r), 0, playCard("square-14"), r);
+    expect(after.over).toBe(true);
+    expect(after.finished).toContain(0);
+    expect(after.places?.[0]).toEqual([0]);
+  });
+
   it("decking down to one card without saying Last card still costs you", () => {
     const r = rules({ decking: "number" });
     const s = position({
