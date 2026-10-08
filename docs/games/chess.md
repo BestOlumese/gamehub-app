@@ -14,7 +14,9 @@ Sources for every fact below: `docs/research/sources.md` → "Chess".
 
 chess.js is pure: no I/O, no clock, and its Zobrist keys come from a **fixed-seed** generator (no `Math.random`), so it is allowed inside `packages/engine` (verify again at install).
 
-chess.js objects are not stored. State keeps the FEN and a compact move list; each action rebuilds `new Chess(fen)`, applies one move, reads the new FEN (one move ≈ well under 1 ms — measured by the CPU benchmark in `13-free-tier-budget.md`).
+chess.js objects are not stored. State keeps the FEN, the move list and the position after every ply (`history`, used for takebacks and repetition counts); each action rebuilds `new Chess(fen)`, applies one move and reads the new FEN.
+
+**Measured (Oct 2026, chess.js 1.4.0, Node 24 on a busy dev machine):** a whole move as the room applies it is **1.7 ms median, 3.7 ms p95** (first call ~58 ms while the JIT warms). chess.js's `moves({ verbose: true })` is the trap: it builds SAN (with check/mate) for every move, **15 ms at the start position and 91 ms in Kiwipete**, so the server never calls it. Checkmate/stalemate use our own move generator (no legal moves + in check); the view doesn't carry a legal-move list (the client asks chess.js for one piece at a time, 1–6 ms, when a piece is tapped).
 
 We do **not** use chess.js's own draw verdicts as-is: its `isDraw()` treats the 50-move rule as automatic and has no 75-move/fivefold. Repetition counts and the move counters are ours (below).
 
@@ -149,8 +151,9 @@ export type ChessRules = {
   premoves: boolean;
   abortSeconds: number;           // 15–60
   autoQueenPremove: boolean;
-  colours: "random" | "host-white" | "host-black"; // private rooms
 };
+// Colours come from the room's "Who goes first" setting (Oct 2026): the first seat plays White.
+// Random / Takes turns (colours swap each rematch) / Last winner / Seat 1.
 
 export const chessNaija: ChessRules = {
   turnSeconds: 30,
@@ -161,7 +164,6 @@ export const chessNaija: ChessRules = {
   premoves: true,
   abortSeconds: 30,
   autoQueenPremove: true,
-  colours: "random",
 };
 ```
 
@@ -210,7 +212,9 @@ type ChessView = ChessState & { you: Side | null; legal?: string[] /* UCI list w
 
 Events (animation/sound only): `moved{side, uci, san, capture, check}`, `castled`, `promoted{piece}`, `check{side}`, `draw_offered{by}`, `draw_declined`, `takeback_requested{by}`, `takeback_done{plies}`, `flagged{side}`, `game_over{winner, reason}`, `aborted`.
 
-Server-side action metrics: `act` carries an optional `m: { mt }` envelope field (`03-realtime-protocol.md`); the room copies `mt` into the move action before `apply`, so clients can't fake other fields.
+Think time: the move action itself carries `mt` (validated 0–24 h). It can only reduce the lag charged, up to the quota (see Clocks), so no separate envelope is needed. The first move of each side isn't charged; both clocks start after Black's first move.
+
+As built: `history` replaces the repetition map (repetitions = occurrences of the current position among the last `halfmove + 1` entries). `legalActions` uses our move generator (perft-checked). New engine-contract hooks: `turnDeadline` (abort window → flag time → per-move limit), `botReply` (bots accept takebacks and decline draws when it isn't their turn), `aborted` (the room returns to the lobby with no result).
 
 ## Bots
 

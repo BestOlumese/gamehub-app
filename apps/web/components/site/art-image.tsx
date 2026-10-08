@@ -5,7 +5,8 @@ type ArtName =
   | "game-ludo"
   | "game-snakes"
   | "game-tictactoe"
-  | "game-rps";
+  | "game-rps"
+  | "game-chess";
 
 const SIZES: Record<ArtName, [number, number]> = {
   "hero-table": [520, 420],
@@ -15,6 +16,7 @@ const SIZES: Record<ArtName, [number, number]> = {
   "game-snakes": [160, 110],
   "game-tictactoe": [160, 110],
   "game-rps": [160, 110],
+  "game-chess": [160, 110],
 };
 
 /** Decorative SVG from public/art. Plain <img>: static vector art needs no optimizer or client JS. */

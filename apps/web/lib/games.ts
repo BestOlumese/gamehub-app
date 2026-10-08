@@ -38,4 +38,11 @@ export const games: readonly GameInfo[] = [
     players: "2–8 players",
     blurb: "One-on-one or a knockout bracket for the whole group.",
   },
+  {
+    slug: "chess",
+    name: "Chess",
+    players: "2 players",
+    blurb:
+      "Proper chess with real clocks, from 1-minute bullet to slow games. Play a friend or a bot.",
+  },
 ];

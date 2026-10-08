@@ -72,8 +72,14 @@ export async function bestMove(fen: string, level: "medium" | "hard", movetimeMs
 ### Draughts Hard (`gh-draughts-1`)
 Our own TypeScript searcher (MIT, `packages/engine`), run in Node: iterative deepening alpha-beta with a transposition table up to `movetimeMs` (150 ms). No WASM, no licence issues.
 
+## Measured (Oct 2026, `stockfish@19.0.0` npm, `bin/stockfish-19-lite-single.{js,wasm}` 21 KB + 1.79 MB, Node 24)
+- Loading: `require("stockfish")("lite-single")` → `engine.sendCommand(cmd)`, output via `engine.listener = (line) => …`.
+- **Cold start: 1.36 s wall, 2.2 s CPU.**
+- Warm, 30 moves of a game each: **Hard (Elo 2100, movetime 200): CPU median 209 ms, p90 220 ms**; **Medium (Elo 1500, movetime 100): CPU median 164 ms, p90 372 ms** (CPU > movetime from V8 work around the search). Daily 240 CPU-s ⇒ ≈ 1,100 Hard or ≈ 1,450 Medium moves; each cold start costs ≈ 10 Hard moves of budget.
+- Next.js 16 option confirmed: `outputFileTracingIncludes: { "/api/bots/chess/move": ["./server/bots/stockfish/**/*"] }` (keys are route paths, values globs from the app root).
+
 ## Cold starts
-- A cold instance loads ~1.8 MB of WASM and compiles it. ⚠️ Unverified cost: measure in the Chess phase (expect a few hundred ms). The first bot move after a quiet period may exceed the DO's 1.5 s timeout → that one move uses the built-in fallback; later moves hit a warm instance.
+- A cold instance loads ~1.8 MB of WASM and compiles it: 1.36 s measured, so the first bot move after a quiet spell will usually miss the DO's 1.5 s timeout and use the fallback. The first bot move after a quiet period may exceed the DO's 1.5 s timeout → that one move uses the built-in fallback; later moves hit a warm instance.
 - No warm-up cron (Hobby cron is limited and it would burn CPU for nothing).
 
 ## Quota tracking (Vercel Hobby: 4 Active-CPU hours per month for the whole account)

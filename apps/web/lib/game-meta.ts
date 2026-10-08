@@ -13,6 +13,7 @@ export const GAME_NAMES: Record<GameSlug, string> = {
   snakes: "Snakes & Ladders",
   tictactoe: "Tic-tac-toe",
   rps: "Rock Paper Scissors",
+  chess: "Chess",
 };
 
 /** Seats each game allows (matches the engines' min/maxPlayers; checked in games.test.ts). */
@@ -22,6 +23,7 @@ export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
   snakes: [2, 8],
   tictactoe: [2, 2],
   rps: [2, 8],
+  chess: [2, 2],
 };
 
 /** RPS players throw together, so nobody "goes first". */

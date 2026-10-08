@@ -18,3 +18,5 @@ export type {
   SnakesState,
   SnakesView,
 } from "./games/snakes";
+export { chess, chessNaija, chessRulesSchema } from "./games/chess";
+export type { ChessAction, ChessRules, ChessState, ChessView, Side } from "./games/chess";

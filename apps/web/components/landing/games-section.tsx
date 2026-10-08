@@ -1,5 +1,6 @@
 import { ArtImage } from "@/components/site/art-image";
 import { games } from "@/lib/games";
+import { isPlayable } from "@/lib/playable-games";
 import { SectionHeading } from "./section-heading";
 
 export function GamesSection() {
@@ -10,18 +11,25 @@ export function GamesSection() {
     >
       <SectionHeading
         id="games-heading"
-        title="Five games you already know"
+        title="Six games you already know"
         lead="Every rule you argue about is a setting. Start with Naija Standard, then make it yours."
       />
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {games.map((g, i) => {
+          // Three columns, Whot two wide: a last tile that starts a row on its own fills it.
+          const alone = i === games.length - 1 && games.length % 3 === 0;
           return (
             <li
               key={g.slug}
-              className={`overflow-hidden rounded-card border border-line bg-surface shadow-sm ${i === 0 ? "lg:col-span-2" : ""}`}
+              className={`overflow-hidden rounded-card border border-line bg-surface shadow-sm ${i === 0 ? "lg:col-span-2" : alone ? "lg:col-span-3" : ""}`}
             >
-              <div className="flex h-40 items-center justify-center border-b border-line bg-board">
+              <div className="relative flex h-40 items-center justify-center border-b border-line bg-board">
                 <ArtImage name={`game-${g.slug}`} className="h-32 w-auto" lazy />
+                {!isPlayable(g.slug) ? (
+                  <span className="absolute top-3 right-3 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold">
+                    Soon
+                  </span>
+                ) : null}
               </div>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-3">

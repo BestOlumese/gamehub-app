@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-export const GAME_SLUGS = ["whot", "ludo", "snakes", "tictactoe", "rps"] as const;
+export const GAME_SLUGS = ["whot", "ludo", "snakes", "tictactoe", "rps", "chess"] as const;
 export type GameSlug = (typeof GAME_SLUGS)[number];
 
 export type SeatIndex = number;
@@ -21,7 +21,10 @@ export interface Rng {
 export interface Ctx<R> {
   rng: Rng;
   rules: R;
-  /** Injected by the caller, for logging only. */
+  /**
+   * Server time, injected by the room. Logging only, except in games with a real clock
+   * (chess), where it's the authoritative time a move arrived.
+   */
   now: number;
 }
 
@@ -38,6 +41,7 @@ export type RuleErrorCode =
   | "MUST_ANSWER_PENALTY"
   | "MUST_PLAY_REQUESTED_SHAPE"
   | "NO_SUCH_CARD"
+  | "NOT_ALLOWED"
   | "NEED_SIX"
   | "OVERSHOOT"
   | "ALREADY_THREW";
@@ -84,6 +88,19 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * moment, so people can follow what bots do. Default: [300, 900].
    */
   botThinkMs?(s: S, action: A): readonly [number, number];
+  /**
+   * The server time by which `seat` must act (a chess clock's flag time, an abort window),
+   * replacing the room's flat `turnSeconds` clock. Null: no deadline. When it passes, the
+   * room applies `timeoutAction`.
+   */
+  turnDeadline?(s: S, seat: SeatIndex, rules: R): number | null;
+  /**
+   * A bot's answer when it isn't its turn (accept a takeback, decline a draw), applied by
+   * the room straight after the action that asked. Null: nothing to answer.
+   */
+  botReply?(s: S, seat: SeatIndex, rules: R): A | null;
+  /** The game ended without a result (chess abort): the room goes back to the lobby. */
+  aborted?(s: S): boolean;
   /** MUST strip hidden info. The only engine output that reaches clients. */
   view(s: S, viewer: SeatIndex | "spectator"): V;
   isOver(s: S): boolean;
