@@ -340,7 +340,7 @@ test("an 8-player rock paper scissors knockout with 5 bots plays to a podium", a
   for (const c of [host.ctx, g1.ctx, g2.ctx]) await c.close();
 });
 
-test("a 4-player Whot game with 2 bots plays to the end, hands kept private", async ({
+test("a 4-player Whot game with 2 bots and decking plays to the end, hands kept private", async ({
   browser,
 }) => {
   test.setTimeout(360_000); // bots take ~3 s a turn (Phase 4 pacing)
@@ -353,6 +353,9 @@ test("a 4-player Whot game with 2 bots plays to the end, hands kept private", as
   await expect(host.page.getByText("4 players, 6 cards each.")).toBeVisible();
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
   await expect(host.page.getByText("Naija Standard")).toBeVisible();
+  // House rule: decking (same number). Players and bots deck whenever they can.
+  await host.page.getByRole("switch", { name: "Decking" }).click();
+  await expect(host.page.getByText("Same number: 4 triangle")).toBeVisible();
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
   await host.page.getByText("Easy", { exact: true }).click();
   await host.page.getByRole("button", { name: "Next", exact: true }).click();
@@ -376,10 +379,17 @@ test("a 4-player Whot game with 2 bots plays to the end, hands kept private", as
   const result = (p: Page) => p.getByRole("dialog").filter({ hasText: /won|tied/ });
   const deadline = Date.now() + 200_000;
   let shotMid = false;
+  let shotDeck = false;
   while (Date.now() < deadline) {
     if ((await Promise.all(pages.map((p) => result(p).isVisible()))).every(Boolean)) break;
     for (const p of pages) {
       const quick = { timeout: 800 };
+      if (!shotDeck && (await p.getByRole("button", { name: "Done", exact: true }).isVisible())) {
+        shotDeck = true;
+        const path = test.info().outputPath("whot-deck-open.png");
+        await p.screenshot({ path });
+        await test.info().attach("whot-deck-open", { path, contentType: "image/png" });
+      }
       const tap = (l: ReturnType<Page["getByRole"]>) =>
         l
           .click(quick)

@@ -84,14 +84,23 @@ function describe(
       return { text: `Pick ${String(e.amount)}!`, sound: "penalty" };
     case "hold_on":
       return { text: "Hold on", sound: "special" };
-    case "suspension":
+    case "suspension": {
+      // A deck of 8s skips several players at once.
+      const skipped = Array.isArray(e.seats) ? (e.seats as unknown[]) : [e.skipped];
       return {
         text:
-          e.skipped === me
-            ? "Suspension. You miss a turn"
-            : `Suspension. ${who(e.skipped)} misses a turn`,
+          skipped.length > 1
+            ? skipped.includes(me)
+              ? `Suspension x${skipped.length}. You miss a turn`
+              : `Suspension x${skipped.length}. ${skipped.length} players miss a turn`
+            : e.skipped === me
+              ? "Suspension. You miss a turn"
+              : `Suspension. ${who(e.skipped)} misses a turn`,
         sound: "special",
       };
+    }
+    case "decked":
+      return { text: `${who(e.seat)} decked ${String(e.count)} cards` };
     case "general_market":
       return { text: "General market!", sound: "special" };
     case "whot":

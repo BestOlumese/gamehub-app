@@ -72,6 +72,15 @@ export function whotRuleChanges(r: WhotRules): string[] {
   if (r.marketExhausted === "reshuffle") out.push("Reshuffle when the market runs out");
   if (r.firstCardEffect === "apply") out.push("First card counts");
   if (r.multiWinner === "playOn") out.push("Play on for every place");
+  const deck = r.decking ?? "off"; // rules saved before decking existed
+  if (deck !== "off")
+    out.push(
+      deck === "number"
+        ? "Decking: same number"
+        : deck === "numberOrShape"
+          ? "Decking: same number or shape"
+          : "Decking: chain",
+    );
   return out;
 }
 

@@ -4,6 +4,12 @@ import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import { Segmented } from "@gamehub/ui/forms/segmented";
 import { PresetStrip, Section, Toggle } from "./rule-controls";
 
+const DECKING_HINT: Record<Exclude<WhotRules["decking"], "off">, string> = {
+  number: "Same number: 4 triangle, then 4 star, then 4 square.",
+  numberOrShape: "All the same number, or all the same shape.",
+  chain: "Each card matches the one before by number or shape. Fast games.",
+};
+
 type Props = { rules: WhotRules; onChange: (r: WhotRules) => void };
 type Flag = {
   [K in keyof WhotRules]: WhotRules[K] extends boolean ? K : never;
@@ -107,6 +113,32 @@ export function WhotRulesStep({ rules, onChange }: Props) {
           disabled={!rules.stackPenalties}
           {...flag("crossStack")}
         />
+      </Section>
+
+      <Section title="Decking">
+        <Toggle
+          label="Decking"
+          hint="Play more than one card in your turn, then tap Done."
+          checked={rules.decking !== "off"}
+          onChange={(on) => set("decking", on ? "number" : "off")}
+        />
+        {rules.decking !== "off" ? (
+          <div className="space-y-2 px-4 py-4">
+            <Segmented
+              label="Cards that go together"
+              value={rules.decking}
+              onChange={(v) => set("decking", v)}
+              options={[
+                { value: "number" as const, label: "Number" },
+                { value: "numberOrShape" as const, label: "Num or shape" },
+                { value: "chain" as const, label: "Chain" },
+              ]}
+            />
+            <p className="text-sm text-ink-2">
+              {DECKING_HINT[rules.decking]} Specials all count. A Whot ends the deck.
+            </p>
+          </div>
+        ) : null}
       </Section>
 
       <Section title="Last card">

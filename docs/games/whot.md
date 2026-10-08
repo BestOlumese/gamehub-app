@@ -55,6 +55,7 @@ export const whotNaija: WhotRules = {
   marketExhausted: "count",          // "count" | "reshuffle"
   firstCardEffect: "none",
   multiWinner: "rankByCount",        // after first finisher: "rankByCount" | "playOn"
+  decking: "off",                    // house rule: "off" | "number" | "numberOrShape" | "chain"
 };
 ```
 
@@ -66,6 +67,31 @@ All fields customizable per private room (lobby rules sheet).
 - `marketExhausted: "reshuffle"` → discard pile (except top card) is shuffled into a new market. If still empty, fall back to `count`.
 - `multiWinner: "rankByCount"` (default) → game ends when first player finishes; others ranked by hand total (lowest first). Fast, good for ranked.
 - `multiWinner: "playOn"` → play continues until one player remains; places in finishing order.
+
+## Decking (house rule, added Oct 2026 from player requests)
+
+Research: Wikipedia's Whot! article describes **"double decking"**: "playing different cards of the same number after each other", by pre-game agreement, mainly to change the call card's shape. Pagat, WhotGuide and gamerules.com describe one card per turn and say house rules should be agreed first. Mau-Mau (Prší, Faraón) and Crazy Eights variants allow several same-rank cards at once, with each special's effect counting. Sources in `docs/research/sources.md`.
+
+Decided with Best:
+- **Off in Naija Standard**; the host picks a type in Rules:
+  - `number`: every card shares the first card's number (classic double decking).
+  - `numberOrShape`: all the same number, or all the same shape; the second card decides which.
+  - `chain`: each card matches the card before it by number or shape. Strong: a hand can go out in one turn.
+- **The first card is an ordinary legal play** (it must match the call card, answer a penalty, or follow a called shape).
+- **One card at a time.** After a play, if the player still holds a card that continues the deck, the deck stays open: the turn stays with them, matching cards glow, and a **Done** button appears. They can keep playing or tap Done. With nothing left to continue, the deck ends by itself. A timeout during an open deck is Done.
+- **Every special counts, in order:**
+  - Picks add up into one pick for the next player, who can defend as usual (kind = the last pick card).
+  - Each 8 skips one more player; the pick lands on the first player not skipped.
+  - Each 14 is a general market at once.
+  - A deck that **ends** on a 1 or 14 with no pick or 8 in it gives the player another go, as today. Otherwise the picks and skips go on.
+- **A Whot can only end a deck** (call a shape; the deck closes). Played first, it's a deck of one.
+- Defending a penalty and then decking more of the same card adds to the total.
+- No market during an open deck. Last card, Check up and "can't finish on a special" work card by card as usual.
+- With decking on, a single card and nothing to continue is exactly a normal play.
+
+State: `deck: { seat, first, last, kind, count, pick, pickKind, skips } | null`, public in the view (its cards are face up). Action `{ type: "done" }`. Events: `decked { seat, count }` (2+ cards), `suspension { skipped, count, seats }` at the end of a deck.
+
+Bots: Easy sometimes stops early. Medium and Hard keep shedding, and keep a Whot back unless it's their last card or nothing else continues. Hard picks the card that leaves the most ways to continue.
 
 ## State
 

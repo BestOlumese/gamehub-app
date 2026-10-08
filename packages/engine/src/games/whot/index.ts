@@ -2,10 +2,19 @@ import { err, ok } from "../../result";
 import type { GameDefinition, GameEvent, Rng, SeatIndex } from "../../types";
 import { whotBots } from "./bots";
 import { DECK, handTotal, parseCard, SHAPES } from "./cards";
-import { canDeclareLastCard, dealSize, isActiveSpecial, nextSeat, whyNotPlayable } from "./core";
+import {
+  canDeclareLastCard,
+  dealSize,
+  deckCards,
+  deckMode,
+  isActiveSpecial,
+  nextSeat,
+  whyNotDeckable,
+  whyNotPlayable,
+} from "./core";
 import { whotNaija, type WhotRules } from "./rules";
 import { whotActionSchema, whotRulesSchema } from "./schemas";
-import type { WhotAction, WhotState, WhotView } from "./state";
+import type { Deck, WhotAction, WhotState, WhotView } from "./state";
 
 /** After this many reshuffles the next empty market ends the game by count. */
 export const MAX_RESHUFFLES = 3;
@@ -20,6 +29,7 @@ function draft(s: WhotState): WhotState {
     lastCardDeclared: [...s.lastCardDeclared],
     finished: [...s.finished],
     misses: [...s.misses],
+    deck: s.deck ? { ...s.deck } : null,
   };
 }
 
@@ -38,6 +48,7 @@ const stillIn = (d: WhotState) =>
 
 function endByCount(d: WhotState, events: GameEvent[]) {
   d.over = true;
+  d.deck = null;
   d.places = [...d.finished.map((seat) => [seat]), ...rankByTotals(d, stillIn(d))];
   events.push({ type: "market_empty" });
 }
@@ -84,16 +95,122 @@ function finish(d: WhotState, seat: SeatIndex, rules: WhotRules, events: GameEve
   const left = stillIn(d);
   if (rules.multiWinner === "rankByCount") {
     d.over = true;
+    d.deck = null;
     d.places = [[seat], ...rankByTotals(d, left)];
   } else if (left.length <= 1) {
     d.finished.push(...left);
     d.over = true;
+    d.deck = null;
     d.places = d.finished.map((x) => [x]);
   }
 }
 
+/**
+ * Ends a deck: picks add up for the next player, each 8 skips one more, and a deck that ends
+ * on a hold on or general market (with no pick or skip in it) gives the player another go.
+ */
+function closeDeck(
+  d: WhotState,
+  k: Deck,
+  seat: SeatIndex,
+  againCard: boolean,
+  events: GameEvent[],
+) {
+  d.deck = null;
+  const out = (d.hands[seat] ?? []).length === 0;
+  if (k.count > 1) events.push({ type: "decked", seat, count: k.count });
+  if (k.pick > 0 && k.pickKind) d.pendingPick = { amount: k.pick, kind: k.pickKind };
+  if (againCard && !k.pick && !k.skips && !out) {
+    d.turn = seat;
+    return;
+  }
+  if (k.skips) {
+    const skipped = Array.from({ length: k.skips }, (_, i) =>
+      nextSeat(seat, d.players, d.finished, i + 1),
+    );
+    events.push({ type: "suspension", skipped: skipped[0], count: k.skips, seats: skipped });
+  }
+  d.turn = nextSeat(seat, d.players, d.finished, k.skips + 1);
+}
+
 const canDeclare = (s: WhotState, seat: SeatIndex) =>
   canDeclareLastCard((s.hands[seat] ?? []).length, seat === s.turn, !!s.lastCardDeclared[seat]);
+
+/**
+ * A play with the decking rule on. Each card's effect is taken in order: picks add up,
+ * each 8 adds a skip, each 14 is a general market at once, a Whot calls a shape and ends
+ * the deck. The deck stays open while the player holds a card that can continue it.
+ * With one card and nothing to continue, this is exactly a normal play.
+ */
+function playDeck(
+  d: WhotState,
+  seat: SeatIndex,
+  card: ReturnType<typeof parseCard>,
+  action: Extract<WhotAction, { type: "play" }>,
+  open: Deck | null,
+  rules: WhotRules,
+  rng: Rng,
+  events: GameEvent[],
+) {
+  const hand = d.hands[seat] as string[];
+  const mode = deckMode(rules);
+  const k: Deck = open ?? {
+    seat,
+    first: action.card,
+    last: action.card,
+    kind: mode === "number" ? "number" : mode === "chain" ? "chain" : null,
+    count: 0,
+    // Defending a penalty with this card: the total carries into the deck.
+    pick: d.pendingPick?.amount ?? 0,
+    pickKind: d.pendingPick?.kind ?? null,
+    skips: 0,
+  };
+  d.pendingPick = null;
+  if (open && k.kind === null) {
+    k.kind = card.n === parseCard(k.first).n ? "number" : "shape";
+  }
+  k.last = action.card;
+  k.count++;
+
+  const special = isActiveSpecial(action.card, rules);
+  let again = false;
+  if (special && (card.n === 2 || card.n === 5)) {
+    k.pick += card.n === 2 ? 2 : 3;
+    k.pickKind = card.n;
+    events.push({ type: card.n === 2 ? "pick_two" : "pick_three", amount: k.pick });
+  } else if (special && card.n === 8) {
+    k.skips++;
+  } else if (special && card.n === 1) {
+    events.push({ type: "hold_on" });
+    again = true;
+  } else if (special && card.n === 14) {
+    events.push({ type: "general_market" });
+    for (const other of stillIn(d)) {
+      if (other === seat) continue;
+      if (!drawInto(d, other, 1, rules, rng, events)) return ok(d, events);
+    }
+    again = true;
+  } else if (card.shape === "whot") {
+    d.callShape = action.requestShape ?? null;
+    events.push({ type: "whot", shape: d.callShape });
+  }
+
+  if (hand.length === 0) {
+    finish(d, seat, rules, events);
+    if (d.over) return ok(d, events);
+  } else if (hand.length === 1 && rules.mustDeclareLastCard && !d.lastCardDeclared[seat]) {
+    d.lastCardDue = seat;
+  }
+
+  // Keep the deck open while there's a card to continue it (a Whot always ends it).
+  if (card.shape !== "whot" && hand.length > 0 && deckCards(hand, k, rules).length > 0) {
+    d.deck = k;
+    d.turn = seat;
+    return ok(d, events);
+  }
+  closeDeck(d, k, seat, again, events);
+  return ok(d, events);
+}
 
 export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = {
   slug: "whot",
@@ -144,6 +261,17 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       actions.push({ type: "declare_last_card" });
     if (seat !== s.turn) return actions;
     const hand = s.hands[seat] ?? [];
+    const checkUpFor = rules.checkUpRequired && hand.length === 1 ? { checkUp: true } : {};
+    if (s.deck) {
+      for (const card of deckCards(hand, s.deck, rules)) {
+        if (parseCard(card).shape === "whot") {
+          for (const requestShape of SHAPES)
+            actions.push({ type: "play", card, requestShape, ...checkUpFor });
+        } else actions.push({ type: "play", card, ...checkUpFor });
+      }
+      actions.push({ type: "done" });
+      return actions;
+    }
     const ctx = {
       top: s.pile[s.pile.length - 1] ?? "",
       callShape: s.callShape,
@@ -177,6 +305,14 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
     }
 
     if (seat !== s.turn) return err("NOT_YOUR_TURN");
+
+    const deck = d.deck ?? null;
+    if (action.type === "done") {
+      if (!deck) return err("ILLEGAL_MOVE");
+      closeDeck(d, deck, seat, false, events);
+      return ok(d, events);
+    }
+    if (deck && action.type === "market") return err("ILLEGAL_MOVE");
 
     // Someone hit one card without declaring: this move makes them pay.
     if (d.lastCardDue !== null && d.lastCardDue !== seat) {
@@ -217,7 +353,10 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       pendingPick: d.pendingPick,
       handSize: hand.length,
     };
-    const why = whyNotPlayable(action.card, ctx, rules);
+    const why = deck
+      ? whyNotDeckable(action.card, deck, rules, hand.length)
+      : whyNotPlayable(action.card, ctx, rules);
+    if (why !== null && deck) return err("ILLEGAL_MOVE");
     if (why !== null) {
       if (d.pendingPick) return err("MUST_ANSWER_PENALTY");
       if (d.callShape) return err("MUST_PLAY_REQUESTED_SHAPE");
@@ -233,6 +372,8 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
     d.pile.push(action.card);
     d.callShape = null;
     events.push({ type: "played", seat, card: action.card });
+
+    if (deckMode(rules) !== "off") return playDeck(d, seat, card, action, deck, rules, rng, events);
 
     const special = isActiveSpecial(action.card, rules);
     if (hand.length === 0) {
@@ -274,10 +415,12 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
     return ok(d, events);
   },
 
-  timeoutAction: () => ({ type: "market" }),
+  // Time's up: an open deck just ends; otherwise go to market.
+  timeoutAction: (s) => (s.deck ? { type: "done" } : { type: "market" }),
   botThinkMs(_s, a) {
     if (a.type === "market") return [800, 1200];
     if (a.type === "declare_last_card") return [500, 900];
+    if (a.type === "done") return [600, 1000];
     const { n } = parseCard(a.card);
     return n === 20 || n === 1 || n === 2 || n === 5 || n === 8 || n === 14
       ? [1800, 2600]
@@ -303,6 +446,7 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       over: s.over,
       places: s.places,
       totals: s.over ? s.hands.map((h) => handTotal(h)) : null,
+      deck: s.deck ? { ...s.deck } : null,
     };
   },
 

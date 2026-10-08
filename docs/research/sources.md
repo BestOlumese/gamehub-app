@@ -111,3 +111,10 @@ Every external fact used in the new game and mode specs, grouped by topic. "Chec
 |---|---|---|
 | https://help.start.gg/en/articles/13813572-elimination-brackets-and-free-for-all-setup | Free-for-all brackets: max players per group, progressions per group, snake seeding; no phases/waves | 2026-10-06 |
 | https://forum.boardgamearena.com/viewtopic.php?p=104884 | BGA multiplayer elimination problems: random elimination after a timeout, unfair byes, a final table of 1 advancer + 3 bye players | 2026-10-06 |
+
+## Whot decking (Oct 2026)
+- Wikipedia, "Whot!" (double decking): https://en.wikipedia.org/wiki/Whot!
+- Pagat, "Whot!": https://www.pagat.com/com/whot.html
+- WhotGuide, "Whot Rules": https://www.whotguide.com/rules/whot-rules
+- Wikipedia, "Mau-Mau (card game)" (Prší, Faraón multi-card play): https://en.wikipedia.org/wiki/Mau-Mau_(card_game)
+- Pagat, "Crazy Eights": https://pagat.com/eights/crazy8s.html

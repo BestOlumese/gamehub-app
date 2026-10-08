@@ -21,6 +21,8 @@ export const whotRulesSchema: z.ZodType<WhotRules> = z.object({
   marketExhausted: z.enum(["count", "reshuffle"]),
   firstCardEffect: z.enum(["none", "apply"]),
   multiWinner: z.enum(["rankByCount", "playOn"]),
+  // Defaults so rules saved before decking existed (or sent by an older page) still parse.
+  decking: z.enum(["off", "number", "numberOrShape", "chain"]).default("off"),
 });
 
 export const whotActionSchema: z.ZodType<WhotAction> = z.discriminatedUnion("type", [
@@ -32,4 +34,5 @@ export const whotActionSchema: z.ZodType<WhotAction> = z.discriminatedUnion("typ
   }),
   z.object({ type: z.literal("market") }),
   z.object({ type: z.literal("declare_last_card") }),
+  z.object({ type: z.literal("done") }),
 ]);

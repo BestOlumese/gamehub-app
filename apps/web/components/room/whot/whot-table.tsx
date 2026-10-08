@@ -2,7 +2,10 @@
 
 import {
   canDeclareLastCard,
+  deckCards,
+  parseCard,
   playableCards,
+  whyNotDeckable,
   whyNotPlayable,
   type Shape,
   type WhotAction,
@@ -43,7 +46,12 @@ export default function WhotTable({ snap, send }: Props) {
   const myTurn = me !== null && !ended && view.turn === me;
   const canAct = myTurn && connection === "open" && pending === null;
   const ctx = { top: view.top, callShape: view.callShape, pendingPick: view.pendingPick };
-  const playable = new Set(myTurn ? playableCards(hand, ctx, rules) : []);
+  // Decking: while your deck is open, only cards that continue it can go (older servers send no deck).
+  const deck = view.deck ?? null;
+  const decking = myTurn && deck !== null;
+  const playable = new Set(
+    !myTurn ? [] : deck ? deckCards(hand, deck, rules) : playableCards(hand, ctx, rules),
+  );
   const pendingAction = pending?.action as WhotAction | undefined;
   const hidden = pendingAction?.type === "play" ? pendingAction.card : null;
   const declared = me !== null && !!view.lastCardDeclared[me];
@@ -71,7 +79,9 @@ export default function WhotTable({ snap, send }: Props) {
 
   function play(card: string, checkUp = false) {
     if (!canAct) return;
-    const why = whyNotPlayable(card, { ...ctx, handSize: hand.length }, rules);
+    const why = deck
+      ? whyNotDeckable(card, deck, rules, hand.length)
+      : whyNotPlayable(card, { ...ctx, handSize: hand.length }, rules);
     if (why) return refuse(why);
     if (checkUpDue && !checkUp) return refuse("Tap Check up to win");
     if (card.startsWith("whot")) return setWhotCard({ card, checkUp });
@@ -99,24 +109,33 @@ export default function WhotTable({ snap, send }: Props) {
 
   const pick = view.pendingPick;
   const turnName = seatName(snap.seats, view.turn);
+  const deckWord = !deck
+    ? ""
+    : deck.kind === "number"
+      ? `another ${parseCard(deck.first).n}`
+      : deck.kind === "shape"
+        ? `another ${parseCard(deck.first).shape}`
+        : "on";
   const banner = ended
     ? null
     : !myTurn
-      ? { text: `${turnName}'s turn`, you: false }
-      : pick
-        ? {
-            text: playable.size
-              ? `Pick ${pick.amount} or defend with a ${pick.kind}`
-              : `Pick ${pick.amount}. Tap the market`,
-            you: true,
-          }
-        : view.callShape && !playable.size
-          ? { text: `No ${view.callShape}? Go to market`, you: true }
-          : view.callShape
-            ? { text: `Play a ${view.callShape} or Whot`, you: true }
-            : !playable.size
-              ? { text: "Nothing to play. Go to market", you: true }
-              : { text: "Your turn", you: true };
+      ? { text: deck ? `${turnName} is decking` : `${turnName}'s turn`, you: false }
+      : decking
+        ? { text: `Deck ${deckWord}, or tap Done`, you: true }
+        : pick
+          ? {
+              text: playable.size
+                ? `Pick ${pick.amount} or defend with a ${pick.kind}`
+                : `Pick ${pick.amount}. Tap the market`,
+              you: true,
+            }
+          : view.callShape && !playable.size
+            ? { text: `No ${view.callShape}? Go to market`, you: true }
+            : view.callShape
+              ? { text: `Play a ${view.callShape} or Whot`, you: true }
+              : !playable.size
+                ? { text: "Nothing to play. Go to market", you: true }
+                : { text: "Your turn", you: true };
 
   // Spectators sit "in" seat 0's place at the bottom and see everyone else round the table.
   const bottom = me ?? 0;
@@ -149,8 +168,8 @@ export default function WhotTable({ snap, send }: Props) {
           callShape={view.callShape}
           marketCount={view.marketCount}
           pendingPick={pick}
-          canMarket={canAct}
-          onMarket={() => canAct && act({ type: "market" })}
+          canMarket={canAct && !decking}
+          onMarket={() => canAct && !decking && act({ type: "market" })}
         />
       </TableSeats>
 
@@ -183,6 +202,16 @@ export default function WhotTable({ snap, send }: Props) {
               >
                 {declared ? <Check size={16} aria-hidden="true" /> : null}
                 Last card
+              </button>
+            ) : null}
+            {decking ? (
+              <button
+                type="button"
+                disabled={!canAct}
+                onClick={() => act({ type: "done" })}
+                className="inline-flex h-9 items-center rounded-full bg-ink px-5 text-sm font-extrabold tracking-wide text-white uppercase"
+              >
+                Done
               </button>
             ) : null}
             {checkUpDue && myTurn && hand[0] && playable.has(hand[0]) ? (

@@ -149,6 +149,8 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - **Sound:** short generated WebAudio tones (play, market, special, penalty, last card, your turn, win). Off when the player turned sound off.
 - **Bots** in a room with more than one are numbered ("Bot 2 (Hard)").
 
+- **Decking (Oct 2026):** during your deck, only cards that continue it glow; the banner says what fits ("Deck another 3, or tap Done"); a dark **Done** pill sits where Last card / Check up go; the market can't be tapped. Others see "Ada is decking". The message line says "Ada decked 3 cards" and "Suspension x2. 2 players miss a turn".
+
 ## Ludo (decided Oct 2026)
 
 - **Layout:** board fills the width; each player's panel sits outside their corner — two above the board, two below (like Ludo King). Panel: avatar with timer ring (people) or thinking arc (bots), a colour dot, name (amber pill on their go), "2/4 home" (or "Offline 0:42" / "Bot playing" / place), and the die when it's their go.

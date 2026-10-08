@@ -3,6 +3,24 @@ import type { Shape } from "./cards";
 
 export type PendingPick = { amount: number; kind: 2 | 5 };
 
+/**
+ * A deck in progress (decking rule): the seat keeps the turn and may play more cards.
+ * Picks and suspensions wait here and land on the next players when the deck ends.
+ */
+export type Deck = {
+  seat: SeatIndex;
+  first: string;
+  last: string;
+  /** "numberOrShape" decks decide on their second card; null until then. */
+  kind: "number" | "shape" | "chain" | null;
+  count: number;
+  /** Pick total so far (includes a penalty this deck defended), and the last pick card. */
+  pick: number;
+  pickKind: 2 | 5 | null;
+  /** One per 8 in the deck. */
+  skips: number;
+};
+
 export type WhotState = {
   players: number;
   hands: string[][];
@@ -26,12 +44,16 @@ export type WhotState = {
   misses: Array<{ seat: SeatIndex; shape: Shape }>;
   /** Times the pile has been reshuffled into the market (capped so every game ends). */
   reshuffles: number;
+  /** Open deck, if any. Optional: games saved before decking existed have none. */
+  deck?: Deck | null;
 };
 
 export type WhotAction =
   | { type: "play"; card: string; requestShape?: Shape; checkUp?: boolean }
   | { type: "market" }
-  | { type: "declare_last_card" };
+  | { type: "declare_last_card" }
+  /** End your deck (decking rule). */
+  | { type: "done" };
 
 /** What one seat may see. Spectators get `you: null`; nobody ever sees another hand. */
 export type WhotView = {
@@ -52,4 +74,6 @@ export type WhotView = {
   places: SeatIndex[][] | null;
   /** Hand totals, revealed only when the game ends by counting. */
   totals: number[] | null;
+  /** An open deck: its cards are on the pile, so this is public. */
+  deck: Deck | null;
 };

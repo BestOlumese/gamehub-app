@@ -339,6 +339,196 @@ describe("whot views", () => {
   });
 });
 
+// ── Decking (house rule) ─────────────────────────────────────────────────────
+
+describe("whot decking", () => {
+  const done: WhotAction = { type: "done" };
+  const types = (s: WhotState, seat: SeatIndex, r: WhotRules) =>
+    whot.legalActions(s, seat, r).map((a) => (a.type === "play" ? a.card : a.type));
+
+  it("is off by default: one card, then the turn passes", () => {
+    const r = rules();
+    const s = position({
+      hands: [["triangle-3", "star-3", "square-7"], ["circle-1"]],
+      top: "circle-3",
+    });
+    const after = act(s, 0, playCard("triangle-3"), r);
+    expect([after.turn, after.deck ?? null]).toEqual([1, null]);
+  });
+
+  it("same number: keep playing the first card's number, then it ends by itself", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["triangle-3", "star-3", "square-7"], ["circle-1"], ["cross-1"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("triangle-3"), r);
+    expect(open.turn).toBe(0);
+    expect(open.deck).toMatchObject({ count: 1, kind: "number" });
+    expect(types(open, 0, r)).toEqual(["declare_last_card", "star-3", "done"]);
+    expect(reject(open, 0, playCard("square-7"), r)).toBe("ILLEGAL_MOVE");
+    expect(reject(open, 0, { type: "market" }, r)).toBe("ILLEGAL_MOVE");
+    expect(reject(open, 1, playCard("circle-1"), r)).toBe("NOT_YOUR_TURN");
+    const res = whot.apply(open, { seat: 0, action: playCard("star-3") }, ctx(r));
+    if (!res.ok) throw new Error(res.error);
+    expect(res.state).toMatchObject({
+      turn: 1,
+      deck: null,
+      pile: ["circle-3", "triangle-3", "star-3"],
+    });
+    expect(res.events).toContainEqual({ type: "decked", seat: 0, count: 2 });
+  });
+
+  it("Done ends a deck early; a timeout does the same", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["triangle-3", "star-3", "square-3", "cross-7"], ["circle-1"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("triangle-3"), r);
+    expect(whot.timeoutAction(open, 0, r, seededRng("t"))).toEqual(done);
+    const after = act(open, 0, done, r);
+    expect([after.turn, after.deck, after.hands[0]]).toEqual([
+      1,
+      null,
+      ["star-3", "square-3", "cross-7"],
+    ]);
+    expect(reject(after, 1, done, r)).toBe("ILLEGAL_MOVE"); // no deck open
+  });
+
+  it("same number or shape: the second card decides which, and it holds", () => {
+    const r = rules({ decking: "numberOrShape" });
+    const s = position({
+      hands: [["circle-7", "circle-11", "triangle-7", "square-13"], ["cross-1"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("circle-7"), r);
+    expect(types(open, 0, r)).toEqual(["circle-11", "triangle-7", "done"]);
+    const shapeDeck = act(open, 0, playCard("circle-11"), r);
+    // A circle deck now: the 7 of triangles no longer fits, so the deck has ended.
+    expect([shapeDeck.turn, shapeDeck.deck]).toEqual([1, null]);
+  });
+
+  it("chain: each card matches the one before by number or shape", () => {
+    const r = rules({ decking: "chain" });
+    const s = position({
+      hands: [["circle-4", "triangle-4", "triangle-10", "cross-10", "star-1"], ["square-1"]],
+      top: "circle-3",
+    });
+    let st = s;
+    for (const card of ["circle-4", "triangle-4", "triangle-10", "cross-10"])
+      st = act(st, 0, playCard(card), r);
+    expect([st.turn, st.deck, st.hands[0]]).toEqual([1, null, ["star-1"]]);
+  });
+
+  it("every special counts: picks add up, each 8 skips one more", () => {
+    const r = rules({ decking: "number" });
+    const picks = act(
+      act(
+        position({
+          hands: [["circle-2", "triangle-2", "star-3"], ["cross-1"], ["square-1"]],
+          top: "circle-7",
+        }),
+        0,
+        playCard("circle-2"),
+        r,
+      ),
+      0,
+      playCard("triangle-2"),
+      r,
+    );
+    expect([picks.turn, picks.pendingPick]).toEqual([1, { amount: 4, kind: 2 }]);
+
+    const res = whot.apply(
+      act(
+        position({
+          hands: [["circle-8", "triangle-8", "star-3"], ["cross-1"], ["square-1"], ["star-1"]],
+          top: "circle-7",
+        }),
+        0,
+        playCard("circle-8"),
+        r,
+      ),
+      { seat: 0, action: playCard("triangle-8") },
+      ctx(r),
+    );
+    if (!res.ok) throw new Error(res.error);
+    expect(res.state.turn).toBe(3);
+    expect(res.events).toContainEqual({ type: "suspension", skipped: 1, count: 2, seats: [1, 2] });
+  });
+
+  it("mixed specials add up in order: a 2 then an 8 skips one, the next picks 2", () => {
+    const r = rules({ decking: "numberOrShape" });
+    const s = position({
+      hands: [["circle-2", "circle-8", "triangle-13"], ["cross-1"], ["square-1"], ["star-1"]],
+      top: "circle-7",
+    });
+    const after = act(act(s, 0, playCard("circle-2"), r), 0, playCard("circle-8"), r);
+    expect([after.turn, after.pendingPick]).toEqual([2, { amount: 2, kind: 2 }]);
+  });
+
+  it("general markets each hit everyone at once; ending on one (no pick or skip) plays again", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["circle-14", "triangle-14", "star-3"], ["cross-1"], ["square-1"]],
+      top: "circle-7",
+    });
+    const after = act(act(s, 0, playCard("circle-14"), r), 0, playCard("triangle-14"), r);
+    expect(after.hands.map((h) => h.length)).toEqual([1, 3, 3]);
+    expect([after.turn, after.deck]).toEqual([0, null]);
+  });
+
+  it("a hold on after a pick doesn't keep the turn: the pick goes on", () => {
+    const r = rules({ decking: "numberOrShape" });
+    const s = position({
+      hands: [["circle-2", "circle-1", "triangle-13"], ["cross-1"], ["square-1"]],
+      top: "circle-7",
+    });
+    const after = act(act(s, 0, playCard("circle-2"), r), 0, playCard("circle-1"), r);
+    expect([after.turn, after.pendingPick]).toEqual([1, { amount: 2, kind: 2 }]);
+  });
+
+  it("a Whot can only end a deck", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["triangle-3", "whot-20-a", "star-3"], ["cross-1"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("triangle-3"), r);
+    const after = act(open, 0, playCard("whot-20-a", "star"), r);
+    expect([after.turn, after.deck, after.callShape, after.hands[0]]).toEqual([
+      1,
+      null,
+      "star",
+      ["star-3"],
+    ]);
+    // Played first, a Whot is a deck of one.
+    const first = act(s, 0, playCard("whot-20-a", "circle"), r);
+    expect([first.turn, first.deck]).toEqual([1, null]);
+  });
+
+  it("defend a penalty, then deck more of the same: the total grows", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["triangle-2", "star-2", "square-7"], ["cross-1"], ["square-1"]],
+      top: "circle-2",
+      pendingPick: { amount: 2, kind: 2 },
+    });
+    const after = act(act(s, 0, playCard("triangle-2"), r), 0, playCard("star-2"), r);
+    expect([after.turn, after.pendingPick]).toEqual([1, { amount: 6, kind: 2 }]);
+  });
+
+  it("decking down to one card without saying Last card still costs you", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["triangle-3", "star-3", "square-7"], ["cross-1"]],
+      top: "circle-3",
+    });
+    const after = act(act(s, 0, playCard("triangle-3"), r), 0, playCard("star-3"), r);
+    expect(after.lastCardDue).toBe(0);
+  });
+});
+
 // ── Properties ───────────────────────────────────────────────────────────────
 
 const rulesArb = fc.record({
@@ -358,6 +548,12 @@ const rulesArb = fc.record({
   marketExhausted: fc.constantFrom("count" as const, "reshuffle" as const),
   firstCardEffect: fc.constantFrom("none" as const, "apply" as const),
   multiWinner: fc.constantFrom("rankByCount" as const, "playOn" as const),
+  decking: fc.constantFrom(
+    "off" as const,
+    "number" as const,
+    "numberOrShape" as const,
+    "chain" as const,
+  ),
 });
 const seedArb = fc.string({ minLength: 1, maxLength: 16 });
 const playersArb = fc.integer({ min: 2, max: 8 });
@@ -392,8 +588,11 @@ describe("whot properties", () => {
         const all = [...st.hands.flat(), ...st.market, ...st.pile];
         // Plain checks: expect() on every step of every game is too slow.
         if (all.length !== 54 || new Set(all).size !== 54) throw new Error("cards lost or doubled");
-        if (st.pendingPick && !/-(2|5)$/.test(st.pile.at(-1) ?? ""))
+        // With decking, a 2 or 5 can sit under later cards of the same deck.
+        if (st.pendingPick && r.decking === "off" && !/-(2|5)$/.test(st.pile.at(-1) ?? ""))
           throw new Error("penalty without a 2 or 5 on top");
+        if (st.deck && (st.deck.seat !== st.turn || st.over || r.decking === "off"))
+          throw new Error("deck open off its player's turn");
         st.hands.forEach((h, seat) => {
           if (h.length === 0 && !st.finished.includes(seat))
             throw new Error("empty hand not finished");
@@ -417,7 +616,13 @@ describe("whot properties", () => {
           "spectator" as const,
         ]) {
           // Every card id anywhere in the view (the public pile excluded) must be the viewer's own.
-          const json = JSON.stringify({ ...whot.view(st, viewer), pileTop: [], top: "" });
+          // (An open deck's cards are face up on the pile, so they're public too.)
+          const json = JSON.stringify({
+            ...whot.view(st, viewer),
+            pileTop: [],
+            top: "",
+            deck: null,
+          });
           const own = new Set(viewer === "spectator" ? [] : st.hands[viewer]);
           for (const [, card] of json.matchAll(
             /"((?:circle|triangle|cross|square|star)-\d+|whot-20-[a-e])"/g,
@@ -451,7 +656,9 @@ describe("whot properties", () => {
     for (let i = 0; i < 3000 && !s.over; i++) {
       const seat = s.turn;
       const a = seat % 2 ? whot.bots[level](s, seat, r, rng) : whot.timeoutAction(s, seat, r, rng);
-      expect(whot.legalActions(s, seat, r)).toContainEqual(a);
+      // Plain check, not expect(): this loop runs a lot.
+      const legal = whot.legalActions(s, seat, r).map((x) => JSON.stringify(x));
+      if (!legal.includes(JSON.stringify(a))) throw new Error(`illegal ${JSON.stringify(a)}`);
       const res = whot.apply(s, { seat, action: a }, { rng, rules: r, now: 0 });
       if (!res.ok) throw new Error(res.error);
       s = res.state;

@@ -1,8 +1,8 @@
 // Browser-safe Whot logic (no zod). The full GameDefinition is in ./index.ts.
 import type { SeatIndex } from "../../types";
 import { DECK, isSpecialNumber, parseCard, type Shape } from "./cards";
-import type { WhotRules } from "./rules";
-import type { PendingPick } from "./state";
+import type { DeckMode, WhotRules } from "./rules";
+import type { Deck, PendingPick } from "./state";
 
 export type PlayContext = {
   top: string;
@@ -44,6 +44,38 @@ export function whyNotPlayable(card: string, ctx: PlayContext, rules: WhotRules)
   if (c.shape === top.shape || c.n === top.n) return null;
   return "Doesn't match";
 }
+
+/** The room's decking rule ("off" for rules saved before it existed). */
+export const deckMode = (rules: WhotRules): DeckMode => rules.decking ?? "off";
+
+/** Why a card can't continue this deck, or null if it can. */
+export function whyNotDeckable(
+  card: string,
+  deck: Deck,
+  rules: WhotRules,
+  handSize: number,
+): string | null {
+  const c = parseCard(card);
+  if (handSize === 1 && !rules.canFinishOnSpecial && isSpecialNumber(c.n)) {
+    return "You can't finish on a special card";
+  }
+  if (c.shape === "whot") return null; // a Whot can always end a deck
+  const first = parseCard(deck.first);
+  const last = parseCard(deck.last);
+  const ok =
+    deck.kind === "number"
+      ? c.n === first.n
+      : deck.kind === "shape"
+        ? c.shape === first.shape
+        : deck.kind === "chain"
+          ? c.n === last.n || c.shape === last.shape
+          : c.n === first.n || c.shape === first.shape;
+  return ok ? null : deck.kind === "shape" ? `Deck a ${first.shape}` : "Doesn't continue the deck";
+}
+
+/** Cards in the hand that can continue the deck. */
+export const deckCards = (hand: readonly string[], deck: Deck, rules: WhotRules) =>
+  hand.filter((card) => whyNotDeckable(card, deck, rules, hand.length) === null);
 
 export function playableCards(
   hand: readonly string[],
@@ -93,5 +125,5 @@ export {
   type CardShape,
   type Shape,
 } from "./cards";
-export { whotNaija, type WhotRules } from "./rules";
-export type { PendingPick, WhotAction, WhotState, WhotView } from "./state";
+export { whotNaija, type DeckMode, type WhotRules } from "./rules";
+export type { Deck, PendingPick, WhotAction, WhotState, WhotView } from "./state";

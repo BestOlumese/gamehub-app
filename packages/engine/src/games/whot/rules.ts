@@ -1,5 +1,13 @@
 // Plain values and types only (no zod), so the browser can import them cheaply.
 
+/**
+ * Decking (a house rule, agreed before play): after a legal first card, keep playing more
+ * cards in the same turn. "number": all share the first card's number (classic double
+ * decking). "numberOrShape": all share its number, or all share its shape. "chain": each
+ * card matches the one before by number or shape. A Whot can only end a deck.
+ */
+export type DeckMode = "off" | "number" | "numberOrShape" | "chain";
+
 export type WhotRules = {
   /** 10–120 */
   turnSeconds: number;
@@ -27,6 +35,7 @@ export type WhotRules = {
   firstCardEffect: "none" | "apply";
   /** After the first player finishes: rank the rest by hand total, or play on. */
   multiWinner: "rankByCount" | "playOn";
+  decking: DeckMode;
 };
 
 export const whotNaija: WhotRules = {
@@ -46,4 +55,5 @@ export const whotNaija: WhotRules = {
   marketExhausted: "count",
   firstCardEffect: "none",
   multiWinner: "rankByCount",
+  decking: "off",
 };

@@ -82,8 +82,9 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
   const initial = props.edit?.initial;
   const seated = props.edit?.seated ?? 1;
   const [game, setGame] = useState<CreatableGame>(initial?.game ?? props.game ?? "whot");
+  // The room's rules over the preset: settings added since the room was made get their default.
   const rulesFor = <R,>(g: CreatableGame, preset: R): R =>
-    initial?.game === g ? (initial.rules as R) : preset;
+    initial?.game === g ? { ...preset, ...(initial.rules as R) } : preset;
   const [tttRules, setTttRules] = useState<TttRules>(() => rulesFor("tictactoe", tttNaija));
   const [rpsRules, setRpsRules] = useState<RpsRules>(() => rulesFor("rps", rpsNaija));
   const [whotRules, setWhotRules] = useState<WhotRules>(() => rulesFor("whot", whotNaija));
