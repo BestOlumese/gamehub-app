@@ -450,7 +450,9 @@ describe("ludo properties", () => {
     for (let i = 0; i < 5000 && !s.over; i++) {
       const a =
         s.turn % 2 ? ludo.bots[level](s, s.turn, r, rng) : ludo.timeoutAction(s, s.turn, r, rng);
-      expect(ludo.legalActions(s, s.turn, r)).toContainEqual(a);
+      // Plain check, not expect(): this loop runs millions of times across the 1,000 runs.
+      const legal = ludo.legalActions(s, s.turn, r).map((x) => JSON.stringify(x));
+      if (!legal.includes(JSON.stringify(a))) throw new Error(`illegal ${JSON.stringify(a)}`);
       const res = ludo.apply(s, { seat: s.turn, action: a }, { rng, rules: r, now: 0 });
       if (!res.ok) throw new Error(res.error);
       s = res.state;

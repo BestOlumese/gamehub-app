@@ -57,12 +57,12 @@ export const snakes: GameDefinition<SnakesState, SnakesAction, SnakesView, Snake
   ruleSchema: snakesRulesSchema,
   actionSchema: snakesActionSchema,
 
-  setup(players, { rules }) {
+  setup(players, { rules }, first = 0) {
     return {
       players,
       board: rules.board,
       pos: Array<number>(players).fill(0),
-      turn: 0,
+      turn: first,
       sixesInRow: 0,
       lastRoll: null,
       finished: [],

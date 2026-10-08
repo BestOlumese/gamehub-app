@@ -11,6 +11,15 @@ describe("room messages", () => {
       { t: "seat_bot", seat: 1, level: "hard" },
       { t: "seat_bot", seat: 1, level: null },
       { t: "start" },
+      { t: "shuffle" },
+      {
+        t: "config",
+        game: "whot",
+        rules: {},
+        players: 4,
+        botLevel: "easy",
+        firstPlayer: "rotate",
+      },
       { t: "ping", c: 123 },
     ]) {
       expect(clientRoomMsg.safeParse(m).success, JSON.stringify(m)).toBe(true);
@@ -25,6 +34,9 @@ describe("room messages", () => {
       { t: "act", id: "a", v: -1, a: {} },
       { t: "seat_bot", seat: 9, level: "easy" },
       { t: "ready" },
+      { t: "config", rules: {} }, // the whole setup, not a piece of it
+      { t: "config", game: "whot", rules: {}, players: 9, botLevel: null, firstPlayer: "random" },
+      { t: "config", game: "whot", rules: {}, players: 4, botLevel: null, firstPlayer: "me" },
       "hello",
       null,
     ]) {
@@ -40,6 +52,7 @@ describe("room messages", () => {
       host: { userId: "u1", name: "tunde_o", avatar: null },
     };
     expect(createRoomRequest.safeParse(ok).success).toBe(true);
+    expect(createRoomRequest.parse(ok).firstPlayer).toBe("random");
     expect(createRoomRequest.safeParse({ ...ok, game: "chess" }).success).toBe(false);
   });
 });

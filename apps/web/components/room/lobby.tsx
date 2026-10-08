@@ -4,22 +4,33 @@ import type { BotLevel, ClientRoomMsg } from "@gamehub/protocol";
 import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Alert } from "@gamehub/ui/forms/alert";
 import { Button } from "@gamehub/ui/forms/button";
-import { Bot, Crown, UserRoundPlus, X } from "lucide-react";
-import { describeRules, GAME_NAMES } from "@/lib/game-meta";
+import { Bot, Crown, Pencil, Shuffle, UserRoundPlus, X } from "lucide-react";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import type { CreatableGame } from "@/components/create-room/create-room-sheet";
+import { describeRules, FIRST_PLAYER, GAME_NAMES, hasFirstPlayer } from "@/lib/game-meta";
 import type { Snapshot } from "@/lib/room/store";
 import { SharePanel } from "./share-panel";
 
 const LEVELS: BotLevel[] = ["easy", "medium", "hard"];
+// Only the host ever opens it, so it loads on demand (keeps the room page light).
+const CreateRoomSheet = dynamic(() =>
+  import("@/components/create-room/create-room-sheet").then((m) => m.CreateRoomSheet),
+);
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 type Props = { snap: Snapshot; send: (m: ClientRoomMsg) => void; notice: string | null };
 
 export function Lobby({ snap, send, notice }: Props) {
+  const [editing, setEditing] = useState(false);
   const me = snap.you === "spectator" ? null : snap.seats[snap.you];
   const isHost = !!me?.host;
   const host = snap.seats.find((s) => s.host);
   const filled = snap.seats.filter((s) => s.status !== "empty").length;
   const empty = snap.room.size - filled;
+  const people = snap.seats.filter((s) => s.userId).length;
+  // The website goes live before the game server updates; an older server doesn't send this yet.
+  const firstPlayer = snap.room.firstPlayer ?? "random";
   // Empty seats get bots at start (if the host chose that), or are dropped if enough people are in.
   const canStart = empty === 0 || !!snap.room.botFill || filled >= snap.room.minPlayers;
   const startLabel =
@@ -40,7 +51,16 @@ export function Lobby({ snap, send, notice }: Props) {
           <h2 id="players-h" className="text-sm font-semibold text-ink-2">
             Players
           </h2>
-          <span className="text-sm text-ink-2 tabular-nums">
+          <span className="flex items-center gap-3 text-sm text-ink-2 tabular-nums">
+            {isHost && filled > 1 ? (
+              <button
+                type="button"
+                onClick={() => send({ t: "shuffle" })}
+                className="inline-flex items-center gap-1.5 rounded-control px-2 py-1 font-semibold text-brand-strong hover:bg-brand-soft"
+              >
+                <Shuffle size={15} aria-hidden="true" /> Shuffle seats
+              </button>
+            ) : null}
             {filled}/{snap.room.size}
           </span>
         </div>
@@ -125,13 +145,50 @@ export function Lobby({ snap, send, notice }: Props) {
         ) : null}
       </section>
 
-      <section className="rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm">
-        <span className="text-ink-2">Rules: </span>
-        <span className="font-semibold">{describeRules(snap.room.game, snap.room.rules)}</span>
+      <section
+        aria-labelledby="rules-h"
+        className="flex items-start gap-3 rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm"
+      >
+        <div className="min-w-0 flex-1 space-y-1">
+          <h2 id="rules-h" className="font-semibold">
+            {GAME_NAMES[snap.room.game]}
+          </h2>
+          <p className="text-ink-2">{describeRules(snap.room.game, snap.room.rules)}</p>
+          {hasFirstPlayer(snap.room.game) ? (
+            <p className="text-ink-2">Goes first: {FIRST_PLAYER[firstPlayer].short}</p>
+          ) : null}
+        </div>
+        {isHost ? (
+          <Button variant="secondary" size="md" onClick={() => setEditing(true)}>
+            <Pencil size={15} aria-hidden="true" /> Edit
+          </Button>
+        ) : null}
       </section>
 
       {notice === "NOT_ENOUGH_PLAYERS" ? (
         <Alert>Add a bot or wait for a friend to join first.</Alert>
+      ) : null}
+      {notice === "TOO_MANY_PLAYERS" ? (
+        <Alert>There are more people in the room than that game or seat count allows.</Alert>
+      ) : null}
+
+      {/* Mounted only while open, so it always starts from the room's current setup. */}
+      {editing ? (
+        <CreateRoomSheet
+          open
+          onClose={() => setEditing(false)}
+          edit={{
+            initial: {
+              game: snap.room.game as CreatableGame,
+              rules: snap.room.rules,
+              players: snap.room.size,
+              botLevel: snap.room.botFill,
+              firstPlayer,
+            },
+            seated: people,
+            onSave: (s) => send({ t: "config", ...s }),
+          }}
+        />
       ) : null}
 
       <div className="sticky bottom-0 -mx-4 border-t border-line bg-paper/95 px-4 py-4 backdrop-blur">

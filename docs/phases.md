@@ -63,6 +63,11 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 
 **Exit:** 8-player game completes; presets pass simulation.
 
+## Player feedback (Oct 2026, between Phases 6 and 7)
+- [x] Host edits the room in the lobby: game, seat count, rules, bot fill (same setup sheet, filled in). DO + E2E tested.
+- [x] "Shuffle seats" in the lobby; "Who goes first" room setting (Random default, Takes turns, Last winner, Seat 1). Every engine's `setup` takes the first seat.
+- [ ] Whot decking (house rule, off by default): same number / same number or shape / chain, every special counts, Whot only last. See `games/whot.md`.
+
 ## Phase 7 — Chess (+ bot service)
 - [ ] Engine `games/chess` on chess.js 1.4.0 (BSD): FEN + move list state, our repetition map and counters, all draw rules (`drawClaims` auto/claim), abort, draw offers, takebacks (private only), resign.
 - [ ] Server-authoritative clocks: presets 1+0 … 30+0 and No clock (`moveLimitSeconds`), lichess-style lag quota, flag alarm, `act.m.mt`, premoves (client queue, `mt = 0`).

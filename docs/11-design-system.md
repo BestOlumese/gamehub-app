@@ -117,7 +117,8 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 
 - **Home:** game tiles first (art, name, players); playable games show "Play with friends", others "Soon". Room-code box above the tiles.
 - **Create room:** step-by-step sheet with progress dots — Rules (Naija Standard or Custom) → Empty seat (wait for a friend, or play a bot + level) → Review → Create.
-- **Lobby:** big room code (tap to copy), "Share on WhatsApp" and "Copy link", seat list (host crown; host can add a bot per empty seat or remove a player), rules summary, sticky Start for the host / "Waiting for @host to start…" for others.
+- **Lobby:** big room code (tap to copy), "Share on WhatsApp" and "Copy link", seat list (host crown; host can add a bot per empty seat or remove a player; "Shuffle seats" for the host once two seats are taken), a card with the game, its rules and "Goes first: …", sticky Start for the host / "Waiting for @host to start…" for others.
+- **Edit room (host, lobby only; decided with Best, Oct 2026):** an Edit button on the rules card opens the same step-by-step setup sheet, filled in: Game → Players → Rules → Seats (with "Who goes first": Random / Turns / Winner / Seat 1, and one line explaining the pick) → Review → "Save changes". Games and player counts that can't hold the people already seated are disabled with the reason ("Up to 4 players. 5 are here.").
 - **Table (portrait):** top bar (Home, code with connection dot, ☰ menu) → opponent card → round label → board → turn banner (accent "Your turn") → your card. Timer ring around the active avatar; away players greyed with an offline countdown; bot badge when a bot covers a seat.
 - **Game over:** result card slides up over the final board — "You won!" / "@x won" / "It's a draw", both scores, Rematch (back to the lobby, same room) and Back home.
 - **Menu:** Rules of this room, Sound on/off, Share room link, Leave game (confirm; a bot takes the seat mid-game).

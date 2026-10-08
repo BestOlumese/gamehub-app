@@ -1,7 +1,12 @@
 "use server";
 
 import { gameFor } from "@/lib/playable-games";
-import { createRoomRequest, type BotLevel, type CreateRoomResponse } from "@gamehub/protocol";
+import {
+  createRoomRequest,
+  type BotLevel,
+  type CreateRoomResponse,
+  type FirstPlayer,
+} from "@gamehub/protocol";
 import { signBody } from "@gamehub/protocol/hmac";
 import type { GameSlug } from "@gamehub/engine";
 import { redirect } from "next/navigation";
@@ -18,6 +23,7 @@ export async function createRoom(input: {
   players: number;
   /** Bots take the empty seats now ("play a bot") instead of when the host starts. */
   seatBotsNow: boolean;
+  firstPlayer: FirstPlayer;
 }): Promise<CreateRoomResult> {
   const user = await requirePlayer();
   const def = gameFor(input.game);
@@ -32,6 +38,7 @@ export async function createRoom(input: {
       botLevel: input.botLevel,
       players: input.players,
       seatBotsNow: input.seatBotsNow,
+      firstPlayer: input.firstPlayer,
       host: { userId: user.id, name: user.username, avatar: user.image ?? null },
     }),
   );

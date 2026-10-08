@@ -43,7 +43,7 @@ export const tictactoe: GameDefinition<TttState, TttAction, TttView, TttRules> =
   ruleSchema: tttRulesSchema,
   actionSchema: tttActionSchema,
 
-  setup: () => freshRound({ score: [0, 0], draws: 0 }, 1, 0),
+  setup: (_players, _ctx, first = 0) => freshRound({ score: [0, 0], draws: 0 }, 1, first),
 
   currentSeats: (s) => (s.over || s.roundWinner !== null ? [] : [s.turn]),
 

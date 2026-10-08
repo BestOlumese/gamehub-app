@@ -7,6 +7,10 @@ import { gameSlugSchema } from "./game-slug";
 export const botLevelSchema = z.enum(["easy", "medium", "hard"]);
 export type BotLevel = z.infer<typeof botLevelSchema>;
 
+/** Who moves first in each game: random, one seat along each game, the last winner, or seat 1. */
+export const firstPlayerSchema = z.enum(["random", "rotate", "lastWinner", "seat1"]);
+export type FirstPlayer = z.infer<typeof firstPlayerSchema>;
+
 export const seatStatusSchema = z.enum(["empty", "connected", "away", "bot", "left"]);
 export type SeatStatus = z.infer<typeof seatStatusSchema>;
 
@@ -47,6 +51,7 @@ export type RoomMeta = {
   minPlayers: number;
   /** Bots that take any empty seats when the host starts, or null. */
   botFill: BotLevel | null;
+  firstPlayer: FirstPlayer;
 };
 
 // ── Client → server ──────────────────────────────────────────────────────────
@@ -57,7 +62,18 @@ export const clientRoomMsg = z.discriminatedUnion("t", [
   z.object({ t: z.literal("hello"), lastV: z.number().int().nonnegative().optional() }),
   z.object({ t: z.literal("act"), id, v: z.number().int().nonnegative(), a: z.unknown() }),
   z.object({ t: z.literal("ready"), ready: z.boolean() }),
-  z.object({ t: z.literal("config"), rules: z.unknown() }),
+  // Host, lobby only: the room's whole setup, as the setup sheet sends it.
+  z.object({
+    t: z.literal("config"),
+    game: gameSlugSchema,
+    rules: z.unknown(),
+    players: z.number().int().min(2).max(8),
+    botLevel: botLevelSchema.nullable(),
+    firstPlayer: firstPlayerSchema,
+    /** Seat bots in the empty seats now ("play a bot" in a 2-player room). */
+    seatBotsNow: z.boolean().default(false),
+  }),
+  z.object({ t: z.literal("shuffle") }),
   z.object({
     t: z.literal("seat_bot"),
     seat: z.number().int().min(0).max(7),
@@ -88,6 +104,8 @@ export type RoomErrorCode =
   | "BAD_MESSAGE"
   | "NOT_HOST"
   | "NOT_ENOUGH_PLAYERS"
+  /** More people are seated than the chosen game or seat count allows. */
+  | "TOO_MANY_PLAYERS"
   | "WRONG_PHASE";
 
 export type ServerRoomMsg =
@@ -122,6 +140,7 @@ export const createRoomRequest = z.object({
   players: z.number().int().min(2).max(8).optional(),
   /** Put bots in every empty seat now ("play a bot"), rather than only when the host starts. */
   seatBotsNow: z.boolean().default(false),
+  firstPlayer: firstPlayerSchema.default("random"),
   host: z.object({
     userId: z.string().min(1),
     name: z.string().min(1),

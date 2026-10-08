@@ -77,12 +77,12 @@ export const ludo: GameDefinition<LudoState, LudoAction, LudoView, LudoRules> = 
   ruleSchema: ludoRulesSchema,
   actionSchema: ludoActionSchema,
 
-  setup(players) {
+  setup(players, _ctx, first = 0) {
     return {
       players,
       colours: coloursFor(players),
       seeds: Array.from({ length: players }, () => [-1, -1, -1, -1]),
-      turn: 0,
+      turn: first,
       phase: "roll",
       die: null,
       lastRoll: null,

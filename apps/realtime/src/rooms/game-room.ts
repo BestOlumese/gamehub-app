@@ -13,6 +13,7 @@ import {
   roomCodeSchema,
   type BotLevel,
   type ClientRoomMsg,
+  type FirstPlayer,
   type RoomErrorCode,
   type RoomMeta,
   type RoomPhase,
@@ -37,6 +38,8 @@ const RECENT_IDS = 64;
 const TAKEOVER_BOT: BotLevel = "medium";
 
 type SeatRec = {
+  /** Stable id for whoever sits here (person or bot), so "who went first" survives seat moves. */
+  key?: string;
   userId: string | null;
   name: string;
   avatar: string | null;
@@ -75,6 +78,11 @@ type PersistedRoom = {
   rngCounter: number;
   deadlines: Deadlines;
   recentActionIds: Record<number, string[]>;
+  /** Missing in rooms created before the setting existed: treated as "random". */
+  firstPlayer?: FirstPlayer;
+  /** Seat keys of the last game's first player and winner ("Takes turns", "Last winner"). */
+  lastFirstKey?: string | undefined;
+  lastWinnerKey?: string | undefined;
   startedAt?: number | undefined;
   endedAt?: number | undefined;
 };
@@ -99,6 +107,7 @@ const emptySeat = (): SeatRec => ({
 const levelName = (level: BotLevel) => `${level.charAt(0).toUpperCase()}${level.slice(1)}`;
 
 const botSeat = (level: BotLevel): SeatRec => ({
+  key: randomHex(6),
   userId: null,
   name: `Bot (${levelName(level)})`,
   avatar: null,
@@ -119,6 +128,16 @@ function nameBots(seats: SeatRec[]) {
 
 /** Seats a bot plays: actual bots, and humans who are gone (grace expired or left). */
 const botControlled = (s: SeatRec) => s.status === "bot" || s.status === "left";
+
+/** Fisher–Yates with crypto randomness (lobby seat shuffle; not part of any game's RNG). */
+function shuffled<T>(items: T[]): T[] {
+  const a = [...items];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = (crypto.getRandomValues(new Uint32Array(1))[0] as number) % (i + 1);
+    [a[i], a[j]] = [a[j] as T, a[i] as T];
+  }
+  return a;
+}
 
 function randomHex(bytes: number) {
   return [...crypto.getRandomValues(new Uint8Array(bytes))]
@@ -231,6 +250,7 @@ export class GameRoom extends Server<Env> {
     const seats = Array.from({ length: size }, emptySeat);
     seats[0] = {
       ...emptySeat(),
+      key: randomHex(6),
       userId: host.userId,
       name: host.name,
       avatar: host.avatar,
@@ -256,6 +276,7 @@ export class GameRoom extends Server<Env> {
       rngCounter: 0,
       deadlines: { grace: {}, idle: Date.now() + LOBBY_IDLE_MS },
       recentActionIds: {},
+      firstPlayer: parsed.data.firstPlayer,
     };
     await this.persist();
     return new Response(null, { status: 201 });
@@ -283,6 +304,7 @@ export class GameRoom extends Server<Env> {
       if (free >= 0) {
         room.seats[free] = {
           ...emptySeat(),
+          key: randomHex(6),
           userId: claims.sub,
           name: claims.name,
           avatar: claims.avatar,
@@ -407,10 +429,18 @@ export class GameRoom extends Server<Env> {
       case "config": {
         if (room.phase !== "lobby") return "WRONG_PHASE";
         if (!isHost) return "NOT_HOST";
-        const def = this.def();
-        const rules = def.ruleSchema.safeParse(msg.rules);
-        if (!rules.success) return "BAD_MESSAGE";
-        room.rules = rules.data;
+        return this.configure(msg);
+      }
+
+      case "shuffle": {
+        if (room.phase !== "lobby") return "WRONG_PHASE";
+        if (!isHost) return "NOT_HOST";
+        // People and bots in a random order; empty seats stay at the end.
+        const taken = room.seats.filter((x) => x.status !== "empty");
+        const order = shuffled(taken);
+        room.seats = [...order, ...room.seats.filter((x) => x.status === "empty")];
+        nameBots(room.seats);
+        this.reseatConnections();
         return this.commit();
       }
 
@@ -467,6 +497,74 @@ export class GameRoom extends Server<Env> {
     }
   }
 
+  /**
+   * The host's Edit sheet: game, seat count, rules, bot fill and who goes first, in one go.
+   * People keep their seats in order; shrinking drops empty seats first, then bots.
+   */
+  private configure(msg: Extract<ClientRoomMsg, { t: "config" }>): Promise<null> | RoomErrorCode {
+    const room = this.r;
+    const def = gameFor(msg.game);
+    if (!def) return "BAD_MESSAGE";
+    const rules = def.ruleSchema.safeParse(msg.rules);
+    if (!rules.success) return "BAD_MESSAGE";
+    const size = msg.players;
+    if (size < def.minPlayers || size > def.maxPlayers) return "BAD_MESSAGE";
+    if (room.seats.filter((x) => x.userId).length > size) return "TOO_MANY_PLAYERS";
+
+    const seats = [...room.seats];
+    const lastOf = (pred: (x: SeatRec) => boolean) => seats.findLastIndex(pred);
+    while (seats.length > size) {
+      const i = lastOf((x) => x.status === "empty");
+      seats.splice(i >= 0 ? i : lastOf((x) => !x.userId), 1);
+    }
+    while (seats.length < size) seats.push(emptySeat());
+    if (msg.seatBotsNow && msg.botLevel)
+      for (let i = 0; i < seats.length; i++)
+        if (seats[i]?.status === "empty") seats[i] = botSeat(msg.botLevel);
+    nameBots(seats);
+
+    room.game = msg.game;
+    room.rules = rules.data;
+    room.botLevel = msg.botLevel;
+    room.firstPlayer = msg.firstPlayer;
+    room.seats = seats;
+    this.reseatConnections();
+    return this.commit();
+  }
+
+  /** Seat indexes may have shifted; tell each connection its new seat. */
+  private reseatConnections() {
+    const room = this.r;
+    for (const c of this.getConnections<ConnState>()) {
+      const st = c.state;
+      if (!st) continue;
+      const idx = room.seats.findIndex((x) => x.userId === st.userId);
+      c.setState({ ...st, seat: idx >= 0 ? idx : "spectator" });
+    }
+  }
+
+  /** The seat that moves first this game, from the room's "Who goes first" setting. */
+  private firstSeat(): SeatIndex {
+    const room = this.r;
+    const n = room.seats.length;
+    const random = seededRng(`${room.rngSeed}:first`).int(n);
+    const at = (key: string | undefined) => (key ? room.seats.findIndex((x) => x.key === key) : -1);
+    switch (room.firstPlayer ?? "random") {
+      case "seat1":
+        return 0;
+      case "rotate": {
+        const i = at(room.lastFirstKey);
+        return i >= 0 ? (i + 1) % n : random;
+      }
+      case "lastWinner": {
+        const i = at(room.lastWinnerKey);
+        return i >= 0 ? i : random;
+      }
+      default:
+        return random;
+    }
+  }
+
   private async commit(): Promise<null> {
     const room = this.r;
     room.v++;
@@ -500,7 +598,9 @@ export class GameRoom extends Server<Env> {
     room.rngSeed = randomHex(16);
     room.rngCounter = 0;
     const rng = seededRng(room.rngSeed);
-    room.state = def.setup(room.seats.length, { rng, rules: room.rules, now: Date.now() });
+    const first = this.firstSeat();
+    room.lastFirstKey = room.seats[first]?.key;
+    room.state = def.setup(room.seats.length, { rng, rules: room.rules, now: Date.now() }, first);
     room.rngCounter = rng.counter();
     room.phase = "playing";
     room.startedAt = Date.now();
@@ -511,13 +611,7 @@ export class GameRoom extends Server<Env> {
       s.timeouts = 0;
       if (s.status === "away") room.deadlines.grace[i] = Date.now() + this.graceMs;
     });
-    // Seat indexes may have shifted; tell each connection its new seat.
-    for (const c of this.getConnections<ConnState>()) {
-      const st = c.state;
-      if (!st) continue;
-      const idx = room.seats.findIndex((s) => s.userId === st.userId);
-      c.setState({ ...st, seat: idx >= 0 ? idx : "spectator" });
-    }
+    this.reseatConnections();
     this.schedule();
     room.v++;
     await this.persist();
@@ -663,6 +757,8 @@ export class GameRoom extends Server<Env> {
     room.endedAt = Date.now();
     room.deadlines = { grace: {}, idle: Date.now() + ENDED_IDLE_MS };
     const ranking = def.ranking(room.state);
+    const winner = ranking[0]?.[0];
+    room.lastWinnerKey = winner === undefined ? undefined : room.seats[winner]?.key;
     this.broadcast(
       JSON.stringify({ t: "ended", v: room.v, ranking, ranked: false } satisfies ServerRoomMsg),
     );
@@ -840,6 +936,7 @@ export class GameRoom extends Server<Env> {
       size: room.seats.length,
       minPlayers: this.def().minPlayers,
       botFill: room.botLevel,
+      firstPlayer: room.firstPlayer ?? "random",
     };
   }
 

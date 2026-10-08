@@ -21,7 +21,7 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   presets: { naija: R } & Record<string, R>;
   ruleSchema: z.ZodType<R>;                       // validates host-custom rules
   actionSchema: z.ZodType<A>;                     // validates client actions before apply()
-  setup(players: number, ctx: Ctx<R>): S;
+  setup(players: number, ctx: Ctx<R>, first?: SeatIndex): S; // `first` = the room's "Who goes first" pick (default 0)
   currentSeats(s: S): SeatIndex[];                // whose input is awaited (RPS: many)
   legalActions(s: S, seat: SeatIndex, rules: R): A[];
   apply(s: S, input: { seat: SeatIndex; action: A }, ctx: Ctx<R>): Result<S, RuleErrorCode>;

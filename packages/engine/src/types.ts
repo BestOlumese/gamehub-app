@@ -52,7 +52,11 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   ruleSchema: z.ZodType<R>;
   /** Validates actions arriving from clients before `apply` sees them. */
   actionSchema: z.ZodType<A>;
-  setup(players: number, ctx: Ctx<R>): S;
+  /**
+   * A new game. `first` is the seat that moves first (the room's "Who goes first" setting;
+   * 0 when not given). Simultaneous games (RPS) ignore it.
+   */
+  setup(players: number, ctx: Ctx<R>, first?: SeatIndex): S;
   currentSeats(s: S): SeatIndex[];
   legalActions(s: S, seat: SeatIndex, rules: R): A[];
   apply(s: S, input: { seat: SeatIndex; action: A }, ctx: Ctx<R>): Result<S, RuleErrorCode>;

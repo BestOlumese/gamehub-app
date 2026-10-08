@@ -9,7 +9,8 @@ export const E2E_GRACE_MS = 3000;
 
 export default defineConfig({
   testDir: "e2e",
-  timeout: 90_000,
+  // Most tests sign up two people first (≈ 20–40 s under parallel load).
+  timeout: 150_000,
   // Hard stop for the whole run so a stuck server can never hang CI.
   globalTimeout: 20 * 60_000,
   expect: { timeout: 10_000 },

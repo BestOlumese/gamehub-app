@@ -29,6 +29,8 @@ async function createRoom(body: Record<string, unknown> = {}) {
     game: "tictactoe",
     rules: null,
     botLevel: null,
+    // Tests that check turns expect the host to move first; "Who goes first" has its own tests.
+    firstPlayer: "seat1",
     host: { userId: "u-host", name: "host", avatar: null },
     ...body,
   });
@@ -103,6 +105,15 @@ async function connect(code: string, sub: string, name: string): Promise<Client>
 }
 
 const snapshot = (m: ServerRoomMsg) => m.t === "snapshot";
+
+/** Waits until a client's latest snapshot passes `ok` (for state already sent or still coming). */
+async function until(c: Client, ok: (s: ReturnType<Client["last"]>) => boolean, label: string) {
+  const deadline = Date.now() + 3000;
+  while (!ok(c.last())) {
+    if (Date.now() > deadline) throw new Error(`timed out waiting for ${label}`);
+    await new Promise((r) => setTimeout(r, 25));
+  }
+}
 
 type RoomStub = ReturnType<typeof env.Room.getByName>;
 const botDue = (stub: RoomStub) =>
@@ -334,6 +345,163 @@ describe("bots, alarms and hibernation", () => {
     back.send({ t: "hello" });
     const snap = await back.next((m) => m.t === "snapshot" && m.you === 1, "guest back in seat 1");
     expect(snap.t === "snapshot" && snap.seats[1]?.status).toBe("connected");
+  });
+});
+
+describe("lobby settings", () => {
+  const config = (over: Record<string, unknown> = {}) => ({
+    t: "config",
+    game: "whot",
+    rules: whotNaija,
+    players: 4,
+    botLevel: null,
+    firstPlayer: "random",
+    ...over,
+  });
+
+  it("the host changes game, seats and rules; shrinking drops empty seats, then bots", async () => {
+    const code = await createRoom();
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+
+    guest.send(config());
+    await guest.next((m) => m.t === "error" && m.code === "NOT_HOST", "guest can't edit");
+
+    host.send(config({ firstPlayer: "rotate" }));
+    const s1 = await host.next((m) => m.t === "snapshot" && m.room.game === "whot");
+    if (s1.t !== "snapshot") throw new Error("snapshot");
+    expect(s1.room).toMatchObject({ size: 4, firstPlayer: "rotate", minPlayers: 2 });
+    expect(s1.seats.map((x) => x.status)).toEqual(["connected", "connected", "empty", "empty"]);
+
+    // Bots now in the empty seats, then down to 3: an empty-free table loses a bot, not a person.
+    host.send(config({ players: 4, botLevel: "easy", seatBotsNow: true }));
+    await host.next(
+      (m) => m.t === "snapshot" && m.seats.filter((x) => x.status === "bot").length === 2,
+    );
+    host.send(config({ players: 3, botLevel: "easy" }));
+    const s2 = await host.next((m) => m.t === "snapshot" && m.room.size === 3);
+    if (s2.t !== "snapshot") throw new Error("snapshot");
+    expect(s2.seats.map((x) => x.status)).toEqual(["connected", "connected", "bot"]);
+    expect(s2.seats[2]?.name).toBe("Bot (Easy)");
+
+    // Back to tic-tac-toe for two: the bot goes, both people stay.
+    host.send(
+      config({
+        game: "tictactoe",
+        rules: { turnSeconds: 15, bestOf: 3, alternateStarter: true },
+        players: 2,
+      }),
+    );
+    const s3 = await host.next((m) => m.t === "snapshot" && m.room.game === "tictactoe");
+    if (s3.t !== "snapshot") throw new Error("snapshot");
+    expect(s3.seats.map((x) => x.userId)).toEqual(["u-host", "u-guest"]);
+
+    // A third person arrives (spectating: the table is full)... and the host can't drop below the people seated.
+    host.send(config({ players: 3 }));
+    await host.next((m) => m.t === "snapshot" && m.room.size === 3);
+    const third = await connect(code, "u-third", "third");
+    third.send({ t: "hello" });
+    await third.next((m) => m.t === "snapshot" && m.you === 2);
+    host.send(config({ players: 2 }));
+    await host.next((m) => m.t === "error" && m.code === "TOO_MANY_PLAYERS");
+    host.send(config({ game: "ludo", rules: { nope: true } }));
+    await host.next((m) => m.t === "error" && m.code === "BAD_MESSAGE", "bad rules refused");
+    host.send(
+      config({
+        game: "tictactoe",
+        rules: { turnSeconds: 15, bestOf: 3, alternateStarter: true },
+        players: 3,
+      }),
+    );
+    await host.next((m) => m.t === "error" && m.code === "BAD_MESSAGE", "tic-tac-toe is 2 players");
+  });
+
+  it("the host shuffles seats; everyone is told their new seat", async () => {
+    const code = await createRoom({ game: "whot", rules: whotNaija, players: 5 });
+    const users = ["u-host", "u-a", "u-b", "u-c"];
+    const clients: Client[] = [];
+    for (const u of users) {
+      const c = await connect(code, u, u);
+      c.send({ t: "hello" });
+      await c.next(snapshot);
+      clients.push(c);
+    }
+    const host = clients[0]!;
+    clients[1]!.send({ t: "shuffle" });
+    await clients[1]!.next((m) => m.t === "error" && m.code === "NOT_HOST");
+
+    // Shuffle until the order changes (1 in 24 it comes out the same).
+    let order = users.join();
+    for (let i = 0; i < 10 && order === users.join(); i++) {
+      const before = host.last().v;
+      host.send({ t: "shuffle" });
+      const snap = await host.next((m) => m.t === "snapshot" && m.v > before);
+      if (snap.t !== "snapshot") throw new Error("snapshot");
+      expect(snap.seats.at(-1)?.status).toBe("empty"); // empty seats stay at the end
+      order = snap.seats
+        .slice(0, 4)
+        .map((x) => x.userId)
+        .join();
+    }
+    expect(order).not.toBe(users.join());
+    expect(order.split(",").sort()).toEqual([...users].sort());
+    for (const [i, c] of clients.entries())
+      await until(
+        c,
+        (m) => m.seats.findIndex((x) => x.userId === users[i]) === m.you,
+        `${users[i]} reseated`,
+      );
+  });
+
+  it("who goes first: takes turns moves one seat along; last winner starts the next game", async () => {
+    const code = await createRoom({
+      rules: { turnSeconds: 15, bestOf: 1, alternateStarter: true },
+      firstPlayer: "rotate",
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    const byTurn = (seat: number) => (seat === 0 ? host : guest);
+
+    /** Starts a game, lets whoever moves first win it (cells 0-1-2), and returns the first seat. */
+    async function playOne() {
+      host.send({ t: "start" });
+      await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+      const first = view(host).turn;
+      for (const cell of [0, 3, 1, 4, 2]) {
+        const who = byTurn(view(host).turn);
+        const before = host.last().v;
+        act(who, { type: "place", cell });
+        await host.next((m) => m.t === "snapshot" && m.v > before, `move ${cell}`);
+      }
+      await until(host, (m) => m.room.phase === "ended", "game over");
+      host.send({ t: "rematch" });
+      await host.next((m) => m.t === "snapshot" && m.room.phase === "lobby");
+      return first;
+    }
+
+    const g1 = await playOne();
+    const g2 = await playOne();
+    expect(g2).toBe((g1 + 1) % 2);
+
+    // Last winner: game 2's first mover won it, so they start game 3.
+    host.send(
+      config({
+        game: "tictactoe",
+        rules: { turnSeconds: 15, bestOf: 1, alternateStarter: true },
+        players: 2,
+        firstPlayer: "lastWinner",
+      }),
+    );
+    await host.next((m) => m.t === "snapshot" && m.room.firstPlayer === "lastWinner");
+    expect(await playOne()).toBe(g2);
   });
 });
 

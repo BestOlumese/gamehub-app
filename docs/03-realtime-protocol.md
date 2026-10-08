@@ -56,7 +56,8 @@ Every message has a short type key `t`.
 | `hello` | `{ lastV?: number }` | First message after connect. Server replies with `snapshot`. |
 | `act` | `{ id: string; v: number; a: GameAction }` | `id` = client UUID (idempotency). `v` = state version the client acted on. |
 | `ready` | `{ ready: boolean }` | Lobby only. |
-| `config` | `{ rules: RuleConfig }` | Host only, lobby only. |
+| `config` | `{ game; rules: RuleConfig; players: 2–8; botLevel: BotLevel \| null; firstPlayer: "random" \| "rotate" \| "lastWinner" \| "seat1"; seatBotsNow?: boolean }` | Host only, lobby only (before the first game and after each rematch). The whole setup in one message, as the Edit sheet sends it. People keep their seats in order; shrinking drops empty seats first, then bots. `TOO_MANY_PLAYERS` if more people are seated than the new count or game allows. |
+| `shuffle` | `{}` | Host only, lobby only. People and bots in a random order (crypto RNG); empty seats stay at the end. Every connection is told its new seat. |
 | `start` | `{}` | Host only; fills empty seats with bots if `fillBots`. |
 | `emote` | `{ e: EmoteId }` | Rate limited. |
 | `chat` | `{ text: string }` | ≤ 200 chars, rate limited, filtered. |
@@ -146,6 +147,7 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 ### Phase 3 additions
 - `snapshot.deadlines.turns` is **per seat** (`{ [seat]: endsAt }`) instead of a single `turnEndsAt`: RPS bracket matches run in parallel and one player's move must not reset another's clock.
 - `RoomMeta` gains `minPlayers` and `botFill` (the level bots take empty seats at start, or null) so the lobby can label Start correctly.
+- `RoomMeta.firstPlayer` (Oct 2026): who moves first in each game. `random` (default for new rooms), `rotate` (one seat along from the last game's first player), `lastWinner` (random when the winner has left), `seat1`. The room keeps a stable `key` per seat so this survives shuffles and seat changes; RPS ignores it (everyone throws together).
 - `POST /rooms` takes `players` (2–8, clamped to the game) and `seatBotsNow` ("play a bot" seats bots immediately).
 
 ## New games and modes (Phase 7 onward)

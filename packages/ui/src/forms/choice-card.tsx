@@ -8,6 +8,7 @@ type ChoiceCardProps = {
   description?: ReactNode;
   icon?: ReactNode;
   children?: ReactNode;
+  disabled?: boolean;
 };
 
 /** A large radio option: title, short explanation, optional extra controls when chosen. */
@@ -19,13 +20,21 @@ export function ChoiceCard({
   description,
   icon,
   children,
+  disabled,
 }: ChoiceCardProps) {
   return (
     <div
-      className={`rounded-card border-2 transition-colors duration-(--dur-press) ${checked ? "border-brand bg-brand-soft/40" : "border-line bg-surface hover:border-ink-3"}`}
+      className={`rounded-card border-2 transition-colors duration-(--dur-press) ${checked ? "border-brand bg-brand-soft/40" : "border-line bg-surface hover:border-ink-3"} ${disabled ? "pointer-events-none opacity-50" : ""}`}
     >
       <label className="flex cursor-pointer items-start gap-3 p-4 has-focus-visible:outline-2 has-focus-visible:outline-brand">
-        <input type="radio" name={name} checked={checked} onChange={onChange} className="sr-only" />
+        <input
+          type="radio"
+          name={name}
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled}
+          className="sr-only"
+        />
         <span
           aria-hidden="true"
           className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border-2 ${checked ? "border-brand" : "border-ink-3"}`}

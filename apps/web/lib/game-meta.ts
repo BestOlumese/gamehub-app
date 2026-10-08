@@ -1,5 +1,6 @@
 // Client-safe game names and rule summaries (no zod: imports the light engine entries).
 import type { GameSlug } from "@gamehub/engine";
+import type { FirstPlayer } from "@gamehub/protocol";
 import type { RpsRules } from "@gamehub/engine/rps";
 import type { TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
@@ -12,6 +13,33 @@ export const GAME_NAMES: Record<GameSlug, string> = {
   snakes: "Snakes & Ladders",
   tictactoe: "Tic-tac-toe",
   rps: "Rock Paper Scissors",
+};
+
+/** Seats each game allows (matches the engines' min/maxPlayers; checked in games.test.ts). */
+export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
+  whot: [2, 8],
+  ludo: [2, 4],
+  snakes: [2, 8],
+  tictactoe: [2, 2],
+  rps: [2, 8],
+};
+
+/** RPS players throw together, so nobody "goes first". */
+export const hasFirstPlayer = (game: GameSlug) => game !== "rps";
+
+export const FIRST_PLAYER: Record<FirstPlayer, { label: string; hint: string; short: string }> = {
+  random: { label: "Random", hint: "A random player starts each game.", short: "Random" },
+  rotate: {
+    label: "Turns",
+    hint: "The start moves one seat along each game, so everyone gets a go.",
+    short: "Takes turns",
+  },
+  lastWinner: {
+    label: "Winner",
+    hint: "Whoever won the last game starts. The first game is random.",
+    short: "Last winner",
+  },
+  seat1: { label: "Seat 1", hint: "The player in seat 1 always starts.", short: "Seat 1" },
 };
 
 export const describeTttRules = (r: TttRules) =>

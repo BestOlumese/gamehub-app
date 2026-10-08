@@ -38,7 +38,10 @@ async function createRoom(
     await page.getByText("Play a bot", { exact: true }).click();
     await page.getByText(opts.bot, { exact: true }).click();
   }
+  // These tests script the moves, so the host (seat 1) must start.
+  await page.getByText("Seat 1", { exact: true }).click();
   await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByText("Goes first")).toBeVisible();
   await page.getByRole("button", { name: "Create room" }).click();
   await expect(page).toHaveURL(/\/r\/[A-Z2-9]{6}$/, { timeout: 20_000 });
   await expect(page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
@@ -124,6 +127,66 @@ test("Snakes & Ladders: 2 people and 6 bots play an 8-player game to the end", a
   await expect(result(host.page).getByRole("listitem")).toHaveCount(8);
   await expect(result(host.page).getByText("1st", { exact: true })).toBeVisible();
   for (const c of [host.ctx, guest.ctx]) await c.close();
+});
+
+test("the host edits the room in the lobby: game, seats, who goes first, and a seat shuffle", async ({
+  browser,
+}) => {
+  const host = await player(browser, "edit_h");
+  const guest = await player(browser, "edit_g");
+  const code = await createRoom(host.page);
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await expect(guest.page.getByRole("button", { name: "Edit", exact: true })).toHaveCount(0); // host only
+
+  // Tic-tac-toe for 2 → Whot for 4, last winner starts.
+  await host.page.getByRole("button", { name: "Edit", exact: true }).click();
+  const sheet = host.page.getByRole("dialog");
+  await expect(sheet.getByText("Room settings")).toBeVisible();
+  const shot = async (name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await host.page.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  await shot("edit-game-step");
+  await sheet.getByText("Whot", { exact: true }).click();
+  await sheet.getByRole("button", { name: "Next", exact: true }).click(); // game → players
+  await expect(sheet.getByRole("button", { name: "1", exact: true })).toHaveCount(0);
+  await sheet.getByRole("button", { name: "4", exact: true }).click();
+  await sheet.getByRole("button", { name: "Next", exact: true }).click(); // → rules
+  await sheet.getByRole("button", { name: "Next", exact: true }).click(); // → seats
+  await sheet.getByText("Winner", { exact: true }).click();
+  await shot("edit-seats-step");
+  await sheet.getByRole("button", { name: "Next", exact: true }).click(); // → review
+  await sheet.getByRole("button", { name: "Save changes" }).click();
+
+  for (const p of [host.page, guest.page]) {
+    await expect(p.getByRole("heading", { name: "Whot" })).toBeVisible();
+    await expect(p.getByText("Goes first: Last winner")).toBeVisible();
+    await expect(p.getByText("2/4")).toBeVisible();
+  }
+  await shot("lobby-after-edit");
+
+  // Two people are in, so 2 is the lowest count on offer.
+  await host.page.getByRole("button", { name: "Edit", exact: true }).click();
+  await sheet.getByRole("button", { name: "Next", exact: true }).click(); // game → players
+  await expect(sheet.getByRole("button", { name: "2", exact: true })).toBeEnabled();
+  await sheet.getByRole("button", { name: "3", exact: true }).click();
+  for (let i = 0; i < 3; i++)
+    await sheet.getByRole("button", { name: "Next", exact: true }).click();
+  await sheet.getByRole("button", { name: "Save changes" }).click();
+  await expect(guest.page.getByText("2/3")).toBeVisible();
+
+  // Shuffle until the guest is listed first (each shuffle is a coin toss for two people).
+  const players = guest.page.getByRole("region", { name: "Players" }).getByRole("listitem");
+  for (let i = 0; i < 12; i++) {
+    if ((await players.first().innerText()).includes(guest.username)) break;
+    await host.page.getByRole("button", { name: "Shuffle seats" }).click();
+    await host.page.waitForTimeout(300);
+  }
+  await expect(players.first()).toContainText(guest.username);
+  await host.ctx.close();
+  await guest.ctx.close();
 });
 
 test("two friends play a game, see the result, and rematch", async ({ browser }) => {

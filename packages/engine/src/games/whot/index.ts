@@ -103,7 +103,7 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
   ruleSchema: whotRulesSchema,
   actionSchema: whotActionSchema,
 
-  setup(players, { rng, rules }) {
+  setup(players, { rng, rules }, first = 0) {
     const market = rng.shuffle(DECK);
     const size = dealSize(players, rules.handSize);
     const hands = Array.from({ length: players }, () => market.splice(market.length - size, size));
@@ -114,7 +114,7 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       market,
       pile: [top],
       callShape: null,
-      turn: 0,
+      turn: first,
       pendingPick: null,
       lastCardDeclared: Array<boolean>(players).fill(false),
       lastCardDue: null,
@@ -124,12 +124,12 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       misses: [],
       reshuffles: 0,
     };
-    // Default: a special first call card does nothing. "apply" gives it its effect on seat 0.
+    // Default: a special first call card does nothing. "apply" gives it its effect on the first player.
     if (rules.firstCardEffect === "apply" && isActiveSpecial(top, rules)) {
       const { n } = parseCard(top);
       if (n === 2) s.pendingPick = { amount: 2, kind: 2 };
       if (n === 5) s.pendingPick = { amount: 3, kind: 5 };
-      if (n === 8) s.turn = 1 % players;
+      if (n === 8) s.turn = (first + 1) % players;
       if (n === 14) for (let i = 0; i < players; i++) drawInto(s, i, 1, rules, rng, []);
     }
     return s;
