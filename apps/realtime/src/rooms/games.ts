@@ -2,6 +2,7 @@ import {
   chess,
   draughts,
   ludo,
+  plots,
   rps,
   snakes,
   tictactoe,
@@ -22,6 +23,7 @@ const registry: Partial<Record<GameSlug, AnyGame>> = {
   snakes: snakes as unknown as AnyGame,
   chess: chess as unknown as AnyGame,
   draughts: draughts as unknown as AnyGame,
+  plots: plots as unknown as AnyGame,
 };
 
 export function gameFor(slug: GameSlug): AnyGame | null {

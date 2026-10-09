@@ -11,7 +11,7 @@ export function GamesSection() {
     >
       <SectionHeading
         id="games-heading"
-        title="Seven games you already know"
+        title="Eight games you already know"
         lead="Every rule you argue about is a setting. Start with Naija Standard, then make it yours."
       />
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

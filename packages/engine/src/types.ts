@@ -8,6 +8,7 @@ export const GAME_SLUGS = [
   "rps",
   "chess",
   "draughts",
+  "plots",
 ] as const;
 export type GameSlug = (typeof GAME_SLUGS)[number];
 
@@ -109,6 +110,11 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * the room straight after the action that asked. Null: nothing to answer.
    */
   botReply?(s: S, seat: SeatIndex, rules: R): A | null;
+  /**
+   * Whether running out of time here counts towards being marked away (3 in a row and a bot
+   * takes over). Default true; false where waiting is a normal choice (an auction you sit out).
+   */
+  timeoutCounts?(s: S, seat: SeatIndex): boolean;
   /** The game ended without a result (chess abort): the room goes back to the lobby. */
   aborted?(s: S): boolean;
   /** MUST strip hidden info. The only engine output that reaches clients. */

@@ -53,6 +53,6 @@ describe("room messages", () => {
     };
     expect(createRoomRequest.safeParse(ok).success).toBe(true);
     expect(createRoomRequest.parse(ok).firstPlayer).toBe("random");
-    expect(createRoomRequest.safeParse({ ...ok, game: "plots" }).success).toBe(false);
+    expect(createRoomRequest.safeParse({ ...ok, game: "football" }).success).toBe(false);
   });
 });

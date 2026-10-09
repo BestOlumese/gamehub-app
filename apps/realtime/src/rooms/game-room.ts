@@ -1010,10 +1010,12 @@ export class GameRoom extends Server<Env> {
           const s = room.seats[seat];
           if (!s || botControlled(s)) continue;
           const rng = seededRng(room.rngSeed, room.rngCounter);
+          // Some timeouts are a normal choice, not being away (letting an auction run out).
+          const counts = def.timeoutCounts?.(room.state, seat) ?? true;
           const action = def.timeoutAction(room.state, seat, room.rules, rng);
           room.rngCounter = rng.counter();
-          s.timeouts++;
-          if (s.status === "connected" && s.timeouts >= MAX_TIMEOUTS) {
+          if (counts) s.timeouts++;
+          if (counts && s.status === "connected" && s.timeouts >= MAX_TIMEOUTS) {
             s.status = "left"; // AFK: a bot takes over; they can still come back
             s.botLevel = TAKEOVER_BOT;
           }

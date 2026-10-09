@@ -28,3 +28,5 @@ export type {
   DraughtsState,
   DraughtsView,
 } from "./games/draughts";
+export { plots, plotsNaija, plotsRulesSchema } from "./games/plots";
+export type { PlotsAction, PlotsRules, PlotsState, PlotsView } from "./games/plots";

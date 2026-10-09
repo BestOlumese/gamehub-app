@@ -89,6 +89,7 @@ Zod schemas live in each game's `schemas.ts` and are only imported by the full `
 - **Clocked games** (chess, draughts): `ctx.now` is the server receive time and the move action carries `mt` (client think time, copied from `act.m` by the room). A server-only `flag` action ends a game on time; `apply` rejects it from clients.
 - **Remote bots** (bot service): the contract's `bots` stay synchronous and pure. For levels that use the bot service, the room checks `GameDefinition.remoteBot?(s, seat, level) → { game, level, position, movetimeMs } | null` before calling the local bot; on any failure it calls the local `bots[level]` (which is the documented fallback engine).
 - **Injected data:** `createFootballGame(dataset)` returns the football `GameDefinition` with the dataset closed over, so `packages/engine` keeps zero dependencies.
-- `GAME_SLUGS` gains `chess`, `draughts`, `property`, `football` (engine, protocol `game-slug.ts` and the Postgres enum together, one game at a time).
+- `timeoutCounts?(s, seat)`: false where running out of time is a normal choice (Naija Plots: sitting out an auction), so it doesn't count towards being marked away.
+- `GAME_SLUGS` gains `chess`, `draughts`, `plots` (the property game), `football` (engine, protocol `game-slug.ts` and the Postgres enum together, one game at a time).
 - New `RuleErrorCode`s are listed in `03-realtime-protocol.md`.
 - Per-game termination bounds for property tests: chess ≤ 600 plies (with automatic fivefold/75-move); draughts ≤ 600 plies; property timed by its clock, classic ≤ 600 turns (3-hour cap); football: fixed length (≤ 120 minutes + penalties).

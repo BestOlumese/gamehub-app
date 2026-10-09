@@ -96,9 +96,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 
 ## Phase 9 — Property-trading game
 - [x] Name: **Naija Plots** (Best, Oct 2026; slug `plots`). Still to do: a proper trademark check (NG registry + WIPO) before any promotion.
-- [ ] Engine `games/property`: board, economy from the formula, both decks, police post, building rules with supply and shortages, mortgages, bankruptcy, timed (net worth) and classic modes, trading protocol, auctions (bids in memory), all options.
-- [ ] Bots with valuation (Easy/Medium/Hard; Hard proposes trades); chained bot turns.
-- [ ] Money and building conservation property tests; **Monte Carlo balance job** passing all bands, then regenerate the rent table.
+- [x] Engine `games/plots`: board, economy from the formula, both decks, Police Post, building rules with supply (shortages first come, first served), mortgages, debts, bankruptcy, timed (net worth) and classic modes, trading, auctions (bids persisted), all options.
+- [x] Bots with valuation (Easy/Medium/Hard; Medium and Hard propose group-completing trades); chained bot turns.
+- [x] Money, building and deck invariants checked after every action in whole bot games; **balance simulation** passing all bands (`games/property-balance.md`), rent table regenerated.
 - [ ] UI: board, plot cards, auction panel, trade composer, player strip. Design agreed with Best (Oct 2026, `11-design-system.md`): full board, band + city badge tiles, cream board with an Ankara band, Naija-thing tokens, player strip above, two-column trade sheet, auction in the centre, dice tumble + hop.
 
 **Exit:** a 4-player timed game (2 humans, 2 bots) ends by the clock with correct net worth places; an 8-player game runs smoothly on a low-end phone; balance report attached; rows per game within the estimate.

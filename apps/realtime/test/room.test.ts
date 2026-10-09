@@ -2,10 +2,12 @@ import {
   chessNaija,
   draughtsNaija,
   ludoNaija,
+  plotsNaija,
   snakesNaija,
   whotNaija,
   type ChessState,
   type DraughtsState,
+  type PlotsState,
   type TttState,
 } from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
@@ -1246,4 +1248,115 @@ describe("draughts", () => {
       svc.restore();
     }
   });
+});
+
+describe("naija plots", () => {
+  const pv = (c: Client) => c.last().view as PlotsState;
+  type Live = { room: { state: PlotsState; deadlines: { turns?: Record<number, number> } } };
+
+  async function vsBot() {
+    const code = await createRoom({
+      game: "plots",
+      rules: plotsNaija,
+      players: 2,
+      botLevel: "medium",
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    return { host, stub: env.Room.getByName(code) };
+  }
+
+  it("your action clock, and a bot's whole turn in one go", async () => {
+    const { host, stub } = await vsBot();
+    const s0 = pv(host);
+    expect(s0.order).toEqual([0, 1]);
+    expect("decks" in s0).toBe(false);
+    expect(host.last().deadlines.turns?.[0]).toBe(s0.since + 30_000 + 3000);
+    act(host, { type: "roll" });
+    await until(host, () => pv(host).dice !== null, "rolled");
+    // Whatever we landed on: don't buy (the bot may bid), then end the turn.
+    for (let i = 0; i < 6 && pv(host).turn === 0 && !pv(host).auction; i++) {
+      const s = pv(host);
+      const before = host.last().v;
+      if (s.debts.length) act(host, { type: "declare_bankruptcy" });
+      else if (s.step === "buy") act(host, { type: "decline" });
+      else if (s.step === "roll") act(host, { type: "roll" });
+      else act(host, { type: "end_turn" });
+      await host.next((m) => m.t === "snapshot" && m.v > before, `step ${i}`);
+    }
+    // An auction (if we declined): the bot bids or passes on its alarm; then our clock is the auction's.
+    if (pv(host).auction) {
+      await fireBot(stub);
+      await until(
+        host,
+        () =>
+          !pv(host).auction ||
+          pv(host).auction?.by === 1 ||
+          pv(host).auction?.out.includes(1) === true,
+        "bot bid",
+      );
+      if (pv(host).auction) {
+        expect(host.last().deadlines.turns?.[0]).toBe(pv(host).auction?.endsAt);
+        await runInDurableObject(stub, (inst) => {
+          const r = (inst as unknown as Live).room;
+          if (r.state.auction) r.state.auction.endsAt = Date.now() - 1;
+          r.deadlines.turns = { 0: 0 };
+        });
+        await runDurableObjectAlarm(stub);
+        await until(host, () => !pv(host).auction, "auction closed on time");
+      }
+      if (pv(host).turn === 0 && pv(host).step === "manage") {
+        const before = host.last().v;
+        act(host, { type: "end_turn" });
+        await host.next((m) => m.t === "snapshot" && m.v > before, "end turn");
+      }
+    }
+    if (pv(host).places) return;
+    expect(pv(host).order[pv(host).turn]).toBe(1);
+    const turnsBefore = pv(host).turns;
+    // One alarm: the bot rolls, decides, builds, ends; it's our turn again (unless it rolled doubles into jail etc.).
+    await fireBot(stub);
+    await until(host, () => pv(host).turns > turnsBefore || !!pv(host).places, "bot turn done");
+    expect(pv(host).order[pv(host).turn]).toBe(0);
+  }, 20_000);
+
+  it("an auction: the bot bids on its alarm, the clock is the auction's, and it closes on time", async () => {
+    const { host, stub } = await vsBot();
+    // Put the host on Banana Island with the choice to buy.
+    await runInDurableObject(stub, (inst) => {
+      const st = (inst as unknown as Live).room.state;
+      st.pos[0] = 39;
+      st.step = "buy";
+      st.since = Date.now();
+    });
+    act(host, { type: "decline" });
+    await until(host, () => !!pv(host).auction, "auction started");
+    const endsAt = pv(host).auction?.endsAt as number;
+    expect(host.last().deadlines.turns?.[0]).toBe(endsAt);
+    await fireBot(stub);
+    await until(host, () => pv(host).auction?.by === 1 || !pv(host).auction, "bot bid");
+    expect(pv(host).auction?.by).toBe(1);
+    // Nobody else bids: let the clock run out.
+    await runInDurableObject(stub, (inst) => {
+      const r = (inst as unknown as Live).room;
+      if (r.state.auction) r.state.auction.endsAt = Date.now() - 1;
+      r.deadlines.turns = { 0: 0 };
+    });
+    await runDurableObjectAlarm(stub);
+    await until(host, () => !pv(host).auction, "auction closed");
+    expect(pv(host).owner[39]).toBe(1);
+    expect(pv(host).step).toBe("manage");
+    // Sitting out an auction isn't a missed turn.
+    const timeouts = await runInDurableObject(
+      stub,
+      (inst) =>
+        (inst as unknown as { room: { seats: Array<{ timeouts: number }> } }).room.seats[0]
+          ?.timeouts,
+    );
+    expect(timeouts).toBe(0);
+  }, 20_000);
 });

@@ -51,4 +51,10 @@ export const games: readonly GameInfo[] = [
     players: "2 players",
     blurb: "Naija draft on the big board, flying kings and all. English checkers if you prefer.",
   },
+  {
+    slug: "plots",
+    name: "Naija Plots",
+    players: "2–8 players",
+    blurb: "Buy plots from Ojo to Banana Island, build, collect rent, trade and outlast everybody.",
+  },
 ];

@@ -13,7 +13,8 @@
     "./snakes": "./src/games/snakes/core.ts",
     "./chess": "./src/games/chess/core.ts",
     "./draughts": "./src/games/draughts/core.ts",
-    "./draughts/service": "./src/games/draughts/service.ts"
+    "./draughts/service": "./src/games/draughts/service.ts",
+    "./plots": "./src/games/plots/client.ts"
   },
   "scripts": {
     "lint": "eslint .",
