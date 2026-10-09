@@ -526,3 +526,90 @@ test("Ludo: 2 people and 2 bots play, and a player who drops mid-move gets the s
   await host.ctx.close();
   await back.close();
 });
+
+test("chess: two people, a premove, and checkmate", async ({ browser }) => {
+  const host = await player(browser, "chess_h");
+  const guest = await player(browser, "chess_g", { width: 360, height: 640 });
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  await host.page
+    .locator("li")
+    .filter({ hasText: "Chess" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await expect(host.page.getByText("Blitz")).toBeVisible();
+  await shot(host.page, "chess-rules");
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Seat 1", { exact: true }).click(); // host plays White
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(host.page.getByText("Plays White")).toBeVisible();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game" }).click();
+
+  const sq = (p: Page, name: string) =>
+    p
+      .getByRole("group", { name: "Board squares" })
+      .getByRole("button", { name: new RegExp(`^${name},`) });
+  const move = async (p: Page, from: string, to: string) => {
+    // The square buttons sit under the board (for keyboards and screen readers): press them.
+    await sq(p, from).press("Enter");
+    await sq(p, to).press("Enter");
+  };
+  await expect(host.page.getByText("Your move", { exact: false })).toBeVisible({ timeout: 15_000 });
+  await move(host.page, "f2", "f3");
+  await expect(guest.page.getByRole("button", { name: "f3", exact: true })).toBeVisible();
+  await move(guest.page, "e7", "e5");
+  await expect(host.page.getByRole("button", { name: "e5", exact: true })).toBeVisible();
+  await shot(host.page, "chess-mid-pixel7");
+  // Black queues the mate while White thinks; it goes as soon as White moves.
+  await move(guest.page, "d8", "h4");
+  await shot(guest.page, "chess-premove-360");
+  await move(host.page, "g2", "g4");
+  await expect(guest.page.getByRole("heading", { name: "You won!" })).toBeVisible({
+    timeout: 15_000,
+  });
+  await expect(host.page.getByText("Black wins by checkmate")).toBeVisible();
+  await shot(host.page, "chess-result");
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});
+
+test("chess: a solo game against the Hard bot (Stockfish locally)", async ({ browser }) => {
+  const me = await player(browser, "chess_bot");
+  await me.page
+    .locator("li")
+    .filter({ hasText: "Chess" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await me.page.getByRole("button", { name: "No clock", exact: true }).click();
+  await me.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await me.page.getByText("Play a bot", { exact: true }).click();
+  await me.page.getByText("Hard", { exact: true }).click();
+  await me.page.getByText("Seat 1", { exact: true }).click();
+  await me.page.getByRole("button", { name: "Next", exact: true }).click();
+  await me.page.getByRole("button", { name: "Create room" }).click();
+  await expect(me.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  await me.page.getByRole("button", { name: "Start game" }).click();
+  const sq = (name: string) =>
+    me.page
+      .getByRole("group", { name: "Board squares" })
+      .getByRole("button", { name: new RegExp(`^${name},`) });
+  const moves = me.page.getByRole("list", { name: "Moves" }).getByRole("button");
+  for (const [i, [from, to]] of [
+    ["e2", "e4"],
+    ["g1", "f3"],
+    ["f1", "c4"],
+  ].entries()) {
+    await expect(me.page.getByText("Your move", { exact: false })).toBeVisible({ timeout: 20_000 });
+    await sq(from!).press("Enter");
+    await sq(to!).press("Enter");
+    await expect(moves).toHaveCount(i * 2 + 2, { timeout: 20_000 }); // the bot answered
+  }
+  await me.ctx.close();
+});

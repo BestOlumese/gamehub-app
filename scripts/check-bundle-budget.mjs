@@ -14,7 +14,11 @@ const KB = 1024;
 
 /** Route → budget in gzip bytes. Add routes as they ship. */
 const budgets = [
-  { group: "marketing", limit: 145 * KB, routes: ["/", "/legal/terms", "/legal/privacy", "/join"] },
+  {
+    group: "marketing",
+    limit: 145 * KB,
+    routes: ["/", "/legal/terms", "/legal/privacy", "/legal/credits", "/join"],
+  },
   {
     group: "app shell",
     limit: 195 * KB,
@@ -39,6 +43,7 @@ const gameMarkers = {
   Whot: "Call a shape",
   Ludo: "Pick a seed to move",
   "Snakes & Ladders": "Snakes and Ladders board",
+  Chess: "Board squares",
 };
 
 function gameChunks() {

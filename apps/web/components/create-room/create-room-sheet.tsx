@@ -4,6 +4,7 @@ import { rpsNaija, type RpsRules } from "@gamehub/engine/rps";
 import { tttNaija, type TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
+import { chessNaija, type ChessRules } from "@gamehub/engine/chess";
 import { dealSize, whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import type { BotLevel, FirstPlayer } from "@gamehub/protocol";
 import { Alert } from "@gamehub/ui/forms/alert";
@@ -26,11 +27,12 @@ import {
 import { RpsRulesStep } from "./rps-rules-step";
 import { LudoRulesStep } from "./ludo-rules-step";
 import { SnakesRulesStep } from "./snakes-rules-step";
+import { ChessRulesStep } from "./chess-rules-step";
 import { TttRulesStep } from "./ttt-rules-step";
 import { WhotRulesStep } from "./whot-rules-step";
 
-export type CreatableGame = "tictactoe" | "rps" | "whot" | "ludo" | "snakes";
-const CREATABLE: readonly CreatableGame[] = ["whot", "ludo", "snakes", "tictactoe", "rps"];
+export type CreatableGame = "tictactoe" | "rps" | "whot" | "ludo" | "snakes" | "chess";
+const CREATABLE: readonly CreatableGame[] = ["whot", "ludo", "snakes", "chess", "tictactoe", "rps"];
 
 /** Everything the sheet decides; the lobby's Edit sends it as one `config` message. */
 export type RoomSetup = {
@@ -92,6 +94,7 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
   const [snakesRules, setSnakesRules] = useState<SnakesRules>(() =>
     rulesFor("snakes", snakesNaija),
   );
+  const [chessRules, setChessRules] = useState<ChessRules>(() => rulesFor("chess", chessNaija));
   const [min, max] = PLAYER_RANGE[game];
   const [wanted, setPlayers] = useState(initial?.players ?? Math.min(4, max));
   // Switching game keeps the count where it fits, and never below the people already here.
@@ -124,7 +127,9 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
           ? ludoRules
           : game === "snakes"
             ? snakesRules
-            : tttRules;
+            : game === "chess"
+              ? chessRules
+              : tttRules;
   const counts = Array.from({ length: max - min + 1 }, (_, k) => min + k);
   const duel = players === 2;
   // In a 2-player room that already has both people, there's no other seat to fill.
@@ -276,6 +281,8 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
           <LudoRulesStep rules={ludoRules} onChange={setLudoRules} />
         ) : game === "snakes" ? (
           <SnakesRulesStep rules={snakesRules} onChange={setSnakesRules} />
+        ) : game === "chess" ? (
+          <ChessRulesStep rules={chessRules} onChange={setChessRules} />
         ) : (
           <TttRulesStep rules={tttRules} onChange={setTttRules} />
         )
@@ -330,12 +337,14 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
           {hasFirstPlayer(game) ? (
             <div className="space-y-2">
               <Segmented
-                label="Who goes first"
+                label={game === "chess" ? "Who plays White" : "Who goes first"}
                 value={firstPlayer}
                 onChange={setFirstPlayer}
                 options={FIRST_OPTIONS}
               />
-              <p className="px-1 text-sm text-ink-2">{FIRST_PLAYER[firstPlayer].hint}</p>
+              <p className="px-1 text-sm text-ink-2">
+                {FIRST_PLAYER[firstPlayer][game === "chess" ? "whiteHint" : "hint"]}
+              </p>
             </div>
           ) : null}
         </div>
@@ -352,7 +361,14 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
                 : []),
               ["Rules", describeRules(game, rules)],
               [duel ? "Other seat" : "Seats", otherSeats],
-              ...(hasFirstPlayer(game) ? [["Goes first", FIRST_PLAYER[firstPlayer].short]] : []),
+              ...(hasFirstPlayer(game)
+                ? [
+                    [
+                      game === "chess" ? "Plays White" : "Goes first",
+                      FIRST_PLAYER[firstPlayer].short,
+                    ],
+                  ]
+                : []),
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between gap-4 px-4 py-3">
                 <dt className="text-ink-2">{k}</dt>

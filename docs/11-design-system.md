@@ -179,6 +179,7 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - Pieces: Cburnett set (BSD, credited). Board turned so your pieces are at the bottom; coordinates in `--ink-3` on the board edge.
 - Player cards above/below the board with **clock** (tabular, `--font-display` 28 px; running clock filled `--accent-soft`, ≤ 10 s `--danger-soft`).
 - Components: `ChessBoard`, `ChessClock`, `MoveList`, `PromotionPicker`, `DrawOfferBanner`, `ClaimSheet`.
+- **As built (decided with Best, Oct 2026):** opponent's card above the board, yours below (avatar, colour dot, name, captured pieces with "+2", clock box: grey when idle, amber when running, red under 10 s with tenths). Board full width, capped by screen height (`max(16rem, 100dvh − 22rem)`) so a 360 × 640 phone shows everything; coordinates inside the edge squares. Tap a piece for dots (rings on captures), tap a dot, or drag. Premove squares in slate. Moves as one scrolling strip (tap to look back, "Back to game"). Offer/takeback banners with Accept/Decline. Toolbar of four icon-over-label buttons (Draw or Claim or Abort, Take back, Resign with a confirm, Flip board) so four fit across. A soft tick each second when your clock is under 10 s. Result sheet: who won and how, Rematch, Copy game (PGN), Back home. The setup sheet's time step is a tile grid grouped Bullet / Blitz / Rapid plus No clock; "Who goes first" reads "Who plays White".
 
 ### Draughts
 - Board: dark squares `#7A5A3A`, light `#EAD9BC`; Naija orientation by default with a small "Naija board" label.

@@ -1,6 +1,6 @@
 import "server-only";
-import { createRequire } from "node:module";
 import path from "node:path";
+import { Worker } from "node:worker_threads";
 
 // Stockfish 19 lite (single-threaded WASM, GPL-3.0) for the Medium and Hard chess bots.
 // Runs only in this Node route; never imported by client code (docs/15-bot-service.md).
@@ -31,28 +31,49 @@ export class BotError extends Error {
 type Engine = {
   sendCommand(cmd: string): void;
   listener?: (line: string) => void;
+  kill(): void;
 };
 
-/** Loads the emscripten build the way the npm package's own loader does (module scope: reused while warm). */
+// The engine runs in its own worker thread. In Node the emscripten build sets the global
+// `fetch = null` (to load its WASM from disk), which would break every other request in this
+// server; a worker has its own globals. It also keeps searches off the main event loop.
+const WORKER = `
+const wt = require("node:worker_threads");
+const { parentPort, workerData } = wt;
+// The build treats a worker thread as a browser-style Web Worker and exports nothing; here it
+// should load as a normal Node module (we do the messaging), so it's told this is the main thread.
+Object.defineProperty(wt, "isMainThread", { value: true });
+const init = require(workerData.js);
+const engine = { locateFile: (f) => (f.includes(".wasm") ? workerData.wasm : workerData.js) };
+init()(engine).then(async () => {
+  while (engine._isReady && !engine._isReady()) await new Promise((r) => setTimeout(r, 10));
+  engine.listener = (line) => parentPort.postMessage(line);
+  parentPort.on("message", (cmd) =>
+    setImmediate(() => engine.ccall("command", null, ["string"], [cmd], { async: /^go\\b/.test(cmd) })),
+  );
+  parentPort.postMessage("__ready__");
+});
+`;
+
+/** Starts the engine worker (module scope: reused while this instance stays warm). */
 function load(): Promise<Engine> {
-  const init = createRequire(JS)(JS) as () => (m: object) => Promise<unknown>;
-  const engine: Record<string, unknown> = {
-    locateFile: (file: string) => (file.includes(".wasm") ? WASM : JS),
-  };
-  return init()(engine).then(async () => {
-    const isReady = engine._isReady as (() => boolean) | undefined;
-    while (isReady && !isReady()) await new Promise((r) => setTimeout(r, 10));
-    const ccall = engine.ccall as (
-      name: string,
-      ret: null,
-      types: string[],
-      args: string[],
-      opts: { async: boolean },
-    ) => void;
-    const e = engine as Engine;
-    e.sendCommand = (cmd) =>
-      setImmediate(() => ccall("command", null, ["string"], [cmd], { async: /^go\b/.test(cmd) }));
-    return e;
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(WORKER, { eval: true, workerData: { js: JS, wasm: WASM } });
+    worker.unref(); // an idle engine mustn't keep the process alive
+    const e: Engine = {
+      sendCommand: (cmd) => worker.postMessage(cmd),
+      kill: () => void worker.terminate(),
+    };
+    const fail = (err: unknown) => {
+      engine = null;
+      reject(err instanceof Error ? err : new Error(String(err)));
+    };
+    worker.on("error", fail);
+    worker.on("exit", (code) => code !== 0 && fail(new Error(`engine exited ${code}`)));
+    worker.on("message", (line: string) => {
+      if (line === "__ready__") resolve(e);
+      else e.listener?.(line);
+    });
   });
 }
 
@@ -124,7 +145,9 @@ export async function bestMove(
       spent.push({ at: Date.now(), cpuMs });
       return { move, cpuMs };
     } catch (err) {
-      engine = null; // a stuck or broken engine is rebuilt on the next request
+      // A stuck or broken engine is stopped and rebuilt on the next request.
+      engine?.then((x) => x.kill()).catch(() => undefined);
+      engine = null;
       throw err instanceof BotError ? err : new BotError("ENGINE_ERROR");
     } finally {
       waiting--;

@@ -18,6 +18,9 @@ export function SiteFooter() {
           <Link href="/legal/privacy" className="hover:text-ink">
             Privacy
           </Link>
+          <Link href="/legal/credits" className="hover:text-ink">
+            Credits
+          </Link>
         </nav>
       </div>
     </footer>

@@ -4,6 +4,7 @@ import type { FirstPlayer } from "@gamehub/protocol";
 import type { RpsRules } from "@gamehub/engine/rps";
 import type { TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
+import { chessNaija, timeLabel, type ChessRules } from "@gamehub/engine/chess";
 import { BOARDS, snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
@@ -29,19 +30,35 @@ export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
 /** RPS players throw together, so nobody "goes first". */
 export const hasFirstPlayer = (game: GameSlug) => game !== "rps";
 
-export const FIRST_PLAYER: Record<FirstPlayer, { label: string; hint: string; short: string }> = {
-  random: { label: "Random", hint: "A random player starts each game.", short: "Random" },
+/** `whiteHint`: the same choice in chess, where going first means playing White. */
+export const FIRST_PLAYER: Record<
+  FirstPlayer,
+  { label: string; hint: string; whiteHint: string; short: string }
+> = {
+  random: {
+    label: "Random",
+    hint: "A random player starts each game.",
+    whiteHint: "A random player gets White each game.",
+    short: "Random",
+  },
   rotate: {
     label: "Turns",
     hint: "The start moves one seat along each game, so everyone gets a go.",
+    whiteHint: "Colours swap every game.",
     short: "Takes turns",
   },
   lastWinner: {
     label: "Winner",
     hint: "Whoever won the last game starts. The first game is random.",
+    whiteHint: "Whoever won the last game plays White. The first game is random.",
     short: "Last winner",
   },
-  seat1: { label: "Seat 1", hint: "The player in seat 1 always starts.", short: "Seat 1" },
+  seat1: {
+    label: "Seat 1",
+    hint: "The player in seat 1 always starts.",
+    whiteHint: "The player in seat 1 always plays White.",
+    short: "Seat 1",
+  },
 };
 
 export const describeTttRules = (r: TttRules) =>
@@ -144,11 +161,29 @@ export const describeSnakesRules = (r: SnakesRules) =>
     ...(snakesRuleChanges(r).length ? snakesRuleChanges(r) : ["Naija Standard"]),
   ].join(" · ");
 
+/** Chess rules that differ from Naija Standard, in plain words. */
+export function chessRuleChanges(r: ChessRules): string[] {
+  const out: string[] = [];
+  if (!r.takebacks) out.push("No takebacks");
+  if (!r.premoves) out.push("No premoves");
+  if (r.drawClaims === "claim") out.push("Draws by repetition are claimed");
+  if (!r.timeControl && r.moveLimitSeconds !== chessNaija.moveLimitSeconds)
+    out.push(`${r.moveLimitSeconds / 60} min a move`);
+  return out;
+}
+
+export const describeChessRules = (r: ChessRules) =>
+  [
+    timeLabel(r.timeControl),
+    ...(chessRuleChanges(r).length ? chessRuleChanges(r) : ["Naija Standard"]),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
   if (game === "whot") return describeWhotRules(rules as WhotRules);
   if (game === "ludo") return describeLudoRules(rules as LudoRules);
   if (game === "snakes") return describeSnakesRules(rules as SnakesRules);
+  if (game === "chess") return describeChessRules(rules as ChessRules);
   return "";
 }

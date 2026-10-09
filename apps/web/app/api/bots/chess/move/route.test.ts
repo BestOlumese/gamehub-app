@@ -83,6 +83,11 @@ describe("bot service: chess", () => {
     expect(c.moves({ verbose: true }).map((m) => m.lan)).toContain(json.move);
   }, 30_000);
 
+  it("leaves the server's fetch alone (the engine nulls fetch in its own thread only)", async () => {
+    await call(req(FENS[0]!));
+    expect(typeof globalThis.fetch).toBe("function");
+  }, 30_000);
+
   it("one search at a time: beyond 3 waiting, it answers BUSY", async () => {
     const results = await Promise.all(Array.from({ length: 7 }, () => call(req(FENS[1]!))));
     const codes = results.map((r) => r.json.code ?? "ok");
