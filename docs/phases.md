@@ -87,12 +87,12 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [ ] Engine `games/draughts`: `naija10` (mirrored board, random first move, men capture backward, flying kings, majority/free capture, Turkish strike, promotion only at end, huffing option) and `english8`; notation 1–50 / 1–32; FMJD and English draw rules.
 - [ ] Bots: Easy/Medium in the DO (node budgets), Hard in the bot service (`/api/bots/draughts/move`); clocks reused from chess (No clock default, 5+3 for quick-match).
 - [ ] Board UI with capture hints and hop-by-hop multi-captures. **Design questions with mockups to Best first.**
-- [ ] **Best confirms the majority-capture default** (research says Nigerian club play is often free-choice — `games/draughts.md`).
+- [x] Capture default: **free choice** (Best, Oct 2026); majority is a setting.
 
 **Exit:** a Naija draft game and an English game complete between two phones; all capture/promotion edge-case tests green; Hard beats Easy > 60 %.
 
 ## Phase 9 — Property-trading game
-- [ ] **Best picks the name** (5 proposals in `games/property.md`); a proper trademark check before any promotion.
+- [x] Name: **Naija Plots** (Best, Oct 2026; slug `plots`). Still to do: a proper trademark check (NG registry + WIPO) before any promotion.
 - [ ] Engine `games/property`: board, economy from the formula, both decks, police post, building rules with supply and shortages, mortgages, bankruptcy, timed (net worth) and classic modes, trading protocol, auctions (bids in memory), all options.
 - [ ] Bots with valuation (Easy/Medium/Hard; Hard proposes trades); chained bot turns.
 - [ ] Money and building conservation property tests; **Monte Carlo balance job** passing all bands, then regenerate the rent table.

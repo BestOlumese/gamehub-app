@@ -20,7 +20,7 @@ Sources: `docs/research/sources.md` → "Draughts".
 | Men capture backward | Yes | all reliable sources | `menCaptureBackward: true` (option off) |
 | Flying kings | Yes | all sources | `flyingKings: true` (option off = kings move one square) |
 | Capture compulsory | Yes | all sources | `captureRule` never allows "no capture" except with the huffing option |
-| **Majority capture** | **Sources disagree.** fateround.com (an online Nigerian-draft site) enforces "take the most"; draftstechniques.com (Nigerian club rule books) says the mirrored African version uses **free choice** — "the capture of the largest number of pieces is NOT obligatory" — while FMJD uses majority | fateround.com vs draftstechniques.com | **Default `majority`** (Best's locked decision); `free` option. **Flagged for Best**: club play appears to be free-choice |
+| **Majority capture** | **Sources disagree.** fateround.com (an online Nigerian-draft site) enforces "take the most"; draftstechniques.com (Nigerian club rule books) says the mirrored African version uses **free choice** — "the capture of the largest number of pieces is NOT obligatory" — while FMJD uses majority | fateround.com vs draftstechniques.com | **Default `free`** (Best chose free choice, Oct 2026, matching club play); `majority` option for FMJD-style play |
 | Promotion mid-capture | Only if the move **ends** on the back row (passing through doesn't crown) | fateround.com, FMJD | `promoteOnlyAtEnd: true` |
 | Turkish strike | Captured seeds are removed after the whole sequence; a seed can't be jumped twice | FMJD / Wikipedia | Always on in `naija10` |
 | Huffing (blowing a seed that failed to capture) | Not mentioned for Nigeria; associated with Malaysian/Singaporean play; Ghana forfeits a king that misses a capture | search summaries | `missedCapture: "forced"` default (the app forces captures, so there's nothing to huff); `"huff"` option (below) |
@@ -121,7 +121,7 @@ export type DraughtsRules = {
   firstMove: "random" | "light" | "dark";
   menCaptureBackward: boolean;                      // naija10 default true; english8 fixed false
   flyingKings: boolean;                             // naija10 default true; english8 fixed false
-  captureRule: "majority" | "free";                 // naija10 default majority (flagged); english8 fixed free
+  captureRule: "majority" | "free";                 // naija10 default free (Best, Oct 2026); english8 fixed free
   missedCapture: "forced" | "huff";
   drawRules: "standard" | "none";
   timeControl: { baseSeconds: number; incrementSeconds: number } | null;
@@ -136,7 +136,7 @@ export const draughtsNaija: DraughtsRules = {
   firstMove: "random",
   menCaptureBackward: true,
   flyingKings: true,
-  captureRule: "majority",
+  captureRule: "free",
   missedCapture: "forced",
   drawRules: "standard",
   timeControl: null,          // private rooms: no clock

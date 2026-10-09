@@ -4,7 +4,9 @@ Players: 2–8. Buy neighbourhoods across Nigeria, build houses and hotels, coll
 
 Sources: `docs/research/sources.md` → "Property game".
 
-## Name — 5 proposals for Best (slug stays `property` until chosen)
+## Name: **Naija Plots** (chosen by Best, Oct 2026)
+
+The game's name in the UI is **Naija Plots**; the code slug is `plots`. The shortlist it was picked from:
 
 | Name | Meaning / feel | Clash check (web search, Oct 2026) |
 |---|---|---|
