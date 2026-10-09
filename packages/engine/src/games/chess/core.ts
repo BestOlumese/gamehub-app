@@ -1,50 +1,13 @@
 // Browser-safe chess logic (no zod): clocks, repetition, material. The full GameDefinition is in
 // ./index.ts. chess.js is BSD-2, so the client may use it for legal-move dots and premoves.
 import type { SeatIndex } from "../../types";
-import type { ChessRules, TimeControl } from "./rules";
-import type { ChessState, ClockSide, LagTracker, Side } from "./state";
+import { chargeMove, flagAt, initLag, newClockSide } from "../clock";
+import type { ChessRules } from "./rules";
+import type { ChessState, Side } from "./state";
+
+export { chargeMove, initLag, newClockSide };
 
 export const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
-/** Most of the lag quota granted as grace when checking for a flag (lichess: up to 2 s). */
-const FLAG_GRACE_CAP_MS = 2000;
-
-/**
- * Lag tracker at the start of a game (scalachess LagTracker.init): gain = min(1 s,
- * 0.4 % of the estimated game length + 0.15 s); the quota starts at 3× gain, caps at 7×.
- */
-export function initLag(tc: NonNullable<TimeControl>): LagTracker {
-  const est = tc.baseSeconds + 40 * tc.incrementSeconds;
-  const gain = Math.min(1000, Math.round(est * 4 + 150));
-  return { gain, quota: 3 * gain, max: 7 * gain };
-}
-
-export const newClockSide = (tc: NonNullable<TimeControl>): ClockSide => ({
-  remainingMs: tc.baseSeconds * 1000,
-  lag: initLag(tc),
-});
-
-/**
- * Charges a move to the mover's clock. `elapsed` is server time since their turn began;
- * `mt` the client's own think time (0 for a premove). The gap between them is lag, of which
- * at most the current quota is forgiven; the quota then refills by `gain` (capped).
- */
-export function chargeMove(
-  side: ClockSide,
-  elapsed: number,
-  mt: number | undefined,
-  incrementMs: number,
-): ClockSide {
-  const clientMt = Math.min(Math.max(mt ?? elapsed, 0), elapsed);
-  const lag = elapsed - clientMt;
-  const comp = Math.min(lag, side.lag.quota);
-  const quota = Math.min(side.lag.quota + side.lag.gain - comp, side.lag.max);
-  const moveTime = Math.max(0, elapsed - comp);
-  return {
-    remainingMs: side.remainingMs - moveTime + incrementMs,
-    lag: { ...side.lag, quota },
-  };
-}
 
 export const sideToMove = (fen: string): Side => (fen.split(" ")[1] === "b" ? "b" : "w");
 export const ply = (s: Pick<ChessState, "moves">) => s.moves.length;
@@ -58,7 +21,7 @@ export const sideOf = (s: Pick<ChessState, "white">, seat: SeatIndex): Side =>
 export function flagTime(s: ChessState): number | null {
   if (!s.clock || s.turnStartedAt === null || ply(s) < 2) return null;
   const c = s.clock[sideToMove(s.fen)];
-  return s.turnStartedAt + c.remainingMs + Math.min(c.lag.quota, FLAG_GRACE_CAP_MS);
+  return flagAt(s.turnStartedAt, c);
 }
 
 /**

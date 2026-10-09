@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 type Props = {
+  /** Each move as text (chess SAN, draughts "32-28"). */
   san: readonly string[];
   /** Ply being looked at (null = the live position). */
   viewing: number | null;

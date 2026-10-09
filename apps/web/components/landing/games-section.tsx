@@ -11,17 +11,18 @@ export function GamesSection() {
     >
       <SectionHeading
         id="games-heading"
-        title="Six games you already know"
+        title="Seven games you already know"
         lead="Every rule you argue about is a setting. Start with Naija Standard, then make it yours."
       />
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {games.map((g, i) => {
-          // Three columns, Whot two wide: a last tile that starts a row on its own fills it.
-          const alone = i === games.length - 1 && games.length % 3 === 0;
+          // Three columns, Whot two wide: the last tile stretches to fill its row.
+          const left = (games.length + 1) % 3;
+          const last = i === games.length - 1;
           return (
             <li
               key={g.slug}
-              className={`overflow-hidden rounded-card border border-line bg-surface shadow-sm ${i === 0 ? "lg:col-span-2" : alone ? "lg:col-span-3" : ""}`}
+              className={`overflow-hidden rounded-card border border-line bg-surface shadow-sm ${i === 0 ? "lg:col-span-2" : last && left === 1 ? "lg:col-span-3" : last && left === 2 ? "lg:col-span-2" : ""}`}
             >
               <div className="relative flex h-40 items-center justify-center border-b border-line bg-board">
                 <ArtImage name={`game-${g.slug}`} className="h-32 w-auto" lazy />

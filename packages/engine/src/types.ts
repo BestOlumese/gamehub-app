@@ -1,6 +1,14 @@
 import type { z } from "zod";
 
-export const GAME_SLUGS = ["whot", "ludo", "snakes", "tictactoe", "rps", "chess"] as const;
+export const GAME_SLUGS = [
+  "whot",
+  "ludo",
+  "snakes",
+  "tictactoe",
+  "rps",
+  "chess",
+  "draughts",
+] as const;
 export type GameSlug = (typeof GAME_SLUGS)[number];
 
 export type SeatIndex = number;

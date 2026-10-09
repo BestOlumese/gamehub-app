@@ -70,8 +70,10 @@ export async function bestMove(fen: string, level: "medium" | "hard", movetimeMs
 - **Calibrated (Oct 2026, lite net, 20 games each, no clock):** Medium v Easy 15–2 (3 drawn), **Medium scores 83 %**; Hard v Medium 17–2 (1 drawn), **Hard scores 88 %**. Close enough to the 85 % / 75 % targets at this sample size; settings kept (Elo 1500 / 2100, movetime 100 / 200 ms). Rerun with more games if players report levels feeling the same.
 - **Strict think limit:** `movetime` ≤ 300 ms (schema), watchdog `stop` at 600 ms; the DO's fetch timeout is **1.5 s**.
 
-### Draughts Hard (`gh-draughts-1`)
-Our own TypeScript searcher (MIT, `packages/engine`), run in Node: iterative deepening alpha-beta with a transposition table up to `movetimeMs` (150 ms). No WASM, no licence issues.
+### Draughts Hard (`gamehub-draughts`)
+Our own TypeScript searcher (MIT, `packages/engine`, `@gamehub/engine/draughts/service`), run in Node: iterative deepening alpha-beta (captures searched past the horizon) with the Medium evaluation, until `movetimeMs` (150 ms) is up; the deepest finished depth counts. No transposition table yet (add one if Hard feels weak). No WASM, no licence issues. Runs on the route's own thread (pure JS, ~150 ms).
+
+**As built (Phase 8):** its own request schema `draughtsBotRequest` (`game: "draughts"`, `level: "hard"`, `variant`, `board` as text — one character a square, `turn`, `menCaptureBackward`, `flyingKings`, `captureRule`, `movetimeMs`, `roomId`); the answer is notation (`"28x19x10"`). The room asks only for **Hard** (Easy and Medium play in the DO). `BOT_SERVICE_URL` names the chess route; the room calls its sibling `/api/bots/draughts/move`.
 
 ## Measured (Oct 2026, `stockfish@19.0.0` npm, `bin/stockfish-19-lite-single.{js,wasm}` 21 KB + 1.79 MB, Node 24)
 - Loading: `require("stockfish")("lite-single")` → `engine.sendCommand(cmd)`, output via `engine.listener = (line) => …`.
@@ -85,7 +87,7 @@ Our own TypeScript searcher (MIT, `packages/engine`), run in Node: iterative dee
 - **Stockfish runs in a worker thread.** In Node the emscripten build sets the global `fetch = null` (to read its WASM from disk), which broke every later request in the same server (sign-ups failed with "No fetch implementation found", room creation with "fetch is not a function"). Found by running two E2E games at once; fixed by loading it in a `worker_threads` Worker (its own globals), telling the build `isMainThread = true` there so it loads as a normal module instead of a Web-Worker shim. A route test checks `fetch` survives a bot move. `process.cpuUsage()` still counts the worker's CPU.
 - One search at a time per instance (a promise chain), up to 3 waiting, else `BUSY`; watchdog sends `stop` 600 ms after `movetime`; a broken engine is rebuilt on the next call; per-instance backstop 60 CPU-s per rolling hour → `QUOTA`.
 - Measured through `next start`: cold 2.7 s, then Hard 292 ms and Medium 162 ms per request.
-- Room side (`GameRoom.serviceBotAction`): only chess Medium/Hard; asks `Quota.allowBot()`; sends the FEN at the last pawn move or capture plus the moves since; 1.5 s `AbortSignal.timeout`; the answer is checked by applying it; errors, timeouts, refusals and illegal moves fall back to Easy+ and count as failures (3 in a row → rest 10 min). `BOT_SERVICE_URL` is a Worker var (local dev overrides it in `.dev.vars`).
+- Room side (`GameRoom.serviceBotAction`): chess Medium/Hard and draughts Hard; asks `Quota.allowBot()`; sends the FEN at the last pawn move or capture plus the moves since; 1.5 s `AbortSignal.timeout`; the answer is checked by applying it; errors, timeouts, refusals and illegal moves fall back to Easy+ and count as failures (3 in a row → rest 10 min). `BOT_SERVICE_URL` is a Worker var (local dev overrides it in `.dev.vars`).
 - `Quota` DO: monthly 2 CPU-hours, daily = min(even share 240 s, what's left ÷ days left in the month); saved at most every 5 min.
 - CI: the budget script fails if any file in `.next/static` mentions "stockfish"; E2E gets a throwaway `BOT_HMAC_SECRET`.
 
@@ -116,7 +118,7 @@ The room uses its **built-in engine** for that move when: the quota says no; the
 | Game | Built-in fallback |
 |---|---|
 | Chess | "Easy+" — our Easy searcher with a 4,000-node budget and no random picks |
-| Draughts | Medium (depth 4) |
+| Draughts | Medium (up to 4 moves ahead, 3,000 positions) |
 
 ## Licences (GPL boundary)
 - Stockfish and stockfish.js are **GPL-3.0**. They run **only on our server**; we don't distribute them to anyone, so GPL's source-offer duties (triggered by *conveying* copies) don't apply. GPL-3.0 (unlike AGPL) doesn't treat network use as conveying. We still keep `Copying.txt` next to the files and credit Stockfish on `/legal/credits`.

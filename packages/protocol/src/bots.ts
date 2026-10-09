@@ -22,6 +22,25 @@ export const botMoveRequest = z.object({
 });
 export type BotMoveRequest = z.infer<typeof botMoveRequest>;
 
+/** Hard draughts (our own search, run where there's CPU time to spare). */
+export const draughtsBotRequest = z
+  .object({
+    game: z.literal("draughts"),
+    level: z.literal("hard"),
+    variant: z.enum(["naija10", "english8"]),
+    /** The board as text, one character a square ("." empty, l/L light man/king, d/D dark). */
+    board: z.string().regex(/^[.lLdD]+$/),
+    turn: z.enum(["light", "dark"]),
+    menCaptureBackward: z.boolean(),
+    flyingKings: z.boolean(),
+    captureRule: z.enum(["majority", "free"]),
+    movetimeMs: z.number().int().min(20).max(300),
+    roomId: z.string().max(16),
+  })
+  .refine((r) => r.board.length === (r.variant === "naija10" ? 50 : 32), "board size");
+export type DraughtsBotRequest = z.infer<typeof draughtsBotRequest>;
+
 export type BotMoveResponse =
-  | { ok: true; move: string; cpuMs: number; engine: "stockfish-19-lite" }
+  /** `move`: UCI for chess, notation ("28x19x10") for draughts. */
+  | { ok: true; move: string; cpuMs: number; engine: "stockfish-19-lite" | "gamehub-draughts" }
   | { ok: false; code: "BAD_REQUEST" | "UNAUTHORIZED" | "BUSY" | "QUOTA" | "ENGINE_ERROR" | "OFF" };

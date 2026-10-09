@@ -5,6 +5,7 @@ import {
   type RuleErrorCode,
   type SeatIndex,
 } from "@gamehub/engine";
+import { effective, type DraughtsRules, type DraughtsState } from "@gamehub/engine/draughts";
 import {
   clientRoomMsg,
   CloseCode,
@@ -22,7 +23,7 @@ import {
   type ServerRoomMsg,
   type TicketClaims,
 } from "@gamehub/protocol";
-import type { BotMoveRequest, BotMoveResponse } from "@gamehub/protocol/bots";
+import type { BotMoveRequest, BotMoveResponse, DraughtsBotRequest } from "@gamehub/protocol/bots";
 import { signBody } from "@gamehub/protocol/hmac";
 import { Server, type Connection, type ConnectionContext, type WSMessage } from "partyserver";
 import { gameFor, type AnyGame } from "./games";
@@ -674,30 +675,26 @@ export class GameRoom extends Server<Env> {
   }
 
   /**
-   * A Medium/Hard chess move from the bot service (Stockfish on Vercel), or null to use the
-   * built-in engine: no service configured, today's CPU budget spent, a timeout, an error, or
-   * three failures in a row (then the service rests for 10 minutes). Players never see a failure.
+   * A strong bot's move from the bot service (on Vercel): chess Medium/Hard (Stockfish) and
+   * draughts Hard (our own search, with more time). Null means use the built-in engine: no
+   * service configured, today's CPU budget spent, a timeout, an error, or three failures in a
+   * row (then the service rests for 10 minutes). Players never see a failure.
    */
   private async serviceBotAction(seat: SeatIndex): Promise<unknown> {
     const room = this.r;
     const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
-    const { BOT_SERVICE_URL: url, BOT_HMAC_SECRET: secret } = this.env;
-    if (room.game !== "chess" || level === "easy" || !url || !secret) return null;
+    const { BOT_SERVICE_URL: chessUrl, BOT_HMAC_SECRET: secret } = this.env;
+    const wanted =
+      (room.game === "chess" && level !== "easy") || (room.game === "draughts" && level === "hard");
+    if (!wanted || !chessUrl || !secret) return null;
     if (Date.now() < this.serviceRestUntil) return null;
     const quota = this.env.Quota.getByName("global");
     if (!(await quota.allowBot())) return null;
 
-    const s = room.state as { fen: string; history: string[]; moves: string[] };
-    // The position at the last pawn move or capture, plus the moves since: repetitions show.
-    const since = Number(s.fen.split(" ")[4] ?? 0);
-    const body = JSON.stringify({
-      game: "chess",
-      level,
-      position: s.history[s.history.length - 1 - since] ?? s.fen,
-      history: since ? s.moves.slice(-since) : [],
-      movetimeMs: level === "hard" ? 200 : 100,
-      roomId: room.code,
-    } satisfies BotMoveRequest);
+    // BOT_SERVICE_URL names the chess route; draughts is its sibling.
+    const url =
+      room.game === "draughts" ? chessUrl.replace(/\/chess\/move$/, "/draughts/move") : chessUrl;
+    const body = room.game === "draughts" ? this.draughtsRequest() : this.chessRequest(level);
     try {
       const { ts, sig } = await signBody(secret, body);
       const res = await fetch(url, {
@@ -709,11 +706,46 @@ export class GameRoom extends Server<Env> {
       const out = (await res.json()) as BotMoveResponse;
       if (!res.ok || !out.ok) throw new Error(out.ok ? String(res.status) : out.code);
       await quota.addBot(out.cpuMs);
-      return { type: "move", uci: out.move };
+      if (room.game === "chess") return { type: "move", uci: out.move };
+      const [from, ...path] = out.move.split(/[-x]/).map(Number);
+      return { type: "move", from, path };
     } catch {
       this.serviceFailed();
       return null;
     }
+  }
+
+  private chessRequest(level: BotLevel): string {
+    const room = this.r;
+    const s = room.state as { fen: string; history: string[]; moves: string[] };
+    // The position at the last pawn move or capture, plus the moves since: repetitions show.
+    const since = Number(s.fen.split(" ")[4] ?? 0);
+    return JSON.stringify({
+      game: "chess",
+      level: level === "hard" ? "hard" : "medium",
+      position: s.history[s.history.length - 1 - since] ?? s.fen,
+      history: since ? s.moves.slice(-since) : [],
+      movetimeMs: level === "hard" ? 200 : 100,
+      roomId: room.code,
+    } satisfies BotMoveRequest);
+  }
+
+  private draughtsRequest(): string {
+    const room = this.r;
+    const s = room.state as DraughtsState;
+    const rules = effective(room.rules as DraughtsRules);
+    return JSON.stringify({
+      game: "draughts",
+      level: "hard",
+      variant: s.variant,
+      board: s.history[s.history.length - 1] as string,
+      turn: s.turn,
+      menCaptureBackward: rules.menCaptureBackward,
+      flyingKings: rules.flyingKings,
+      captureRule: rules.captureRule,
+      movetimeMs: 150,
+      roomId: room.code,
+    } satisfies DraughtsBotRequest);
   }
 
   /** Three failures in a row (errors, timeouts, illegal moves) rest the service for 10 minutes. */

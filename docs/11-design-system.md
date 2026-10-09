@@ -181,10 +181,14 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - Components: `ChessBoard`, `ChessClock`, `MoveList`, `PromotionPicker`, `DrawOfferBanner`, `ClaimSheet`.
 - **As built (decided with Best, Oct 2026):** opponent's card above the board, yours below (avatar, colour dot, name, captured pieces with "+2", clock box: grey when idle, amber when running, red under 10 s with tenths). Board full width, capped by screen height (`max(16rem, 100dvh − 22rem)`) so a 360 × 640 phone shows everything; coordinates inside the edge squares. Tap a piece for dots (rings on captures), tap a dot, or drag. Premove squares in slate. Moves as one scrolling strip (tap to look back, "Back to game"). Offer/takeback banners with Accept/Decline. Toolbar of four icon-over-label buttons (Draw or Claim or Abort, Take back, Resign with a confirm, Flip board) so four fit across. A soft tick each second when your clock is under 10 s. Result sheet: who won and how, Rematch, Copy game (PGN), Back home. The setup sheet's time step is a tile grid grouped Bullet / Blitz / Rapid plus No clock; "Who goes first" reads "Who plays White".
 
-### Draughts
-- Board: dark squares `#7A5A3A`, light `#EAD9BC`; Naija orientation by default with a small "Naija board" label.
-- Seeds: cream `#F4EBD9` with ink rim and ink `#2B2D31` with cream rim (readable for colour-blind players: also different rims); king = two stacked discs with a crown mark.
-- Components: `DraughtsBoard`, `Seed`, `CaptureHint` ("You must take 3").
+### Draughts ("Draft" in the UI)
+- **As built (decided with Best, Oct 2026):** the chess layout (opponent's card above, yours below, move strip, rules line, status line, four-button toolbar, typed moves and Copy position on computers, result sheet with Copy game (PDN)).
+- Board: green and cream like Chess.com (`#769656` / `#EEEED2`); square numbers small in the top-left corner of each dark square, drawn over the seeds; last move (start and every landing) tinted amber. Naija orientation by default (long diagonal on your right), shown as "Naija board" in the rules line.
+- Seeds: **crimped bottle caps, no brands**: light = **red** (`#D33A2C`), dark = **green** (`#1F7A3D`), each with a white inner ring and a shadow so the green cap stands out on the green square; king = two caps stacked with a gold crown. The UI names the sides Red and Green.
+- Moving: tap a seed (dots on where it can **end**), tap the final square: a whole multi-capture in one tap. Only when two different captures end on the same square does it ask for the hops ("Two ways to get there: tap the squares you land on, in order"). Drag works too.
+- Hints: seeds that can capture get an amber ring; the status reads "You must take" (or "You must take 3" under the majority rule). Huffing: the seed you may huff gets a dashed red ring and "Missed capture: tap the red ring to huff".
+- Captured seeds fade out together after the move (Turkish strike made visible).
+- Components: `DraughtsBoard`, `DraughtsTable`, `DraughtsResult`; shared with chess: `PlayerCard`, `MoveStrip`, `ToolButton` (`components/room/board-games/`).
 
 ### Property game
 - Board: square loop, round-cornered tiles with a colour band on the inner edge; our group colours (`games/property.md`): Clay `#A0674B`, Sky `#5BB5E0`, Coral `#E4717A`, Sunset `#EE8A2B`, Palm `#3E9B5F`, Gold `#D9A520`, Forest `#1F6F4A`, Royal `#3B4BA8`. Transport tiles with a simple vehicle glyph; utilities with a bulb / tap glyph. **No red banner, no Monopoly-like typography or tokens.**

@@ -2,9 +2,9 @@ import type { SeatIndex } from "../../types";
 
 export type Side = "w" | "b";
 
-/** Lichess-style lag compensation (scalachess LagTracker): forgive up to `quota` ms a move. */
-export type LagTracker = { gain: number; quota: number; max: number };
-export type ClockSide = { remainingMs: number; lag: LagTracker };
+import type { ClockSide } from "../clock";
+
+export type { ClockSide, LagTracker } from "../clock";
 
 export type ChessEndReason =
   | "checkmate"

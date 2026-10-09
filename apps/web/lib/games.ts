@@ -45,4 +45,10 @@ export const games: readonly GameInfo[] = [
     blurb:
       "Proper chess with real clocks, from 1-minute bullet to slow games. Play a friend or a bot.",
   },
+  {
+    slug: "draughts",
+    name: "Draft",
+    players: "2 players",
+    blurb: "Naija draft on the big board, flying kings and all. English checkers if you prefer.",
+  },
 ];

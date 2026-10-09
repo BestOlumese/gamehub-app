@@ -9,7 +9,7 @@ describe("gameSlugSchema", () => {
   });
 
   it("rejects anything else", () => {
-    expect(gameSlugSchema.safeParse("draughts").success).toBe(false);
+    expect(gameSlugSchema.safeParse("plots").success).toBe(false);
     expect(gameSlugSchema.safeParse(1).success).toBe(false);
   });
 });

@@ -1,7 +1,8 @@
 // Plain values and types only (no zod), so the browser can import them cheaply.
 
-/** Minutes + seconds added per move; null = no clock (a per-move limit instead). */
-export type TimeControl = { baseSeconds: number; incrementSeconds: number } | null;
+import { timeLabel, type TimeControl } from "../clock";
+
+export { timeLabel, type TimeControl };
 
 export type ChessRules = {
   /** RuleConfigBase; chess uses its own deadlines (clock, per-move limit, abort). */
@@ -51,6 +52,3 @@ export const TIME_PRESETS: ReadonlyArray<{ baseSeconds: number; incrementSeconds
   { baseSeconds: 900, incrementSeconds: 10 },
   { baseSeconds: 1800, incrementSeconds: 0 },
 ];
-
-export const timeLabel = (tc: TimeControl) =>
-  tc ? `${tc.baseSeconds / 60}+${tc.incrementSeconds}` : "No clock";

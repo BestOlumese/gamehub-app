@@ -17,14 +17,15 @@ import type { ClientRoomMsg } from "@gamehub/protocol";
 import { Button } from "@gamehub/ui/forms/button";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
 import { ArrowDownUp, Flag, Handshake, Undo2, X } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRoom, type Snapshot } from "@/lib/room/store";
 import { seatName } from "../rps/names";
 import { sfx } from "../sounds";
 import { useNow } from "../use-now";
 import { ChessBoard, pieceName, piecesOf } from "./board";
-import { MoveStrip } from "./move-strip";
-import { PlayerCard } from "./player-card";
+import { MoveStrip } from "../board-games/move-strip";
+import { PlayerCard } from "../board-games/player-card";
+import { ToolButton } from "../board-games/tool-button";
 import { ChessResult } from "./result-sheet";
 import { parseTypedMove } from "./move-input";
 import { timeControlText } from "./time-control";
@@ -69,30 +70,20 @@ const isPromotion = (fen: string, from: string, to: string) => {
   return p?.[1] === "P" && (to[1] === "8" || to[1] === "1");
 };
 
-/** A toolbar button: icon above a short label, so four fit across a 360 px phone. */
-function ToolButton({
-  icon,
-  label,
-  onClick,
-  disabled,
-}: {
-  icon: ReactNode;
-  label: string;
-  onClick: () => void;
-  disabled?: boolean;
-}) {
+/** Pieces a side has taken (the other colour's), and its material lead. */
+function Taken({ side, captured, lead }: { side: Side; captured: string[]; lead: number }) {
+  const theirs = other(side);
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="flex h-12 flex-col items-center justify-center gap-0.5 rounded-control border border-line bg-surface text-xs font-semibold text-ink transition-colors duration-(--dur-press) hover:bg-surface-2 active:scale-[0.97] disabled:opacity-40"
-    >
-      <span className="shrink-0" aria-hidden="true">
-        {icon}
+    <>
+      <span className="flex -space-x-1.5" aria-hidden="true">
+        {captured.map((p, i) => (
+          <svg key={i} viewBox="0 0 45 45" className="size-4">
+            <use href={`#cp-${theirs}${p.toUpperCase()}`} />
+          </svg>
+        ))}
       </span>
-      {label}
-    </button>
+      {lead > 0 ? <span className="font-semibold text-ink">+{lead}</span> : null}
+    </>
   );
 }
 
@@ -287,9 +278,13 @@ export default function ChessTable({ snap, send }: Props) {
       <PlayerCard
         seat={info}
         isYou={side === you}
-        colour={side}
-        captured={mat.captured[side]}
-        lead={mat.lead[side]}
+        dot={side === "w" ? "bg-[#F2E6D0] ring-1 ring-ink-3" : "bg-ink"}
+        taken={<Taken side={side} captured={mat.captured[side]} lead={mat.lead[side]} />}
+        takenLabel={
+          mat.captured[side].length
+            ? `Captured: ${mat.captured[side].length} pieces${mat.lead[side] ? `, ahead by ${mat.lead[side]}` : ""}`
+            : undefined
+        }
         clock={clockOf(side)}
         toMove={!ended && toMove === side}
         graceEndsAt={snap.deadlines.graceEndsAt?.[seat]}

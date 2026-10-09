@@ -1,9 +1,11 @@
 import {
   chessNaija,
+  draughtsNaija,
   ludoNaija,
   snakesNaija,
   whotNaija,
   type ChessState,
+  type DraughtsState,
   type TttState,
 } from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
@@ -1056,22 +1058,29 @@ describe("chess", () => {
   });
 });
 
-describe("chess bot service", () => {
-  type Call = { url: string; body: Record<string, unknown> };
-  /** Swaps the isolate's fetch for a stand-in bot service; returns the calls it saw. */
-  function serve(reply: (body: Record<string, unknown>) => Response | Promise<Response>) {
-    const calls: Call[] = [];
-    const real = globalThis.fetch;
-    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = String(input instanceof Request ? input.url : input);
-      if (!url.startsWith("http://bots.test")) return real(input, init);
-      const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
-      calls.push({ url, body });
-      return reply(body);
-    }) as typeof fetch;
-    return { calls, restore: () => (globalThis.fetch = real) };
-  }
+type Call = { url: string; body: Record<string, unknown> };
+/** Swaps the isolate's fetch for a stand-in bot service; returns the calls it saw. */
+function serve(reply: (body: Record<string, unknown>) => Response | Promise<Response>) {
+  const calls: Call[] = [];
+  const real = globalThis.fetch;
+  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = String(input instanceof Request ? input.url : input);
+    if (!url.startsWith("http://bots.test")) return real(input, init);
+    const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+    calls.push({ url, body });
+    return reply(body);
+  }) as typeof fetch;
+  return { calls, restore: () => (globalThis.fetch = real) };
+}
 
+/** Clears the global bot-CPU counter (it lives on between tests in one run). */
+const resetQuota = () =>
+  runInDurableObject(env.Quota.getByName("global"), (inst, state) => {
+    (inst as unknown as { c: unknown }).c = null;
+    state.storage.sql.exec("DROP TABLE IF EXISTS quota");
+  });
+
+describe("chess bot service", () => {
   // No clock: on a clock, bots think 1–4 % of their time (seconds); here it's under 1.2 s.
   async function botGame(level: "medium" | "hard") {
     const code = await createRoom({
@@ -1149,6 +1158,90 @@ describe("chess bot service", () => {
       await fireBot(stub);
       await until(host, () => movesOf(host).length === 2, "bot moved");
       expect(svc.calls.length).toBe(0);
+    } finally {
+      svc.restore();
+      await resetQuota();
+    }
+  });
+});
+
+describe("draughts", () => {
+  const dv = (c: Client) => c.last().view as DraughtsState;
+  const rules = { ...draughtsNaija, firstMove: "light" as const };
+
+  async function botGame(level: "medium" | "hard") {
+    const code = await createRoom({
+      game: "draughts",
+      rules,
+      players: 2,
+      botLevel: level,
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    expect(dv(host)).toMatchObject({ variant: "naija10", light: 0, turn: "light" });
+    act(host, { type: "move", from: 32, path: [28], mt: 500 });
+    await until(host, () => dv(host).moves.length === 1, "my move");
+    return { host, stub: env.Room.getByName(code) };
+  }
+
+  it("two players: moves, a compulsory capture, and the abort window as the first deadline", async () => {
+    const code = await createRoom({ game: "draughts", rules });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    expect(host.last().deadlines.turns?.[0]).toBe(dv(host).startedAt + 30_000);
+    for (const [who, from, path] of [
+      [host, 32, [28]],
+      [guest, 19, [23]],
+      [host, 28, [19]],
+    ] as const) {
+      const before = host.last().v;
+      act(who, { type: "move", from, path, mt: 300 });
+      await host.next((m) => m.t === "snapshot" && m.v > before, `${from}`);
+    }
+    expect(dv(host).moves.at(-1)).toEqual({ from: 28, path: [19], captured: [23] });
+    expect(dv(guest).board.filter((v) => v < 0)).toHaveLength(19);
+  });
+
+  it("a Hard bot asks the bot service (the draughts route) and plays its move", async () => {
+    const svc = serve(() =>
+      Response.json({ ok: true, move: "19-23", cpuMs: 150, engine: "gamehub-draughts" }),
+    );
+    try {
+      const { host, stub } = await botGame("hard");
+      await fireBot(stub);
+      await until(host, () => dv(host).moves.length === 2, "bot moved");
+      expect(dv(host).moves[1]).toEqual({ from: 19, path: [23], captured: [] });
+      expect(svc.calls[0]?.body).toMatchObject({
+        game: "draughts",
+        level: "hard",
+        variant: "naija10",
+        turn: "dark",
+        captureRule: "free",
+        movetimeMs: 150,
+      });
+      expect(String(svc.calls[0]?.body.board)).toHaveLength(50);
+    } finally {
+      svc.restore();
+    }
+  });
+
+  it("Medium plays in the room itself, without the service", async () => {
+    const svc = serve(() => new Response("unused", { status: 500 }));
+    try {
+      const { host, stub } = await botGame("medium");
+      await fireBot(stub);
+      await until(host, () => dv(host).moves.length === 2, "bot moved");
+      expect(svc.calls).toHaveLength(0);
     } finally {
       svc.restore();
     }

@@ -110,15 +110,17 @@ export function RoomMenu({ code, game, rules, soundOn: initialSound, playing, on
         <p className="mt-3 text-sm text-ink-2">
           {game === "rps"
             ? "Rock blunts scissors, scissors cut paper, paper covers rock. Run out of time and a throw is made for you."
-            : game === "chess"
-              ? "Standard chess. Checkmate wins; stalemate, repeats and dead positions are draws. Run out of time and you lose, unless your opponent can't mate. Nobody moving in the first 30 seconds aborts the game."
-              : game === "snakes"
-                ? "Roll and move that many squares. A ladder takes you up, a snake brings you down. First to 100 wins. Run out of time and the die rolls for you."
-                : game === "ludo"
-                  ? "Roll, then move a seed that many squares. Bring all four seeds home first to win. Land on a rival to send it back to its yard. Run out of time and a move is made for you."
-                  : game === "whot"
-                    ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."
-                    : "Get three in a row to win a round. If you run out of time, a move is made for you."}
+            : game === "draughts"
+              ? "Move your seeds one square forward on the dark squares. Jump an opponent's seed to take it; if you can take, you must, and keep jumping while you can. Reach the far row to crown a king. Take every seed, or leave them no move, to win. Nobody moving in the first 30 seconds aborts the game."
+              : game === "chess"
+                ? "Standard chess. Checkmate wins; stalemate, repeats and dead positions are draws. Run out of time and you lose, unless your opponent can't mate. Nobody moving in the first 30 seconds aborts the game."
+                : game === "snakes"
+                  ? "Roll and move that many squares. A ladder takes you up, a snake brings you down. First to 100 wins. Run out of time and the die rolls for you."
+                  : game === "ludo"
+                    ? "Roll, then move a seed that many squares. Bring all four seeds home first to win. Land on a rival to send it back to its yard. Run out of time and a move is made for you."
+                    : game === "whot"
+                      ? "Match the call card by shape or number. Whot is wild: call any shape. Can't play? Go to market. Run out of time and you go to market."
+                      : "Get three in a row to win a round. If you run out of time, a move is made for you."}
         </p>
       </Dialog>
       <Dialog open={dialog === "share"} onClose={() => setDialog(null)} title="Share this room">

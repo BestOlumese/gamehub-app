@@ -43,7 +43,8 @@ const gameMarkers = {
   Whot: "Call a shape",
   Ludo: "Pick a seed to move",
   "Snakes & Ladders": "Snakes and Ladders board",
-  Chess: "Board squares",
+  Chess: "Promote to",
+  Draft: "tap the red ring to huff",
 };
 
 function gameChunks() {

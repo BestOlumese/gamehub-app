@@ -661,3 +661,102 @@ test("chess: typed moves on a computer, and running out of time loses", async ({
   await expect(host.page.getByText("Black wins on time")).toBeVisible();
   for (const c of [host.ctx, guest.ctx]) await c.close();
 });
+
+/** Opens the Draft setup from the home page. */
+async function openDraft(page: Page) {
+  await page
+    .locator("li")
+    .filter({ hasText: "Draft" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await expect(page.getByText("Naija draft 10×10", { exact: true }).first()).toBeVisible();
+}
+const draftSq = (p: Page, n: number) =>
+  p
+    .getByRole("group", { name: "Board squares" })
+    .getByRole("button", { name: new RegExp(`^${n},`) });
+/** Taps a seed, then the square it ends on (the square buttons under the board). */
+async function draftMove(p: Page, from: number, to: number) {
+  await draftSq(p, from).press("Enter");
+  await draftSq(p, to).press("Enter");
+}
+
+test("draft: two people, a forced capture, a huff, and a resignation", async ({ browser }) => {
+  const host = await player(browser, "draft_h");
+  const guest = await player(browser, "draft_g", { width: 360, height: 640 });
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  await openDraft(host.page);
+  // Whoever moves first plays red; the host (seat 1) moves first. Huffing on.
+  await host.page.getByText("Red", { exact: true }).click();
+  await host.page.getByRole("switch", { name: "Huffing" }).click();
+  await shot(host.page, "draft-rules");
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Seat 1", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game" }).click();
+
+  const moves = (p: Page) => p.getByRole("list", { name: "Moves" }).getByRole("button");
+  await expect(host.page.getByText("Your move", { exact: false })).toBeVisible({ timeout: 15_000 });
+  await draftMove(host.page, 32, 28);
+  await expect(moves(guest.page)).toHaveCount(1);
+  await draftMove(guest.page, 19, 23);
+  await expect(moves(host.page)).toHaveCount(2);
+  // Red could take 28x19 but moves another seed: green may huff the seed on 28.
+  await draftMove(host.page, 34, 30);
+  await expect(guest.page.getByText("Missed capture: tap the red ring to huff")).toBeVisible();
+  await shot(guest.page, "draft-huff-360");
+  await draftSq(guest.page, 28).press("Enter");
+  await expect(host.page.getByText("Green huffed your seed")).toBeVisible();
+  await expect(draftSq(host.page, 28)).toHaveAccessibleName(/^28, empty/);
+  await draftMove(guest.page, 23, 29);
+  await expect(moves(host.page)).toHaveCount(4);
+  await shot(host.page, "draft-mid-pixel7");
+
+  await host.page.getByRole("button", { name: "Resign" }).click();
+  await host.page.getByRole("dialog").getByRole("button", { name: "Resign" }).click();
+  await expect(guest.page.getByRole("heading", { name: "You won!" })).toBeVisible({
+    timeout: 15_000,
+  });
+  await expect(host.page.getByText("Green wins by resignation")).toBeVisible();
+  await shot(host.page, "draft-result");
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});
+
+test("draft: English checkers against a bot, with a typed move", async ({ browser }) => {
+  const me = await player(browser, "draft_bot");
+  await me.page.setViewportSize({ width: 1024, height: 900 });
+  await openDraft(me.page);
+  await me.page.getByText("English 8×8", { exact: true }).click();
+  await me.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await me.page.getByText("Play a bot", { exact: true }).click();
+  await me.page.getByText("Medium", { exact: true }).click();
+  await me.page.getByText("Seat 1", { exact: true }).click(); // English: the first mover is green
+  await me.page.getByRole("button", { name: "Next", exact: true }).click();
+  await me.page.getByRole("button", { name: "Create room" }).click();
+  await expect(me.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  await me.page.getByRole("button", { name: "Start game" }).click();
+
+  const moves = me.page.getByRole("list", { name: "Moves" }).getByRole("button");
+  await expect(me.page.getByText("Your move", { exact: false })).toBeVisible({ timeout: 15_000 });
+  const box = me.page.getByRole("textbox", { name: "Type a move" });
+  await box.fill("9-15");
+  await box.press("Enter");
+  await expect(me.page.getByText(`"9-15" isn't a legal move here`)).toBeVisible();
+  await box.fill("9-13");
+  await box.press("Enter");
+  await expect(moves).toHaveCount(2, { timeout: 20_000 }); // the bot answered
+  await expect(me.page.getByText("English checkers 8×8", { exact: false }).first()).toBeVisible();
+  const path = test.info().outputPath("draft-english-1024.png");
+  await me.page.screenshot({ path });
+  await test.info().attach("draft-english", { path, contentType: "image/png" });
+  await me.ctx.close();
+});

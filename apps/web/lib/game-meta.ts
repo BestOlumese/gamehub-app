@@ -5,6 +5,7 @@ import type { RpsRules } from "@gamehub/engine/rps";
 import type { TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { chessNaija, timeLabel, type ChessRules } from "@gamehub/engine/chess";
+import { draughtsNaija, effective, type DraughtsRules } from "@gamehub/engine/draughts";
 import { BOARDS, snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
@@ -15,6 +16,7 @@ export const GAME_NAMES: Record<GameSlug, string> = {
   tictactoe: "Tic-tac-toe",
   rps: "Rock Paper Scissors",
   chess: "Chess",
+  draughts: "Draft",
 };
 
 /** Seats each game allows (matches the engines' min/maxPlayers; checked in games.test.ts). */
@@ -25,6 +27,7 @@ export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
   tictactoe: [2, 2],
   rps: [2, 8],
   chess: [2, 2],
+  draughts: [2, 2],
 };
 
 /** RPS players throw together, so nobody "goes first". */
@@ -178,6 +181,43 @@ export const describeChessRules = (r: ChessRules) =>
     ...(chessRuleChanges(r).length ? chessRuleChanges(r) : ["Naija Standard"]),
   ].join(" · ");
 
+/** Draft colours: light seeds are red bottle caps, dark ones green (decided with Best, Oct 2026). */
+export const DRAUGHTS_COLOUR = { light: "Red", dark: "Green" } as const;
+
+export const draughtsVariantName = (r: Pick<DraughtsRules, "variant">) =>
+  r.variant === "naija10" ? "Naija draft 10×10" : "English checkers 8×8";
+
+/** Draft rules that differ from Naija Standard (or, for English checkers, from its own rules). */
+export function draughtsRuleChanges(rules: DraughtsRules): string[] {
+  const r = effective(rules);
+  const n = draughtsNaija;
+  const out: string[] = [];
+  if (r.variant === "naija10") {
+    if (r.captureRule === "majority") out.push("Take the most");
+    if (!r.menCaptureBackward) out.push("Men take forward only");
+    if (!r.flyingKings) out.push("Short kings");
+    if (r.orientation === "fmjd") out.push("FMJD board");
+    if (r.firstMove !== "random") out.push(`${DRAUGHTS_COLOUR[r.firstMove]} moves first`);
+  }
+  if (r.missedCapture === "huff") out.push("Huffing");
+  if (r.drawRules === "none") out.push("No move-count draws");
+  if (!r.takebacks) out.push("No takebacks");
+  if (!r.timeControl && r.moveLimitSeconds !== n.moveLimitSeconds)
+    out.push(`${r.moveLimitSeconds / 60} min a move`);
+  return out;
+}
+
+export const describeDraughtsRules = (r: DraughtsRules) =>
+  [
+    draughtsVariantName(r),
+    timeLabel(r.timeControl),
+    ...(draughtsRuleChanges(r).length
+      ? draughtsRuleChanges(r)
+      : r.variant === "naija10"
+        ? ["Naija Standard"]
+        : []),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
@@ -185,5 +225,6 @@ export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "ludo") return describeLudoRules(rules as LudoRules);
   if (game === "snakes") return describeSnakesRules(rules as SnakesRules);
   if (game === "chess") return describeChessRules(rules as ChessRules);
+  if (game === "draughts") return describeDraughtsRules(rules as DraughtsRules);
   return "";
 }

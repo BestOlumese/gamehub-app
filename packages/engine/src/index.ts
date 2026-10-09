@@ -20,3 +20,11 @@ export type {
 } from "./games/snakes";
 export { chess, chessNaija, chessRulesSchema } from "./games/chess";
 export type { ChessAction, ChessRules, ChessState, ChessView, Side } from "./games/chess";
+export { draughts, draughtsNaija, draughtsEnglish, draughtsRulesSchema } from "./games/draughts";
+export type {
+  Colour as DraughtsColour,
+  DraughtsAction,
+  DraughtsRules,
+  DraughtsState,
+  DraughtsView,
+} from "./games/draughts";

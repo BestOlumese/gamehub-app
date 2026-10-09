@@ -11,7 +11,9 @@
     "./whot": "./src/games/whot/core.ts",
     "./ludo": "./src/games/ludo/core.ts",
     "./snakes": "./src/games/snakes/core.ts",
-    "./chess": "./src/games/chess/core.ts"
+    "./chess": "./src/games/chess/core.ts",
+    "./draughts": "./src/games/draughts/core.ts",
+    "./draughts/service": "./src/games/draughts/service.ts"
   },
   "scripts": {
     "lint": "eslint .",

@@ -152,6 +152,15 @@ export const englishPreset: DraughtsRules = {
 
 Choosing `english8` locks the variant-fixed fields (the rules sheet shows them read-only).
 
+## As built (Phase 8, Oct 2026)
+- Code: `packages/engine/src/games/draughts/` — `board.ts` (geometry, move generation on an `Int8Array`, square − 1 indexed; ±1 man, ±2 king, + = light), `core.ts` (browser-safe: legal moves, draw counts, clocks, layout, PDN), `bots.ts`, `service.ts` (Hard, for the bot service), `index.ts` (the `GameDefinition`).
+- Colours: light seeds are **red** caps, dark ones **green** (`11-design-system.md`). Light starts on the high numbers (31–50 / 21–32) at the bottom and moves up; dark on 1–20 / 1–12.
+- "Who goes first" (the room setting) picks the **seat**; `firstMove` picks the **colour** that seat plays (random by default; English: always dark).
+- State differs from the sketch below: no `pending` (the client sends the whole path), no `counters` or `positions` map. `history` holds every position as text (one character a square: `.lLdD`), and every draw count (quiet moves, repetitions, endgame moves) is read back from it, so takebacks need nothing else. `moves` holds `{from, path, captured}` (1-based).
+- A huff replaces the current position in `history` (no new ply); `huffable` is cleared on takebacks.
+- Bots always capture when they can (even with huffing on) and huff when allowed (a king first). Easy: 1,000 positions, two moves ahead, material only, slips 1 in 4. Medium: 3,000 positions, up to four moves ahead plus captures, positional eval. Measured ~1.5–3 µs a position in Node (p95 ≈ 1 ms Easy, ≈ 5 ms Medium); confirm on Cloudflare in Phase 16.
+- Hard: `15-bot-service.md`.
+
 ## State, actions, view, events
 
 ```ts

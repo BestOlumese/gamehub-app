@@ -3,6 +3,7 @@
 import type { SeatPublic } from "@gamehub/protocol";
 import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Bot, WifiOff } from "lucide-react";
+import type { ReactNode } from "react";
 import { mmss, useNow } from "../use-now";
 
 /** Clock text: m:ss, then seconds and tenths for the last 10 seconds ("9.4"). */
@@ -12,11 +13,11 @@ export const clockText = (ms: number) =>
 type Props = {
   seat: SeatPublic;
   isYou: boolean;
-  /** "w" or "b": a small disc so you can tell the colours apart. */
-  colour: "w" | "b";
-  /** Pieces this player has taken, as codes ("q", "p", …), and their material lead. */
-  captured: string[];
-  lead: number;
+  /** Classes for the small disc on the avatar that shows which colour they play. */
+  dot: string;
+  /** What they've taken (small pieces, a count), and how a screen reader says it. */
+  taken: ReactNode;
+  takenLabel?: string | undefined;
   /** Remaining ms now (null: no clock), and whether it's running. */
   clock: { ms: number; running: boolean } | null;
   /** On the move without a clock (No clock games, or bots before the clocks start). */
@@ -25,13 +26,13 @@ type Props = {
   offset: number;
 };
 
-/** A player above or below the board: who, what they've taken, and their clock. */
+/** A player above or below the board (chess, draughts): who, what they've taken, their clock. */
 export function PlayerCard({
   seat,
   isYou,
-  colour,
-  captured,
-  lead,
+  dot,
+  taken,
+  takenLabel,
   clock,
   toMove,
   graceEndsAt,
@@ -41,7 +42,6 @@ export function PlayerCard({
   const label = seat.userId ? `@${seat.name}` : seat.name;
   const away = seat.status === "away";
   const low = !!clock && clock.ms < 10_000;
-  const theirs = colour === "w" ? "b" : "w"; // they captured the other colour's pieces
   return (
     <div
       className={`flex items-center gap-3 rounded-card border bg-surface px-3 py-2 shadow-sm transition-colors duration-(--dur-turn) ${toMove ? "border-accent" : "border-line"}`}
@@ -55,7 +55,7 @@ export function PlayerCard({
           </span>
         )}
         <span
-          className={`absolute -right-0.5 -bottom-0.5 size-3.5 rounded-full border-2 border-surface ${colour === "w" ? "bg-[#F2E6D0] ring-1 ring-ink-3" : "bg-ink"}`}
+          className={`absolute -right-0.5 -bottom-0.5 size-3.5 rounded-full border-2 border-surface ${dot}`}
           aria-hidden="true"
         />
       </div>
@@ -64,14 +64,7 @@ export function PlayerCard({
           <span className="truncate">{label}</span>
           {isYou ? <span className="text-xs text-ink-2">(you)</span> : null}
         </p>
-        <div
-          className="flex h-5 items-center gap-1 text-xs text-ink-2"
-          aria-label={
-            captured.length
-              ? `Captured: ${captured.length} pieces${lead ? `, ahead by ${lead}` : ""}`
-              : undefined
-          }
-        >
+        <div className="flex h-5 items-center gap-1 text-xs text-ink-2" aria-label={takenLabel}>
           {away && graceEndsAt ? (
             <span className="inline-flex items-center gap-1">
               <WifiOff size={12} aria-hidden="true" /> Offline ({mmss(graceEndsAt - now)})
@@ -81,16 +74,7 @@ export function PlayerCard({
               <Bot size={12} aria-hidden="true" /> A bot is playing for them
             </span>
           ) : (
-            <>
-              <span className="flex -space-x-1.5" aria-hidden="true">
-                {captured.map((p, i) => (
-                  <svg key={i} viewBox="0 0 45 45" className="size-4">
-                    <use href={`#cp-${theirs}${p.toUpperCase()}`} />
-                  </svg>
-                ))}
-              </span>
-              {lead > 0 ? <span className="font-semibold text-ink">+{lead}</span> : null}
-            </>
+            taken
           )}
         </div>
       </div>
