@@ -79,7 +79,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [ ] CPU benchmark route (`BENCH=1`) and report for chess actions and the Easy bot on Workers (Node: apply 1.7 ms median, 3.7 ms p95).
 - [ ] Bot strength calibration (200 games Easy/Medium/Hard) once the service is live.
 - [ ] Disconnect rules: unranked → Medium bot on the player's clock (works through the generic seat flow); the ranked claim-win flow behind the `ranked` flag (Phase 13).
-- [ ] Production secret `BOT_HMAC_SECRET` set in Vercel and Cloudflare (Best).
+- [x] Production secret `BOT_HMAC_SECRET` set in Vercel and Cloudflare (Best, Oct 2026); the live route answers unsigned calls with 401.
 
 **Exit:** two phones play a 3+2 game to a flag and another to checkmate with premoves; a private game vs Hard finishes (bot service live, and the fallback path proven by switching the service off); perft passes; benchmark p95 ≤ 5 ms per action; no GPL file in `.next/static`.
 
