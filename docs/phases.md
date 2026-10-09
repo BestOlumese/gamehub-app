@@ -99,7 +99,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] Engine `games/plots`: board, economy from the formula, both decks, Police Post, building rules with supply (shortages first come, first served), mortgages, debts, bankruptcy, timed (net worth) and classic modes, trading, auctions (bids persisted), all options.
 - [x] Bots with valuation (Easy/Medium/Hard; Medium and Hard propose group-completing trades); chained bot turns.
 - [x] Money, building and deck invariants checked after every action in whole bot games; **balance simulation** passing all bands (`games/property-balance.md`), rent table regenerated.
-- [ ] UI: board, plot cards, auction panel, trade composer, player strip. Design agreed with Best (Oct 2026, `11-design-system.md`): full board, band + city badge tiles, cream board with an Ankara band, Naija-thing tokens, player strip above, two-column trade sheet, auction in the centre, dice tumble + hop.
+- [x] UI: board, plot cards, auction panel, trade composer, player strip, result sheet, rules step; built to the agreed design (`11-design-system.md` → Naija Plots). E2E: 2 people + 2 bots (buy, plot card, trade sheet) and 8 players on a 360 px phone with an auction.
+- [ ] Pick your token in the lobby (tokens follow the seat for now).
+- [ ] Exit checks on the live site (Best): a 4-player timed game ends by the clock with the right places; an 8-player game on a low-end phone; rows per game against the estimate (Cloudflare dashboard).
 
 **Exit:** a 4-player timed game (2 humans, 2 bots) ends by the clock with correct net worth places; an 8-player game runs smoothly on a low-end phone; balance report attached; rows per game within the estimate.
 

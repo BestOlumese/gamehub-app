@@ -6,6 +6,7 @@ import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { chessNaija, type ChessRules } from "@gamehub/engine/chess";
 import { draughtsNaija, type DraughtsRules } from "@gamehub/engine/draughts";
+import { plotsNaija, type PlotsRules } from "@gamehub/engine/plots";
 import { dealSize, whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import type { BotLevel, FirstPlayer } from "@gamehub/protocol";
 import { Alert } from "@gamehub/ui/forms/alert";
@@ -30,16 +31,19 @@ import { LudoRulesStep } from "./ludo-rules-step";
 import { SnakesRulesStep } from "./snakes-rules-step";
 import { ChessRulesStep } from "./chess-rules-step";
 import { DraughtsRulesStep } from "./draughts-rules-step";
+import { PlotsRulesStep } from "./plots-rules-step";
 import { TttRulesStep } from "./ttt-rules-step";
 import { WhotRulesStep } from "./whot-rules-step";
 
-export type CreatableGame = "tictactoe" | "rps" | "whot" | "ludo" | "snakes" | "chess" | "draughts";
+export type CreatableGame =
+  "tictactoe" | "rps" | "whot" | "ludo" | "snakes" | "chess" | "draughts" | "plots";
 const CREATABLE: readonly CreatableGame[] = [
   "whot",
   "ludo",
   "snakes",
   "chess",
   "draughts",
+  "plots",
   "tictactoe",
   "rps",
 ];
@@ -108,6 +112,7 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
   const [draughtsRules, setDraughtsRules] = useState<DraughtsRules>(() =>
     rulesFor("draughts", draughtsNaija),
   );
+  const [plotsRules, setPlotsRules] = useState<PlotsRules>(() => rulesFor("plots", plotsNaija));
   const [min, max] = PLAYER_RANGE[game];
   const [wanted, setPlayers] = useState(initial?.players ?? Math.min(4, max));
   // Switching game keeps the count where it fits, and never below the people already here.
@@ -144,7 +149,9 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
               ? chessRules
               : game === "draughts"
                 ? draughtsRules
-                : tttRules;
+                : game === "plots"
+                  ? plotsRules
+                  : tttRules;
   const counts = Array.from({ length: max - min + 1 }, (_, k) => min + k);
   const duel = players === 2;
   // In a 2-player room that already has both people, there's no other seat to fill.
@@ -300,6 +307,8 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
           <ChessRulesStep rules={chessRules} onChange={setChessRules} />
         ) : game === "draughts" ? (
           <DraughtsRulesStep rules={draughtsRules} onChange={setDraughtsRules} />
+        ) : game === "plots" ? (
+          <PlotsRulesStep rules={plotsRules} onChange={setPlotsRules} />
         ) : (
           <TttRulesStep rules={tttRules} onChange={setTttRules} />
         )

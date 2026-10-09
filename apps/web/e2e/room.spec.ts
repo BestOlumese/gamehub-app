@@ -760,3 +760,160 @@ test("draft: English checkers against a bot, with a typed move", async ({ browse
   await test.info().attach("draft-english", { path, contentType: "image/png" });
   await me.ctx.close();
 });
+
+test("naija plots: 2 people and 2 bots play rounds, buy, look at a plot and a trade", async ({
+  browser,
+}) => {
+  test.setTimeout(300_000);
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  const host = await player(browser, "plots_h");
+  const guest = await player(browser, "plots_g", { width: 360, height: 640 });
+  await host.page.setViewportSize({ width: 1280, height: 900 });
+
+  await host.page
+    .locator("li")
+    .filter({ hasText: "Naija Plots" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await host.page.getByRole("button", { name: "4", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await expect(host.page.getByText("Timed: richest wins")).toBeVisible();
+  await shot(host.page, "plots-rules");
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByText("Seat 1", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: /^Start game/ }).click();
+
+  const pages = [host.page, guest.page];
+  for (const p of pages)
+    await expect(p.getByRole("list", { name: "Players" }).getByRole("listitem")).toHaveCount(4, {
+      timeout: 20_000,
+    });
+  await shot(host.page, "plots-start-desktop");
+  await shot(guest.page, "plots-start-360");
+
+  // Play: roll, buy what you can, end the turn; bots play their own turns in between.
+  const bought = { n: 0 };
+  const deadline = Date.now() + 120_000;
+  let shots = 0;
+  while (Date.now() < deadline && bought.n < 3) {
+    for (const p of pages) {
+      for (const name of [/^Roll/, /^Buy ₦/, "End turn"]) {
+        const b = p.getByRole("button", { name }).first();
+        if ((await b.isVisible()) && (await b.isEnabled())) {
+          await b.click({ timeout: 800 }).catch(() => {});
+          if (String(name).includes("Buy")) bought.n++;
+          break;
+        }
+      }
+      const pass = p.getByRole("button", { name: "Pass", exact: true });
+      if (await pass.isVisible()) await pass.click({ timeout: 800 }).catch(() => {});
+    }
+    if (shots < 2 && bought.n > shots) {
+      await shot(host.page, `plots-mid-desktop-${shots}`);
+      await shot(guest.page, `plots-mid-360-${shots}`);
+      shots++;
+    }
+    await host.page.waitForTimeout(400);
+  }
+  expect(bought.n).toBeGreaterThan(0);
+
+  // A plot card: tap Banana Island.
+  await guest.page.getByRole("button", { name: /^Banana Island, Lagos/ }).click();
+  await expect(guest.page.getByRole("dialog").getByText("With a hotel")).toBeVisible();
+  await shot(guest.page, "plots-card-360");
+  await guest.page.keyboard.press("Escape");
+
+  // The trade sheet.
+  await guest.page.getByRole("button", { name: "Trade" }).click();
+  await expect(guest.page.getByRole("dialog").getByText("Trade with…")).toBeVisible();
+  await guest.page
+    .getByRole("dialog")
+    .getByRole("button")
+    .filter({ hasText: /@plots_h/ })
+    .click();
+  await expect(guest.page.getByText("You give")).toBeVisible();
+  await shot(guest.page, "plots-trade-360");
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});
+
+test("naija plots: 8 players on a small phone, with an auction", async ({ browser }) => {
+  test.setTimeout(300_000);
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  const host = await player(browser, "plots8_h");
+  const guest = await player(browser, "plots8_g", { width: 360, height: 640 });
+  await host.page
+    .locator("li")
+    .filter({ hasText: "Naija Plots" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await host.page.getByRole("button", { name: "8", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByText("Easy", { exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: /^Start game/ }).click();
+  await expect(guest.page.getByRole("list", { name: "Players" }).getByRole("listitem")).toHaveCount(
+    8,
+    {
+      timeout: 20_000,
+    },
+  );
+
+  // Everyone plays; the guest sends the first plot they land on to auction.
+  let auctioned = false;
+  let sawAuction = false;
+  const deadline = Date.now() + 150_000;
+  while (Date.now() < deadline && !(auctioned && sawAuction)) {
+    for (const [i, p] of [host.page, guest.page].entries()) {
+      if (i === 1 && !auctioned) {
+        const auction = p.getByRole("button", { name: "Auction", exact: true });
+        if ((await auction.isVisible()) && (await auction.isEnabled())) {
+          await auction.click({ timeout: 800 }).catch(() => {});
+          auctioned = true;
+          continue;
+        }
+      }
+      if (
+        !sawAuction &&
+        (await p
+          .getByText("No bids yet")
+          .or(p.getByText(/leads$/))
+          .first()
+          .isVisible())
+      ) {
+        await shot(p, `plots8-auction-${i}`);
+        sawAuction = true;
+      }
+      for (const name of [/^Roll/, /^Buy ₦/, "End turn"]) {
+        const b = p.getByRole("button", { name }).first();
+        if ((await b.isVisible()) && (await b.isEnabled())) {
+          await b.click({ timeout: 800 }).catch(() => {});
+          break;
+        }
+      }
+    }
+    await host.page.waitForTimeout(300);
+  }
+  await shot(guest.page, "plots8-360");
+  expect(auctioned).toBe(true);
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});

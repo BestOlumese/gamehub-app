@@ -45,6 +45,7 @@ const gameMarkers = {
   "Snakes & Ladders": "Snakes and Ladders board",
   Chess: "Promote to",
   Draft: "tap the red ring to huff",
+  "Naija Plots": "sent you an offer",
 };
 
 function gameChunks() {

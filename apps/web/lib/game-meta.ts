@@ -6,6 +6,7 @@ import type { TttRules } from "@gamehub/engine/tictactoe";
 import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { chessNaija, timeLabel, type ChessRules } from "@gamehub/engine/chess";
 import { draughtsNaija, effective, type DraughtsRules } from "@gamehub/engine/draughts";
+import { naira, plotsNaija, type PlotsRules } from "@gamehub/engine/plots";
 import { BOARDS, snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
@@ -220,6 +221,30 @@ export const describeDraughtsRules = (r: DraughtsRules) =>
         : []),
   ].join(" · ");
 
+/** Naija Plots rules that differ from Naija Standard, in plain words. */
+export function plotsRuleChanges(r: PlotsRules): string[] {
+  const n = plotsNaija;
+  const out: string[] = [];
+  if (r.startCash !== n.startCash) out.push(`Start with ${naira(r.startCash)}`);
+  if (r.salary !== n.salary) out.push(`Salary ${naira(r.salary)}`);
+  if (!r.auctions) out.push("No auctions");
+  if (!r.trading) out.push("No trading");
+  if (!r.doublesRollAgain) out.push("No extra roll on doubles");
+  if (!r.threeDoublesToPolice) out.push("Three doubles are fine");
+  if (!r.evenBuilding) out.push("Build in any order");
+  if (!r.rentWhileDetained) out.push("No rent at the Police Post");
+  if (r.owambeJackpot) out.push("Owambe jackpot");
+  if (r.doubleSalaryOnExactLanding) out.push("Double salary on Payday");
+  return out;
+}
+
+export const describePlotsRules = (r: PlotsRules) =>
+  [
+    r.mode === "timed" ? `Timed, ${r.timedMinutes} min` : "Last one standing",
+    `${r.turnSeconds} s actions`,
+    ...(plotsRuleChanges(r).length ? plotsRuleChanges(r) : ["Naija Standard"]),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
@@ -228,5 +253,6 @@ export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "snakes") return describeSnakesRules(rules as SnakesRules);
   if (game === "chess") return describeChessRules(rules as ChessRules);
   if (game === "draughts") return describeDraughtsRules(rules as DraughtsRules);
+  if (game === "plots") return describePlotsRules(rules as PlotsRules);
   return "";
 }

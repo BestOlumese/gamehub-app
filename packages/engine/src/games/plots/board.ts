@@ -180,6 +180,7 @@ export const utilityRate = (owned: number) => (owned >= 2 ? 12 : owned === 1 ? 5
 
 /** "₦80k", "₦1.2M", "₦2M" from ₦1,000 units. */
 export function naira(k: number): string {
+  if (k === 0) return "₦0";
   const sign = k < 0 ? "−" : "";
   const n = Math.abs(k);
   if (n >= 1000) {
