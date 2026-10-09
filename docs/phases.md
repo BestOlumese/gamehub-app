@@ -87,7 +87,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] Engine `games/draughts`: `naija10` (mirrored board, random first move, men capture backward, flying kings, majority/free capture, Turkish strike, promotion only at end, huffing option) and `english8`; notation 1–50 / 1–32; FMJD and English draw rules. Perft matches the published international (to depth 5) and checkers (to depth 6) counts; a second, plain generator agrees over 200 random games per rule set.
 - [x] Bots: Easy/Medium in the DO (node budgets 1,000 / 3,000), Hard in the bot service (`/api/bots/draughts/move`); clocks shared with chess (`games/clock.ts`; No clock default). Medium beats Easy over 20 test games (> 60 %).
 - [x] Board UI with capture hints, tap-the-final-square multi-captures (hops only when ambiguous), huffing, PDN copy. Design agreed with Best (green and cream, bottle caps, chess layout).
-- [ ] Hard v Easy ≥ 60 % over many games, and a CPU benchmark of Easy/Medium on Cloudflare (Phase 16 benchmark).
+- [x] Hard v Easy ≥ 60 %: **Hard scores 93 %** v Easy (26 wins, 4 draws, 0 losses) and 83 % v Medium (21–1, 8 drawn), 30 games each, 150 ms a move (Oct 2026).
+- [ ] Two phones finish a Naija draft game and an English game on the live site (Best).
+- Moved to Phase 16: a CPU benchmark of Easy/Medium on Cloudflare itself.
 - [x] Capture default: **free choice** (Best, Oct 2026); majority is a setting.
 
 **Exit:** a Naija draft game and an English game complete between two phones; all capture/promotion edge-case tests green; Hard beats Easy > 60 %.

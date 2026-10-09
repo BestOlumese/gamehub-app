@@ -159,7 +159,7 @@ Choosing `english8` locks the variant-fixed fields (the rules sheet shows them r
 - State differs from the sketch below: no `pending` (the client sends the whole path), no `counters` or `positions` map. `history` holds every position as text (one character a square: `.lLdD`), and every draw count (quiet moves, repetitions, endgame moves) is read back from it, so takebacks need nothing else. `moves` holds `{from, path, captured}` (1-based).
 - A huff replaces the current position in `history` (no new ply); `huffable` is cleared on takebacks.
 - Bots always capture when they can (even with huffing on) and huff when allowed (a king first). Easy: 1,000 positions, two moves ahead, material only, slips 1 in 4. Medium: 3,000 positions, up to four moves ahead plus captures, positional eval. Measured ~1.5–3 µs a position in Node (p95 ≈ 1 ms Easy, ≈ 5 ms Medium); confirm on Cloudflare in Phase 16.
-- Hard: `15-bot-service.md`.
+- Hard: `15-bot-service.md`. **Calibrated (Oct 2026, naija10, 30 games each, Hard at 150 ms a move):** Hard v Easy 26–0 with 4 draws (**93 %**); Hard v Medium 21–1 with 8 draws (**83 %**). Run with a throwaway test playing `hardMove` against `draughts.bots`; it takes ~8 minutes, so it isn't in CI.
 
 ## State, actions, view, events
 
