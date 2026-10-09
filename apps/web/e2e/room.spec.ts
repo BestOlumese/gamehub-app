@@ -613,3 +613,51 @@ test("chess: a solo game against the Hard bot (Stockfish locally)", async ({ bro
   }
   await me.ctx.close();
 });
+
+test("chess: typed moves on a computer, and running out of time loses", async ({ browser }) => {
+  test.setTimeout(240_000);
+  const host = await player(browser, "flag_h");
+  const guest = await player(browser, "flag_g");
+  // The host plays on a wide screen, where the move box shows.
+  await host.page.setViewportSize({ width: 1024, height: 900 });
+  await host.page
+    .locator("li")
+    .filter({ hasText: "Chess" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await host.page.getByRole("button", { name: "1+0", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByText("Seat 1", { exact: true }).click(); // host plays White
+  await host.page.getByRole("button", { name: "Next", exact: true }).click();
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: "Start game" }).click();
+
+  // White types the move; a nonsense one is refused first.
+  const box = host.page.getByRole("textbox", { name: "Type a move" });
+  await box.fill("e5");
+  await box.press("Enter");
+  await expect(host.page.getByText(`"e5" isn't a legal move here`)).toBeVisible();
+  await box.fill("e4");
+  await box.press("Enter");
+  const moves = (p: Page) => p.getByRole("list", { name: "Moves" }).getByRole("button");
+  await expect(moves(guest.page)).toHaveCount(1);
+  const sq = (name: string) =>
+    guest.page
+      .getByRole("group", { name: "Board squares" })
+      .getByRole("button", { name: new RegExp(`^${name},`) });
+  await sq("e7").press("Enter");
+  await sq("e5").press("Enter");
+  await expect(moves(host.page)).toHaveCount(2);
+  await expect(host.page.getByText("1 min each · Bullet")).toBeVisible();
+
+  // White's clock (1 minute, plus about a second of lag grace) runs out.
+  await expect(guest.page.getByRole("heading", { name: "You won!" })).toBeVisible({
+    timeout: 80_000,
+  });
+  await expect(host.page.getByText("Black wins on time")).toBeVisible();
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});

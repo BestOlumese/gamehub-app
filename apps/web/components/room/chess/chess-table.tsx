@@ -26,6 +26,7 @@ import { ChessBoard, pieceName, piecesOf } from "./board";
 import { MoveStrip } from "./move-strip";
 import { PlayerCard } from "./player-card";
 import { ChessResult } from "./result-sheet";
+import { parseTypedMove } from "./move-input";
 import { timeControlText } from "./time-control";
 import { useChessFeed } from "./use-chess-feed";
 
@@ -109,6 +110,8 @@ export default function ChessTable({ snap, send }: Props) {
   const [premove, setPremove] = useState<readonly [string, string] | null>(null);
   const [promo, setPromo] = useState<Promo | null>(null);
   const [viewing, setViewing] = useState<number | null>(null);
+  const [typed, setTyped] = useState("");
+  const [typedHint, setTypedHint] = useState<string | null>(null);
   const [resigning, setResigning] = useState(false);
   const turnSeenAt = useRef(0);
   const feed = useChessFeed(you);
@@ -205,6 +208,40 @@ export default function ChessTable({ snap, send }: Props) {
       }),
     [],
   );
+
+  // Keyboards: ← and → step through the moves (not while typing a move).
+  const sanCount = view.san.length;
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.target as HTMLElement | null)?.closest("input, textarea")) return;
+      if (e.key === "ArrowLeft") setViewing((v) => Math.max(0, (v ?? sanCount) - 1));
+      else if (e.key === "ArrowRight")
+        setViewing((v) => (v === null || v + 1 >= sanCount ? null : v + 1));
+      else return;
+      e.preventDefault();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [sanCount]);
+
+  function submitTyped() {
+    const m = parseTypedMove(view.fen, typed);
+    if (!myTurn) return setTypedHint("Wait for your turn");
+    if (!m) return setTypedHint(`"${typed.trim()}" isn't a legal move here`);
+    setTyped("");
+    setTypedHint(null);
+    setViewing(null);
+    playMove(m.from, m.to, m.promotion);
+  }
+
+  async function copyPosition() {
+    try {
+      await navigator.clipboard.writeText(shownFen);
+      setTypedHint("Position copied (FEN)");
+    } catch {
+      setTypedHint(shownFen);
+    }
+  }
 
   const canMoveNow = myTurn && ready && viewing === null;
   const canPremove = !!you && !ended && !myTurn && rules.premoves && viewing === null;
@@ -460,6 +497,44 @@ export default function ChessTable({ snap, send }: Props) {
       ) : !you ? (
         <p className="text-center text-sm text-ink-2">You&apos;re watching.</p>
       ) : null}
+
+      {/* Computers: type a move, copy the position. Hidden on phones to keep the board big. */}
+      <form
+        className="hidden flex-wrap items-center gap-2 sm:flex"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitTyped();
+        }}
+      >
+        {you && !ended ? (
+          <input
+            value={typed}
+            onChange={(e) => {
+              setTyped(e.target.value);
+              setTypedHint(null);
+            }}
+            aria-label="Type a move"
+            placeholder="Type a move: e4, Nf3, O-O"
+            autoComplete="off"
+            spellCheck={false}
+            className="h-10 min-w-0 flex-1 rounded-control border border-line bg-surface px-3 text-sm"
+          />
+        ) : (
+          <span className="flex-1" />
+        )}
+        <button
+          type="button"
+          onClick={copyPosition}
+          className="rounded-control px-2 py-1 text-sm font-semibold text-brand-strong hover:bg-brand-soft"
+        >
+          Copy position
+        </button>
+        {typedHint ? (
+          <p className="w-full truncate text-xs text-ink-2" aria-live="polite">
+            {typedHint}
+          </p>
+        ) : null}
+      </form>
 
       <Dialog
         open={resigning}
