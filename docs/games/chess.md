@@ -220,13 +220,14 @@ As built: `history` replaces the repetition map (repetitions = occurrences of th
 
 | Level | Where | How | Strength target |
 |---|---|---|---|
-| **Easy** | In the room DO | Our own TypeScript searcher (0x88 board, MIT, ours): 1-ply + quiescence on captures, material + piece-square tables, **node budget 1,500** (time can't be measured inside a Worker — `Date.now()` doesn't advance during CPU work), plus a 20 % chance of picking the 2nd/3rd best move. | Beginner (≈ 600–900 lichess, unverified) |
+| **Easy** | In the room DO | Our own TypeScript searcher (0x88 board, MIT, ours): 1-ply + quiescence on captures, material + piece-square tables, **node budget 400** (time can't be measured inside a Worker — `Date.now()` doesn't advance during CPU work), plus a 20 % chance of picking the 2nd/3rd best move. Quiescence is capped at 4 captures with delta pruning; if the budget runs out mid-search, the root moves scored so far (captures first) still count. | Beginner (≈ 600–900 lichess, unverified) |
 | **Medium** | Bot service (`15-bot-service.md`) | Stockfish 19 lite single-threaded (WASM, Node), `UCI_LimitStrength=true`, `UCI_Elo=1500`, `go movetime 100` | ≈ 1500 CCRL-blitz scale (calibrated for the full net; the lite net's calibration is ⚠️ unverified) |
 | **Hard** | Bot service | Same, `UCI_Elo=2100`, `go movetime 200` | ≈ 2100 |
 
 - The room calls the bot service **from the alarm** when a bot seat is on move: one HMAC-signed `POST` with `{ fen, moves (since last irreversible), level, movetimeMs }`. Waiting on `fetch` doesn't count toward the DO's CPU time.
 - **Strict think limit:** service-side `movetime` (100/200 ms) + a hard 1.5 s request timeout in the DO.
 - **Fallback (silent):** timeout, non-200, `429 QUOTA`, or an illegal move → the room plays the **built-in engine at its strongest setting** ("Easy+" = node budget 4,000, no random picks) and marks the bot `fallback` for 10 minutes (no further calls from that room). Players never see an error.
+- **Measured (Oct 2026, plain Node, ~9 µs per position):** the first budgets (1,500 Easy / 4,000 Easy+) took 9 ms median, 31 ms p95 and 70 ms for Easy+, far over the 10 ms Workers Free limit. After removing allocations from move generation, in-place move ordering, a flat score table, a shared out-of-budget signal and bounded quiescence: **Easy 400 nodes p95 ≈ 4.5 ms; Easy+ 500 nodes (depth 2 when it fits) p95 ≈ 5.5 ms**, plus ~2–4 ms for applying the move. Both are weak at converting won positions (40 Easy+ v Easy games: mostly draws by repetition); Medium/Hard strength comes from Stockfish.
 - Bot clocks: bots play on the clock like people (their think time + network). Bot think pause (`botThinkMs`): **0.5–1.5 s** a move; 0.3–0.8 s under a minute left; 0.15–0.4 s under 20 s, so they don't flag. (First built as 1–4 % of the remaining time, which meant up to 12 s a move at the start of a 5-minute game; Best found that slow, Oct 2026.) The bot service's search and the network come on top.
 - **Stockfish never ships to browsers.** The client has no engine at all (no analysis feature in v1).
 

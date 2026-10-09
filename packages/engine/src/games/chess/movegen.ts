@@ -123,89 +123,103 @@ export class Board {
     return this.kings[colour ? 1 : 0] as number;
   }
 
+  /** After make(): did that move leave its own king in check (i.e. it was illegal)? */
+  leftKingInCheck(): boolean {
+    const mover = this.side ^ BLACK;
+    return this.attacked(this.kingSquare(mover), this.side);
+  }
+
   inCheck(colour = this.side): boolean {
     return this.attacked(this.kingSquare(colour), colour ^ BLACK);
   }
 
-  /** Pseudo-legal moves (may leave the king in check). */
-  private pseudo(capturesOnly: boolean): Move[] {
+  /** Pseudo-legal moves (may leave the king in check): the search checks legality as it goes. */
+  pseudo(capturesOnly: boolean): Move[] {
+    // Hot path for the bots: no closures or temporary arrays inside the loop.
     const out: Move[] = [];
     const s = this.sq;
     const us = this.side;
-    const them = us ^ BLACK;
-    const own = (p: number) => p !== 0 && (p & BLACK) === us;
-    const enemy = (p: number) => p !== 0 && (p & BLACK) === them;
+    const dir = us === 0 ? 16 : -16;
+    const startRank = us === 0 ? 1 : 6;
+    const lastRank = us === 0 ? 7 : 0;
     for (let from = 0; from < 128; from++) {
-      if (!onBoard(from)) {
+      if (from & 0x88) {
         from += 7;
         continue;
       }
       const p = s[from] as number;
-      if (!own(p)) continue;
+      if (!p || (p & BLACK) !== us) continue;
       const type = p & 7;
       if (type === P) {
-        const dir = us === 0 ? 16 : -16;
-        const startRank = us === 0 ? 1 : 6;
-        const lastRank = us === 0 ? 7 : 0;
         const one = from + dir;
-        const addPawn = (to: number, flags: number) => {
-          if (to >> 4 === lastRank)
-            for (const promo of [Q, R, B, N]) out.push(pack(from, to, promo, flags));
-          else out.push(pack(from, to, 0, flags));
-        };
-        if (!capturesOnly && onBoard(one) && !s[one]) {
-          addPawn(one, 0);
-          const two = one + dir;
-          if (from >> 4 === startRank && !s[two]) out.push(pack(from, two, 0, FLAG_DOUBLE));
+        const promoting = one >> 4 === lastRank;
+        if (!capturesOnly && !(one & 0x88) && !s[one]) {
+          if (promoting) {
+            out.push(
+              pack(from, one, Q, 0),
+              pack(from, one, R, 0),
+              pack(from, one, B, 0),
+              pack(from, one, N, 0),
+            );
+          } else {
+            out.push(pack(from, one, 0, 0));
+            const two = one + dir;
+            if (from >> 4 === startRank && !s[two]) out.push(pack(from, two, 0, FLAG_DOUBLE));
+          }
         }
-        for (const d of [dir - 1, dir + 1]) {
-          const to = from + d;
-          if (!onBoard(to)) continue;
-          if (enemy(s[to] as number)) addPawn(to, FLAG_CAPTURE);
-          else if (to === this.ep) out.push(pack(from, to, 0, FLAG_CAPTURE | FLAG_EP));
+        for (let side = -1; side <= 1; side += 2) {
+          const to = one + side;
+          if (to & 0x88) continue;
+          const t = s[to] as number;
+          if (t && (t & BLACK) !== us) {
+            if (promoting)
+              out.push(
+                pack(from, to, Q, FLAG_CAPTURE),
+                pack(from, to, R, FLAG_CAPTURE),
+                pack(from, to, B, FLAG_CAPTURE),
+                pack(from, to, N, FLAG_CAPTURE),
+              );
+            else out.push(pack(from, to, 0, FLAG_CAPTURE));
+          } else if (to === this.ep) out.push(pack(from, to, 0, FLAG_CAPTURE | FLAG_EP));
         }
         continue;
       }
       const steps =
         type === N ? KNIGHT : type === K ? KING : type === B ? DIAG : type === R ? ORTHO : KING;
       const slides = type === B || type === R || type === Q;
-      for (const d of steps) {
-        for (let to = from + d; onBoard(to); to += d) {
+      for (let k = 0; k < steps.length; k++) {
+        const d = steps[k] as number;
+        for (let to = from + d; !(to & 0x88); to += d) {
           const t = s[to] as number;
-          if (own(t)) break;
           if (t) {
-            out.push(pack(from, to, 0, FLAG_CAPTURE));
+            if ((t & BLACK) !== us) out.push(pack(from, to, 0, FLAG_CAPTURE));
             break;
           }
           if (!capturesOnly) out.push(pack(from, to, 0, 0));
           if (!slides) break;
         }
       }
-      if (type === K && !capturesOnly) {
+      // Castling: cheap checks (rights, empty squares, rook) before the costly attack checks.
+      if (type === K && !capturesOnly && this.castling) {
         const rank = us === 0 ? 0 : 0x70;
-        const kSide = us === 0 ? 1 : 4;
-        const qSide = us === 0 ? 2 : 8;
-        if (from === rank + 4 && !this.attacked(from, them)) {
-          if (
-            this.castling & kSide &&
-            !s[rank + 5] &&
-            !s[rank + 6] &&
-            s[rank + 7] === (R | us) &&
-            !this.attacked(rank + 5, them) &&
-            !this.attacked(rank + 6, them)
-          )
-            out.push(pack(from, rank + 6, 0, FLAG_CASTLE));
-          if (
-            this.castling & qSide &&
-            !s[rank + 3] &&
-            !s[rank + 2] &&
-            !s[rank + 1] &&
-            s[rank] === (R | us) &&
-            !this.attacked(rank + 3, them) &&
-            !this.attacked(rank + 2, them)
-          )
-            out.push(pack(from, rank + 2, 0, FLAG_CASTLE));
-        }
+        if (from !== rank + 4) continue;
+        const them = us ^ BLACK;
+        const kSide =
+          this.castling & (us === 0 ? 1 : 4) &&
+          !s[rank + 5] &&
+          !s[rank + 6] &&
+          s[rank + 7] === (R | us);
+        const qSide =
+          this.castling & (us === 0 ? 2 : 8) &&
+          !s[rank + 3] &&
+          !s[rank + 2] &&
+          !s[rank + 1] &&
+          s[rank] === (R | us);
+        if ((!kSide && !qSide) || this.attacked(from, them)) continue;
+        if (kSide && !this.attacked(rank + 5, them) && !this.attacked(rank + 6, them))
+          out.push(pack(from, rank + 6, 0, FLAG_CASTLE));
+        if (qSide && !this.attacked(rank + 3, them) && !this.attacked(rank + 2, them))
+          out.push(pack(from, rank + 2, 0, FLAG_CASTLE));
       }
     }
     return out;

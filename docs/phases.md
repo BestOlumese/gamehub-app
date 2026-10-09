@@ -76,7 +76,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] **Bot service** in `apps/web` (`/api/bots/chess/move`): Stockfish 19 lite in a worker thread, HMAC (`BOT_HMAC_SECRET`), strength mapping, queue, watchdog; `Quota` DO (migration `v2`) with daily budget; silent fallback in the room (DO-tested).
 - [x] Our SVG board + Cburnett pieces (BSD, credited on `/legal/credits`), move strip, PGN copy, promotion picker, clocks, sounds, square buttons for keyboards and screen readers, move announcements. Design agreed with Best (mockups).
 - [ ] FEN copy and a typed-move box (`e4`, `Nf3`) for keyboards.
-- [ ] CPU benchmark route (`BENCH=1`) and report for chess actions and the Easy bot on Workers (Node: apply 1.7 ms median, 3.7 ms p95).
+- [ ] CPU benchmark route (`BENCH=1`) on a CI-deployed bench Worker (needs observability for `cpuTime`). Node proxy so far: apply 1.7 ms median / 3.7 ms p95; Easy bot p95 ≈ 4.5 ms, Easy+ ≈ 5.5 ms after the Oct 2026 speed-up (was 31 / 89 ms).
 - [ ] Bot strength calibration (200 games Easy/Medium/Hard) once the service is live.
 - [ ] Disconnect rules: unranked → Medium bot on the player's clock (works through the generic seat flow); the ranked claim-win flow behind the `ranked` flag (Phase 13).
 - [x] Production secret `BOT_HMAC_SECRET` set in Vercel and Cloudflare (Best, Oct 2026); the live route answers unsigned calls with 401.
