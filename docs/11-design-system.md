@@ -190,9 +190,17 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - Captured seeds fade out together after the move (Turkish strike made visible).
 - Components: `DraughtsBoard`, `DraughtsTable`, `DraughtsResult`; shared with chess: `PlayerCard`, `MoveStrip`, `ToolButton` (`components/room/board-games/`).
 
-### Property game
+### Property game (Naija Plots)
 - Board: square loop, round-cornered tiles with a colour band on the inner edge; our group colours (`games/property.md`): Clay `#A0674B`, Sky `#5BB5E0`, Coral `#E4717A`, Sunset `#EE8A2B`, Palm `#3E9B5F`, Gold `#D9A520`, Forest `#1F6F4A`, Royal `#3B4BA8`. Transport tiles with a simple vehicle glyph; utilities with a bulb / tap glyph. **No red banner, no Monopoly-like typography or tokens.**
-- Tokens: the 8 game-piece colours + initials (as in Snakes).
+- **Decided with Best (Oct 2026), after research (richup.io, the official app's store screenshots, Dribbble):**
+  - **Full board on every screen**, the whole loop always visible (no follow camera). On phones the tiles are small: they show the colour band and city badge; tap any tile for its plot card. The centre panel holds the dice, the action buttons (Buy / Auction, Build, End turn) and the latest news line.
+  - **Tiles:** group colour band, area name (hidden on small tiles), a **city badge** (LAG, ABJ, PH, IBD, ENU, KAN — our answer to richup's flags) and the price. Owned: a strip in the owner's colour along the inner edge; houses as small blocks, hotel as one wide block; mortgaged greyed with a diagonal line.
+  - **Board style:** cream board and tiles (`#F7F1E3`) with ink lines, a thin **Ankara-style pattern band** around the centre panel, "Naija Plots" small in the middle.
+  - **Tokens: Naija things** in the player's colour: danfo, keke, okada, generator, jollof pot, gele, talking drum, football (flat icons, ours). Picked in the lobby; bots get the first free one.
+  - **Players:** a strip of chips **above the board** (token, name, cash; the player on turn lit up), scrolling sideways with 8 players; tap a chip for their plots and net worth.
+  - **Trade:** a **two-column sheet** (You give / You get): plot chips, cash − / +, a hint when a trade completes a group, Send. The receiver sees the same sheet with Accept, Counter, Decline; offers expire after 60 s.
+  - **Auction:** in the **board centre**: the plot, high bid and bidder, a countdown ring (8 s, resets on each bid), +₦10k / +₦50k / +₦100k, a custom bid and Pass. The board stays visible.
+  - **Movement:** dice **tumble** in the centre (~0.9 s), then the token **hops** square by square (90 ms a square, soft tick, like Ludo). Bot turns play back at the same pace.
 - Money always "₦38k", "₦1.2M".
 - Components: `PropertyBoard`, `Tile`, `TitleDeedSheet` (our name: "Plot card"), `AuctionPanel`, `TradeComposer`, `NetWorthStrip`.
 

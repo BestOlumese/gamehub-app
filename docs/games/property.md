@@ -1,4 +1,4 @@
-# Property-trading game (slug `property`)
+# Property-trading game: Naija Plots (slug `plots`)
 
 Players: 2–8. Buy neighbourhoods across Nigeria, build houses and hotels, collect rent, trade, auction. **Our own name, board, prices, rents and card texts** — nothing is copied from Monopoly or its official Lagos edition. Unranked.
 
@@ -350,8 +350,9 @@ Research basis (Markov-chain studies of the genre's board): the most-visited spa
 All bot decisions are O(board size) arithmetic — well under 1 ms (CPU budget).
 
 ## UI notes
-- **Board:** square loop of 40 rounded tiles around a centre panel; your token at the bottom edge. Tiles show colour band, area name, city in small text, price. Tap a tile → card sheet (rents table, owner, buildings, mortgage).
-- Tokens: up to 8, distinct colours + initials (`11-design-system.md` token colours).
+Decided with Best, Oct 2026 — full details in `11-design-system.md` → "Property game (Naija Plots)": full board always, tiles with colour band + city badge, cream board with an Ankara band round the centre, Naija-thing tokens, player strip above the board, two-column trade sheet, auction in the board centre, dice tumble + hop.
+- **Board:** square loop of 40 rounded tiles around a centre panel; your token at the bottom edge. Tiles show colour band, area name, city badge, price. Tap a tile → card sheet (rents table, owner, buildings, mortgage).
+- Tokens: up to 8 Naija things (danfo, keke, okada, generator, jollof pot, gele, talking drum, football) in the 8 game-piece colours.
 - Centre panel: dice, turn banner, "Last round" timer (timed mode), current card, auction panel (high bid, countdown ring, bid buttons), offers inbox.
 - Player strip: cash and net worth for each player; tap for their properties.
 - Buildings: small house glyphs, hotel glyph; mortgaged tiles greyed with a diagonal line.

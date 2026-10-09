@@ -99,7 +99,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [ ] Engine `games/property`: board, economy from the formula, both decks, police post, building rules with supply and shortages, mortgages, bankruptcy, timed (net worth) and classic modes, trading protocol, auctions (bids in memory), all options.
 - [ ] Bots with valuation (Easy/Medium/Hard; Hard proposes trades); chained bot turns.
 - [ ] Money and building conservation property tests; **Monte Carlo balance job** passing all bands, then regenerate the rent table.
-- [ ] UI: board, plot cards, auction panel, trade composer, net-worth strip. **Design questions with mockups to Best first.**
+- [ ] UI: board, plot cards, auction panel, trade composer, player strip. Design agreed with Best (Oct 2026, `11-design-system.md`): full board, band + city badge tiles, cream board with an Ankara band, Naija-thing tokens, player strip above, two-column trade sheet, auction in the centre, dice tumble + hop.
 
 **Exit:** a 4-player timed game (2 humans, 2 bots) ends by the clock with correct net worth places; an 8-player game runs smoothly on a low-end phone; balance report attached; rows per game within the estimate.
 
