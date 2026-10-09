@@ -221,7 +221,8 @@ await fetch(`${env.WEB_ORIGIN}/api/internal/match-result`, {
 ]},
 "migrations": [
   { "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] },
-  { "tag": "v2", "new_sqlite_classes": ["Tournament", "Quota"] }
+  { "tag": "v2", "new_sqlite_classes": ["Quota"] },      // shipped with Chess (Oct 2026)
+  { "tag": "v3", "new_sqlite_classes": ["Tournament"] }  // Phase 12
 ]
 ```
 Free plan allows 100 DO classes per account; we use 5.

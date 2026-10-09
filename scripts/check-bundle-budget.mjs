@@ -170,6 +170,20 @@ try {
         ` ${(sizes.length ? fmt(size) : "not found").padStart(9)} / ${fmt(gameChunkLimit)}  [game chunk]`,
     );
   }
+  // GPL boundary (AGENTS.md §1.11): Stockfish runs only in the bot route, never in the browser.
+  const staticDir = new URL("../apps/web/.next/static/", import.meta.url);
+  const leaks = readdirSync(staticDir, { recursive: true })
+    .map(String)
+    .filter((f) => /\.(js|css|wasm|map)$/.test(f))
+    .filter(
+      (f) =>
+        /stockfish/i.test(f) || /stockfish/i.test(readFileSync(new URL(f, staticDir), "latin1")),
+    );
+  failed ||= leaks.length > 0;
+  console.log(
+    `${leaks.length ? "FAIL" : "PASS"}  no GPL engine in browser files`.padEnd(30) +
+      (leaks.length ? `  ${leaks.slice(0, 3).join(", ")}` : ""),
+  );
   stopServer();
   process.exit(failed ? 1 : 0);
 } catch (e) {

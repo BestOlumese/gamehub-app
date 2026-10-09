@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./constants": "./src/constants.ts",
-    "./hmac": "./src/hmac.ts"
+    "./hmac": "./src/hmac.ts",
+    "./bots": "./src/bots.ts"
   },
   "scripts": {
     "lint": "eslint .",

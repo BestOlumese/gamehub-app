@@ -8,6 +8,7 @@ import { gameFor } from "./rooms/games";
 export { GameRoom } from "./rooms/game-room";
 export { Matchmaker } from "./match/matchmaker";
 export { Presence } from "./presence/presence";
+export { Quota } from "./bots/quota";
 
 const json = (body: unknown, status = 200) => Response.json(body, { status });
 

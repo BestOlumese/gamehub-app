@@ -9,15 +9,23 @@
       { "name": "Room", "class_name": "GameRoom" },
       { "name": "Match", "class_name": "Matchmaker" },
       { "name": "Presence", "class_name": "Presence" },
+      // One global instance: the daily CPU budget for strong bots (docs/15-bot-service.md).
+      { "name": "Quota", "class_name": "Quota" },
     ],
   },
   // SQLite must be on in the FIRST migration; it can't be enabled later.
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] }],
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] },
+    { "tag": "v2", "new_sqlite_classes": ["Quota"] },
+  ],
   "vars": {
     "ALLOWED_ORIGINS": "https://gamehub-apps.vercel.app,http://localhost:3000",
     "WEB_ORIGIN": "https://gamehub-apps.vercel.app",
     // Seat hold after a disconnect before a bot takes over (docs/04-reconnection.md).
     "GRACE_MS": "60000",
+    // Medium/Hard chess bots (Stockfish on Vercel). Local dev overrides it in .dev.vars.
+    "BOT_SERVICE_URL": "https://gamehub-apps.vercel.app/api/bots/chess/move",
   },
-  // Secrets (wrangler secret put): REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET, CHAT_SIGN_SECRET
+  // Secrets (wrangler secret put): REALTIME_TICKET_SECRET, INTERNAL_HMAC_SECRET, CHAT_SIGN_SECRET,
+  // BOT_HMAC_SECRET (shared with web; without it, bots just use the built-in engine)
 }

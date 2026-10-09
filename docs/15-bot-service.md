@@ -78,6 +78,15 @@ Our own TypeScript searcher (MIT, `packages/engine`), run in Node: iterative dee
 - Warm, 30 moves of a game each: **Hard (Elo 2100, movetime 200): CPU median 209 ms, p90 220 ms**; **Medium (Elo 1500, movetime 100): CPU median 164 ms, p90 372 ms** (CPU > movetime from V8 work around the search). Daily 240 CPU-s ⇒ ≈ 1,100 Hard or ≈ 1,450 Medium moves; each cold start costs ≈ 10 Hard moves of budget.
 - Next.js 16 option confirmed: `outputFileTracingIncludes: { "/api/bots/chess/move": ["./server/bots/stockfish/**/*"] }` (keys are route paths, values globs from the app root).
 
+## As built (Phase 7, Oct 2026)
+- Route `apps/web/app/api/bots/chess/move/route.ts`: `maxDuration = 10`, no `runtime` export (Node is the default, and Cache Components forbids that option). Signature checked before parsing; bodies over 4 KB → 413.
+- `server/bots/stockfish.ts` loads the build with `createRequire` from `process.cwd()/server/bots/stockfish/`; the build is vendored as **`.cjs`** because `apps/web` is `"type": "module"` (as `.js` it fails with "require is not defined"). Excluded from Prettier and ESLint.
+- One search at a time per instance (a promise chain), up to 3 waiting, else `BUSY`; watchdog sends `stop` 600 ms after `movetime`; a broken engine is rebuilt on the next call; per-instance backstop 60 CPU-s per rolling hour → `QUOTA`.
+- Measured through `next start`: cold 2.7 s, then Hard 292 ms and Medium 162 ms per request.
+- Room side (`GameRoom.serviceBotAction`): only chess Medium/Hard; asks `Quota.allowBot()`; sends the FEN at the last pawn move or capture plus the moves since; 1.5 s `AbortSignal.timeout`; the answer is checked by applying it; errors, timeouts, refusals and illegal moves fall back to Easy+ and count as failures (3 in a row → rest 10 min). `BOT_SERVICE_URL` is a Worker var (local dev overrides it in `.dev.vars`).
+- `Quota` DO: monthly 2 CPU-hours, daily = min(even share 240 s, what's left ÷ days left in the month); saved at most every 5 min.
+- CI: the budget script fails if any file in `.next/static` mentions "stockfish"; E2E gets a throwaway `BOT_HMAC_SECRET`.
+
 ## Cold starts
 - A cold instance loads ~1.8 MB of WASM and compiles it: 1.36 s measured, so the first bot move after a quiet spell will usually miss the DO's 1.5 s timeout and use the fallback. The first bot move after a quiet period may exceed the DO's 1.5 s timeout → that one move uses the built-in fallback; later moves hit a warm instance.
 - No warm-up cron (Hobby cron is limited and it would burn CPU for nothing).

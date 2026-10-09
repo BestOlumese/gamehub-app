@@ -1,4 +1,11 @@
-import { ludoNaija, snakesNaija, whotNaija, type TttState } from "@gamehub/engine";
+import {
+  chessNaija,
+  ludoNaija,
+  snakesNaija,
+  whotNaija,
+  type ChessState,
+  type TttState,
+} from "@gamehub/engine";
 import { signBody } from "@gamehub/protocol/hmac";
 import type { ServerRoomMsg } from "@gamehub/protocol";
 import { env, runDurableObjectAlarm, runInDurableObject } from "cloudflare:test";
@@ -926,4 +933,195 @@ describe("snakes and ladders", () => {
     console.log(`snakes 8 bots: ${info.v} actions, ${writes.rows} rows + ${writes.alarms} alarms`);
     expect(total).toBeLessThan(info.v * 2);
   }, 120_000);
+});
+
+describe("chess", () => {
+  const cv = (c: Client) => c.last().view as ChessState;
+  type Live = {
+    room: {
+      phase: string;
+      state: ChessState | null;
+      deadlines: { turns?: Record<number, number>; bot?: number };
+    };
+  };
+
+  async function twoPlayers(rules = chessNaija) {
+    const code = await createRoom({ game: "chess", rules });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    return { code, host, guest, stub: env.Room.getByName(code) };
+  }
+
+  it("the clock's flag time is the deadline, and running out ends the game on time", async () => {
+    const { host, guest, stub } = await twoPlayers();
+    expect(cv(host).white).toBe(0); // seat 1 starts = plays White (tests create rooms with "seat1")
+    // The abort window before the first move.
+    expect(host.last().deadlines.turns?.[0]).toBe(cv(host).startedAt + 30_000);
+    for (const [who, uci] of [
+      [host, "e2e4"],
+      [guest, "e7e5"],
+    ] as const) {
+      const before = host.last().v;
+      act(who, { type: "move", uci, mt: 400 });
+      await host.next((m) => m.t === "snapshot" && m.v > before, uci);
+    }
+    const s = cv(host);
+    const flagAt = (s.turnStartedAt as number) + 300_000 + 2000; // 5+3: quota 3 s, grace capped at 2 s
+    expect(host.last().deadlines.turns?.[0]).toBe(flagAt);
+    // White's clock runs out: wind its turn start back 5 minutes, then let the alarm fire.
+    await runInDurableObject(stub, (inst) => {
+      const r = (inst as unknown as Live).room;
+      const st = r.state as ChessState;
+      st.turnStartedAt = (st.turnStartedAt as number) - 400_000;
+      r.deadlines.turns = { 0: 0 };
+    });
+    await runDurableObjectAlarm(stub);
+    const ended = await guest.next((m) => m.t === "ended", "flag");
+    expect(ended).toMatchObject({ ranking: [[1], [0]] });
+    await until(guest, (m) => (m.view as ChessState).result !== null, "result in snapshot");
+    expect(cv(guest).result).toEqual({ winner: "b", reason: "timeout" });
+  });
+
+  it("nobody moves in the abort window: no result, back to the lobby", async () => {
+    const { host, stub } = await twoPlayers();
+    await runInDurableObject(stub, (inst) => {
+      const r = (inst as unknown as Live).room;
+      (r.state as ChessState).startedAt -= 60_000;
+      r.deadlines.turns = { 0: 0 };
+    });
+    await runDurableObjectAlarm(stub);
+    await host.next((m) => m.t === "event" && m.e.type === "game_over" && m.e.reason === "aborted");
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "lobby", "back in the lobby");
+  });
+
+  it("against a bot: the bot moves on its alarm and takes back when asked", async () => {
+    const code = await createRoom({
+      game: "chess",
+      rules: chessNaija,
+      players: 2,
+      botLevel: "easy",
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const stub = env.Room.getByName(code);
+    act(host, { type: "move", uci: "d2d4" });
+    await host.next((m) => m.t === "snapshot" && cv(host).moves.length === 1);
+    await fireBot(stub);
+    await host.next(
+      (m) => m.t === "snapshot" && (m.view as ChessState).moves.length === 2,
+      "bot replied",
+    );
+    act(host, { type: "request_takeback" });
+    await host.next((m) => m.t === "event" && m.e.type === "takeback_done", "bot accepted");
+    await host.next((m) => m.t === "snapshot" && (m.view as ChessState).moves.length === 0);
+  });
+});
+
+describe("chess bot service", () => {
+  type Call = { url: string; body: Record<string, unknown> };
+  /** Swaps the isolate's fetch for a stand-in bot service; returns the calls it saw. */
+  function serve(reply: (body: Record<string, unknown>) => Response | Promise<Response>) {
+    const calls: Call[] = [];
+    const real = globalThis.fetch;
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input instanceof Request ? input.url : input);
+      if (!url.startsWith("http://bots.test")) return real(input, init);
+      const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      calls.push({ url, body });
+      return reply(body);
+    }) as typeof fetch;
+    return { calls, restore: () => (globalThis.fetch = real) };
+  }
+
+  // No clock: on a clock, bots think 1–4 % of their time (seconds); here it's under 1.2 s.
+  async function botGame(level: "medium" | "hard") {
+    const code = await createRoom({
+      game: "chess",
+      rules: { ...chessNaija, timeControl: null },
+      players: 2,
+      botLevel: level,
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    act(host, { type: "move", uci: "e2e4" });
+    await host.next((m) => m.t === "snapshot" && (m.view as ChessState).moves.length === 1);
+    return { host, stub: env.Room.getByName(code) };
+  }
+  const movesOf = (c: Client) => (c.last().view as ChessState).moves;
+
+  it("plays the service's move and counts its CPU against the day's budget", async () => {
+    const svc = serve(() =>
+      Response.json({ ok: true, move: "c7c5", cpuMs: 210, engine: "stockfish-19-lite" }),
+    );
+    try {
+      const { host, stub } = await botGame("hard");
+      await fireBot(stub);
+      await until(host, () => movesOf(host).length === 2, "bot moved");
+      expect(movesOf(host)[1]).toBe("c7c5");
+      expect(svc.calls[0]?.body).toMatchObject({
+        game: "chess",
+        level: "hard",
+        movetimeMs: 200,
+        history: [],
+      });
+      const usage = await env.Quota.getByName("global").usage();
+      expect(usage.dayMs).toBeGreaterThanOrEqual(210);
+    } finally {
+      svc.restore();
+    }
+  });
+
+  it("an illegal or failed answer falls back to the built-in engine; three failures rest the service", async () => {
+    let n = 0;
+    const svc = serve(() =>
+      n++ === 0
+        ? Response.json({ ok: true, move: "e1e8", cpuMs: 1, engine: "stockfish-19-lite" })
+        : new Response("down", { status: 500 }),
+    );
+    try {
+      const { host, stub } = await botGame("medium");
+      for (let ply = 2; ply <= 8; ply += 2) {
+        await fireBot(stub);
+        await until(host, () => movesOf(host).length === ply, `bot move ${ply}`);
+        const reply = ["g1f3", "f1c4", "d2d3", "c1d2"][ply / 2 - 1] as string;
+        act(host, { type: "move", uci: reply });
+        await until(host, () => movesOf(host).length === ply + 1, `my move ${ply + 1}`);
+      }
+      // Four bot moves, all from the fallback; the service was asked three times, then rested.
+      expect(svc.calls.length).toBe(3);
+    } finally {
+      svc.restore();
+    }
+  }, 30_000);
+
+  it("no call at all once the day's budget is spent", async () => {
+    const svc = serve(() =>
+      Response.json({ ok: true, move: "c7c5", cpuMs: 1, engine: "stockfish-19-lite" }),
+    );
+    try {
+      const quota = env.Quota.getByName("global");
+      for (let i = 0; i < 10; i++) await quota.addBot(30_000);
+      expect(await quota.allowBot()).toBe(false);
+      const { host, stub } = await botGame("hard");
+      await fireBot(stub);
+      await until(host, () => movesOf(host).length === 2, "bot moved");
+      expect(svc.calls.length).toBe(0);
+    } finally {
+      svc.restore();
+    }
+  });
 });

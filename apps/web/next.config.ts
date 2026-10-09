@@ -15,6 +15,8 @@ const config: NextConfig = {
   cacheComponents: true,
   poweredByHeader: false,
   transpilePackages: ["@gamehub/ui", "@gamehub/engine", "@gamehub/protocol"],
+  // The bot route loads Stockfish's files at runtime; make sure they ship with that function.
+  outputFileTracingIncludes: { "/api/bots/chess/move": ["./server/bots/stockfish/**/*"] },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

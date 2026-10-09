@@ -4,3 +4,4 @@ AGENTS.md
 CLAUDE.md
 packages/db/drizzle
 apps/realtime/worker-configuration.d.ts
+apps/web/server/bots/stockfish

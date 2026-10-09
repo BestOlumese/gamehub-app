@@ -85,7 +85,9 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
   /**
    * How long a bot "thinks" before this move, as [min, max] ms (the room picks a time in
    * between). Lets a quick move (going to market) be quick and a big one (a Whot) take a
-   * moment, so people can follow what bots do. Default: [300, 900].
+   * moment, so people can follow what bots do. Default: [300, 900]. Declare the `action`
+   * parameter only if you use it: the room previews the move for it (a one-parameter version, like
+   * chess with its costly search, gets no preview and must not read `action`).
    */
   botThinkMs?(s: S, action: A): readonly [number, number];
   /**

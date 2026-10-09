@@ -22,6 +22,8 @@ import {
   type ServerRoomMsg,
   type TicketClaims,
 } from "@gamehub/protocol";
+import type { BotMoveRequest, BotMoveResponse } from "@gamehub/protocol/bots";
+import { signBody } from "@gamehub/protocol/hmac";
 import { Server, type Connection, type ConnectionContext, type WSMessage } from "partyserver";
 import { gameFor, type AnyGame } from "./games";
 
@@ -36,6 +38,8 @@ const MAX_ALARM_STEPS = 50;
 const MAX_CHAIN = 40;
 const RECENT_IDS = 64;
 const TAKEOVER_BOT: BotLevel = "medium";
+/** The DO waits this long for a bot-service move before using the built-in engine. */
+const BOT_SERVICE_TIMEOUT_MS = 1500;
 
 type SeatRec = {
   /** Stable id for whoever sits here (person or bot), so "who went first" survives seat moves. */
@@ -168,6 +172,9 @@ export class GameRoom extends Server<Env> {
     return s;
   }
   private lastAlarm: number | null = null;
+  /** Bot service health, in memory (losing it on hibernation just means trying again). */
+  private serviceFailures = 0;
+  private serviceRestUntil = 0;
   /** Per-connection token buckets. In memory only: losing them on hibernation is fine. */
   private buckets = new Map<string, { tokens: number; at: number }>();
 
@@ -476,19 +483,7 @@ export class GameRoom extends Server<Env> {
 
       case "rematch": {
         if (room.phase !== "ended") return "WRONG_PHASE";
-        for (const s of room.seats) {
-          if (s.status === "left" || s.status === "away") Object.assign(s, emptySeat());
-          if (s.userId) s.ready = false;
-          s.timeouts = 0;
-        }
-        room.phase = "lobby";
-        room.state = null;
-        room.recentActionIds = {};
-        room.deadlines = { grace: {}, idle: Date.now() + LOBBY_IDLE_MS };
-        if (!room.seats.some((s) => s.userId === room.hostUserId)) {
-          const next = room.seats.find((s) => s.userId);
-          if (next?.userId) room.hostUserId = next.userId;
-        }
+        this.toLobby();
         return this.commit();
       }
 
@@ -530,6 +525,24 @@ export class GameRoom extends Server<Env> {
     room.seats = seats;
     this.reseatConnections();
     return this.commit();
+  }
+
+  /** Back to the lobby after a game (rematch) or an aborted one. Seats of people who left open up. */
+  private toLobby() {
+    const room = this.r;
+    for (const s of room.seats) {
+      if (s.status === "left" || s.status === "away") Object.assign(s, emptySeat());
+      if (s.userId) s.ready = false;
+      s.timeouts = 0;
+    }
+    room.phase = "lobby";
+    room.state = null;
+    room.recentActionIds = {};
+    room.deadlines = { grace: {}, idle: Date.now() + LOBBY_IDLE_MS };
+    if (!room.seats.some((s) => s.userId === room.hostUserId)) {
+      const next = room.seats.find((s) => s.userId);
+      if (next?.userId) room.hostUserId = next.userId;
+    }
   }
 
   /** Seat indexes may have shifted; tell each connection its new seat. */
@@ -660,6 +673,57 @@ export class GameRoom extends Server<Env> {
     return action;
   }
 
+  /**
+   * A Medium/Hard chess move from the bot service (Stockfish on Vercel), or null to use the
+   * built-in engine: no service configured, today's CPU budget spent, a timeout, an error, or
+   * three failures in a row (then the service rests for 10 minutes). Players never see a failure.
+   */
+  private async serviceBotAction(seat: SeatIndex): Promise<unknown> {
+    const room = this.r;
+    const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
+    const { BOT_SERVICE_URL: url, BOT_HMAC_SECRET: secret } = this.env;
+    if (room.game !== "chess" || level === "easy" || !url || !secret) return null;
+    if (Date.now() < this.serviceRestUntil) return null;
+    const quota = this.env.Quota.getByName("global");
+    if (!(await quota.allowBot())) return null;
+
+    const s = room.state as { fen: string; history: string[]; moves: string[] };
+    // The position at the last pawn move or capture, plus the moves since: repetitions show.
+    const since = Number(s.fen.split(" ")[4] ?? 0);
+    const body = JSON.stringify({
+      game: "chess",
+      level,
+      position: s.history[s.history.length - 1 - since] ?? s.fen,
+      history: since ? s.moves.slice(-since) : [],
+      movetimeMs: level === "hard" ? 200 : 100,
+      roomId: room.code,
+    } satisfies BotMoveRequest);
+    try {
+      const { ts, sig } = await signBody(secret, body);
+      const res = await fetch(url, {
+        method: "POST",
+        body,
+        headers: { "content-type": "application/json", "x-gh-ts": ts, "x-gh-sig": sig },
+        signal: AbortSignal.timeout(BOT_SERVICE_TIMEOUT_MS),
+      });
+      const out = (await res.json()) as BotMoveResponse;
+      if (!res.ok || !out.ok) throw new Error(out.ok ? String(res.status) : out.code);
+      await quota.addBot(out.cpuMs);
+      return { type: "move", uci: out.move };
+    } catch {
+      this.serviceFailed();
+      return null;
+    }
+  }
+
+  /** Three failures in a row (errors, timeouts, illegal moves) rest the service for 10 minutes. */
+  private serviceFailed() {
+    if (++this.serviceFailures >= 3) {
+      this.serviceRestUntil = Date.now() + 10 * 60_000;
+      this.serviceFailures = 0;
+    }
+  }
+
   /** Applies one action and sends its events. Returns them, or null if the engine refused. */
   private step(seat: SeatIndex, action: unknown, onReject?: (code: RuleErrorCode) => void) {
     const room = this.r;
@@ -708,6 +772,16 @@ export class GameRoom extends Server<Env> {
         events.push(...more);
       }
     }
+    // Bots answer what was just asked of them, even off their turn (chess: takebacks, draws).
+    if (def.botReply && !def.isOver(room.state)) {
+      const current = def.currentSeats(room.state);
+      room.seats.forEach((x, i) => {
+        if (!botControlled(x) || current.includes(i) || def.isOver(room.state)) return;
+        const reply = def.botReply?.(room.state, i, room.rules);
+        const more = reply ? this.step(i, reply) : null;
+        if (more) events.push(...more);
+      });
+    }
     if (def.isOver(room.state)) this.finish();
     else {
       // Clocks start once the client has played everything that just happened.
@@ -753,6 +827,11 @@ export class GameRoom extends Server<Env> {
   private finish() {
     const room = this.r;
     const def = this.def();
+    if (def.aborted?.(room.state)) {
+      // No result (chess: nobody moved in time): straight back to the lobby, as after a rematch.
+      this.toLobby();
+      return;
+    }
     room.phase = "ended";
     room.endedAt = Date.now();
     room.deadlines = { grace: {}, idle: Date.now() + ENDED_IDLE_MS };
@@ -798,6 +877,12 @@ export class GameRoom extends Server<Env> {
     const start = now + pauseMs;
     for (const i of current) {
       if (isBot(i)) continue;
+      // Games with their own clock (chess) say exactly when time runs out.
+      if (def.turnDeadline) {
+        const due = def.turnDeadline(room.state, i, room.rules);
+        if (due !== null) d.turns[i] = due;
+        continue;
+      }
       const prev = prevTurns[i];
       d.turns[i] = prev !== undefined && i !== fresh ? prev : start + room.rules.turnSeconds * 1000;
     }
@@ -815,9 +900,14 @@ export class GameRoom extends Server<Env> {
     const def = this.def();
     let range: readonly [number, number] = [300, 900];
     if (def.botThinkMs) {
+      // Preview the move only when the game sizes the pause by it (arity 2): chess sizes it by
+      // the clock, and previewing its search would cost CPU for nothing.
       const level = this.seatAt(seat).botLevel ?? TAKEOVER_BOT;
-      const rng = seededRng(room.rngSeed, room.rngCounter);
-      range = def.botThinkMs(room.state, def.bots[level](room.state, seat, room.rules, rng));
+      const preview =
+        def.botThinkMs.length > 1
+          ? def.bots[level](room.state, seat, room.rules, seededRng(room.rngSeed, room.rngCounter))
+          : undefined;
+      range = def.botThinkMs(room.state, preview);
     }
     const [min, max] = range;
     return min + seededRng(`${room.rngSeed}:think`, room.v).int(Math.max(1, max - min + 1));
@@ -869,7 +959,13 @@ export class GameRoom extends Server<Env> {
         });
         for (const seat of due) {
           if (room.phase !== "playing" || !def.currentSeats(room.state).includes(seat)) continue;
-          this.applyAction(seat, this.botAction(seat));
+          // Strong chess bots ask the bot service; anything wrong there falls back to our engine.
+          const fromService = await this.serviceBotAction(seat);
+          if (fromService && this.applyAction(seat, fromService)) this.serviceFailures = 0;
+          else {
+            if (fromService) this.serviceFailed(); // an illegal move counts as a failure
+            this.applyAction(seat, this.botAction(seat));
+          }
         }
         if (!due.length) this.schedule();
         acted = true;
@@ -889,7 +985,8 @@ export class GameRoom extends Server<Env> {
             s.status = "left"; // AFK: a bot takes over; they can still come back
             s.botLevel = TAKEOVER_BOT;
           }
-          this.applyAction(seat, action);
+          // A refused timeout (it shouldn't happen) must not leave an overdue deadline to loop on.
+          if (!this.applyAction(seat, action)) this.schedule();
           if (room.phase !== "playing") break;
         }
         acted = true;

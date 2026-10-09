@@ -12,6 +12,8 @@ export default defineConfig({
           CHAT_SIGN_SECRET: "test-chat-secret",
           ALLOWED_ORIGINS: "http://game.test",
           GRACE_MS: "150",
+          BOT_HMAC_SECRET: "test-bot-secret",
+          BOT_SERVICE_URL: "http://bots.test/move",
         },
       },
     }),

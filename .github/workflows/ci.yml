@@ -56,6 +56,7 @@ jobs:
       # Realtime: wrangler dev on :8787 with throwaway secrets shared by web and the Worker.
       REALTIME_TICKET_SECRET: ci-only-ticket-secret-0123456789abcdef0123
       INTERNAL_HMAC_SECRET: ci-only-hmac-secret-0123456789abcdef012345
+      BOT_HMAC_SECRET: ci-only-bot-secret-0123456789abcdef0123456789
       REALTIME_URL: http://localhost:8787
       NEXT_PUBLIC_REALTIME_HOST: localhost:8787
       WRANGLER_SEND_METRICS: "false"
@@ -70,8 +71,8 @@ jobs:
       - run: pnpm --filter db migrate
       - name: Worker dev secrets
         run: |
-          printf 'REALTIME_TICKET_SECRET=%s\nINTERNAL_HMAC_SECRET=%s\nCHAT_SIGN_SECRET=ci-chat\n' \
-            "$REALTIME_TICKET_SECRET" "$INTERNAL_HMAC_SECRET" > apps/realtime/.dev.vars
+          printf 'REALTIME_TICKET_SECRET=%s\nINTERNAL_HMAC_SECRET=%s\nCHAT_SIGN_SECRET=ci-chat\nBOT_HMAC_SECRET=%s\nBOT_SERVICE_URL=http://localhost:3000/api/bots/chess/move\n' \
+            "$REALTIME_TICKET_SECRET" "$INTERNAL_HMAC_SECRET" "$BOT_HMAC_SECRET" > apps/realtime/.dev.vars
       - run: pnpm --filter web build
       - run: pnpm --filter web exec playwright install --with-deps chromium
       - run: pnpm --filter web test:e2e

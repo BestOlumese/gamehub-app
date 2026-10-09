@@ -20,6 +20,8 @@ const schema = z.object({
   INTERNAL_HMAC_SECRET: z.string().min(32).optional(),
   /** Worker base URL for server-side calls, e.g. https://gamehub-realtime.gamehub-app.workers.dev */
   REALTIME_URL: z.url().optional(),
+  /** Shared with the realtime Worker: signs room → bot service calls (separate from INTERNAL_HMAC_SECRET). */
+  BOT_HMAC_SECRET: z.string().min(32).optional(),
   /** E2E only: every test browser shares one IP. Refused in production. */
   E2E_DISABLE_RATE_LIMIT: z.enum(["1"]).optional(),
 });
