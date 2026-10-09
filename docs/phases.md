@@ -88,7 +88,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] Bots: Easy/Medium in the DO (node budgets 1,000 / 3,000), Hard in the bot service (`/api/bots/draughts/move`); clocks shared with chess (`games/clock.ts`; No clock default). Medium beats Easy over 20 test games (> 60 %).
 - [x] Board UI with capture hints, tap-the-final-square multi-captures (hops only when ambiguous), huffing, PDN copy. Design agreed with Best (green and cream, bottle caps, chess layout).
 - [x] Hard v Easy ≥ 60 %: **Hard scores 93 %** v Easy (26 wins, 4 draws, 0 losses) and 83 % v Medium (21–1, 8 drawn), 30 games each, 150 ms a move (Oct 2026).
-- [ ] Two phones finish a Naija draft game and an English game on the live site (Best).
+- [x] Two phones finished a Naija draft game and an English game on the live site (Best, Oct 2026).
 - Moved to Phase 16: a CPU benchmark of Easy/Medium on Cloudflare itself.
 - [x] Capture default: **free choice** (Best, Oct 2026); majority is a setting.
 
