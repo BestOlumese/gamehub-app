@@ -26,6 +26,7 @@ import { ChessBoard, pieceName, piecesOf } from "./board";
 import { MoveStrip } from "./move-strip";
 import { PlayerCard } from "./player-card";
 import { ChessResult } from "./result-sheet";
+import { timeControlText } from "./time-control";
 import { useChessFeed } from "./use-chess-feed";
 
 type Props = { snap: Snapshot; send: (m: ClientRoomMsg) => void };
@@ -299,7 +300,7 @@ export default function ChessTable({ snap, send }: Props) {
       {/* Capped by screen height so the buttons stay on a 360 × 640 phone. */}
       <div
         className="relative mx-auto w-full overflow-hidden rounded-card border border-line shadow-sm"
-        style={{ maxWidth: "max(16rem, calc(100dvh - 22rem))" }}
+        style={{ maxWidth: "max(16rem, calc(100dvh - 23rem))" }}
       >
         <ChessBoard
           fen={shownFen}
@@ -371,6 +372,8 @@ export default function ChessTable({ snap, send }: Props) {
       </p>
 
       <MoveStrip san={view.san} viewing={viewing} onView={setViewing} />
+      {/* Says when time is added per move (Best, Oct 2026: a 5+3 clock looked like it reset). */}
+      <p className="-mt-1 text-center text-xs text-ink-3">{timeControlText(rules)}</p>
 
       {offerFromThem ? (
         <div className="flex items-center gap-2 rounded-control bg-accent-soft px-3 py-2 text-sm font-semibold">
