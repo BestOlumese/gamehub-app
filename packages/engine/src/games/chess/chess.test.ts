@@ -317,6 +317,16 @@ describe("chess draw offers and takebacks", () => {
   });
 });
 
+describe("chess bot pace", () => {
+  it("about a second a move, quicker when the bot is short of time", () => {
+    const r = rules();
+    const { s } = play(start(r), ["e2e4", "e7e5"], r);
+    expect(chess.botThinkMs?.(s, { type: "resign" })).toEqual([500, 1500]);
+    const low = { ...s, clock: { ...s.clock!, w: { ...s.clock!.w, remainingMs: 15_000 } } };
+    expect(chess.botThinkMs?.(low, { type: "resign" })).toEqual([150, 400]);
+  });
+});
+
 describe("chess view and material", () => {
   it("everyone sees the board; you learn your colour", () => {
     const s = start(rules(), 1);

@@ -308,11 +308,14 @@ export const chess: GameDefinition<ChessState, ChessAction, ChessView, ChessRule
 
   aborted: (s) => s.result?.reason === "aborted",
 
+  // About a second a move, like a quick human (Best, Oct 2026: 1–4 % of the clock, up to 12 s
+  // at the start of a 5-minute game, felt slow). Quicker when short of time, so bots don't flag.
+  // The bot service's own search (0.1–0.2 s) and the network come on top.
   botThinkMs(s) {
-    if (!s.clock || ply(s) < 2) return [400, 1200];
-    // On a clock, bots spend 1–4 % of what they have left (at least 0.3 s) so they don't flag.
-    const left = s.clock[sideToMove(s.fen)].remainingMs;
-    return [Math.max(300, Math.round(left * 0.01)), Math.max(400, Math.round(left * 0.04))];
+    const left = s.clock && ply(s) >= 2 ? s.clock[sideToMove(s.fen)].remainingMs : Infinity;
+    if (left < 20_000) return [150, 400];
+    if (left < 60_000) return [300, 800];
+    return [500, 1500];
   },
 
   view: (s, viewer): ChessView => ({

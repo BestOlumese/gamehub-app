@@ -227,7 +227,7 @@ As built: `history` replaces the repetition map (repetitions = occurrences of th
 - The room calls the bot service **from the alarm** when a bot seat is on move: one HMAC-signed `POST` with `{ fen, moves (since last irreversible), level, movetimeMs }`. Waiting on `fetch` doesn't count toward the DO's CPU time.
 - **Strict think limit:** service-side `movetime` (100/200 ms) + a hard 1.5 s request timeout in the DO.
 - **Fallback (silent):** timeout, non-200, `429 QUOTA`, or an illegal move → the room plays the **built-in engine at its strongest setting** ("Easy+" = node budget 4,000, no random picks) and marks the bot `fallback` for 10 minutes (no further calls from that room). Players never see an error.
-- Bot clocks: bots play on the clock like people (their think time + network). Bot think pause (`botThinkMs`) is `[400, 1200]` ms for natural feel in "No clock" games; with a clock, bots use 1–4 % of their remaining time (min 300 ms) so they don't flag.
+- Bot clocks: bots play on the clock like people (their think time + network). Bot think pause (`botThinkMs`): **0.5–1.5 s** a move; 0.3–0.8 s under a minute left; 0.15–0.4 s under 20 s, so they don't flag. (First built as 1–4 % of the remaining time, which meant up to 12 s a move at the start of a 5-minute game; Best found that slow, Oct 2026.) The bot service's search and the network come on top.
 - **Stockfish never ships to browsers.** The client has no engine at all (no analysis feature in v1).
 
 ## UI notes
