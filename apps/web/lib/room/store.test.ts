@@ -33,9 +33,16 @@ describe("room store", () => {
     expect(useRoom.getState().snap?.v).toBe(5);
   });
 
-  it("clears a pending action on ack, and counts rejects", () => {
+  it("keeps an acked action pending until the snapshot with it arrives, and counts rejects", () => {
+    receive(snap(5));
     useRoom.setState({ pending: { id: "a1", action: {} } });
     receive({ t: "ack", id: "a1", v: 6 });
+    expect(useRoom.getState().pending).not.toBeNull(); // no flash of the old position
+    receive(snap(6));
+    expect(useRoom.getState().pending).toBeNull();
+    // Already have that snapshot: the ack settles it at once.
+    useRoom.setState({ pending: { id: "a3", action: {} } });
+    receive({ t: "ack", id: "a3", v: 6 });
     expect(useRoom.getState().pending).toBeNull();
     useRoom.setState({ pending: { id: "a2", action: {} } });
     receive({ t: "reject", id: "a2", code: "NOT_YOUR_TURN", v: 6 });

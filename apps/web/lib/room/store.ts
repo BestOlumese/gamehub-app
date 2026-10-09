@@ -59,7 +59,11 @@ export function receive(msg: ServerRoomMsg, now = Date.now()) {
       });
       return;
     case "ack":
-      if (s.pending?.id === msg.id) useRoom.setState({ pending: null });
+      // The ack comes a moment before the snapshot with the move in it. Dropping the pending
+      // action now would flash the old position (a chess piece jumping back, a Whot card
+      // reappearing), so it stays until that snapshot arrives, unless we already have it.
+      if (s.pending?.id === msg.id && (!s.snap || s.snap.v >= msg.v))
+        useRoom.setState({ pending: null });
       return;
     case "reject":
       useRoom.setState({ pending: null, rejects: s.rejects + 1 });
