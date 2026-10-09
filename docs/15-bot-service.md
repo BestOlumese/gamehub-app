@@ -67,6 +67,7 @@ export async function bestMove(fen: string, level: "medium" | "hard", movetimeMs
 
 - Stockfish's `UCI_Elo` range is **1320–3190**, calibrated on the CCRL blitz scale with the full network (`search.h`). We run the **lite** network, so real strength at a given Elo setting is ⚠️ unverified: calibrate in the Chess phase by playing 200 games of Medium vs Hard vs our Easy engine and adjusting the Elo numbers until Hard beats Medium ≥ 75 % and Medium beats Easy ≥ 85 %.
 - `Skill Level` (0–20) is the fallback knob if `UCI_Elo` behaves oddly with the lite net.
+- **Calibrated (Oct 2026, lite net, 20 games each, no clock):** Medium v Easy 15–2 (3 drawn), **Medium scores 83 %**; Hard v Medium 17–2 (1 drawn), **Hard scores 88 %**. Close enough to the 85 % / 75 % targets at this sample size; settings kept (Elo 1500 / 2100, movetime 100 / 200 ms). Rerun with more games if players report levels feeling the same.
 - **Strict think limit:** `movetime` ≤ 300 ms (schema), watchdog `stop` at 600 ms; the DO's fetch timeout is **1.5 s**.
 
 ### Draughts Hard (`gh-draughts-1`)
