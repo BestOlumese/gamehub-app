@@ -988,6 +988,35 @@ describe("chess", () => {
     expect(cv(guest).result).toEqual({ winner: "b", reason: "timeout" });
   });
 
+  it("a player who drops mid-game: a bot plays their side on their own clock, and they come back", async () => {
+    const { code, host, guest, stub } = await twoPlayers();
+    for (const [who, uci] of [
+      [host, "e2e4"],
+      [guest, "e7e5"],
+      [host, "g1f3"],
+    ] as const) {
+      const before = host.last().v;
+      act(who, { type: "move", uci, mt: 300 });
+      await host.next((m) => m.t === "snapshot" && m.v > before, uci);
+    }
+    // Black's clock is running when the guest's connection dies.
+    guest.ws.close(3000, "network");
+    await host.next((m) => m.t === "snapshot" && m.seats[1]?.status === "away", "guest away");
+    await new Promise((r) => setTimeout(r, 300)); // GRACE_MS is 150 in tests
+    await runDurableObjectAlarm(stub);
+    await host.next((m) => m.t === "snapshot" && m.seats[1]?.status === "bot", "bot took over");
+    // The covering bot (Medium; the test has no bot service, so its fallback) moves for Black.
+    await fireBot(stub);
+    await until(host, (m) => (m.view as ChessState).moves.length === 4, "bot moved for Black");
+    expect(cv(host).result).toBeNull();
+    // Black's own clock paid for that move (it started when White moved).
+    expect(cv(host).clock?.b.remainingMs).toBeLessThan(300_000 + 3000);
+    const back = await connect(code, "u-guest", "guest");
+    back.send({ t: "hello" });
+    const snap = await back.next((m) => m.t === "snapshot" && m.you === 1, "guest back");
+    expect(snap.t === "snapshot" && snap.seats[1]?.status).toBe("connected");
+  }, 20_000);
+
   it("nobody moves in the abort window: no result, back to the lobby", async () => {
     const { host, stub } = await twoPlayers();
     await runInDurableObject(stub, (inst) => {

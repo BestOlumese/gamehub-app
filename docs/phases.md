@@ -76,9 +76,9 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] **Bot service** in `apps/web` (`/api/bots/chess/move`): Stockfish 19 lite in a worker thread, HMAC (`BOT_HMAC_SECRET`), strength mapping, queue, watchdog; `Quota` DO (migration `v2`) with daily budget; silent fallback in the room (DO-tested).
 - [x] Our SVG board + Cburnett pieces (BSD, credited on `/legal/credits`), move strip, PGN copy, promotion picker, clocks, sounds, square buttons for keyboards and screen readers, move announcements. Design agreed with Best (mockups).
 - [x] FEN copy, a typed-move box (`e4`, `Nf3`, `O-O`) and arrow keys through the moves (wider screens).
-- [ ] CPU benchmark route (`BENCH=1`) on a CI-deployed bench Worker (needs observability for `cpuTime`). Node proxy so far: apply 1.7 ms median / 3.7 ms p95; Easy bot p95 ≈ 4.5 ms, Easy+ ≈ 5.5 ms after the Oct 2026 speed-up (was 31 / 89 ms).
+- [x] CPU budget checked with the Node proxy (`13-free-tier-budget.md`): apply 1.7 ms median / 3.7 ms p95; Easy bot p95 ≈ 4.5 ms, Easy+ ≈ 5.5 ms after the Oct 2026 speed-up (was 31 / 89 ms). **Moved to Phase 16:** the on-Cloudflare benchmark (`BENCH=1` bench Worker, `cpuTime` from Workers analytics; needs a token with analytics read), run for every game at once.
 - [x] Bot strength calibration: Medium beats Easy 83 %, Hard beats Medium 88 % (20 games each, `15-bot-service.md`).
-- [ ] Disconnect rules: unranked → Medium bot on the player's clock (works through the generic seat flow); the ranked claim-win flow behind the `ranked` flag (Phase 13).
+- [x] Disconnect rules (unranked): after the grace, a Medium bot plays the seat on that player's own clock; they get the seat back on return (DO-tested). **Moved to Phase 13:** the ranked claim-win flow (listed there with ranked chess).
 - [x] Production secret `BOT_HMAC_SECRET` set in Vercel and Cloudflare (Best, Oct 2026); the live route answers unsigned calls with 401.
 
 **Exit:** two phones play a 3+2 game to a flag and another to checkmate with premoves; a private game vs Hard finishes (bot service live, and the fallback path proven by switching the service off); perft passes; benchmark p95 ≤ 5 ms per action; no GPL file in `.next/static`.
@@ -151,7 +151,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [ ] PWA (manifest, icons, Serwist precache incl. every game chunk and sprite after first visit, offline page).
 - [ ] Capacity guard (`CAPACITY` error, matchmaker soft limit, tournament host warning wired to the `Quota` DO), email quota UX.
 - [ ] Accessibility pass for **every** game: keyboard play (chess/draughts move entry, property actions, football picks), screen-reader labels and live announcements, focus rings.
-- [ ] Performance pass on a real low-end Android for every game; budgets green (incl. new game chunks); CPU benchmark green for every game.
+- [ ] Performance pass on a real low-end Android for every game; budgets green (incl. new game chunks); CPU benchmark green for every game, measured on Cloudflare (bench Worker, moved here from Phase 7).
 - [ ] Final copy review (plain, Nigerian-English friendly); credits page (Cburnett, Stockfish, data sources); football disclaimer.
 - [ ] Soft launch with friends; watch the Cloudflare and Vercel usage numbers manually for a week.
 
