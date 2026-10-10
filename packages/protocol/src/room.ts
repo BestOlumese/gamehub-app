@@ -33,6 +33,8 @@ export type SeatPublic = {
   botLevel: BotLevel | null;
   ready: boolean;
   host: boolean;
+  /** Naija Plots: the token this person picked in the lobby (null: not picked; bots never pick). */
+  token?: number | null;
 };
 
 export type RoomPhase = "lobby" | "playing" | "ended";
@@ -62,6 +64,8 @@ export const clientRoomMsg = z.discriminatedUnion("t", [
   z.object({ t: z.literal("hello"), lastV: z.number().int().nonnegative().optional() }),
   z.object({ t: z.literal("act"), id, v: z.number().int().nonnegative(), a: z.unknown() }),
   z.object({ t: z.literal("ready"), ready: z.boolean() }),
+  /** Naija Plots: pick your token in the lobby (one per person, first come first served). */
+  z.object({ t: z.literal("token"), token: z.number().int().min(0).max(7) }),
   // Host, lobby only: the room's whole setup, as the setup sheet sends it.
   z.object({
     t: z.literal("config"),

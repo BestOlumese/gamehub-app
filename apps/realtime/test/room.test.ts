@@ -1251,13 +1251,34 @@ describe("draughts", () => {
 });
 
 describe("naija plots", () => {
+  it("people pick tokens in the lobby, one each", async () => {
+    const code = await createRoom({ game: "plots", rules: plotsNaija });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    const guest = await connect(code, "u-guest", "guest");
+    guest.send({ t: "hello" });
+    await guest.next((m) => m.t === "snapshot" && m.you === 1);
+    host.send({ t: "token", token: 7 });
+    await host.next((m) => m.t === "snapshot" && m.seats[0]?.token === 7, "host picked");
+    guest.send({ t: "token", token: 7 });
+    await guest.next((m) => m.t === "error" && m.code === "BAD_MESSAGE", "taken");
+    guest.send({ t: "token", token: 3 });
+    await host.next((m) => m.t === "snapshot" && m.seats[1]?.token === 3, "guest picked");
+    // Changing your mind frees the old one.
+    host.send({ t: "token", token: 2 });
+    await host.next((m) => m.t === "snapshot" && m.seats[0]?.token === 2, "host changed");
+    guest.send({ t: "token", token: 7 });
+    await host.next((m) => m.t === "snapshot" && m.seats[1]?.token === 7, "guest took 7");
+  });
+
   const pv = (c: Client) => c.last().view as PlotsState;
   type Live = { room: { state: PlotsState; deadlines: { turns?: Record<number, number> } } };
 
-  async function vsBot() {
+  async function vsBot(rules = plotsNaija) {
     const code = await createRoom({
       game: "plots",
-      rules: plotsNaija,
+      rules,
       players: 2,
       botLevel: "medium",
       seatBotsNow: true,
@@ -1271,15 +1292,14 @@ describe("naija plots", () => {
   }
 
   it("your action clock, and a bot's whole turn in one go", async () => {
-    const { host, stub } = await vsBot();
+    // No auctions here (they have their own test), so the turn order is all that moves.
+    const { host, stub } = await vsBot({ ...plotsNaija, auctions: false });
     const s0 = pv(host);
     expect(s0.order).toEqual([0, 1]);
     expect("decks" in s0).toBe(false);
     expect(host.last().deadlines.turns?.[0]).toBe(s0.since + 30_000 + 3000);
-    act(host, { type: "roll" });
-    await until(host, () => pv(host).dice !== null, "rolled");
-    // Whatever we landed on: don't buy (the bot may bid), then end the turn.
-    for (let i = 0; i < 6 && pv(host).turn === 0 && !pv(host).auction; i++) {
+    // Play our turn to the end: roll (again on doubles), don't buy, end it.
+    for (let i = 0; i < 12 && pv(host).order[pv(host).turn] === 0 && !pv(host).places; i++) {
       const s = pv(host);
       const before = host.last().v;
       if (s.debts.length) act(host, { type: "declare_bankruptcy" });
@@ -1288,37 +1308,10 @@ describe("naija plots", () => {
       else act(host, { type: "end_turn" });
       await host.next((m) => m.t === "snapshot" && m.v > before, `step ${i}`);
     }
-    // An auction (if we declined): the bot bids or passes on its alarm; then our clock is the auction's.
-    if (pv(host).auction) {
-      await fireBot(stub);
-      await until(
-        host,
-        () =>
-          !pv(host).auction ||
-          pv(host).auction?.by === 1 ||
-          pv(host).auction?.out.includes(1) === true,
-        "bot bid",
-      );
-      if (pv(host).auction) {
-        expect(host.last().deadlines.turns?.[0]).toBe(pv(host).auction?.endsAt);
-        await runInDurableObject(stub, (inst) => {
-          const r = (inst as unknown as Live).room;
-          if (r.state.auction) r.state.auction.endsAt = Date.now() - 1;
-          r.deadlines.turns = { 0: 0 };
-        });
-        await runDurableObjectAlarm(stub);
-        await until(host, () => !pv(host).auction, "auction closed on time");
-      }
-      if (pv(host).turn === 0 && pv(host).step === "manage") {
-        const before = host.last().v;
-        act(host, { type: "end_turn" });
-        await host.next((m) => m.t === "snapshot" && m.v > before, "end turn");
-      }
-    }
     if (pv(host).places) return;
     expect(pv(host).order[pv(host).turn]).toBe(1);
     const turnsBefore = pv(host).turns;
-    // One alarm: the bot rolls, decides, builds, ends; it's our turn again (unless it rolled doubles into jail etc.).
+    // One alarm: the bot rolls, decides, builds and ends its turn in one go.
     await fireBot(stub);
     await until(host, () => pv(host).turns > turnsBefore || !!pv(host).places, "bot turn done");
     expect(pv(host).order[pv(host).turn]).toBe(0);

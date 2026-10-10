@@ -17,7 +17,7 @@ import { Die } from "../die";
 import { seatName } from "../rps/names";
 import { mmss } from "../use-now";
 import { TimerRing } from "../timer-ring";
-import { tokenColour } from "./tokens";
+import { useSeatColour } from "./tokens";
 
 type Act = (a: PlotsAction) => void;
 
@@ -178,6 +178,7 @@ export function Centre({
   act,
   onMyPlots,
 }: Props) {
+  const seatColour = useSeatColour();
   const turnSeat = view.order[view.turn] as number;
   const myTurn = me !== null && turnSeat === me && !view.places;
   const shownDice = dice?.dice ?? view.dice;
@@ -295,7 +296,7 @@ export function Centre({
       <p className="flex items-center gap-1.5 text-[max(12px,2.2cqw)] font-semibold">
         <span
           className="size-2.5 rounded-full"
-          style={{ background: tokenColour(turnSeat) }}
+          style={{ background: seatColour(turnSeat) }}
           aria-hidden="true"
         />
         {seatName(seats, turnSeat)}&apos;s turn
@@ -326,7 +327,7 @@ export function Centre({
               key={k}
               value={shownDice?.[k] ?? null}
               rollKey={dice?.key ?? 0}
-              colour={tokenColour(dice?.seat ?? turnSeat)}
+              colour={seatColour(dice?.seat ?? turnSeat)}
               canRoll={false}
               onRoll={() => {}}
             />

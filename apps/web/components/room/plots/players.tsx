@@ -15,7 +15,7 @@ import { Dialog } from "@gamehub/ui/overlays/dialog";
 import { Bot, WifiOff } from "lucide-react";
 import { seatName } from "../rps/names";
 import { ThinkingRing, TimerRing } from "../timer-ring";
-import { Token, TOKEN_NAMES } from "./tokens";
+import { Token, TOKEN_NAMES, useTokenOf } from "./tokens";
 
 const SIZE = 30;
 
@@ -39,6 +39,7 @@ export function PlayersStrip({
   offset: number;
   onPick: (seat: number) => void;
 }) {
+  const tokenOf = useTokenOf();
   return (
     <ul
       className="-mx-3 flex gap-1.5 overflow-x-auto px-3 pb-0.5 [scrollbar-width:none]"
@@ -58,7 +59,7 @@ export function PlayersStrip({
             <button
               type="button"
               onClick={() => onPick(seat)}
-              aria-label={`${seatName(seats, seat)}, ${TOKEN_NAMES[seat % 8]}: ${out ? "bankrupt" : naira(view.cash[seat] ?? 0)}${active ? ", playing now" : ""}`}
+              aria-label={`${seatName(seats, seat)}, ${TOKEN_NAMES[tokenOf(seat)]}: ${out ? "bankrupt" : naira(view.cash[seat] ?? 0)}${active ? ", playing now" : ""}`}
               className={`flex items-center gap-1.5 rounded-control border bg-surface py-1 pr-2.5 pl-1 transition-colors duration-(--dur-turn) ${active ? "border-accent" : "border-line"} ${out ? "opacity-45" : ""}`}
             >
               <span
@@ -118,6 +119,7 @@ export function PlayerSheet({
   onPlot: (space: number) => void;
   onClose: () => void;
 }) {
+  const tokenOf = useTokenOf();
   if (seat === null) return null;
   const plots = plotsOf(view, seat);
   return (
@@ -125,7 +127,7 @@ export function PlayerSheet({
       open
       onClose={onClose}
       title={seatName(seats, seat)}
-      description={`${TOKEN_NAMES[seat % 8]} · cash ${naira(view.cash[seat] ?? 0)} · net worth ${naira(netWorth(view, seat, rules))}`}
+      description={`${TOKEN_NAMES[tokenOf(seat)]} · cash ${naira(view.cash[seat] ?? 0)} · net worth ${naira(netWorth(view, seat, rules))}`}
     >
       {plots.length ? (
         <ul className="grid grid-cols-2 gap-1.5">

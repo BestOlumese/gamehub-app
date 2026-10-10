@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import type { CreatableGame } from "@/components/create-room/create-room-sheet";
 import { describeRules, FIRST_PLAYER, GAME_NAMES, hasFirstPlayer } from "@/lib/game-meta";
 import type { Snapshot } from "@/lib/room/store";
+import { TOKEN_NAMES, TokenArt, tokensFor } from "./plots/tokens";
 import { SharePanel } from "./share-panel";
 
 const LEVELS: BotLevel[] = ["easy", "medium", "hard"];
@@ -24,6 +25,9 @@ type Props = { snap: Snapshot; send: (m: ClientRoomMsg) => void; notice: string 
 export function Lobby({ snap, send, notice }: Props) {
   const [editing, setEditing] = useState(false);
   const me = snap.you === "spectator" ? null : snap.seats[snap.you];
+  // Naija Plots: everyone's token (picked, or the first free one).
+  const plots = snap.room.game === "plots";
+  const tokens = plots ? tokensFor(snap.seats) : [];
   const isHost = !!me?.host;
   const host = snap.seats.find((s) => s.host);
   const filled = snap.seats.filter((s) => s.status !== "empty").length;
@@ -88,6 +92,12 @@ export function Lobby({ snap, send, notice }: Props) {
                       ? `@${seat.name}`
                       : seat.name}
                   {seat.host ? <Crown size={15} className="text-accent" aria-label="Host" /> : null}
+                  {plots && seat.status !== "empty" ? (
+                    <span className="ml-1 inline-flex items-center gap-1 text-xs font-semibold text-ink-2">
+                      <TokenArt token={tokens[seat.index] ?? 0} size={18} />
+                      {TOKEN_NAMES[tokens[seat.index] ?? 0]}
+                    </span>
+                  ) : null}
                 </p>
                 <p className="text-sm text-ink-2">
                   {seat.status === "connected"
@@ -144,6 +154,34 @@ export function Lobby({ snap, send, notice }: Props) {
           </p>
         ) : null}
       </section>
+
+      {plots && me ? (
+        <section aria-labelledby="token-h">
+          <h2 id="token-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+            Your token
+          </h2>
+          <div className="grid grid-cols-4 gap-2" role="radiogroup" aria-labelledby="token-h">
+            {TOKEN_NAMES.map((name, token) => {
+              const holder = snap.seats.find((x) => x.index !== snap.you && x.token === token);
+              const mine = tokens[me.index] === token;
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  role="radio"
+                  aria-checked={mine}
+                  disabled={!!holder}
+                  onClick={() => send({ t: "token", token })}
+                  className={`flex flex-col items-center gap-1 rounded-control border-2 px-1 py-2 text-xs font-semibold transition-colors duration-(--dur-press) disabled:opacity-40 ${mine ? "border-brand bg-brand-soft" : "border-line bg-surface hover:border-ink-3"}`}
+                >
+                  <TokenArt token={token} size={34} />
+                  <span className="max-w-full truncate">{holder ? `@${holder.name}` : name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
 
       <section
         aria-labelledby="rules-h"

@@ -1,6 +1,23 @@
-// Naija Plots tokens: flat icons of everyday Naija things, in each player's colour (decided with
-// Best, Oct 2026). Our own drawings, 24 × 24, white strokes on a coloured disc.
-import { TOKEN_COLOURS } from "../snakes/geometry";
+"use client";
+
+// Naija Plots tokens: flat icons of everyday Naija things, each with its own colour (decided with
+// Best, Oct 2026). Our own drawings, 24 × 24, white strokes on a coloured disc. People pick one in
+// the lobby; everyone else gets the first one free, in seat order.
+import { createContext, useContext } from "react";
+
+export { tokensFor } from "./token-pick";
+
+/** One colour per token (the game-piece colours used across our games). */
+const TOKEN_COLOURS = [
+  "#D9473A",
+  "#1F9D5B",
+  "#E8B021",
+  "#2F6FD6",
+  "#8E5BD9",
+  "#E07A2E",
+  "#1AA3A3",
+  "#C2417E",
+] as const;
 
 export const TOKEN_NAMES = [
   "Danfo",
@@ -32,10 +49,31 @@ const ICONS: readonly string[] = [
   "M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 9l3 2-1 3.5h-4L9 11zM12 9V5M15 11l3.5-1M14 14.5l2 3M10 14.5l-2 3M9 11l-3.5-1",
 ];
 
-export const tokenColour = (seat: number) => TOKEN_COLOURS[seat % 8] as string;
+const TokensContext = createContext<readonly number[]>([0, 1, 2, 3, 4, 5, 6, 7]);
+export const TokensProvider = TokensContext.Provider;
 
-/** A player's token: their colour, their Naija thing. */
+/** The token a seat plays with, in the current table. */
+export function useTokenOf() {
+  const tokens = useContext(TokensContext);
+  return (seat: number) => tokens[seat] ?? seat % 8;
+}
+
+export const colourOfToken = (token: number) => TOKEN_COLOURS[token % 8] as string;
+
+/** A seat's colour (their token's), for strips and dots. */
+export function useSeatColour() {
+  const tokenOf = useTokenOf();
+  return (seat: number) => colourOfToken(tokenOf(seat));
+}
+
+/** A seat's token at the table. */
 export function Token({ seat, size }: { seat: number; size?: number }) {
+  const tokenOf = useTokenOf();
+  return <TokenArt token={tokenOf(seat)} size={size} />;
+}
+
+/** A token by number (the lobby picker). */
+export function TokenArt({ token, size }: { token: number; size?: number | undefined }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -44,9 +82,16 @@ export function Token({ seat, size }: { seat: number; size?: number }) {
       aria-hidden="true"
       className="block"
     >
-      <circle cx="12" cy="12" r="11.5" fill={tokenColour(seat)} stroke="#fff" strokeWidth="1.2" />
+      <circle
+        cx="12"
+        cy="12"
+        r="11.5"
+        fill={colourOfToken(token)}
+        stroke="#fff"
+        strokeWidth="1.2"
+      />
       <path
-        d={ICONS[seat % 8]}
+        d={ICONS[token % 8]}
         fill="none"
         stroke="#fff"
         strokeWidth="1.6"

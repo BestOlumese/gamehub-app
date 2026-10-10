@@ -165,6 +165,7 @@ The room copies `m.mt` into chess/draughts move actions before `apply` (clients 
 | Game | Actions (`a.type`) | Notes |
 |---|---|---|
 | Chess | `move {uci, mt?}`, `resign`, `offer_draw`, `accept_draw`, `decline_draw`, `claim_draw`, `request_takeback`, `accept_takeback`, `decline_takeback`, `abort`, `claim_victory`, `claim_absent_draw` | `flag` is server-only (timeout action) and rejected from clients |
+| Lobby (Naija Plots) | `token {token}` (0–7): pick your token; refused (`BAD_MESSAGE`) if someone else has it. `SeatPublic.token` carries it (null: not picked) | |
 | Draughts | `move {from, path, mt?}`, `huff {square}`, `resign`, draw offers, takebacks | |
 | Property | `roll`, `buy`, `decline`, `bid {amount}`, `pass_bid`, `build`, `sell_building`, `mortgage`, `unmortgage`, `pay_fine`, `use_bail`, `offer {offer}`, `accept_offer`, `decline_offer`, `cancel_offer`, `declare_bankruptcy`, `end_turn` | Bids and offers are actions; drafts of offers never leave the client |
 | Football Draft | `pick_formation {id}`, `pick_player {id, slot?}`, `arrange {...}`, `ready`, `half_time {subs, formation?, roles?, tactics?, ready}`, `skip_playback` (solo) | Option sets arrive **only in the picking manager's view** |

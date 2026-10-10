@@ -791,7 +791,18 @@ test("naija plots: 2 people and 2 bots play rounds, buy, look at a plot and a tr
   const code = host.page.url().split("/r/")[1]!;
   await guest.page.goto(`/r/${code}`);
   await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  // The guest picks the football; the host sees it taken.
+  await guest.page.getByRole("radio", { name: /Football/ }).click();
+  await expect(guest.page.getByRole("radio", { name: /Football/ })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
+  await expect(host.page.getByRole("radio", { name: `@${guest.username}` })).toBeDisabled();
+  await shot(guest.page, "plots-lobby-360");
   await host.page.getByRole("button", { name: /^Start game/ }).click();
+  await expect(
+    host.page.getByRole("button", { name: new RegExp(`^@${guest.username}, Football:`) }),
+  ).toBeVisible({ timeout: 20_000 });
 
   const pages = [host.page, guest.page];
   for (const p of pages)

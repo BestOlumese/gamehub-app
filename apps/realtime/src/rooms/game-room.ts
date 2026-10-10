@@ -52,6 +52,8 @@ type SeatRec = {
   botLevel: BotLevel | null;
   ready: boolean;
   timeouts: number;
+  /** Naija Plots: the token picked in the lobby (people only). */
+  token?: number;
 };
 
 type Deadlines = {
@@ -431,6 +433,13 @@ export class GameRoom extends Server<Env> {
       case "ready": {
         if (room.phase !== "lobby") return "WRONG_PHASE";
         this.seatAt(seat).ready = msg.ready;
+        return this.commit();
+      }
+
+      case "token": {
+        if (room.phase !== "lobby") return "WRONG_PHASE";
+        if (room.seats.some((x, i) => i !== seat && x.token === msg.token)) return "BAD_MESSAGE";
+        this.seatAt(seat).token = msg.token;
         return this.commit();
       }
 
@@ -1051,6 +1060,7 @@ export class GameRoom extends Server<Env> {
       botLevel: s.botLevel,
       ready: s.ready,
       host: !!s.userId && s.userId === room.hostUserId,
+      token: s.token ?? null,
     }));
   }
 

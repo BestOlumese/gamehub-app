@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { cellOf, tokenSpot, TRACKS } from "./geometry";
-import { Token, tokenColour } from "./tokens";
+import { Token, useSeatColour } from "./tokens";
 
 // Cream board, ink lines (decided with Best, Oct 2026; docs/11-design-system.md).
 const TILE = "#FFFDF7";
@@ -96,6 +96,7 @@ function Tile({
   highlight: boolean;
   onTap: (space: number) => void;
 }) {
+  const seatColour = useSeatColour();
   const sp = SPACES[space] as Space;
   const { row, col, side } = cellOf(space);
   const Icon = ICON[sp.name];
@@ -133,7 +134,7 @@ function Tile({
           {owned ? (
             <span
               className={`shrink-0 ${vertical ? "h-full w-[7%]" : "h-[7%] w-full"}`}
-              style={{ background: tokenColour(info.owner as number) }}
+              style={{ background: seatColour(info.owner as number) }}
               aria-hidden="true"
             />
           ) : null}
@@ -155,7 +156,7 @@ function Tile({
             <Icon
               aria-hidden="true"
               className={side === "corner" ? "size-[4.2cqw]" : "size-[2.8cqw]"}
-              style={{ color: owned ? tokenColour(info.owner as number) : undefined }}
+              style={{ color: owned ? seatColour(info.owner as number) : undefined }}
             />
           ) : sp.kind === "tax" ? (
             <Landmark aria-hidden="true" className="size-[2.8cqw]" />
