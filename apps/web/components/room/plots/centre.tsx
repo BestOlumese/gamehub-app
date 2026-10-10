@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  bailCount,
   GROUP_COLOUR,
   naira,
   priceOf,
@@ -17,6 +16,7 @@ import { Die } from "../die";
 import { seatName } from "../rps/names";
 import { mmss } from "../use-now";
 import { TimerRing } from "../timer-ring";
+import { centreState, type CentreState } from "./centre-state";
 import { useSeatColour } from "./tokens";
 
 type Act = (a: PlotsAction) => void;
@@ -38,6 +38,7 @@ function AuctionPanel({
   rules,
   seats,
   me,
+  cs,
   ready,
   offset,
   act,
@@ -46,6 +47,7 @@ function AuctionPanel({
   rules: PlotsRules;
   seats: SeatPublic[];
   me: number | null;
+  cs: Extract<CentreState, { kind: "auction" }>;
   ready: boolean;
   offset: number;
   act: Act;
@@ -54,10 +56,7 @@ function AuctionPanel({
   const a = view.auction;
   if (!a) return null;
   const sp = SPACES[a.space];
-  const inc = rules.minBidIncrement;
-  const min = a.by === null ? inc : a.high + inc;
   const cash = me === null ? 0 : (view.cash[me] ?? 0);
-  const inIt = me !== null && !view.out.includes(me) && !a.out.includes(me) && a.by !== me;
   const bid = (amount: number) => act({ type: "bid", amount });
   // Small boards (phones) get the essentials: name and price, the ring, quick bids and Pass;
   // a custom amount from 420 px up.
@@ -86,18 +85,21 @@ function AuctionPanel({
             ? "You're the highest bidder"
             : `${seatName(seats, a.by)} leads`}
       </p>
-      {inIt ? (
+      {cs.bidding ? (
         <>
           <div className="grid w-full grid-cols-4 gap-1">
-            {[inc, 50, 100].map((step) => {
-              const amount = a.by === null ? Math.max(inc, step) : a.high + step;
+            {[rules.minBidIncrement, 50, 100].map((step, k) => {
+              const q = cs.quick.find(
+                (x) => x.step === step || (k === 0 && x.step === rules.minBidIncrement),
+              );
+              const amount = a.by === null ? Math.max(rules.minBidIncrement, step) : a.high + step;
               return (
                 <Button
                   key={step}
                   size="md"
                   variant="secondary"
                   className="px-1"
-                  disabled={!ready || amount > cash}
+                  disabled={!ready || !q}
                   onClick={() => bid(amount)}
                 >
                   {a.by === null ? naira(amount) : `+${naira(step).replace("₦", "")}`}
@@ -119,7 +121,7 @@ function AuctionPanel({
             onSubmit={(e) => {
               e.preventDefault();
               const k = Math.round(Number(custom));
-              if (k >= min && k <= cash) {
+              if (k >= cs.min && k <= cash) {
                 bid(k);
                 setCustom("");
               }
@@ -129,7 +131,7 @@ function AuctionPanel({
               inputMode="numeric"
               value={custom}
               onChange={(e) => setCustom(e.target.value.replace(/\D/g, ""))}
-              placeholder={`Your bid in ₦k, from ${min}`}
+              placeholder={`Your bid in ₦k, from ${cs.min}`}
               aria-label="Your bid in thousands of naira"
               className="h-10 min-w-0 flex-1 rounded-control border border-line bg-surface px-2 text-sm"
             />
@@ -162,6 +164,8 @@ type Props = {
   onMyPlots: () => void;
 };
 
+const small = "text-[max(11px,1.9cqw)]";
+
 /** The middle of the board: clock, dice, what you can do now, the latest news. */
 export function Centre({
   view,
@@ -179,75 +183,108 @@ export function Centre({
   onMyPlots,
 }: Props) {
   const seatColour = useSeatColour();
+  const [confirmBankrupt, setConfirmBankrupt] = useState(false);
   const turnSeat = view.order[view.turn] as number;
-  const myTurn = me !== null && turnSeat === me && !view.places;
   const shownDice = dice?.dice ?? view.dice;
   const go = ready && !playing;
   const left = view.endsAt === null ? null : Math.max(0, view.endsAt - now);
-  const debt = view.debts[0];
+  const cs = centreState(view, rules, me);
 
   let body: ReactNode = null;
-  if (view.auction) {
-    body = (
-      <AuctionPanel
-        view={view}
-        rules={rules}
-        seats={seats}
-        me={me}
-        ready={ready}
-        offset={offset}
-        act={act}
-      />
-    );
-  } else if (debt) {
-    body =
-      debt.from === me ? (
-        <div className="flex w-full flex-col items-center gap-2">
-          <p className="text-[max(13px,2.5cqw)] font-bold">
-            You owe {naira(debt.amount)}{" "}
-            {debt.to === "bank" ? "to the bank" : `to ${seatName(seats, debt.to)}`}
-          </p>
-          <p className="text-[max(11px,1.9cqw)] text-ink-2">
-            Sell buildings or mortgage plots to pay. You have {naira(view.cash[me] ?? 0)}.
-          </p>
-          <div className="grid w-full grid-cols-2 gap-1.5">
-            <Button size="md" disabled={!ready} onClick={onMyPlots}>
-              My plots
-            </Button>
-            <Button
-              size="md"
-              variant="secondary"
-              disabled={!ready}
-              onClick={() => act({ type: "declare_bankruptcy" })}
-            >
-              Go bankrupt
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <p className="text-[max(12px,2.2cqw)] font-semibold">
-          {seatName(seats, debt.from)} is raising {naira(debt.amount)}…
-        </p>
+  switch (cs.kind) {
+    case "auction":
+      body = (
+        <AuctionPanel
+          view={view}
+          rules={rules}
+          seats={seats}
+          me={me}
+          cs={cs}
+          ready={ready}
+          offset={offset}
+          act={act}
+        />
       );
-  } else if (myTurn && !playing) {
-    const detained = view.detained[me] !== null && view.detained[me] !== undefined;
-    if (view.step === "roll")
+      break;
+    case "owe": {
+      const enough = cs.cash + cs.raisable >= cs.amount;
       body = (
         <div className="flex w-full flex-col items-center gap-1.5">
-          {detained ? (
-            <p className="text-[max(11px,1.9cqw)] font-semibold">
+          <p className="text-[max(13px,2.5cqw)] font-bold">
+            You owe {naira(cs.amount)}{" "}
+            {cs.to === "bank" ? "to the bank" : `to ${seatName(seats, cs.to)}`}
+          </p>
+          <p className={`${small} text-ink-2`}>
+            {enough
+              ? `You have ${naira(cs.cash)}. Sell or mortgage to pay (you can raise ${naira(cs.raisable)}).`
+              : `You have ${naira(cs.cash)} and can raise only ${naira(cs.raisable)} more.`}
+          </p>
+          {confirmBankrupt ? (
+            <div className="grid w-full grid-cols-2 gap-1.5">
+              <Button
+                size="md"
+                disabled={!ready}
+                onClick={() => {
+                  setConfirmBankrupt(false);
+                  act({ type: "declare_bankruptcy" });
+                }}
+              >
+                Yes, I&apos;m out
+              </Button>
+              <Button size="md" variant="secondary" onClick={() => setConfirmBankrupt(false)}>
+                Keep playing
+              </Button>
+            </div>
+          ) : (
+            <>
+              {enough ? (
+                <Button block disabled={!ready} onClick={() => act({ type: "auto_pay" })}>
+                  Raise it for me
+                </Button>
+              ) : null}
+              <div className="grid w-full grid-cols-2 gap-1.5">
+                <Button size="md" variant="secondary" disabled={!ready} onClick={onMyPlots}>
+                  Choose myself
+                </Button>
+                <Button
+                  size="md"
+                  variant="ghost"
+                  disabled={!ready}
+                  onClick={() => setConfirmBankrupt(true)}
+                >
+                  Go bankrupt
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      );
+      break;
+    }
+    case "raising":
+      body = (
+        <p className="text-[max(12px,2.2cqw)] font-semibold">
+          {seatName(seats, cs.seat)} is raising {naira(cs.amount)}…
+        </p>
+      );
+      break;
+    case "roll":
+      body = playing ? null : (
+        <div className="flex w-full flex-col items-center gap-1.5">
+          {cs.detained ? (
+            <p className={`${small} font-semibold`}>
               At the Police Post: roll doubles, pay, or use a Bail card
             </p>
           ) : null}
           <Button block disabled={!go} onClick={() => act({ type: "roll" })}>
-            {detained ? "Roll for doubles" : view.again ? "Roll again" : "Roll"}
+            {cs.detained ? "Roll for doubles" : cs.again ? "Roll again" : "Roll"}
           </Button>
-          {detained ? (
+          {cs.detained ? (
             <div className="grid w-full grid-cols-2 gap-1.5">
               <Button
                 size="md"
                 variant="secondary"
-                disabled={!go || (view.cash[me] ?? 0) < rules.policeFine}
+                disabled={!go || !cs.canPay}
                 onClick={() => act({ type: "pay_fine" })}
               >
                 Pay {naira(rules.policeFine)}
@@ -255,7 +292,7 @@ export function Centre({
               <Button
                 size="md"
                 variant="secondary"
-                disabled={!go || !bailCount(view, me)}
+                disabled={!go || !cs.canBail}
                 onClick={() => act({ type: "use_bail" })}
               >
                 Use Bail card
@@ -264,44 +301,54 @@ export function Centre({
           ) : null}
         </div>
       );
-    else if (view.step === "buy") {
-      const space = view.pos[me] ?? 0;
-      const price = priceOf(space);
-      body = (
+      break;
+    case "buy":
+      body = playing ? null : (
         <div className="flex w-full flex-col items-center gap-1.5">
           <p className="flex items-center gap-1.5 text-[max(13px,2.6cqw)] font-bold">
-            <Swatch space={space} /> {SPACES[space]?.name}
+            <Swatch space={cs.space} /> {SPACES[cs.space]?.name}
           </p>
           <div className="grid w-full grid-cols-2 gap-1.5">
-            <Button
-              disabled={!go || (view.cash[me] ?? 0) < price}
-              onClick={() => act({ type: "buy" })}
-            >
-              Buy {naira(price)}
+            <Button disabled={!go || !cs.canBuy} onClick={() => act({ type: "buy" })}>
+              Buy {naira(cs.price)}
             </Button>
             <Button variant="secondary" disabled={!go} onClick={() => act({ type: "decline" })}>
               {rules.auctions ? "Auction" : "Don't buy"}
             </Button>
           </div>
+          {!cs.canBuy ? (
+            <button
+              type="button"
+              onClick={onMyPlots}
+              className={`${small} font-semibold text-brand-strong underline`}
+            >
+              Short of cash? Mortgage or sell in My plots
+            </button>
+          ) : null}
         </div>
       );
-    } else
-      body = (
+      break;
+    case "manage":
+      body = playing ? null : (
         <Button block disabled={!go} onClick={() => act({ type: "end_turn" })}>
           End turn
         </Button>
       );
-  } else if (!view.places) {
-    body = (
-      <p className="flex items-center gap-1.5 text-[max(12px,2.2cqw)] font-semibold">
-        <span
-          className="size-2.5 rounded-full"
-          style={{ background: seatColour(turnSeat) }}
-          aria-hidden="true"
-        />
-        {seatName(seats, turnSeat)}&apos;s turn
-      </p>
-    );
+      break;
+    case "turn":
+      body = (
+        <p className="flex items-center gap-1.5 text-[max(12px,2.2cqw)] font-semibold">
+          <span
+            className="size-2.5 rounded-full"
+            style={{ background: seatColour(cs.seat) }}
+            aria-hidden="true"
+          />
+          {seatName(seats, cs.seat)}&apos;s turn
+        </p>
+      );
+      break;
+    default:
+      body = null;
   }
 
   return (
@@ -310,7 +357,7 @@ export function Centre({
         Naija Plots
         {left !== null ? (
           <span className={`ml-2 tabular-nums ${view.lastRound ? "text-danger-strong" : ""}`}>
-            {view.lastRound ? "Last round!" : `${mmss(left)} left`}
+            {view.lastRound ? "Last round!" : left > 0 ? `${mmss(left)} left` : "Time's up"}
           </span>
         ) : rules.mode === "timed" ? (
           <span className="ml-2">{rules.timedMinutes} min</span>
@@ -335,13 +382,15 @@ export function Centre({
         </div>
       ) : null}
       {card && !view.auction ? (
-        <p className="w-full rounded-control border border-line bg-surface px-2 py-1.5 text-[max(11px,1.9cqw)] leading-snug">
+        <p
+          className={`w-full rounded-control border border-line bg-surface px-2 py-1.5 ${small} leading-snug`}
+        >
           <span className="font-bold">{card.deck === "gist" ? "Gist" : "Hustle"}:</span> {card.text}
         </p>
       ) : null}
       {body}
       <p
-        className="h-[1.3em] max-w-full truncate text-[max(11px,1.9cqw)] font-semibold text-ink-2"
+        className={`h-[1.3em] max-w-full truncate ${small} font-semibold text-ink-2`}
         aria-live="polite"
       >
         {view.auction ? "" : (line ?? "")}

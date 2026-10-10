@@ -191,6 +191,8 @@ export default function PlotsTable({ snap, send }: Props) {
             view={view}
             rules={rules}
             me={me}
+            ready={ready}
+            act={act}
             onPick={(p) => {
               setMine(false);
               setPlot(p);

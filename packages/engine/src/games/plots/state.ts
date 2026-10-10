@@ -102,7 +102,7 @@ export type PlotsAction =
   | { type: "cancel_offer"; id: number }
   | { type: "declare_bankruptcy" }
   | { type: "end_turn" }
-  /** Server only (timeouts, bots): raise the money owed by selling and mortgaging, else go bankrupt. */
+  /** "Raise it for me" (also timeouts and bots): sell and mortgage to pay what you owe, else go bankrupt. */
   | { type: "auto_pay" };
 
 export type PlotsView = Omit<PlotsState, "decks" | "offers"> & {

@@ -6,6 +6,7 @@ import { botAction, wantsOffer } from "./bots";
 import {
   activeSeats,
   bailCount,
+  canManageNow,
   emptyBundle,
   turnSeat,
   unmortgageCost,
@@ -29,7 +30,7 @@ import {
   sellBuilding,
   settle,
   startAuction,
-  transferPlots,
+  tradeBundles,
   type C,
 } from "./logic";
 import { plotsNaija, type PlotsRules } from "./rules";
@@ -74,11 +75,7 @@ function waitingOn(s: PlotsState): SeatIndex[] {
 }
 
 /** May `seat` build, sell or mortgage now? On their own turn, or (sell/mortgage) to pay a debt. */
-function canManage(s: PlotsState, seat: SeatIndex, raising: boolean): boolean {
-  if (s.auction) return false;
-  if (s.debts.length) return raising && s.debts[0]?.from === seat;
-  return turnSeat(s) === seat && s.step !== "buy";
-}
+const canManage = canManageNow;
 
 function apply(c: C, seat: SeatIndex, action: PlotsAction): RuleErrorCode | null {
   const { d, rules, now } = c;
@@ -215,8 +212,7 @@ function apply(c: C, seat: SeatIndex, action: PlotsAction): RuleErrorCode | null
         c.ev.push({ type: "offer_void", id: o.id, from: o.from, to: o.to });
         return null;
       }
-      transferPlots(c, o.from, o.to, o.give);
-      transferPlots(c, o.to, o.from, o.get);
+      tradeBundles(c, o.from, o.to, o.give, o.get);
       // Offers that mention any of these plots no longer stand.
       const moved = new Set([...o.give.plots, ...o.get.plots]);
       d.offers = d.offers.filter(

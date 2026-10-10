@@ -39,7 +39,7 @@ const bundle = z.object({
 });
 const simple = (type: string) => z.object({ type: z.literal(type) });
 
-/** What clients may send. "auto_pay" is server-only, so it isn't here. */
+/** What clients may send (including "auto_pay": "Raise it for me" when you owe money). */
 export const plotsActionSchema = z.discriminatedUnion("type", [
   simple("roll"),
   simple("pay_fine"),
@@ -58,4 +58,5 @@ export const plotsActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("cancel_offer"), id: z.number().int().min(0) }),
   simple("declare_bankruptcy"),
   simple("end_turn"),
+  simple("auto_pay"),
 ]) as unknown as z.ZodType<PlotsAction>;

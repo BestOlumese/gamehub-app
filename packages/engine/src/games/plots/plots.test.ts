@@ -2,7 +2,7 @@ import { fc, test } from "@fast-check/vitest";
 import { describe, expect, it } from "vitest";
 import { seededRng } from "../../rng";
 import type { Rng, SeatIndex } from "../../types";
-import { naira, plotRent, priceOf, SPACES } from "./board";
+import { buildingsCost, houseCost, naira, plotRent, priceOf, SPACES } from "./board";
 import { netWorth, rentOf } from "./core";
 import { plots, plotsNaija, type PlotsRules } from "./index";
 import { checkInvariants, simulate, T0 } from "./sim";
@@ -52,8 +52,13 @@ const rollTo = (s: PlotsState, a: number, b: number, r = rules(), now = T0 + 100
 describe("board and money", () => {
   it("40 spaces; rents follow our formula (spot checks against the table in the docs)", () => {
     expect(SPACES).toHaveLength(40);
-    // Ojo (Clay: rent factor 4): 7.5 % × ₦80k × 4 = ₦24k.
-    expect([0, 1, 2, 3, 4, 5].map((h) => plotRent(1, h))).toEqual([24, 120, 335, 770, 1010, 1250]);
+    // Ojo (Clay: rent factor 3): 7.5 % × ₦80k × 3 = ₦18k.
+    expect([0, 1, 2, 3, 4, 5].map((h) => plotRent(1, h))).toEqual([18, 90, 250, 575, 755, 935]);
+    // House prices follow the rent each one adds (1.3 landings' worth, weighted by how often the
+    // group is landed on; Royal ×0.7), never below the group's floor: Banana Island to a hotel ₦2.19M.
+    expect([1, 2, 3, 4, 5].map((l) => houseCost(39, l))).toEqual([210, 380, 760, 420, 420]);
+    expect(buildingsCost(39, 5)).toBe(2190);
+    expect([1, 2, 3, 4, 5].map((l) => houseCost(1, l))).toEqual([60, 130, 270, 150, 150]);
     // Surulere (Sunset, three plots): 7.5 % × ₦220k = ₦17k (rounded).
     expect([0, 1, 5].map((h) => plotRent(16, h))).toEqual([17, 85, 885]);
     expect([naira(80), naira(1200), naira(2000), naira(1050)]).toEqual([
@@ -84,8 +89,8 @@ describe("turns", () => {
     expect([s.owner[3], s.cash[0], s.step]).toEqual([0, 1910, "manage"]);
     s = act(s, 0, { type: "end_turn" }).state;
     const res = rollTo(s, 2, 1); // seat 1: 0 → 3
-    expect(res.events).toContainEqual({ type: "rent", from: 1, to: 0, space: 3, amount: 27 });
-    expect([res.state.cash[0], res.state.cash[1]]).toEqual([1937, 1973]);
+    expect(res.events).toContainEqual({ type: "rent", from: 1, to: 0, space: 3, amount: 20 });
+    expect([res.state.cash[0], res.state.cash[1]]).toEqual([1930, 1980]);
   });
 
   it("doubles roll again; a third double goes to the Police Post", () => {
@@ -148,14 +153,14 @@ function owned(): PlotsState {
 describe("rent, building and mortgages", () => {
   it("full group doubles unbuilt rent; transport by count; utilities by dice", () => {
     const s = owned();
-    expect(rentOf(s, 1, 7, rules())).toBe(48);
+    expect(rentOf(s, 1, 7, rules())).toBe(36);
     expect(rentOf(s, 4, 7, rules())).toBe(60);
     const u = { ...s, owner: s.owner.map((o, i) => (i === 13 ? 1 : i === 27 ? 1 : o)) };
     expect(rentOf(u, 13, 7, rules())).toBe(84);
   });
 
   it("builds evenly, from the bank's supply; hotel swaps four houses back", () => {
-    let s = owned();
+    let s: PlotsState = { ...owned(), cash: [9000, 2000], ledger: { bankOut: 7000, bankIn: 0 } };
     expect(reject(s, 0, { type: "build", space: 9 }, rules())).toBeNull();
     s = act(s, 0, { type: "build", space: 6 }).state;
     expect(reject(s, 0, { type: "build", space: 6 })).toBe("NOT_ALLOWED"); // uneven
@@ -179,7 +184,8 @@ describe("rent, building and mortgages", () => {
     const res = act(s, 0, { type: "sell_building", space: 1 }, rules({ houseSupply: 2 }));
     expect(res.state.houses[1]).toBe(2);
     expect(res.state.bank).toEqual({ houses: 0, hotels: 11 });
-    expect(res.state.cash[0]).toBe(2000 + 3 * 30);
+    // Half of what the hotel and the 4th and 3rd houses cost on Ojo: 75 + 75 + 135.
+    expect(res.state.cash[0]).toBe(2000 + 285);
   });
 
   it("mortgage for half the price; unmortgage with 10 % interest", () => {
@@ -189,6 +195,64 @@ describe("rent, building and mortgages", () => {
     expect(rentOf(s, 9, 7, rules())).toBe(0);
     s = act(s, 0, { type: "unmortgage", space: 9 }).state;
     expect(s.cash[0]).toBe(2075 - 83);
+  });
+});
+
+describe("trading a mortgaged plot", () => {
+  it("cash moves before the interest: you can't go below zero (fuzz find, Oct 2026)", () => {
+    // Seat 1 has ₦37k, gives ₦32k and gets a mortgaged plot whose 10 % interest is ₦6k.
+    const base = owned();
+    let s: PlotsState = {
+      ...base,
+      owner: base.owner.map((o, i) => (i === 6 ? 0 : i === 19 ? 1 : o)),
+      mortgaged: base.mortgaged.map((m, i) => i === 6),
+      cash: [2000, 37],
+      ledger: { bankOut: 60, bankIn: 2023 },
+    };
+    s = act(s, 0, {
+      type: "offer",
+      to: 1,
+      give: { cash: 0, plots: [6], bail: 0 },
+      get: { cash: 32, plots: [], bail: 0 },
+    }).state;
+    const res = act(s, 1, { type: "accept_offer", id: 1 });
+    // ₦5k left after the ₦32k: the ₦6k interest is a debt to raise, never negative cash.
+    expect(res.state.cash[1]).toBe(5);
+    expect(res.state.debts).toEqual([{ from: 1, to: "bank", amount: 6 }]);
+  });
+});
+
+describe("managing any time", () => {
+  it("you build on your own turn only, and can mortgage to afford a plot you landed on", () => {
+    const s: PlotsState = { ...owned(), turn: 1, step: "roll" };
+    expect(reject(s, 0, { type: "build", space: 1 })).toBe("NOT_ALLOWED"); // seat 1's turn
+    expect(act({ ...s, turn: 0 }, 0, { type: "build", space: 1 }).state.houses[1]).toBe(1);
+    // Seat 1 lands on Banana Island with too little cash: mortgage, then buy.
+    let b: PlotsState = {
+      ...start(),
+      owner: owned().owner,
+      turn: 1,
+      step: "buy",
+      pos: [0, 39],
+      cash: [2000, 500],
+    };
+    b = { ...b, ledger: { bankOut: 0, bankIn: 1500 } };
+    expect(reject(b, 1, { type: "buy" })).toBe("NOT_ALLOWED");
+    b = act(b, 1, { type: "mortgage", space: 4 }).state;
+    b = act(b, 1, { type: "buy" }).state;
+    expect(b.owner[39]).toBe(1);
+  });
+
+  it("nobody manages during an auction; during a debt only the debtor, only to raise cash", () => {
+    let s = rollTo(start(rules(), 3), 1, 2).state;
+    s = act(s, 0, { type: "decline" }).state;
+    expect(reject(s, 1, { type: "mortgage", space: 3 })).toBe("NOT_ALLOWED");
+    const debt = { ...owned(), debts: [{ from: 1, to: 0 as const, amount: 50 }] };
+    expect(reject(debt, 0, { type: "build", space: 1 })).toBe("NOT_ALLOWED");
+    const paid = act({ ...debt, cash: [2000, 10], ledger: { bankOut: 0, bankIn: 1990 } }, 1, {
+      type: "auto_pay",
+    });
+    expect(paid.state.debts).toEqual([]);
   });
 });
 
@@ -232,13 +296,13 @@ describe("debts and bankruptcy", () => {
       ledger: { bankOut: 0, bankIn: 1995 },
     };
     s = { ...s, owner: s.owner.map((o, i) => (i === 3 ? 0 : o)) };
-    const owes = rollTo(s, 1, 2); // seat 1 lands on 3 (Clay, full group: ₦54k)
-    expect(owes.state.debts).toEqual([{ from: 1, to: 0, amount: 54 }]);
+    const owes = rollTo(s, 1, 2); // seat 1 lands on 3 (Clay, full group: ₦40k)
+    expect(owes.state.debts).toEqual([{ from: 1, to: 0, amount: 40 }]);
     expect(plots.currentSeats(owes.state)).toEqual([1]);
     expect(reject(owes.state, 1, { type: "end_turn" })).toBe("NOT_ALLOWED");
     const raised = act(owes.state, 1, { type: "mortgage", space: 4 });
     expect(raised.state.debts).toEqual([]);
-    expect(raised.state.cash[1]).toBe(5 + 110 - 54);
+    expect(raised.state.cash[1]).toBe(5 + 110 - 40);
     const broke = act(owes.state, 1, { type: "declare_bankruptcy" });
     expect(broke.state.out).toEqual([1]);
     expect(broke.state.owner[4]).toBe(0);

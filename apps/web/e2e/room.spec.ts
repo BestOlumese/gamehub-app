@@ -914,7 +914,8 @@ test("naija plots: 8 players on a small phone, with an auction", async ({ browse
         await shot(p, `plots8-auction-${i}`);
         sawAuction = true;
       }
-      for (const name of [/^Roll/, /^Buy ₦/, "End turn"]) {
+      // The guest never buys (they're here to auction), so a slow render can't make them buy.
+      for (const name of i === 1 ? [/^Roll/, "End turn"] : [/^Roll/, /^Buy ₦/, "End turn"]) {
         const b = p.getByRole("button", { name }).first();
         if ((await b.isVisible()) && (await b.isEnabled())) {
           await b.click({ timeout: 800 }).catch(() => {});

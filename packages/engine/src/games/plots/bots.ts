@@ -1,7 +1,7 @@
 // Naija Plots bots (docs/games/property.md → Bots). All plain arithmetic over the board: well
 // under a millisecond a decision.
 import type { BotLevel, Rng, SeatIndex } from "../../types";
-import { BUILD_COST, GROUP_SPACES, groupOf, priceOf, SPACES, TRANSPORTS } from "./board";
+import { GROUP_SPACES, groupOf, houseCost, priceOf, SPACES, TRANSPORTS } from "./board";
 import {
   activeSeats,
   bailCount,
@@ -154,7 +154,7 @@ function toBuild(
     .filter((p) => !whyNotBuild(s, p, seat, rules))
     .filter((p) => {
       const g = groupOf(p);
-      return !!g && cash - BUILD_COST[g] >= keep;
+      return !!g && cash - houseCost(p, (s.houses[p] ?? 0) + 1) >= keep;
     })
     .sort((a, b) => (s.houses[a] ?? 0) - (s.houses[b] ?? 0) || priceOf(b) - priceOf(a));
   const pick = options[0];

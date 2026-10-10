@@ -2,7 +2,7 @@
 // helpers on a mutable draft, so money and buildings stay accounted for.
 import type { GameEvent, Rng, SeatIndex } from "../../types";
 import {
-  BUILD_COST,
+  houseCost,
   CHECKPOINT,
   GROUP_SPACES,
   groupOf,
@@ -346,8 +346,9 @@ export function build(c: C, seat: SeatIndex, space: number) {
   const g = groupOf(space);
   if (!g) return;
   const h = d.houses[space] ?? 0;
-  d.cash[seat] = (d.cash[seat] ?? 0) - BUILD_COST[g];
-  d.ledger.bankIn += BUILD_COST[g];
+  const cost = houseCost(space, h + 1);
+  d.cash[seat] = (d.cash[seat] ?? 0) - cost;
+  d.ledger.bankIn += cost;
   d.houses[space] = h + 1;
   if (h + 1 === 5) {
     d.bank.hotels--;
@@ -370,7 +371,9 @@ export function sellBuilding(c: C, seat: SeatIndex, space: number) {
     d.bank.houses++;
   }
   d.houses[space] = level;
-  gain(c, seat, (h - level) * sellValue(space));
+  let refund = 0;
+  for (let l = level + 1; l <= h; l++) refund += sellValue(space, l);
+  gain(c, seat, refund);
   c.ev.push({ type: "sold", seat, space, level });
 }
 
@@ -388,7 +391,11 @@ export function raiseCash(c: C, seat: SeatIndex, need: number): boolean {
     // Sell from the most built-up plot of the cheapest group with buildings (keeps building even).
     const built = mine()
       .filter((i) => (d.houses[i] ?? 0) > 0)
-      .sort((a, b) => sellValue(a) - sellValue(b) || (d.houses[b] ?? 0) - (d.houses[a] ?? 0));
+      .sort(
+        (a, b) =>
+          sellValue(a, d.houses[a] ?? 0) - sellValue(b, d.houses[b] ?? 0) ||
+          (d.houses[b] ?? 0) - (d.houses[a] ?? 0),
+      );
     const top = built[0];
     if (top !== undefined) {
       const g = groupOf(top);
@@ -408,17 +415,27 @@ export function raiseCash(c: C, seat: SeatIndex, need: number): boolean {
 
 // ---- Trades ----
 
-/** Hands a bundle over: cash, plots (mortgages stay, interest per the rules) and Bail cards. */
-export function transferPlots(c: C, from: SeatIndex, to: SeatIndex, b: Bundle) {
+/**
+ * Carries out an accepted trade: both sides' cash first, then plots (mortgages stay; interest
+ * per the rules, owed as a debt if it can't be paid) and Bail cards. Cash first, so interest on
+ * a mortgaged plot can never leave someone short for the cash they agreed to give.
+ */
+export function tradeBundles(c: C, a: SeatIndex, b: SeatIndex, aGives: Bundle, bGives: Bundle) {
+  const { d } = c;
+  d.cash[a] = (d.cash[a] ?? 0) - aGives.cash + bGives.cash;
+  d.cash[b] = (d.cash[b] ?? 0) - bGives.cash + aGives.cash;
+  movePlots(c, a, b, aGives);
+  movePlots(c, b, a, bGives);
+}
+
+function movePlots(c: C, from: SeatIndex, to: SeatIndex, bundle: Bundle) {
   const { d, rules } = c;
-  d.cash[from] = (d.cash[from] ?? 0) - b.cash;
-  d.cash[to] = (d.cash[to] ?? 0) + b.cash;
-  for (const p of b.plots) {
+  for (const p of bundle.plots) {
     d.owner[p] = to;
     if (d.mortgaged[p] && rules.mortgageTransferInterest === "immediate")
       charge(c, to, "bank", transferInterest(p, rules));
   }
-  let bail = b.bail;
+  let bail = bundle.bail;
   for (const deck of ["gist", "hustle"] as const)
     if (bail > 0 && d.bail[deck] === from) {
       d.bail[deck] = to;
@@ -436,7 +453,9 @@ export function bankrupt(c: C, seat: SeatIndex, to: SeatIndex | "bank"): void {
     if (d.owner[i] !== seat) continue;
     const h = d.houses[i] ?? 0;
     if (!h) continue;
-    gain(c, seat, h * sellValue(i));
+    let refund = 0;
+    for (let l = 1; l <= h; l++) refund += sellValue(i, l);
+    gain(c, seat, refund);
     if (h === 5) d.bank.hotels++;
     else d.bank.houses += h;
     d.houses[i] = 0;

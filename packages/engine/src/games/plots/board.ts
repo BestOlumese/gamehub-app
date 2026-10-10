@@ -87,7 +87,7 @@ export const GROUPS: readonly Group[] = [
   "royal",
 ];
 
-/** Cost of one house (a hotel costs one more). */
+/** The cheapest a house can cost in each group (the real price follows the rent: `houseCost`). */
 export const BUILD_COST: Record<Group, number> = {
   clay: 60,
   sky: 60,
@@ -156,7 +156,7 @@ export const HOUSE_MULTIPLIERS = [5, 14, 32, 42, 52] as const;
  * Rent boost per group, from the balance simulation: two-plot groups are landed on less, and
  * Clay is also the cheapest, so its rents need the biggest lift to be worth completing.
  */
-export const RENT_FACTOR: Partial<Record<Group, number>> = { clay: 4, royal: 2 };
+export const RENT_FACTOR: Partial<Record<Group, number>> = { clay: 3, royal: 1.5 };
 const to5 = (x: number) => Math.round(x / 5) * 5;
 
 /** Base rent of a plot: 7.5 % of the price (times its group's factor), at least ₦6k. */
@@ -172,6 +172,56 @@ export function plotRent(space: number, houses: number): number {
   if (houses <= 0) return base;
   return to5(base * (HOUSE_MULTIPLIERS[houses - 1] as number));
 }
+
+/**
+ * How often each group is landed on, relative to an average space (measured from 400 simulated
+ * 4-player games, Oct 2026). Sunset, just after the Police Post, is the busiest; Royal the quietest.
+ */
+export const LANDING_WEIGHT: Record<Group, number> = {
+  clay: 0.85,
+  sky: 0.97,
+  coral: 1.04,
+  sunset: 1.14,
+  palm: 1.03,
+  gold: 1.01,
+  forest: 1.01,
+  royal: 0.78,
+};
+
+/**
+ * A house costs about this many landings' worth of the extra rent it brings (Best, Oct 2026:
+ * plots that earn more should take more effort to build, not one flat price).
+ */
+export const PAYBACK_LANDINGS = 1.3;
+const to10 = (x: number) => Math.round(x / 10) * 10;
+
+/**
+ * From the balance simulation: Royal plots are bought late and dear, so whoever completes Royal
+ * has spent heavily just as the game is being decided. A discount on its houses evens that out.
+ */
+export const BUILD_FACTOR: Partial<Record<Group, number>> = { clay: 0.75, royal: 0.7 };
+
+/** What building level `level` (1–4 houses, 5 = the hotel) costs on this plot. */
+export function houseCost(space: number, level: number): number {
+  const sp = SPACES[space];
+  if (sp?.kind !== "plot" || level < 1 || level > 5) return 0;
+  const before = level === 1 ? plotRent(space, 0) * 2 : plotRent(space, level - 1);
+  const extra = plotRent(space, level) - before;
+  return Math.max(
+    BUILD_COST[sp.group],
+    to10(PAYBACK_LANDINGS * extra * LANDING_WEIGHT[sp.group] * (BUILD_FACTOR[sp.group] ?? 1)),
+  );
+}
+
+/** Everything spent building a plot up to `houses` (5 = hotel). */
+export function buildingsCost(space: number, houses: number): number {
+  let total = 0;
+  for (let level = 1; level <= houses; level++) total += houseCost(space, level);
+  return total;
+}
+
+/** Selling a building back returns half of what that level cost. */
+export const sellValue = (space: number, level: number) => Math.floor(houseCost(space, level) / 2);
 
 /** Transport rent by how many the owner has (1–4). */
 export const transportRent = (owned: number) => (owned > 0 ? 30 * 2 ** (owned - 1) : 0);

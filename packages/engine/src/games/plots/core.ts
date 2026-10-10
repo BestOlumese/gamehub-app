@@ -2,7 +2,9 @@
 // The full GameDefinition is in ./index.ts. Money in ₦1,000 units.
 import type { SeatIndex } from "../../types";
 import {
-  BUILD_COST,
+  buildingsCost,
+  houseCost,
+  sellValue,
   GROUP_SPACES,
   groupOf,
   isOwnable,
@@ -27,6 +29,21 @@ export const isActive = (s: Pick<PlotsState, "out">, seat: SeatIndex) => !s.out.
 export const activeSeats = (s: Pick<PlotsState, "order" | "out">) =>
   s.order.filter((x) => !s.out.includes(x));
 export const turnSeat = (s: Pick<PlotsState, "order" | "turn">) => s.order[s.turn] as SeatIndex;
+
+/**
+ * May `seat` build, sell or mortgage now? On your own turn (any step, including while deciding to
+ * buy, so you can mortgage to afford a plot), never during an auction; while a debt is being
+ * paid, only the debtor, and only to raise cash (sell, mortgage). Decided with Best, Oct 2026.
+ */
+export function canManageNow(
+  s: Pick<PlotsState, "auction" | "debts" | "out" | "places" | "order" | "turn">,
+  seat: SeatIndex,
+  raising: boolean,
+): boolean {
+  if (s.places || s.auction || s.out.includes(seat)) return false;
+  if (s.debts.length) return raising && s.debts[0]?.from === seat;
+  return turnSeat(s) === seat;
+}
 
 /** Does `seat` own every plot in this space's group? */
 export function ownsGroup(s: Pick<PlotsState, "owner">, space: number, seat: SeatIndex): boolean {
@@ -79,7 +96,7 @@ export function whyNotBuild(
     return "Build evenly: the others in the group first";
   if (h === 4 ? s.bank.hotels < 1 : s.bank.houses < 1)
     return h === 4 ? "No hotels left in the bank" : "No houses left in the bank";
-  if ((s.cash[seat] ?? 0) < BUILD_COST[g]) return "Not enough cash";
+  if ((s.cash[seat] ?? 0) < houseCost(space, h + 1)) return "Not enough cash";
   return null;
 }
 
@@ -121,11 +138,7 @@ export function whyNotUnmortgage(
   return null;
 }
 
-/** Selling a building returns half its cost. */
-export const sellValue = (space: number) => {
-  const g = groupOf(space);
-  return g ? Math.floor(BUILD_COST[g] / 2) : 0;
-};
+export { sellValue };
 
 /** Bail cards a seat holds. */
 export const bailCount = (s: Pick<PlotsState, "bail">, seat: SeatIndex) =>
@@ -147,7 +160,7 @@ export function netWorth(
     if (s.owner[i] !== seat) continue;
     w += s.mortgaged[i] ? mortgageValue(i) : priceOf(i);
     const g = groupOf(i);
-    if (g) w += (s.houses[i] ?? 0) * BUILD_COST[g];
+    if (g) w += buildingsCost(i, s.houses[i] ?? 0);
   }
   w += bailCount(s, seat) * rules.policeFine;
   for (const d of s.debts) if (d.from === seat) w -= d.amount;
@@ -172,3 +185,14 @@ export function whyNotBundle(s: S, seat: SeatIndex, b: Bundle): string | null {
 }
 
 export const emptyBundle = (b: Bundle) => b.cash === 0 && b.plots.length === 0 && b.bail === 0;
+
+/** Cash a seat could raise right now: every building sold, every free plot mortgaged. */
+export function raisable(s: Pick<PlotsState, "owner" | "houses" | "mortgaged">, seat: SeatIndex) {
+  let total = 0;
+  for (let i = 0; i < SPACES.length; i++) {
+    if (s.owner[i] !== seat) continue;
+    for (let level = 1; level <= (s.houses[i] ?? 0); level++) total += sellValue(i, level);
+    if (!s.mortgaged[i]) total += mortgageValue(i);
+  }
+  return total;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  BUILD_COST,
+  houseCost,
   CITY_NAME,
   GROUP_COLOUR,
   GROUP_SPACES,
@@ -14,10 +14,6 @@ import {
   transportRent,
   unmortgageCost,
   utilityRate,
-  whyNotBuild,
-  whyNotMortgage,
-  whyNotSell,
-  whyNotUnmortgage,
   sellValue,
   type PlotsAction,
   type PlotsRules,
@@ -28,17 +24,9 @@ import { Button } from "@gamehub/ui/forms/button";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
 import { seatName } from "../rps/names";
 import { describeSpace } from "./board";
+import { plotChoices } from "./centre-state";
 
 type Act = (a: PlotsAction) => void;
-
-/** What you may do with a plot right now: on your turn, or selling/mortgaging to pay a debt. */
-export function manageable(view: PlotsView, me: number | null) {
-  if (me === null || view.places || view.auction) return { build: false, raise: false };
-  const debtor = view.debts[0]?.from === me;
-  if (view.debts.length) return { build: false, raise: debtor };
-  const onTurn = view.order[view.turn] === me && view.step !== "buy";
-  return { build: onTurn, raise: onTurn };
-}
 
 function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
   return (
@@ -79,14 +67,9 @@ export function PlotCard({
   const owner = view.owner[space] ?? null;
   const h = view.houses[space] ?? 0;
   const mine = owner === me && me !== null;
-  const can = manageable(view, me);
   const g = groupOf(space);
-  const reasons = {
-    build: mine && can.build ? whyNotBuild(view, space, me as number, rules) : "Not now",
-    sell: mine && can.raise ? whyNotSell(view, space, me as number, rules) : "Not now",
-    mortgage: mine && can.raise ? whyNotMortgage(view, space, me as number) : "Not now",
-    unmortgage: mine && can.build ? whyNotUnmortgage(view, space, me as number, rules) : "Not now",
-  };
+  // The same checks the game makes (any time, except during an auction or someone's payment).
+  const reasons = plotChoices(view, rules, me, space);
   const ownable = sp.kind === "plot" || sp.kind === "transport" || sp.kind === "utility";
 
   return (
@@ -117,7 +100,14 @@ export function PlotCard({
           <Row label="With a hotel" value={naira(plotRent(space, 5))} strong={h === 5} />
           <div className="my-2 h-px bg-line" />
           <Row label="Price" value={naira(sp.price)} />
-          <Row label="Each house (hotel: one more)" value={naira(BUILD_COST[sp.group])} />
+          {[1, 2, 3, 4, 5].map((level) => (
+            <Row
+              key={`c${level}`}
+              label={level === 5 ? "Building the hotel" : `Building house ${level}`}
+              value={naira(houseCost(space, level))}
+              strong={h + 1 === level}
+            />
+          ))}
           <Row label="Mortgage value" value={naira(mortgageValue(space))} />
         </div>
       ) : sp.kind === "transport" ? (
@@ -149,6 +139,12 @@ export function PlotCard({
         </p>
       ) : null}
 
+      {sp.kind === "plot" ? (
+        <p className="mt-1 text-xs text-ink-2">
+          Bank has {view.bank.houses} house{view.bank.houses === 1 ? "" : "s"} and{" "}
+          {view.bank.hotels} hotel{view.bank.hotels === 1 ? "" : "s"} left
+        </p>
+      ) : null}
       {mine ? (
         <div className="mt-4 grid grid-cols-2 gap-2">
           {g ? (
@@ -157,7 +153,7 @@ export function PlotCard({
               disabled={!ready || !!reasons.build}
               onClick={() => act({ type: "build", space })}
             >
-              {h === 4 ? "Build hotel" : "Build"} {naira(BUILD_COST[g])}
+              {h === 4 ? "Build hotel" : "Build"} {naira(houseCost(space, h + 1))}
             </Button>
           ) : null}
           {g ? (
@@ -166,7 +162,7 @@ export function PlotCard({
               disabled={!ready || !!reasons.sell}
               onClick={() => act({ type: "sell_building", space })}
             >
-              Sell building +{naira(sellValue(space))}
+              Sell building +{naira(sellValue(space, h))}
             </Button>
           ) : null}
           {view.mortgaged[space] ? (
@@ -212,6 +208,8 @@ export function MyPlots({
   view,
   rules,
   me,
+  ready,
+  act,
   onPick,
   onClose,
 }: {
@@ -219,17 +217,18 @@ export function MyPlots({
   view: PlotsView;
   rules: PlotsRules;
   me: number;
+  ready: boolean;
+  act: Act;
   onPick: (space: number) => void;
   onClose: () => void;
 }) {
   const mine = plotsOf(view, me);
-  const can = manageable(view, me);
   return (
     <Dialog
       open={open}
       onClose={onClose}
       title="My plots"
-      description={`Cash ${naira(view.cash[me] ?? 0)}${view.bail.gist === me || view.bail.hustle === me ? " · Bail card" : ""}`}
+      description={`Cash ${naira(view.cash[me] ?? 0)}${view.bail.gist === me || view.bail.hustle === me ? " · Bail card" : ""} · bank: ${view.bank.houses} houses, ${view.bank.hotels} hotels`}
     >
       {mine.length ? (
         <ul className="divide-y divide-line">
@@ -238,13 +237,13 @@ export function MyPlots({
             const g = groupOf(p);
             const full = g ? GROUP_SPACES[g].every((i) => view.owner[i] === me) : false;
             const h = view.houses[p] ?? 0;
-            const canBuild = can.build && !whyNotBuild(view, p, me, rules);
+            const canBuild = g !== null && plotChoices(view, rules, me, p).build === null;
             return (
-              <li key={p}>
+              <li key={p} className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => onPick(p)}
-                  className="flex w-full items-center gap-3 py-2.5 text-left"
+                  className="flex min-w-0 flex-1 items-center gap-3 py-2.5 text-left"
                 >
                   <span
                     className="h-8 w-1.5 shrink-0 rounded-full"
@@ -262,10 +261,17 @@ export function MyPlots({
                         .join(" · ") || "Unbuilt"}
                     </span>
                   </span>
-                  {canBuild ? (
-                    <span className="text-xs font-bold text-brand-strong">Can build</span>
-                  ) : null}
                 </button>
+                {canBuild && g ? (
+                  <Button
+                    size="md"
+                    variant="secondary"
+                    disabled={!ready}
+                    onClick={() => act({ type: "build", space: p })}
+                  >
+                    {h === 4 ? "Hotel" : "Build"} {naira(houseCost(p, h + 1))}
+                  </Button>
+                ) : null}
               </li>
             );
           })}
