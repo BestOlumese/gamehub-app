@@ -397,6 +397,33 @@ describe("whot decking", () => {
     expect(reject(open, 0, playCard("star-4"), r)).toBe("ILLEGAL_MOVE");
   });
 
+  it("room setting: no Whot right after an action card in a deck (Best, Oct 2026)", () => {
+    const off = rules({ decking: "number" });
+    const on = rules({ decking: "number", noWhotAfterAction: true });
+    const s = position({
+      hands: [["circle-2", "star-2", "whot-20", "square-7"], ["cross-4"], ["square-5"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("circle-2"), on);
+    expect(types(open, 0, off)).toContain("whot-20");
+    expect(types(open, 0, on)).not.toContain("whot-20");
+    expect(reject(open, 0, playCard("whot-20"), on)).toBe("ILLEGAL_MOVE");
+    // After a Hold on too (where any normal follow-up is allowed).
+    const h = position({
+      hands: [["circle-1", "triangle-1", "whot-20", "circle-7"], ["cross-4"]],
+      top: "circle-3",
+    });
+    const held = act(h, 0, playCard("circle-1"), on);
+    expect(types(held, 0, on)).toEqual(expect.arrayContaining(["circle-7", "done"]));
+    expect(types(held, 0, on)).not.toContain("whot-20");
+    // A Whot still ends a deck of normal cards.
+    const n = position({
+      hands: [["triangle-3", "star-3", "whot-20", "square-7"], ["cross-4"]],
+      top: "circle-3",
+    });
+    expect(types(act(n, 0, playCard("triangle-3"), on), 0, on)).toContain("whot-20");
+  });
+
   it("Done after a Hold on (or General market) keeps your extra go", () => {
     const r = rules({ decking: "number" });
     const s = position({
@@ -622,6 +649,7 @@ const rulesArb = fc.record({
     "chain" as const,
   ),
   whotBlocksPick: fc.boolean(),
+  noWhotAfterAction: fc.boolean(),
 });
 const seedArb = fc.string({ minLength: 1, maxLength: 16 });
 const playersArb = fc.integer({ min: 2, max: 8 });

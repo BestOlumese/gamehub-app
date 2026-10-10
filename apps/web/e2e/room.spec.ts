@@ -853,6 +853,11 @@ test("naija plots: 2 people and 2 bots play rounds, buy, look at a plot and a tr
     .filter({ hasText: /@plots_h/ })
     .click();
   await expect(guest.page.getByText("You give")).toBeVisible();
+  // Type an amount to give, nothing back: the one-sided warning shows.
+  await guest.page.getByLabel("You give cash in thousands of naira").fill("150");
+  await expect(guest.page.getByRole("dialog").getByRole("alert")).toContainText("get nothing back");
+  await guest.page.getByRole("button", { name: "Add 100k (You get cash)" }).click();
+  await expect(guest.page.getByRole("dialog").getByRole("alert")).toHaveCount(0);
   await shot(guest.page, "plots-trade-360");
   for (const c of [host.ctx, guest.ctx]) await c.close();
 });

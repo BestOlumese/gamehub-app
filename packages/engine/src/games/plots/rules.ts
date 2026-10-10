@@ -28,6 +28,17 @@ export type PlotsRules = {
   auctionSecondsPerBid: number;
   minBidIncrement: number;
   trading: boolean;
+  /**
+   * A bankrupt player's plots: to the player they owed ("creditor", Naija Standard), or always back
+   * to the bank to be auctioned ("bank"; the creditor still gets the cash they're owed, as far as it
+   * goes). Missing in rooms saved before Oct 2026: "creditor".
+   */
+  bankruptTo?: "creditor" | "bank";
+  /**
+   * Build only on the plot you landed on this turn (you still need the whole group). Off in Naija
+   * Standard; missing in rooms saved before Oct 2026: off.
+   */
+  buildOnLanding?: boolean;
   // House rules, all off in Naija Standard.
   /** Taxes and card fines go to Owambe; landing there collects them. */
   owambeJackpot: boolean;
@@ -57,6 +68,8 @@ export const plotsNaija: PlotsRules = {
   auctionSecondsPerBid: 8,
   minBidIncrement: 10,
   trading: true,
+  bankruptTo: "creditor",
+  buildOnLanding: false,
   owambeJackpot: false,
   doubleSalaryOnExactLanding: false,
 };

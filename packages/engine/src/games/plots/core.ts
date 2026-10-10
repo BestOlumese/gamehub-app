@@ -25,6 +25,16 @@ type S = Pick<
   "owner" | "houses" | "mortgaged" | "bank" | "cash" | "out" | "bail" | "detained"
 >;
 
+/**
+ * Did `seat` land on `space` this turn? Their turn, standing there, and they've moved (after the
+ * roll, or rolling again after doubles).
+ */
+export const landedOn = (
+  s: Pick<PlotsState, "order" | "turn" | "pos" | "step" | "again">,
+  seat: SeatIndex,
+  space: number,
+) => s.order[s.turn] === seat && s.pos[seat] === space && (s.step !== "roll" || s.again);
+
 export const isActive = (s: Pick<PlotsState, "out">, seat: SeatIndex) => !s.out.includes(seat);
 export const activeSeats = (s: Pick<PlotsState, "order" | "out">) =>
   s.order.filter((x) => !s.out.includes(x));
@@ -81,7 +91,7 @@ export function rentOf(
 
 /** Why `seat` can't build a house (or hotel) here now, or null if they can. */
 export function whyNotBuild(
-  s: S,
+  s: S & Pick<PlotsState, "order" | "turn" | "pos" | "step" | "again">,
   space: number,
   seat: SeatIndex,
   rules: PlotsRules,
@@ -89,6 +99,8 @@ export function whyNotBuild(
   const g = groupOf(space);
   if (!g || s.owner[space] !== seat) return "Not your plot";
   if (!ownsGroup(s, space, seat)) return "You need the whole group first";
+  if (rules.buildOnLanding && !landedOn(s, seat, space))
+    return "Only on the plot you landed on this turn";
   if (GROUP_SPACES[g].some((i) => s.mortgaged[i])) return "Unmortgage the group first";
   const h = s.houses[space] ?? 0;
   if (h >= 5) return "It already has a hotel";

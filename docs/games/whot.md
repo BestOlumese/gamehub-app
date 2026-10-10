@@ -90,6 +90,7 @@ Decided with Best:
   - A deck that **ends** on a 1 or 14 with no pick or 8 in it gives the player another go, as today. Otherwise the picks and skips go on.
   - **While the deck's last card is such a 1 or 14, the extra go can start at once** (fixed Oct 2026 after Best's report: "Hold on, then a card of the same shape" was refused): any normal follow-up on that card, or the market, ends the deck and uses the extra go. **Done keeps the extra go** too (it used to drop it).
 - **A Whot can only end a deck** (call a shape; the deck closes). Played first, it's a deck of one.
+- **Room setting `noWhotAfterAction`** (off in Naija Standard; Best, Oct 2026): right after an action card in an open deck (Hold on, Pick 2, Pick 3, Suspension, General market), the next card can't be a Whot ("No Whot right after an action card"). A Whot can still end a deck of normal cards. Shown in the Decking section of the rules step when decking is on.
 - Defending a penalty and then decking more of the same card adds to the total.
 - No market during an open deck, except as the extra go after a Hold on or General market. Last card, Check up and "can't finish on a special" work card by card as usual.
 - With decking on, a single card and nothing to continue is exactly a normal play.

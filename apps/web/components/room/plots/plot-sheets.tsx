@@ -8,6 +8,7 @@ import {
   groupOf,
   mortgageValue,
   naira,
+  ownsGroup,
   plotRent,
   plotsOf,
   SPACES,
@@ -71,6 +72,12 @@ export function PlotCard({
   // The same checks the game makes (any time, except during an auction or someone's payment).
   const reasons = plotChoices(view, rules, me, space);
   const ownable = sp.kind === "plot" || sp.kind === "transport" || sp.kind === "utility";
+  // The rent row that applies now: the whole group (unbuilt) doubles it.
+  const fullGroup = owner !== null && ownsGroup(view, space, owner);
+  // Selling a hotel goes back to as many houses as the bank can give (up to 4).
+  const sellTo = h === 5 ? Math.min(4, view.bank.houses) : h - 1;
+  let sellRefund = 0;
+  for (let l = sellTo + 1; l <= h; l++) sellRefund += sellValue(space, l);
 
   return (
     <Dialog
@@ -84,10 +91,11 @@ export function PlotCard({
       ) : null}
       {sp.kind === "plot" ? (
         <div className="text-sm">
-          <Row label="Rent" value={naira(plotRent(space, 0))} strong={!h} />
+          <Row label="Rent" value={naira(plotRent(space, 0))} strong={!h && !fullGroup} />
           <Row
             label="With the whole group"
             value={naira(plotRent(space, 0) * rules.groupRentMultiplier)}
+            strong={!h && fullGroup}
           />
           {[1, 2, 3, 4].map((n) => (
             <Row
@@ -109,6 +117,9 @@ export function PlotCard({
             />
           ))}
           <Row label="Mortgage value" value={naira(mortgageValue(space))} />
+          <p className="mt-1 text-xs text-ink-2">
+            Selling a building back gives half of what that level cost.
+          </p>
         </div>
       ) : sp.kind === "transport" ? (
         <div className="text-sm">
@@ -162,7 +173,8 @@ export function PlotCard({
               disabled={!ready || !!reasons.sell}
               onClick={() => act({ type: "sell_building", space })}
             >
-              Sell building +{naira(sellValue(space, h))}
+              {h === 5 ? `Sell hotel → ${sellTo} house${sellTo === 1 ? "" : "s"}` : "Sell a house"}{" "}
+              +{naira(sellRefund)}
             </Button>
           ) : null}
           {view.mortgaged[space] ? (

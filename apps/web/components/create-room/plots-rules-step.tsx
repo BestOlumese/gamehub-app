@@ -95,6 +95,28 @@ export function PlotsRulesStep({ rules, onChange }: Props) {
           onChange={(v) => set("evenBuilding", v)}
         />
         <Toggle
+          label="Build only where you land"
+          hint="Build on a plot only on the turn you land on it. You still need the whole group."
+          checked={rules.buildOnLanding ?? false}
+          onChange={(v) => set("buildOnLanding", v)}
+        />
+        <div className="px-4 py-4">
+          <Segmented
+            label="A bankrupt player's plots go to"
+            value={rules.bankruptTo ?? "creditor"}
+            onChange={(v) => set("bankruptTo", v)}
+            options={[
+              { value: "creditor" as const, label: "Who they owe" },
+              { value: "bank" as const, label: "The bank (auction)" },
+            ]}
+          />
+          <p className="mt-2 text-sm text-ink-2">
+            {(rules.bankruptTo ?? "creditor") === "creditor"
+              ? "Go bankrupt owing a player and they get your cash and plots. Owe the bank and your plots are auctioned."
+              : "Your plots are always auctioned. A player you owe still gets your cash, up to what you owed."}
+          </p>
+        </div>
+        <Toggle
           label="Rent at the Police Post"
           hint="You still collect rent while you're held there."
           checked={rules.rentWhileDetained}

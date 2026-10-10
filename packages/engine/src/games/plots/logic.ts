@@ -460,10 +460,20 @@ export function bankrupt(c: C, seat: SeatIndex, to: SeatIndex | "bank"): void {
     else d.bank.houses += h;
     d.houses[i] = 0;
   }
+  const owed = d.debts
+    .filter((x) => x.from === seat && x.to === to)
+    .reduce((n, x) => n + x.amount, 0);
   d.debts = d.debts.filter((x) => x.from !== seat);
-  const cash = d.cash[seat] ?? 0;
+  let cash = d.cash[seat] ?? 0;
   d.cash[seat] = 0;
   const plots = d.owner.flatMap((o, i) => (o === seat ? [i] : []));
+  // Room setting: everything back to the bank; the creditor still gets what they're owed in cash.
+  if (to !== "bank" && (rules.bankruptTo ?? "creditor") === "bank") {
+    const paid = d.out.includes(to) ? 0 : Math.min(cash, owed);
+    d.cash[to] = (d.cash[to] ?? 0) + paid;
+    cash -= paid;
+    to = "bank";
+  }
   if (to !== "bank" && !d.out.includes(to)) {
     d.cash[to] = (d.cash[to] ?? 0) + cash;
     for (const p of plots) {

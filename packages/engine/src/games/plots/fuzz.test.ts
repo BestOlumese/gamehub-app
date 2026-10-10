@@ -90,6 +90,8 @@ test.prop(
       owambeJackpot: houseRules,
       doubleSalaryOnExactLanding: houseRules,
       mortgageTransferInterest: houseRules ? "on_unmortgage" : "immediate",
+      bankruptTo: houseRules ? "bank" : "creditor",
+      buildOnLanding: houseRules,
     };
     const s = fuzzGame(rules, players, seed);
     expect(s.cash.every((x) => x >= 0)).toBe(true);

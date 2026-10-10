@@ -209,6 +209,7 @@ export default function PlotsTable({ snap, send }: Props) {
             ready={ready}
             now={now}
             incoming={answering}
+            bailValue={rules.policeFine}
             act={act}
             onClose={() => setTrade(null)}
           />

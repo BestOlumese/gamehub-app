@@ -60,7 +60,7 @@ export function whyNotDeckable(
   if (handSize === 1 && !rules.canFinishOnSpecial && isSpecialNumber(c.n)) {
     return "You can't finish on a special card";
   }
-  if (c.shape === "whot") return null; // a Whot can always end a deck
+  if (c.shape === "whot") return whyNoWhotHere(deck, rules); // a Whot can end a deck
   const first = parseCard(deck.first);
   const last = parseCard(deck.last);
   const ok =
@@ -72,6 +72,14 @@ export function whyNotDeckable(
           ? c.n === last.n || c.shape === last.shape
           : c.n === first.n || c.shape === first.shape;
   return ok ? null : deck.kind === "shape" ? `Deck a ${first.shape}` : "Doesn't continue the deck";
+}
+
+/** Room setting `noWhotAfterAction`: no Whot straight after an action card in a deck. */
+function whyNoWhotHere(deck: Deck, rules: WhotRules): string | null {
+  const last = parseCard(deck.last);
+  return rules.noWhotAfterAction && last.shape !== "whot" && isActiveSpecial(deck.last, rules)
+    ? "No Whot right after an action card"
+    : null;
 }
 
 /** Cards in the hand that can continue the deck. */
@@ -99,6 +107,7 @@ export function whyNotInDeck(
 ): string | null {
   const why = whyNotDeckable(card, deck, rules, handSize);
   if (why === null || !deckGivesAgain(deck, rules)) return why;
+  if (parseCard(card).shape === "whot") return why; // the setting above applies to follow-ups too
   return whyNotPlayable(
     card,
     { top: deck.last, callShape: null, pendingPick: null, handSize },

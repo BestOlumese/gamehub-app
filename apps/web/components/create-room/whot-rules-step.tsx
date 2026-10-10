@@ -144,6 +144,13 @@ export function WhotRulesStep({ rules, onChange }: Props) {
             </p>
           </div>
         ) : null}
+        {rules.decking !== "off" ? (
+          <Toggle
+            label="No Whot after an action card"
+            hint="In a deck, a Hold on, Pick 2, Pick 3, Suspension or General market can't be followed by a Whot."
+            {...flag("noWhotAfterAction")}
+          />
+        ) : null}
       </Section>
 
       <Section title="Last card">

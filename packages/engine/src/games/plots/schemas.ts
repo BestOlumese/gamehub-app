@@ -26,6 +26,8 @@ export const plotsRulesSchema: z.ZodType<PlotsRules> = z.object({
   auctionSecondsPerBid: z.number().int().min(5).max(20),
   minBidIncrement: z.number().int().min(5).max(100),
   trading: z.boolean(),
+  bankruptTo: z.enum(["creditor", "bank"]).optional(),
+  buildOnLanding: z.boolean().optional(),
   owambeJackpot: z.boolean(),
   doubleSalaryOnExactLanding: z.boolean(),
 });

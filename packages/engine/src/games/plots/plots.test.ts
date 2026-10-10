@@ -337,6 +337,43 @@ describe("debts and bankruptcy", () => {
   });
 });
 
+describe("room settings (Best, Oct 2026)", () => {
+  it("bankrupt to the bank: the creditor gets the cash owed; plots go to auction", () => {
+    let s = owned();
+    s = {
+      ...start(rules(), 3),
+      owner: s.owner.map((o, i) => (i === 3 ? 0 : o)),
+      turn: 1,
+      step: "roll",
+      cash: [2000, 25, 2000],
+      pos: [0, 0, 0],
+      ledger: { bankOut: 25, bankIn: 2000 },
+    };
+    const r = rules({ bankruptTo: "bank" });
+    const owes = rollTo(s, 1, 2, r); // seat 1 lands on 3 (Clay, full group): owes seat 0 ₦40k
+    expect(owes.state.debts).toEqual([{ from: 1, to: 0, amount: 40 }]);
+    const out = act(owes.state, 1, { type: "declare_bankruptcy" }, r);
+    expect(out.state.out).toEqual([1]);
+    expect(out.state.cash[0]).toBe(2000 + 25); // all the cash seat 1 had, up to what was owed
+    expect(out.state.owner[4]).toBeNull(); // seat 1's transport goes up for auction
+    expect(out.state.auction?.space).toBe(4);
+    expect(out.state.auctionQueue).toEqual([14]);
+  });
+
+  it("build only where you landed this turn", () => {
+    const r = rules({ buildOnLanding: true });
+    const s: PlotsState = { ...owned(), cash: [9000, 2000], pos: [1, 0], step: "manage" };
+    expect(reject(s, 0, { type: "build", space: 3 }, r)).toBe("NOT_ALLOWED");
+    expect(reject(s, 0, { type: "build", space: 1 }, r)).toBeNull();
+    // Before rolling, the plot you stand on is last turn's landing.
+    expect(reject({ ...s, step: "roll" }, 0, { type: "build", space: 1 }, r)).toBe("NOT_ALLOWED");
+    // Rolling again after doubles: you did land there this turn.
+    expect(
+      reject({ ...s, step: "roll", again: true }, 0, { type: "build", space: 1 }, r),
+    ).toBeNull();
+  });
+});
+
 describe("trading", () => {
   it("offer, accept: plots and cash change hands; the contents stay private to the two", () => {
     let s = owned();

@@ -90,6 +90,7 @@ export function whotRuleChanges(r: WhotRules): string[] {
     out.push(r.stackPenalties ? "Penalties stack" : "No defending penalties");
   if (r.crossStack && r.stackPenalties) out.push("2s and 5s mix");
   if (r.whotBlocksPick) out.push("Whot blocks picks");
+  if (r.decking !== "off" && r.noWhotAfterAction) out.push("No Whot after an action card");
   if (r.mustDeclareLastCard !== n.mustDeclareLastCard) out.push("No need to say Last card");
   else if (r.mustDeclareLastCard && r.lastCardPenalty !== n.lastCardPenalty)
     out.push(`Forget Last card: pick ${r.lastCardPenalty}`);
@@ -233,6 +234,8 @@ export function plotsRuleChanges(r: PlotsRules): string[] {
   if (!r.doublesRollAgain) out.push("No extra roll on doubles");
   if (!r.threeDoublesToPolice) out.push("Three doubles are fine");
   if (!r.evenBuilding) out.push("Build in any order");
+  if (r.buildOnLanding) out.push("Build only where you land");
+  if (r.bankruptTo === "bank") out.push("Bankrupt plots go to the bank");
   if (!r.rentWhileDetained) out.push("No rent at the Police Post");
   if (r.owambeJackpot) out.push("Owambe jackpot");
   if (r.doubleSalaryOnExactLanding) out.push("Double salary on Payday");

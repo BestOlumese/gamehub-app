@@ -38,6 +38,11 @@ export type WhotRules = {
   decking: DeckMode;
   /** A Whot blocks a Pick 2 or Pick 3 aimed at you (the penalty is gone; the Whot calls a shape). */
   whotBlocksPick: boolean;
+  /**
+   * Decking: right after an action card (Hold on, Pick 2, Pick 3, Suspension, General market) the
+   * next card can't be a Whot. A Whot can still end a deck of normal cards (Best, Oct 2026).
+   */
+  noWhotAfterAction: boolean;
 };
 
 export const whotNaija: WhotRules = {
@@ -59,4 +64,5 @@ export const whotNaija: WhotRules = {
   multiWinner: "rankByCount",
   decking: "off",
   whotBlocksPick: false,
+  noWhotAfterAction: false,
 };

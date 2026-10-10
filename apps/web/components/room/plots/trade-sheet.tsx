@@ -16,13 +16,12 @@ import {
 import type { SeatPublic } from "@gamehub/protocol";
 import { Button } from "@gamehub/ui/forms/button";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
-import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { seatName } from "../rps/names";
 import { Token } from "./tokens";
+import { bundleValue, clampCash, tradeWarning } from "./trade-values";
 
 const EMPTY: Bundle = { cash: 0, plots: [], bail: 0 };
-const CASH_STEP = 10;
 
 /** Plots that can be traded: no buildings anywhere in their group. */
 const tradable = (view: PlotsView, seat: number) =>
@@ -70,7 +69,8 @@ function Chip({
   );
 }
 
-function CashStepper({
+/** Type an amount (₦k), or nudge it by 10k or 100k (Best, Oct 2026). */
+function CashInput({
   value,
   max,
   onChange,
@@ -81,30 +81,42 @@ function CashStepper({
   onChange: (v: number) => void;
   label: string;
 }) {
-  return (
-    <div
-      className="flex items-center justify-between gap-1 rounded-control border border-line px-1 py-1"
-      aria-label={label}
+  const nudge = (d: number) => onChange(Math.max(0, Math.min(max, value + d)));
+  const step = (d: number, text: string) => (
+    <button
+      type="button"
+      aria-label={`${d > 0 ? "Add" : "Take off"} ${text} (${label})`}
+      className="flex items-center justify-center rounded px-0.5 py-1 text-[11px] font-semibold tabular-nums hover:bg-surface-2 disabled:opacity-30"
+      disabled={d > 0 ? value >= max : value <= 0}
+      onClick={() => nudge(d)}
     >
-      <button
-        type="button"
-        aria-label={`Less (${label})`}
-        className="rounded p-1 hover:bg-surface-2 disabled:opacity-30"
-        disabled={value <= 0}
-        onClick={() => onChange(Math.max(0, value - CASH_STEP))}
-      >
-        <Minus size={14} aria-hidden="true" />
-      </button>
-      <span className="text-sm font-bold tabular-nums">{naira(value)}</span>
-      <button
-        type="button"
-        aria-label={`More (${label})`}
-        className="rounded p-1 hover:bg-surface-2 disabled:opacity-30"
-        disabled={value + CASH_STEP > max}
-        onClick={() => onChange(Math.min(max, value + CASH_STEP))}
-      >
-        <Plus size={14} aria-hidden="true" />
-      </button>
+      {d > 0 ? "+" : "−"}
+      {text}
+    </button>
+  );
+  return (
+    <div className="rounded-control border border-line px-1.5 py-1">
+      <label className="flex items-center gap-1 text-sm font-bold">
+        <span aria-hidden="true">₦</span>
+        <input
+          inputMode="numeric"
+          value={value ? String(value) : ""}
+          placeholder="0"
+          aria-label={`${label} in thousands of naira`}
+          onChange={(e) => onChange(clampCash(e.target.value, max))}
+          className="w-full min-w-0 bg-transparent tabular-nums outline-none"
+        />
+        <span className="text-ink-2" aria-hidden="true">
+          k
+        </span>
+      </label>
+      <div className="mt-0.5 grid grid-cols-4">
+        {step(-100, "100k")}
+        {step(-10, "10k")}
+        {step(10, "10k")}
+        {step(100, "100k")}
+      </div>
+      <p className="text-[11px] text-ink-3">Up to {naira(max)}</p>
     </div>
   );
 }
@@ -150,7 +162,7 @@ function Side({
         <p className="text-xs text-ink-3">{edit ? "No plots to trade" : "No plots"}</p>
       )}
       {edit ? (
-        <CashStepper
+        <CashInput
           label={`${title} cash`}
           value={bundle.cash}
           max={view.cash[seat] ?? 0}
@@ -175,6 +187,37 @@ function Side({
   );
 }
 
+/** Both sides' values, and a warning when you'd get nothing or under half back. */
+function Fairness({
+  view,
+  give,
+  get,
+  bailValue,
+}: {
+  view: PlotsView;
+  give: Bundle;
+  get: Bundle;
+  bailValue: number;
+}) {
+  const warning = tradeWarning(view, give, get, bailValue);
+  return (
+    <div className="mt-3 space-y-1 text-sm">
+      <p className="flex justify-between text-ink-2 tabular-nums">
+        <span>Worth {naira(bundleValue(view, give, bailValue))}</span>
+        <span>Worth {naira(bundleValue(view, get, bailValue))}</span>
+      </p>
+      {warning ? (
+        <p
+          role="alert"
+          className="rounded-control bg-danger-soft px-2 py-1.5 font-semibold text-danger-strong"
+        >
+          {warning}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 type Props = {
   open: boolean;
   view: PlotsView;
@@ -184,12 +227,25 @@ type Props = {
   now: number;
   /** An offer made to you, to answer (else: make a new one). */
   incoming: Offer | null;
+  /** What a Bail card counts as in the values shown (the police fine). */
+  bailValue: number;
   act: (a: PlotsAction) => void;
   onClose: () => void;
 };
 
 /** Two columns, You give / You get (decided with Best, Oct 2026). */
-export function TradeSheet({ open, view, seats, me, ready, now, incoming, act, onClose }: Props) {
+export function TradeSheet({
+  open,
+  view,
+  seats,
+  me,
+  ready,
+  now,
+  incoming,
+  bailValue,
+  act,
+  onClose,
+}: Props) {
   const [partner, setPartner] = useState<number | null>(null);
   const [give, setGive] = useState<Bundle>(EMPTY);
   const [get, setGet] = useState<Bundle>(EMPTY);
@@ -230,6 +286,7 @@ export function TradeSheet({ open, view, seats, me, ready, now, incoming, act, o
             onChange={() => {}}
           />
         </div>
+        <Fairness view={view} give={incoming.get} get={incoming.give} bailValue={bailValue} />
         {hint ? (
           <p className="mt-3 text-sm font-semibold text-brand-strong">
             Completes your {hint} group
@@ -308,6 +365,7 @@ export function TradeSheet({ open, view, seats, me, ready, now, incoming, act, o
         <Side title="You give" view={view} seat={me} bundle={give} edit onChange={setGive} />
         <Side title="You get" view={view} seat={partner} bundle={get} edit onChange={setGet} />
       </div>
+      <Fairness view={view} give={give} get={get} bailValue={bailValue} />
       <p className="mt-3 min-h-5 text-sm font-semibold text-brand-strong">
         {hint
           ? `Completes your ${hint} group`

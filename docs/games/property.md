@@ -210,6 +210,8 @@ export type PropertyRules = {
   auctionSecondsPerBid: number;              // default 8
   minBidIncrement: number;                   // default 10 (₦10k)
   trading: boolean;                          // default true
+  bankruptTo: "creditor" | "bank";           // a bankrupt player's plots; default "creditor" (Oct 2026)
+  buildOnLanding: boolean;                   // build only on the plot you landed on this turn; default false (Oct 2026)
   // House rules — all off in Naija Standard
   owambeJackpot: boolean;                    // taxes and card fines go to Owambe; landing there collects them
   doubleSalaryOnExactLanding: boolean;       // land exactly on Payday → ₦600k
@@ -221,6 +223,7 @@ export const propertyNaija: PropertyRules = {
   rentWhileDetained: true, groupRentMultiplier: 2, evenBuilding: true, houseSupply: 32, hotelSupply: 12,
   mortgageInterestPct: 10, mortgageTransferInterest: "immediate", auctions: true,
   auctionSecondsPerBid: 8, minBidIncrement: 10, trading: true,
+  bankruptTo: "creditor", buildOnLanding: false,
   owambeJackpot: false, doubleSalaryOnExactLanding: false,
 };
 ```
@@ -230,7 +233,8 @@ export const propertyNaija: PropertyRules = {
 ### Building rules
 - Build only on a **complete group** with **no mortgaged property** in it; **even building** (no property more than one house ahead of the others in its group; same for selling).
 - **Limited supply** (32 houses, 12 hotels by default). **Shortage:** when two or more players want the last houses, they are **auctioned** (same auction protocol). Selling hotels back needs enough houses in the bank to break them down; if not, you must sell down further.
-- Sell buildings back to the bank for **50 %** of build cost.
+- Sell buildings back to the bank for **50 %** of build cost (kept at half with Best, Oct 2026: selling at a loss stops build-then-sell tricks). Selling a hotel takes the plot back down to 4 houses (as many as the bank has); the button says so: "Sell hotel → 4 houses +₦130k". The plot card says "Selling a building back gives half of what that level cost".
+- **Room setting `buildOnLanding`** (off in Naija Standard; Best, Oct 2026): you may build on a plot only on the turn you land on it: your turn, standing there, after moving (or rolling again after doubles). You still need the whole group. Reason shown: "Only on the plot you landed on this turn".
 
 ### Mortgages
 - Mortgage an unbuilt property (no buildings anywhere in its group) for its mortgage value. No rent while mortgaged.
@@ -239,6 +243,7 @@ export const propertyNaija: PropertyRules = {
 ### Bankruptcy
 - **To a player** (you owe them): everything you own goes to them: cash, properties (mortgaged ones keep their mortgage; the receiver pays the 10 % transfer interest immediately or keeps them mortgaged per option), Bail cards. Buildings are first sold to the bank at half price and that cash is included.
 - **To the bank** (tax, card, Police fine): buildings returned; properties go to **auction** one by one (unmortgaged) among the remaining players; cash to the bank.
+- **Room setting `bankruptTo: "bank"`** (Best, Oct 2026; "creditor" in Naija Standard): plots always go back to the bank and are auctioned; a player you owe still gets your cash, up to what you owed. Never "to the richest" (that would feed the leader).
 - A bankrupt player becomes a spectator; their place is recorded.
 
 ## Modes
@@ -265,7 +270,8 @@ export const propertyNaija: PropertyRules = {
 - **Offer** `{ to, give: { cash, props[], bailCards }, get: { cash, props[], bailCards } }`.
 - **Limits:** one open offer per ordered pair (A→B) at a time; at most 2 open offers sent per player; offers **expire after 60 s**; an offer is void if anything in it changes hands or gets built on.
 - **Responses:** accept, decline, **counter** (= decline + a new offer back, pre-filled).
-- Cash in an offer must be ≤ the giver's cash at acceptance time.
+- Cash in an offer must be ≤ the giver's cash at acceptance time. In the UI you **type the amount** (₦k) or nudge it by **±10k / ±100k** (Best, Oct 2026).
+- **Values and a warning** (Best, Oct 2026: "give me your plot and pay me too" offers caught people out): both sides show what they're worth (cash + plot prices, mortgaged plots at half, a Bail card at the police fine), and a red warning shows when you'd get nothing back or under half the value. Both when composing and when answering. Still allowed in private rooms.
 - Accepted trades apply atomically in one action. Mortgaged properties carry their mortgage (transfer interest per rule).
 - **Anti-gifting** (tournaments and bot-filled rooms): a trade where one side's value (property prices + cash) is less than **25 %** of the other side's is refused in tournament rooms ("That trade is too one-sided for a tournament"). Private rooms allow anything. See `14-security.md`.
 - **Drafts never touch storage:** an offer is an action that is persisted (it changes shared state), but composing it in the UI is client-only.

@@ -78,7 +78,13 @@ describe("Naija Plots table offers only what the game accepts", () => {
     ["timed, 3 players", plotsNaija, 3],
     [
       "classic, 6 players, house rules",
-      { ...plotsNaija, mode: "classic" as const, owambeJackpot: true },
+      {
+        ...plotsNaija,
+        mode: "classic" as const,
+        owambeJackpot: true,
+        buildOnLanding: true,
+        bankruptTo: "bank" as const,
+      },
       6,
     ],
   ] as const)
