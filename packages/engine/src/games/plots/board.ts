@@ -199,18 +199,27 @@ const to10 = (x: number) => Math.round(x / 10) * 10;
  * From the balance simulation: Royal plots are bought late and dear, so whoever completes Royal
  * has spent heavily just as the game is being decided. A discount on its houses evens that out.
  */
-export const BUILD_FACTOR: Partial<Record<Group, number>> = { clay: 0.75, royal: 0.7 };
+export const BUILD_FACTOR: Partial<Record<Group, number>> = { clay: 0.6, royal: 0.7 };
 
-/** What building level `level` (1–4 houses, 5 = the hotel) costs on this plot. */
+/** Each building level costs at least this much more than the one before. */
+export const LEVEL_STEP = 1.1;
+
+/**
+ * What building level `level` (1–4 houses, 5 = the hotel) costs on this plot: the payback price
+ * of the rent it adds, but never less than 10 % over the level before. The third house adds the
+ * most rent, so without the step the 4th house and the hotel came out cheaper than it (Best,
+ * Oct 2026).
+ */
 export function houseCost(space: number, level: number): number {
   const sp = SPACES[space];
   if (sp?.kind !== "plot" || level < 1 || level > 5) return 0;
   const before = level === 1 ? plotRent(space, 0) * 2 : plotRent(space, level - 1);
   const extra = plotRent(space, level) - before;
-  return Math.max(
+  const payback = Math.max(
     BUILD_COST[sp.group],
     to10(PAYBACK_LANDINGS * extra * LANDING_WEIGHT[sp.group] * (BUILD_FACTOR[sp.group] ?? 1)),
   );
+  return level === 1 ? payback : Math.max(payback, to10(houseCost(space, level - 1) * LEVEL_STEP));
 }
 
 /** Everything spent building a plot up to `houses` (5 = hotel). */

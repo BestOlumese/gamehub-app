@@ -55,10 +55,11 @@ describe("board and money", () => {
     // Ojo (Clay: rent factor 3): 7.5 % × ₦80k × 3 = ₦18k.
     expect([0, 1, 2, 3, 4, 5].map((h) => plotRent(1, h))).toEqual([18, 90, 250, 575, 755, 935]);
     // House prices follow the rent each one adds (1.3 landings' worth, weighted by how often the
-    // group is landed on; Royal ×0.7), never below the group's floor: Banana Island to a hotel ₦2.19M.
-    expect([1, 2, 3, 4, 5].map((l) => houseCost(39, l))).toEqual([210, 380, 760, 420, 420]);
-    expect(buildingsCost(39, 5)).toBe(2190);
-    expect([1, 2, 3, 4, 5].map((l) => houseCost(1, l))).toEqual([60, 130, 270, 150, 150]);
+    // group is landed on; Clay ×0.6, Royal ×0.7), never below the group's floor, and each level at
+    // least 10 % dearer than the one before: Banana Island to a hotel ₦3.11M.
+    expect([1, 2, 3, 4, 5].map((l) => houseCost(39, l))).toEqual([210, 380, 760, 840, 920]);
+    expect(buildingsCost(39, 5)).toBe(3110);
+    expect([1, 2, 3, 4, 5].map((l) => houseCost(1, l))).toEqual([60, 110, 220, 240, 260]);
     // Surulere (Sunset, three plots): 7.5 % × ₦220k = ₦17k (rounded).
     expect([0, 1, 5].map((h) => plotRent(16, h))).toEqual([17, 85, 885]);
     expect([naira(80), naira(1200), naira(2000), naira(1050)]).toEqual([
@@ -67,6 +68,14 @@ describe("board and money", () => {
       "₦2M",
       "₦1.05M",
     ]);
+  });
+
+  it("every building level costs more than the one before, on every plot (Best, Oct 2026)", () => {
+    SPACES.forEach((sp, i) => {
+      if (sp.kind !== "plot") return;
+      for (let l = 2; l <= 5; l++)
+        expect(houseCost(i, l), `${sp.name} level ${l}`).toBeGreaterThan(houseCost(i, l - 1));
+    });
   });
 
   it("setup: ₦2M each, the first seat starts, two shuffled decks of 16", () => {
@@ -184,8 +193,8 @@ describe("rent, building and mortgages", () => {
     const res = act(s, 0, { type: "sell_building", space: 1 }, rules({ houseSupply: 2 }));
     expect(res.state.houses[1]).toBe(2);
     expect(res.state.bank).toEqual({ houses: 0, hotels: 11 });
-    // Half of what the hotel and the 4th and 3rd houses cost on Ojo: 75 + 75 + 135.
-    expect(res.state.cash[0]).toBe(2000 + 285);
+    // Half of what the hotel and the 4th and 3rd houses cost on Ojo: 130 + 120 + 110.
+    expect(res.state.cash[0]).toBe(2000 + 360);
   });
 
   it("mortgage for half the price; unmortgage with 10 % interest", () => {
