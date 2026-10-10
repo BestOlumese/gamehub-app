@@ -110,6 +110,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [ ] Batches, each researched online with `basis` + `sources` and reviewed: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
   - [x] 01 Super Eagles (86) and 02 NPFL (26 more; 33 NPFL in all), Oct 2026.
   - [x] 03 Africa (299 from 16 nations' squads and call-ups), Oct 2026.
+  - [x] 04 Europe (568 from 24 nations' squads and call-ups; covers the big-five leagues), Oct 2026.
 - [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
 - [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
 
