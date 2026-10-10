@@ -105,8 +105,12 @@ function choose(c: Ctx, lackingShape: Shape | null, generalMarketTiming: boolean
   if (!c.playable.length) return { type: "market" };
   const { s, seat, rules, rng } = c;
 
-  // Under a penalty, the playable cards are exactly the defences.
-  if (s.pendingPick) return play(c, at(c.playable, 0));
+  // Under a penalty, the playable cards are exactly the defences: a 2 or 5 first, a Whot
+  // (blocking, house rule) only when nothing else defends.
+  if (s.pendingPick) {
+    const counter = c.playable.find((x) => parseCard(x).shape !== "whot");
+    return play(c, counter ?? at(c.playable, 0));
+  }
 
   const nonWhot = c.playable.filter((x) => parseCard(x).shape !== "whot");
   const next = nextSeat(seat, s.players, s.finished);

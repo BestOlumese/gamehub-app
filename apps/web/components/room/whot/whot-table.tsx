@@ -2,10 +2,11 @@
 
 import {
   canDeclareLastCard,
-  deckCards,
+  deckGivesAgain,
+  deckTurnCards,
   parseCard,
   playableCards,
-  whyNotDeckable,
+  whyNotInDeck,
   whyNotPlayable,
   type Shape,
   type WhotAction,
@@ -46,11 +47,13 @@ export default function WhotTable({ snap, send }: Props) {
   const myTurn = me !== null && !ended && view.turn === me;
   const canAct = myTurn && connection === "open" && pending === null;
   const ctx = { top: view.top, callShape: view.callShape, pendingPick: view.pendingPick };
-  // Decking: while your deck is open, only cards that continue it can go (older servers send no deck).
+  // Decking: while your deck is open, only cards that continue it can go (older servers send no
+  // deck); after a Hold on or General market, any normal follow-up (or the market) too.
   const deck = view.deck ?? null;
   const decking = myTurn && deck !== null;
+  const againInDeck = decking && deck !== null && deckGivesAgain(deck, rules);
   const playable = new Set(
-    !myTurn ? [] : deck ? deckCards(hand, deck, rules) : playableCards(hand, ctx, rules),
+    !myTurn ? [] : deck ? deckTurnCards(hand, deck, rules) : playableCards(hand, ctx, rules),
   );
   const pendingAction = pending?.action as WhotAction | undefined;
   const hidden = pendingAction?.type === "play" ? pendingAction.card : null;
@@ -80,7 +83,7 @@ export default function WhotTable({ snap, send }: Props) {
   function play(card: string, checkUp = false) {
     if (!canAct) return;
     const why = deck
-      ? whyNotDeckable(card, deck, rules, hand.length)
+      ? whyNotInDeck(card, deck, rules, hand.length)
       : whyNotPlayable(card, { ...ctx, handSize: hand.length }, rules);
     if (why) return refuse(why);
     if (checkUpDue && !checkUp) return refuse("Tap Check up to win");
@@ -120,22 +123,24 @@ export default function WhotTable({ snap, send }: Props) {
     ? null
     : !myTurn
       ? { text: deck ? `${turnName} is decking` : `${turnName}'s turn`, you: false }
-      : decking
-        ? { text: `Deck ${deckWord}, or tap Done`, you: true }
-        : pick
-          ? {
-              text: playable.size
-                ? `Pick ${pick.amount} or defend with a ${pick.kind}`
-                : `Pick ${pick.amount}. Tap the market`,
-              you: true,
-            }
-          : view.callShape && !playable.size
-            ? { text: `No ${view.callShape}? Go to market`, you: true }
-            : view.callShape
-              ? { text: `Play a ${view.callShape} or Whot`, you: true }
-              : !playable.size
-                ? { text: "Nothing to play. Go to market", you: true }
-                : { text: "Your turn", you: true };
+      : againInDeck
+        ? { text: `Deck ${deckWord}, or play on`, you: true }
+        : decking
+          ? { text: `Deck ${deckWord}, or tap Done`, you: true }
+          : pick
+            ? {
+                text: playable.size
+                  ? `Pick ${pick.amount} or defend with a ${pick.kind}`
+                  : `Pick ${pick.amount}. Tap the market`,
+                you: true,
+              }
+            : view.callShape && !playable.size
+              ? { text: `No ${view.callShape}? Go to market`, you: true }
+              : view.callShape
+                ? { text: `Play a ${view.callShape} or Whot`, you: true }
+                : !playable.size
+                  ? { text: "Nothing to play. Go to market", you: true }
+                  : { text: "Your turn", you: true };
 
   // Spectators sit "in" seat 0's place at the bottom and see everyone else round the table.
   const bottom = me ?? 0;
@@ -168,8 +173,8 @@ export default function WhotTable({ snap, send }: Props) {
           callShape={view.callShape}
           marketCount={view.marketCount}
           pendingPick={pick}
-          canMarket={canAct && !decking}
-          onMarket={() => canAct && !decking && act({ type: "market" })}
+          canMarket={canAct && (!decking || againInDeck)}
+          onMarket={() => canAct && (!decking || againInDeck) && act({ type: "market" })}
         />
       </TableSeats>
 

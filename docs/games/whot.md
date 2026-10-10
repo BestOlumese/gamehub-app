@@ -68,6 +68,10 @@ All fields customizable per private room (lobby rules sheet).
 - `multiWinner: "rankByCount"` (default) → game ends when first player finishes; others ranked by hand total (lowest first). Fast, good for ranked.
 - `multiWinner: "playOn"` → play continues until one player remains; places in finishing order.
 
+## Whot blocks Pick 2 and Pick 3 (house rule, added Oct 2026 at Best's request)
+
+`whotBlocksPick` (off in Naija Standard): facing a Pick 2 or Pick 3, you may play a Whot. The penalty is gone (nobody picks), and the Whot calls a shape as usual. Works with or without "defend with the same card" and with decking (a Whot played on a penalty blocks it; it's a deck of one). Event `blocked { seat, amount }`. Bots defend with a 2 or 5 first and block with a Whot only when that's all they have.
+
 ## Decking (house rule, added Oct 2026 from player requests)
 
 Research: Wikipedia's Whot! article describes **"double decking"**: "playing different cards of the same number after each other", by pre-game agreement, mainly to change the call card's shape. Pagat, WhotGuide and gamerules.com describe one card per turn and say house rules should be agreed first. Mau-Mau (Prší, Faraón) and Crazy Eights variants allow several same-rank cards at once, with each special's effect counting. Sources in `docs/research/sources.md`.
@@ -84,9 +88,10 @@ Decided with Best:
   - Each 8 skips one more player; the pick lands on the first player not skipped.
   - Each 14 is a general market at once.
   - A deck that **ends** on a 1 or 14 with no pick or 8 in it gives the player another go, as today. Otherwise the picks and skips go on.
+  - **While the deck's last card is such a 1 or 14, the extra go can start at once** (fixed Oct 2026 after Best's report: "Hold on, then a card of the same shape" was refused): any normal follow-up on that card, or the market, ends the deck and uses the extra go. **Done keeps the extra go** too (it used to drop it).
 - **A Whot can only end a deck** (call a shape; the deck closes). Played first, it's a deck of one.
 - Defending a penalty and then decking more of the same card adds to the total.
-- No market during an open deck. Last card, Check up and "can't finish on a special" work card by card as usual.
+- No market during an open deck, except as the extra go after a Hold on or General market. Last card, Check up and "can't finish on a special" work card by card as usual.
 - With decking on, a single card and nothing to continue is exactly a normal play.
 
 State: `deck: { seat, first, last, kind, count, pick, pickKind, skips } | null`, public in the view (its cards are face up). Action `{ type: "done" }`. Events: `decked { seat, count }` (2+ cards), `suspension { skipped, count, seats }` at the end of a deck.

@@ -6,7 +6,9 @@ import {
   canDeclareLastCard,
   dealSize,
   deckCards,
+  deckGivesAgain,
   deckMode,
+  deckTurnCards,
   isActiveSpecial,
   nextSeat,
   whyNotDeckable,
@@ -154,6 +156,11 @@ function playDeck(
 ) {
   const hand = d.hands[seat] as string[];
   const mode = deckMode(rules);
+  // A Whot played against a penalty (house rule) blocks it: nothing carries into the deck.
+  if (!open && d.pendingPick && card.shape === "whot") {
+    events.push({ type: "blocked", seat, amount: d.pendingPick.amount });
+    d.pendingPick = null;
+  }
   const k: Deck = open ?? {
     seat,
     first: action.card,
@@ -269,13 +276,14 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
     const hand = s.hands[seat] ?? [];
     const checkUpFor = rules.checkUpRequired && hand.length === 1 ? { checkUp: true } : {};
     if (s.deck) {
-      for (const card of deckCards(hand, s.deck, rules)) {
+      for (const card of deckTurnCards(hand, s.deck, rules)) {
         if (parseCard(card).shape === "whot") {
           for (const requestShape of SHAPES)
             actions.push({ type: "play", card, requestShape, ...checkUpFor });
         } else actions.push({ type: "play", card, ...checkUpFor });
       }
       actions.push({ type: "done" });
+      if (deckGivesAgain(s.deck, rules)) actions.push({ type: "market" });
       return actions;
     }
     const ctx = {
@@ -312,11 +320,24 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
 
     if (seat !== s.turn) return err("NOT_YOUR_TURN");
 
-    const deck = d.deck ?? null;
+    let deck = d.deck ?? null;
     if (action.type === "done") {
       if (!deck) return err("ILLEGAL_MOVE");
-      closeDeck(d, deck, seat, false, events);
+      // Ending a deck on a Hold on or General market keeps your extra go.
+      closeDeck(d, deck, seat, deckGivesAgain(deck, rules), events);
       return ok(d, events);
+    }
+    // After a Hold on or General market, a normal follow-up (or the market) ends the deck and
+    // uses the extra go, as it would without decking.
+    if (
+      deck &&
+      deckGivesAgain(deck, rules) &&
+      (action.type === "market" ||
+        (action.type === "play" &&
+          whyNotDeckable(action.card, deck, rules, (d.hands[seat] ?? []).length) !== null))
+    ) {
+      closeDeck(d, deck, seat, true, events);
+      deck = null;
     }
     if (deck && action.type === "market") return err("ILLEGAL_MOVE");
 
@@ -413,7 +434,11 @@ export const whot: GameDefinition<WhotState, WhotAction, WhotView, WhotRules> = 
       }
       d.turn = out ? next() : seat;
     } else {
-      // Whot
+      // Whot (with the house rule, it also blocks a Pick 2 or Pick 3 aimed at you)
+      if (d.pendingPick) {
+        events.push({ type: "blocked", seat, amount: d.pendingPick.amount });
+        d.pendingPick = null;
+      }
       d.callShape = action.requestShape ?? null;
       events.push({ type: "whot", shape: d.callShape });
       d.turn = next();

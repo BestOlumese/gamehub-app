@@ -84,6 +84,11 @@ function describe(
       return { text: `Pick ${String(e.amount)}!`, sound: "penalty" };
     case "hold_on":
       return { text: "Hold on", sound: "special" };
+    case "blocked":
+      return {
+        text: `${who(e.seat)} blocked Pick ${String(e.amount)} with a Whot`,
+        sound: "special",
+      };
     case "suspension": {
       // A deck of 8s skips several players at once.
       const skipped = Array.isArray(e.seats) ? (e.seats as unknown[]) : [e.skipped];

@@ -113,6 +113,11 @@ export function WhotRulesStep({ rules, onChange }: Props) {
           disabled={!rules.stackPenalties}
           {...flag("crossStack")}
         />
+        <Toggle
+          label="Whot blocks Pick 2 and Pick 3"
+          hint="Play a Whot on a Pick 2 or Pick 3: nobody picks, and you call a shape."
+          {...flag("whotBlocksPick")}
+        />
       </Section>
 
       <Section title="Decking">

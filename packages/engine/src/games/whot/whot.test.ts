@@ -379,6 +379,58 @@ describe("whot decking", () => {
     expect(res.events).toContainEqual({ type: "decked", seat: 0, count: 2 });
   });
 
+  it("Hold on in a deck: carry on with a card of the same shape (Best, Oct 2026 bug)", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["circle-1", "triangle-1", "circle-7", "star-4"], ["cross-2"], ["square-5"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("circle-1"), r);
+    expect(open.deck).toMatchObject({ count: 1 });
+    // The follow-up isn't a 1, but after a Hold on any normal play is fine: the deck ends.
+    expect(types(open, 0, r)).toContain("circle-7");
+    const res = whot.apply(open, { seat: 0, action: playCard("circle-7") }, ctx(r));
+    if (!res.ok) throw new Error(res.error);
+    expect(res.state).toMatchObject({ deck: null, turn: 1 });
+    expect(res.state.pile.slice(-2)).toEqual(["circle-1", "circle-7"]);
+    // Something that doesn't follow a circle-1 is still refused.
+    expect(reject(open, 0, playCard("star-4"), r)).toBe("ILLEGAL_MOVE");
+  });
+
+  it("Done after a Hold on (or General market) keeps your extra go", () => {
+    const r = rules({ decking: "number" });
+    const s = position({
+      hands: [["circle-1", "triangle-1", "star-4"], ["cross-2"]],
+      top: "circle-3",
+    });
+    const open = act(s, 0, playCard("circle-1"), r);
+    const after = act(open, 0, done, r);
+    expect([after.turn, after.deck]).toEqual([0, null]);
+    const gm = position({
+      hands: [["circle-14", "star-14", "circle-9", "triangle-4"], ["cross-2"], ["square-5"]],
+      top: "circle-3",
+    });
+    const opened = act(gm, 0, playCard("circle-14"), r);
+    expect(opened.hands[1]).toHaveLength(2); // everyone else picked one
+    const go = act(opened, 0, playCard("circle-9"), r);
+    expect([go.deck, go.turn]).toEqual([null, 1]);
+    const market = act(opened, 0, { type: "market" }, r);
+    expect([market.deck, market.turn, market.hands[0]?.length]).toEqual([null, 1, 4]);
+  });
+
+  it("a deck with a pick in it gives no extra go, even ending on a Hold on", () => {
+    const r = rules({ decking: "chain" });
+    const s = position({
+      hands: [["circle-2", "circle-1", "circle-7", "star-4"], ["cross-2"]],
+      top: "circle-3",
+    });
+    const a = act(s, 0, playCard("circle-2"), r);
+    const b = act(a, 0, playCard("circle-1"), r);
+    expect(reject(b, 0, playCard("star-4"), r)).toBe("ILLEGAL_MOVE");
+    const after = act(b, 0, done, r);
+    expect([after.turn, after.pendingPick?.amount]).toEqual([1, 2]);
+  });
+
   it("Done ends a deck early; a timeout does the same", () => {
     const r = rules({ decking: "number" });
     const s = position({
@@ -569,6 +621,7 @@ const rulesArb = fc.record({
     "numberOrShape" as const,
     "chain" as const,
   ),
+  whotBlocksPick: fc.boolean(),
 });
 const seedArb = fc.string({ minLength: 1, maxLength: 16 });
 const playersArb = fc.integer({ min: 2, max: 8 });
@@ -763,5 +816,37 @@ describe("whot bot pacing", () => {
       1800, 2600,
     ]);
     expect(think(s, { type: "play", card: "star-14" })).toEqual([1800, 2600]);
+  });
+});
+
+describe("whot blocks a pick (house rule)", () => {
+  const facing = (_r: WhotRules) =>
+    position({
+      hands: [["star-4"], ["whot-20-a", "circle-9", "cross-3"], ["square-5"]],
+      top: "circle-2",
+      turn: 1,
+      pendingPick: { amount: 2, kind: 2 },
+    });
+
+  it("off: a Whot can't answer a Pick 2", () => {
+    const r = rules();
+    expect(reject(facing(r), 1, playCard("whot-20-a", "star"), r)).toBe("MUST_ANSWER_PENALTY");
+  });
+
+  it("on: the Whot blocks it and calls a shape; nobody picks", () => {
+    const r = rules({ whotBlocksPick: true });
+    const res = whot.apply(facing(r), { seat: 1, action: playCard("whot-20-a", "star") }, ctx(r));
+    if (!res.ok) throw new Error(res.error);
+    expect(res.state).toMatchObject({ pendingPick: null, callShape: "star", turn: 2 });
+    expect(res.events).toContainEqual({ type: "blocked", seat: 1, amount: 2 });
+    expect(res.state.hands[1]).toHaveLength(2);
+  });
+
+  it("on, with decking: same, and the deck carries no penalty", () => {
+    const r = rules({ whotBlocksPick: true, decking: "number" });
+    const s = { ...facing(r), pendingPick: { amount: 5, kind: 5 as const } };
+    const res = whot.apply(s, { seat: 1, action: playCard("whot-20-a", "cross") }, ctx(r));
+    if (!res.ok) throw new Error(res.error);
+    expect(res.state).toMatchObject({ pendingPick: null, callShape: "cross", turn: 2, deck: null });
   });
 });

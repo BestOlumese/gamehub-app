@@ -33,6 +33,7 @@ export function whyNotPlayable(card: string, ctx: PlayContext, rules: WhotRules)
     return "You can't finish on a special card";
   }
   if (ctx.pendingPick) {
+    if (c.shape === "whot" && rules.whotBlocksPick) return null; // blocks the penalty
     if (!rules.stackPenalties) return `Pick ${ctx.pendingPick.amount}`;
     const defends = c.n === ctx.pendingPick.kind || (rules.crossStack && (c.n === 2 || c.n === 5));
     if (!defends || c.shape === "whot") return `Pick ${ctx.pendingPick.amount} or defend`;
@@ -76,6 +77,38 @@ export function whyNotDeckable(
 /** Cards in the hand that can continue the deck. */
 export const deckCards = (hand: readonly string[], deck: Deck, rules: WhotRules) =>
   hand.filter((card) => whyNotDeckable(card, deck, rules, hand.length) === null);
+
+/**
+ * The deck's last card is a Hold on or General market (with no pick or skip in the deck):
+ * the player gets another go when the deck ends, just as without decking.
+ */
+export function deckGivesAgain(deck: Deck, rules: WhotRules): boolean {
+  const { n } = parseCard(deck.last);
+  return (n === 1 || n === 14) && isActiveSpecial(deck.last, rules) && !deck.pick && !deck.skips;
+}
+
+/**
+ * Why a card can't be played while your deck is open: it must continue the deck, or (after a
+ * Hold on or General market) be a normal follow-up on that card, which ends the deck.
+ */
+export function whyNotInDeck(
+  card: string,
+  deck: Deck,
+  rules: WhotRules,
+  handSize: number,
+): string | null {
+  const why = whyNotDeckable(card, deck, rules, handSize);
+  if (why === null || !deckGivesAgain(deck, rules)) return why;
+  return whyNotPlayable(
+    card,
+    { top: deck.last, callShape: null, pendingPick: null, handSize },
+    rules,
+  );
+}
+
+/** Cards you can play while your deck is open (continuing it, or a follow-up after Hold on). */
+export const deckTurnCards = (hand: readonly string[], deck: Deck, rules: WhotRules) =>
+  hand.filter((card) => whyNotInDeck(card, deck, rules, hand.length) === null);
 
 export function playableCards(
   hand: readonly string[],

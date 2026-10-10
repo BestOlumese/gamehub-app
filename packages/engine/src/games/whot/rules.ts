@@ -36,6 +36,8 @@ export type WhotRules = {
   /** After the first player finishes: rank the rest by hand total, or play on. */
   multiWinner: "rankByCount" | "playOn";
   decking: DeckMode;
+  /** A Whot blocks a Pick 2 or Pick 3 aimed at you (the penalty is gone; the Whot calls a shape). */
+  whotBlocksPick: boolean;
 };
 
 export const whotNaija: WhotRules = {
@@ -56,4 +58,5 @@ export const whotNaija: WhotRules = {
   firstCardEffect: "none",
   multiWinner: "rankByCount",
   decking: "off",
+  whotBlocksPick: false,
 };

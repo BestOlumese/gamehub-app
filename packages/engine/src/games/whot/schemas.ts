@@ -23,6 +23,7 @@ export const whotRulesSchema: z.ZodType<WhotRules> = z.object({
   multiWinner: z.enum(["rankByCount", "playOn"]),
   // Defaults so rules saved before decking existed (or sent by an older page) still parse.
   decking: z.enum(["off", "number", "numberOrShape", "chain"]).default("off"),
+  whotBlocksPick: z.boolean().default(false),
 });
 
 export const whotActionSchema: z.ZodType<WhotAction> = z.discriminatedUnion("type", [

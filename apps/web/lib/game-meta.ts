@@ -89,6 +89,7 @@ export function whotRuleChanges(r: WhotRules): string[] {
   if (r.stackPenalties !== n.stackPenalties)
     out.push(r.stackPenalties ? "Penalties stack" : "No defending penalties");
   if (r.crossStack && r.stackPenalties) out.push("2s and 5s mix");
+  if (r.whotBlocksPick) out.push("Whot blocks picks");
   if (r.mustDeclareLastCard !== n.mustDeclareLastCard) out.push("No need to say Last card");
   else if (r.mustDeclareLastCard && r.lastCardPenalty !== n.lastCardPenalty)
     out.push(`Forget Last card: pick ${r.lastCardPenalty}`);
