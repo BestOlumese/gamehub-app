@@ -156,7 +156,7 @@ The realtime Worker needs the data to build option sets. `pnpm --filter football
    Legends sit 80–95 (they're the "rare" pool by design).
 6. **Legends** are rated at their **prime** (best 3–5 consecutive seasons), with `era: "Prime 1996–2003"`. Anchors: Pelé, Maradona ≈ 95; Cruyff, Zidane, Ronaldo (Brazil) ≈ 94; Nigerian greats compared with their contemporaries (e.g. Okocha ≈ 89 next to the late-1990s elite). No modern statistics exist for older eras → `basis` cites awards, contemporaneous rankings and records.
 7. **Wonderkids** (under 21 at the data cut-off): rated on **current ability** like anyone else, plus a **potential tag**: `high` (likely to settle 82–86) or `elite` (87+), from minutes at a young age, level, and international selection. Only the tag is shown, not a number.
-8. **Review:** every player has a 20–280 character `basis` ("14 G+A in 22 Serie A starts 2025/26; AFCON 2025 best XI; pace elite; +2 reputation") and, in the full data set, 1–5 `sources`. A second person reviews each batch before merge.
+8. **Review:** every player has a 20–280 character `basis` ("14 G+A in 22 Serie A starts 2025/26; AFCON 2025 best XI; pace elite; +2 reputation") and, in the full data set, 1–5 `sources`. Facts in `basis` must be supported by the cited sources.
 
 ## Positions and roles on cards
 - `positions[0]` is primary; alternates only where the player has played there regularly (≥ 15 % of recent minutes, or famous for it).
@@ -192,7 +192,7 @@ Fails CI if any check fails:
 
 ## Building the data (its own phase, in batches)
 - **Batch = one nation or one league**, ≈ 50–120 players: e.g. Super Eagles + NPFL; Ghana/Cameroon/Senegal/Côte d'Ivoire; Egypt/Morocco/Algeria/Tunisia; Premier League; La Liga; Serie A; Bundesliga; Ligue 1; rest of world; Legends (by decade); Wonderkids.
-- For each batch: research online (official club/league/national-team sites for squads; reputable stats providers' public pages for numbers; Wikipedia for careers and awards), fill records with `basis` and `sources`, run the validator, open a PR with the summary; a reviewer checks 10 random players against the methodology. Batches are written as short specs (`data/specs/`: name, positions, OVR, playing style, roles, basis, sources) and `pnpm --filter football-data compose` generates the face stats from the style's template so the position formula lands on the chosen OVR; hand-set stats override the template.
+- For each batch: research online (official club/league/national-team sites for squads; reputable stats providers' public pages for numbers; Wikipedia for careers and awards), fill records with `basis` and `sources`, run the validator, open a PR with the summary; only facts that a cited source supports go into `basis` (no per-batch human review; Best, Oct 2026). Batches are written as short specs (`data/specs/`: name, positions, OVR, playing style, roles, basis, sources) and `pnpm --filter football-data compose` generates the face stats from the style's template so the position formula lands on the chosen OVR; hand-set stats override the template.
 - **Transfermarkt-derived datasets** (e.g. `dcaribou/transfermarkt-datasets`, CC0 code/data, scraped from Transfermarkt, **updates paused since 6 July 2026**) may be used as a **research aid only** (to find names, ages, clubs to then verify) — never imported wholesale, never as the source of record. Transfermarkt's own database rights are unclear (`concerns.md`).
 - **Never** open or use EA FC / FIFA / SoFIFA / FUTBIN / FM databases or rating sites while rating players.
 
