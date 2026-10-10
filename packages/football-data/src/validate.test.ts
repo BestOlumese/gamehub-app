@@ -1,4 +1,5 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { compose, type Spec } from "./compose.ts";
 import { readDataset } from "./merge.ts";
 import { describe, expect, it } from "vitest";
 import { fromCompact, toCompact } from "./compact.ts";
@@ -115,7 +116,7 @@ describe("football data validator", () => {
         p.group,
         p.era,
         p.potential,
-        p.foot,
+        p.foot ?? null,
       ]);
       expect(c.roles).toEqual(p.roles);
       expect(c.keeper).toBe(p.positions[0] === "GK");
@@ -135,4 +136,19 @@ describe("the batches in data/", () => {
       expect(r.errors).toEqual([]);
     },
   );
+});
+
+describe("specs and batches", () => {
+  const dir = new URL("../data", import.meta.url).pathname;
+  it("every batch file is exactly what its spec composes to (run `pnpm compose` after editing a spec)", () => {
+    if (!existsSync(`${dir}/specs`)) return;
+    for (const f of readdirSync(`${dir}/specs`).filter((x) => x.endsWith(".json"))) {
+      const spec = JSON.parse(readFileSync(`${dir}/specs/${f}`, "utf8")) as {
+        batch: string;
+        players: Spec[];
+      };
+      const batch = JSON.parse(readFileSync(`${dir}/batches/${f}`, "utf8")) as unknown;
+      expect(batch, f).toEqual({ batch: spec.batch, players: spec.players.map(compose) });
+    }
+  });
 });

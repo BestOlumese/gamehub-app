@@ -1,0 +1,2106 @@
+{
+  "batch": "01 Nigeria: Super Eagles squads and call-ups, Oct 2026",
+  "players": [
+    {
+      "name": "Maduka Okoye",
+      "short": "Okoye",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 76,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Udinese",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Udinese; 21 caps, 0 goals for Nigeria, called up Sept 2026; very tall shot-stopper with good reach.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Maduka_Okoye"
+      ],
+      "born": 1999,
+      "height": 198
+    },
+    {
+      "name": "Arthur Okonkwo",
+      "short": "Okonkwo",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 69,
+      "style": "gk_sweeper",
+      "nation": "NG",
+      "club": "Charlton Athletic",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "sweeper_keeper": "plus"
+      },
+      "basis": "Charlton Athletic; 2 caps, 0 goals for Nigeria, called up Sept 2026; tall, comfortable off his line; Arsenal academy.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Arthur_Okonkwo"
+      ],
+      "born": 2001,
+      "height": 199
+    },
+    {
+      "name": "Francis Uzoho",
+      "short": "Uzoho",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 70,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Omonia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Omonia; 37 caps, 0 goals for Nigeria, called up June 2026; World Cup 2018 starter at 19; agile shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Francis_Uzoho"
+      ],
+      "born": 1998,
+      "height": 196
+    },
+    {
+      "name": "Adebayo Adeleye",
+      "short": "Adeleye",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 62,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Zakynthos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Zakynthos; 2 caps, 0 goals for Nigeria, called up March 2026; agile keeper, years in Israel and Greece.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Adebayo_Adeleye"
+      ],
+      "born": 2000,
+      "height": 180
+    },
+    {
+      "name": "Amas Obasogie",
+      "short": "Obasogie",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 63,
+      "style": "gk",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Club unverified (sources disagree); 1 cap, 0 goals for Nigeria, AFCON 2025 squad; experienced African-league keeper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Amas_Obasogie"
+      ],
+      "born": 1999
+    },
+    {
+      "name": "Ebenezer Harcourt",
+      "short": "Harcourt",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 58,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Sporting Lagos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Sporting Lagos; 1 cap, 0 goals for Nigeria, AFCON 2025 squad; teenage NPFL keeper; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ebenezer_Harcourt"
+      ],
+      "league": "NPFL",
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2009
+    },
+    {
+      "name": "Michael Atata",
+      "short": "Atata",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 62,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Ikorodu City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Ikorodu City; uncapped for Nigeria, in the Oct 2026 squad; NPFL keeper; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Michael_Atata"
+      ],
+      "league": "NPFL",
+      "born": 2005
+    },
+    {
+      "name": "Samuel Friday James",
+      "short": "S. F. James",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 58,
+      "style": "gk",
+      "nation": "NG",
+      "club": "SJK",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "SJK; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; young keeper developing in Finland.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006
+    },
+    {
+      "name": "Stanley Nwabali",
+      "short": "Nwabali",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 74,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Chippa United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Chippa United; 36 caps, 0 goals for Nigeria, in the Oct 2026 squad; Rejoined Chippa United (South Africa) in July 2026; Nigeria's No. 1 at AFCON 2023 (runners-up), several clean sheets; strong shot-stopper, average distribution.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Stanley_Nwabali"
+      ],
+      "foot": "R",
+      "born": 1996,
+      "height": 196,
+      "stats": {
+        "stp": 76,
+        "rct": 75,
+        "hdl": 70,
+        "cmd": 70,
+        "dst": 64,
+        "agi": 74
+      }
+    },
+    {
+      "name": "Semi Ajayi",
+      "short": "Ajayi",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 73,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Hull City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "Hull City; 59 caps, 2 goals for Nigeria, called up Sept 2026; strong in the air, scores from set pieces.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Semi_Ajayi"
+      ],
+      "foot": "R",
+      "born": 1993,
+      "height": 193
+    },
+    {
+      "name": "Bruno Onyemaechi",
+      "short": "Onyemaechi",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Olympiacos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus",
+        "attacking_full_back": "plus"
+      },
+      "basis": "Olympiacos; 32 caps, 0 goals for Nigeria, called up Sept 2026; left-back who gets forward.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Bruno_Onyemaechi"
+      ],
+      "foot": "L",
+      "born": 1999,
+      "height": 184
+    },
+    {
+      "name": "Chibuike Nwaiwu",
+      "short": "Nwaiwu",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 71,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Trabzonspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Trabzonspor; 3 caps, 0 goals for Nigeria, called up Sept 2026; tall, physical centre-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chibuike_Nwaiwu"
+      ],
+      "born": 2003,
+      "height": 193
+    },
+    {
+      "name": "Akpe Victory",
+      "short": "Akpe",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 65,
+      "style": "cb_ball",
+      "nation": "NG",
+      "club": "Basel",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Basel; uncapped for Nigeria, called up Sept 2026; tall teenage centre-back; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Akpe_Victory"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006,
+      "height": 195
+    },
+    {
+      "name": "Zaidu Sanusi",
+      "short": "Zaidu",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 75,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Porto",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Porto; 32 caps, 0 goals for Nigeria, called up June 2026; long-serving Porto left-back; quick and tireless.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Zaidu_Sanusi"
+      ],
+      "foot": "L",
+      "born": 1997,
+      "height": 182
+    },
+    {
+      "name": "Christian Akpan",
+      "short": "Akpan",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 60,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Genk",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Genk; 1 cap, 0 goals for Nigeria, called up June 2026; young defender, formerly at ASEC Mimosas.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "born": 2005
+    },
+    {
+      "name": "Igoh Ogbu",
+      "short": "Ogbu",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 72,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Slavia Prague",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Slavia Prague; 12 caps, 0 goals for Nigeria, called up June 2026; aggressive, strong centre-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Igoh_Ogbu"
+      ],
+      "born": 2000,
+      "height": 187
+    },
+    {
+      "name": "Chibueze Oputa",
+      "short": "Oputa",
+      "pos": [
+        "RB"
+      ],
+      "ovr": 60,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Enugu Rangers; 2 caps, 0 goals for Nigeria, 2026 Unity Cup squad; NPFL right-back; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chibueze_Oputa"
+      ],
+      "league": "NPFL",
+      "born": 2005
+    },
+    {
+      "name": "Ochobi Elias",
+      "short": "Ochobi",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 59,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Rivers United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Rivers United; uncapped for Nigeria, 2026 Unity Cup squad; teenage NPFL defender; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ochobi_Elias"
+      ],
+      "league": "NPFL",
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2007
+    },
+    {
+      "name": "Chidozie Awaziem",
+      "short": "Awaziem",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 72,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Konyaspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Konyaspor; 40 caps, 2 goals for Nigeria, AFCON 2025 squad; physical centre-back, AFCON 2019 bronze.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chidozie_Awaziem"
+      ],
+      "born": 1997,
+      "height": 192
+    },
+    {
+      "name": "Ryan Alebiosu",
+      "short": "Alebiosu",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 68,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Blackburn Rovers",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Blackburn Rovers; 1 cap, 0 goals for Nigeria, AFCON 2025 squad; tall, athletic right-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ryan_Alebiosu"
+      ],
+      "born": 2001,
+      "height": 188
+    },
+    {
+      "name": "William Troost-Ekong",
+      "short": "Troost-Ekong",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 72,
+      "style": "cb_ball",
+      "nation": "NG",
+      "club": "Al-Ahli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "Al-Ahli; 82 caps, 8 goals for Nigeria, AFCON 2025 squad; former captain; AFCON 2023 Player of the Tournament.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/William_Troost-Ekong"
+      ],
+      "foot": "R",
+      "born": 1993,
+      "height": 191
+    },
+    {
+      "name": "Olakunle Olusegun",
+      "short": "Olusegun",
+      "pos": [
+        "LWB",
+        "LW"
+      ],
+      "ovr": 70,
+      "style": "wb",
+      "nation": "NG",
+      "club": "Rostov",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "wing_back": "plus",
+        "winger": "plus"
+      },
+      "basis": "Rostov; 2 caps, 0 goals for Nigeria, AFCON 2025 squad; small, quick wide player used at wing-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Olakunle_Olusegun"
+      ],
+      "born": 2002,
+      "height": 167
+    },
+    {
+      "name": "Adeleke Adekunle",
+      "short": "Adekunle",
+      "pos": [
+        "RB",
+        "CB"
+      ],
+      "ovr": 60,
+      "style": "fb",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Club unverified (sources disagree); 1 cap, 0 goals for Nigeria, AFCON 2025 squad; home-based defender at AFCON 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Adeleke_Adekunle"
+      ],
+      "born": 2002,
+      "height": 175
+    },
+    {
+      "name": "Felix Agu",
+      "short": "Agu",
+      "pos": [
+        "RWB",
+        "LWB",
+        "RB"
+      ],
+      "ovr": 72,
+      "style": "wb",
+      "nation": "NG",
+      "club": "Werder Bremen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "wing_back": "plus",
+        "full_back": "plus"
+      },
+      "basis": "Werder Bremen; 1 cap, 0 goals for Nigeria, AFCON 2025 squad; Bundesliga wing-back on either side.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Felix_Agu"
+      ],
+      "born": 1999,
+      "height": 180
+    },
+    {
+      "name": "Emmanuel Michael",
+      "short": "E. Michael",
+      "pos": [
+        "RB"
+      ],
+      "ovr": 60,
+      "style": "fb",
+      "nation": "NG",
+      "club": "LASK",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "LASK; uncapped for Nigeria, AFCON 2025 squad; teenage full-back; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Emmanuel_Michael"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006
+    },
+    {
+      "name": "Abdullahi Bewene",
+      "short": "Bewene",
+      "pos": [
+        "RB"
+      ],
+      "ovr": 62,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Baník Ostrava",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Baník Ostrava; 3 caps, 0 goals for Nigeria, in the Oct 2026 squad; young right-back in the Czech league.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "born": 2004
+    },
+    {
+      "name": "Isaac James",
+      "short": "I. James",
+      "pos": [
+        "LB"
+      ],
+      "ovr": 64,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Alverca",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Alverca; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; left-back in the Portuguese top flight.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Isaac_James_(footballer)"
+      ],
+      "born": 2004,
+      "height": 175
+    },
+    {
+      "name": "Benjamin Fredrick",
+      "short": "Fredrick",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 66,
+      "style": "cb_ball",
+      "nation": "NG",
+      "club": "Brentford",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Brentford; 8 caps, 0 goals for Nigeria, in the Oct 2026 squad; young Premier League-club centre-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Benjamin_Fredrick"
+      ],
+      "born": 2005,
+      "height": 187
+    },
+    {
+      "name": "Emmanuel Fernandez",
+      "short": "Fernandez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 70,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Rangers",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Rangers; 4 caps, 1 goal for Nigeria, in the Oct 2026 squad; very tall, dominant in the air.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Emmanuel_Fernandez_(footballer)"
+      ],
+      "born": 2001,
+      "height": 194
+    },
+    {
+      "name": "Kenneth Igboke",
+      "short": "Igboke",
+      "pos": [
+        "LB"
+      ],
+      "ovr": 61,
+      "style": "fb",
+      "nation": "NG",
+      "club": "Rangers International",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Rangers International; 2 caps, 0 goals for Nigeria, in the Oct 2026 squad; NPFL left-back; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Kenneth_Igboke"
+      ],
+      "league": "NPFL",
+      "born": 2005,
+      "height": 176
+    },
+    {
+      "name": "Vince Osuji",
+      "short": "Osuji",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 61,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Tromsø",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Tromsø; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; teenage centre-back in Norway; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Vince_Osuji"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006,
+      "height": 188
+    },
+    {
+      "name": "Ola Aina",
+      "short": "Aina",
+      "pos": [
+        "LB",
+        "RB",
+        "RWB"
+      ],
+      "ovr": 80,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Nottingham Forest",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus",
+        "attacking_full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Nottingham Forest; 49 caps, 0 goals for Nigeria, called up Sept 2026; Nottingham Forest first-choice full-back on either side; Super Eagles regular; quick, tidy and strong in duels.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ola_Aina"
+      ],
+      "foot": "R",
+      "born": 1996,
+      "height": 184,
+      "stats": {
+        "spd": 87,
+        "fin": 49,
+        "pas": 75,
+        "skl": 75,
+        "def": 81,
+        "pow": 77
+      }
+    },
+    {
+      "name": "Calvin Bassey",
+      "short": "Bassey",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 79,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus",
+        "full_back": "plus"
+      },
+      "basis": "Fulham; 47 caps, 1 goal for Nigeria, called up Sept 2026; Fulham centre-back, captained the club for the first time in Aug 2026; AFCON 2023 team of the tournament defender; strong, quick, left-footed.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Calvin_Bassey"
+      ],
+      "foot": "L",
+      "born": 1999,
+      "height": 185,
+      "stats": {
+        "spd": 79,
+        "fin": 31,
+        "pas": 67,
+        "skl": 65,
+        "def": 80,
+        "pow": 83
+      }
+    },
+    {
+      "name": "Bright Osayi-Samuel",
+      "short": "Osayi-Samuel",
+      "pos": [
+        "RWB",
+        "RB",
+        "RM"
+      ],
+      "ovr": 74,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Birmingham City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Birmingham City; 37 caps, 0 goals for Nigeria, called up Sept 2026; very quick, attacking right-back; years at Fenerbahçe.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Bright_Osayi-Samuel"
+      ],
+      "foot": "R",
+      "born": 1997,
+      "height": 175,
+      "stats": {
+        "spd": 88,
+        "fin": 51,
+        "pas": 69,
+        "skl": 75,
+        "def": 73,
+        "pow": 73
+      }
+    },
+    {
+      "name": "Frank Onyeka",
+      "short": "Onyeka",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "ovr": 72,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Coventry City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "Coventry City; 46 caps, 3 goals for Nigeria, called up Sept 2026; energetic, covers ground.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Frank_Onyeka"
+      ],
+      "born": 1998,
+      "height": 183
+    },
+    {
+      "name": "Ridwan Popoola",
+      "short": "Popoola",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 58,
+      "style": "dm",
+      "nation": "NG",
+      "club": "Al Wasl",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Al Wasl; uncapped for Nigeria, called up Sept 2026; tall teenage holding midfielder; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "foot": "R",
+      "born": 2006
+    },
+    {
+      "name": "Mubarak Suleiman",
+      "short": "Mubarak",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 62,
+      "style": "am",
+      "nation": "NG",
+      "club": "Slavia Prague",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Slavia Prague; uncapped for Nigeria, called up Sept 2026; teenage attacking midfielder; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Mubarak_Suleiman"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2007,
+      "height": 175
+    },
+    {
+      "name": "Fisayo Dele-Bashiru",
+      "short": "F. Dele-Bashiru",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 74,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Lazio",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Lazio; 19 caps, 2 goals for Nigeria, called up June 2026; driving runner from midfield.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Fisayo_Dele-Bashiru"
+      ],
+      "born": 2001,
+      "height": 176
+    },
+    {
+      "name": "Tochukwu Nnadi",
+      "short": "Nnadi",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 70,
+      "style": "dm",
+      "nation": "NG",
+      "club": "Marseille",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plus",
+        "anchor": "plus"
+      },
+      "basis": "Marseille; 5 caps, 0 goals for Nigeria, called up June 2026; tenacious ball-winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Tochukwu_Nnadi"
+      ],
+      "born": 2003,
+      "height": 176
+    },
+    {
+      "name": "Alhassan Yusuf",
+      "short": "Yusuf",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "ovr": 70,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "New England Revolution",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "New England Revolution; 11 caps, 2 goals for Nigeria, 2026 Unity Cup squad; hard-running midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Alhassan_Yusuf"
+      ],
+      "born": 2000,
+      "height": 175
+    },
+    {
+      "name": "Samson Tijani",
+      "short": "Tijani",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 64,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Dukla Prague",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Dukla Prague; 3 caps, 0 goals for Nigeria, 2026 Unity Cup squad; midfielder in the Czech league.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Samson_Tijani"
+      ],
+      "born": 2002,
+      "height": 175
+    },
+    {
+      "name": "Tosin Oyedokun",
+      "short": "Oyedokun",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 62,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Club unverified (sources disagree); 2 caps, 0 goals for Nigeria, 2026 Unity Cup squad; central midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Tosin_Oyedokun"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Ebenezer Akinsanmiro",
+      "short": "Akinsanmiro",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 66,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": "Monza",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Monza; 1 cap, 0 goals for Nigeria, 2026 Unity Cup squad; Inter academy product; neat passer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ebenezer_Akinsanmiro"
+      ],
+      "born": 2004,
+      "height": 184
+    },
+    {
+      "name": "Ayobami Junior",
+      "short": "Ayobami",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 63,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": "USM Khenchela",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "USM Khenchela; 1 cap, 0 goals for Nigeria, 2026 Unity Cup squad; midfielder in the Algerian league.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ayobami_Junior"
+      ],
+      "born": 1998
+    },
+    {
+      "name": "Zadok Yohanna",
+      "short": "Zadok",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 64,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Brighton & Hove Albion",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Brighton & Hove Albion; uncapped for Nigeria, 2026 Unity Cup squad; teenage right winger; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Zadok_Yohanna"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2007,
+      "height": 181
+    },
+    {
+      "name": "Chidera Ejuke",
+      "short": "Ejuke",
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "ovr": 74,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Sevilla",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "inside_forward": "plus"
+      },
+      "basis": "Sevilla; 14 caps, 1 goal for Nigeria, called up March 2026; tricky dribbler; Belgian league and cup double with Antwerp 2023.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chidera_Ejuke"
+      ],
+      "born": 1998,
+      "height": 176
+    },
+    {
+      "name": "Yira Sor",
+      "short": "Sor",
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "ovr": 69,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Amedspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Amedspor; 1 cap, 0 goals for Nigeria, called up March 2026; quick, direct winger.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Yira_Sor"
+      ],
+      "born": 2000,
+      "height": 174
+    },
+    {
+      "name": "Muhammed Usman Edu",
+      "short": "Usman",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 63,
+      "style": "dm",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "ball_winner": "plus"
+      },
+      "basis": "Club unverified (sources disagree); uncapped for Nigeria, AFCON 2025 squad; experienced midfielder in Israel.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Muhammed_Usman_Edu"
+      ],
+      "id": "muhammed-usman-edu",
+      "born": 1994,
+      "height": 183
+    },
+    {
+      "name": "Peter Agba",
+      "short": "Agba",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 62,
+      "style": "dm",
+      "nation": "NG",
+      "club": "Győri ETO",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plus"
+      },
+      "basis": "Győri ETO; uncapped for Nigeria, AFCON 2025 squad; defensive midfielder, formerly at Maccabi Haifa.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Tom Dele-Bashiru",
+      "short": "T. Dele-Bashiru",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "ovr": 66,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Aris Thessaloniki",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Aris Thessaloniki; uncapped for Nigeria, AFCON 2025 squad; physical box-to-box midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Tom_Dele-Bashiru"
+      ],
+      "born": 1999,
+      "height": 183
+    },
+    {
+      "name": "Aderemi Adeoye",
+      "short": "Adeoye",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 59,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Ikorodu City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Ikorodu City; 3 caps, 0 goals for Nigeria, in the Oct 2026 squad; teenage NPFL midfielder; NPFL factor applied; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Aderemi_Adeoye"
+      ],
+      "league": "NPFL",
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2007
+    },
+    {
+      "name": "Stephen Michael",
+      "short": "S. Michael",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 58,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Vendsyssel",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Vendsyssel; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; teenage midfielder in Denmark; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006
+    },
+    {
+      "name": "Wilfred Igor",
+      "short": "Igor",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 60,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Kristiansund",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Kristiansund; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; young midfielder in Norway.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "born": 2005
+    },
+    {
+      "name": "Chibuzo Nwoko",
+      "short": "Nwoko",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 58,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Fulham; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; young midfielder from the Fulham academy.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "born": 2005
+    },
+    {
+      "name": "Alex Iwobi",
+      "short": "Iwobi",
+      "pos": [
+        "CM",
+        "AM",
+        "LM"
+      ],
+      "ovr": 79,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus",
+        "playmaker": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Fulham; 101 caps, 10 goals for Nigeria, called up Sept 2026; Fulham regular in midfield and wide; long-time Super Eagles starter (AFCON 2023 finalist); press-resistant carrier, steady passer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Alex_Iwobi"
+      ],
+      "foot": "R",
+      "born": 1996,
+      "height": 180,
+      "stats": {
+        "spd": 78,
+        "fin": 74,
+        "pas": 84,
+        "skl": 84,
+        "def": 62,
+        "pow": 70
+      }
+    },
+    {
+      "name": "Wilfred Ndidi",
+      "short": "Ndidi",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 78,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Beşiktaş",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plusplus",
+        "ball_winner": "plus"
+      },
+      "basis": "Beşiktaş; 81 caps, 1 goal for Nigeria, called up Sept 2026; Super Eagles captain; years as Leicester's defensive midfielder with elite tackle and interception numbers.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Wilfred_Ndidi"
+      ],
+      "foot": "R",
+      "born": 1996,
+      "height": 183,
+      "stats": {
+        "spd": 67,
+        "fin": 53,
+        "pas": 73,
+        "skl": 71,
+        "def": 81,
+        "pow": 79
+      }
+    },
+    {
+      "name": "Raphael Onyedika",
+      "short": "Onyedika",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 78,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Eintracht Frankfurt",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plus",
+        "anchor": "plus"
+      },
+      "basis": "Eintracht Frankfurt; 27 caps, 3 goals for Nigeria, called up Sept 2026; Signed by Eintracht Frankfurt from Club Brugge in Aug 2026 (€9m reported); Champions League minutes with Brugge; ball-winning, energetic defensive midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Raphael_Onyedika"
+      ],
+      "foot": "R",
+      "born": 2001,
+      "height": 184,
+      "stats": {
+        "spd": 72,
+        "fin": 50,
+        "pas": 76,
+        "skl": 72,
+        "def": 80,
+        "pow": 82
+      }
+    },
+    {
+      "name": "Tolu Arokodare",
+      "short": "Arokodare",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Ajax",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plusplus"
+      },
+      "basis": "Ajax; 12 caps, 2 goals for Nigeria, called up Sept 2026; very tall target man, prolific for Genk.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Tolu_Arokodare"
+      ],
+      "born": 2000,
+      "height": 197
+    },
+    {
+      "name": "Taiwo Awoniyi",
+      "short": "Awoniyi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Coventry City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "target_forward": "plus"
+      },
+      "basis": "Coventry City; 12 caps, 2 goals for Nigeria, called up Sept 2026; strong, hard-working striker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Taiwo_Awoniyi"
+      ],
+      "born": 1997,
+      "height": 183
+    },
+    {
+      "name": "Moses Usor",
+      "short": "Usor",
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "ovr": 68,
+      "style": "winger",
+      "nation": "NG",
+      "club": "LASK",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "LASK; 2 caps, 1 goal for Nigeria, called up Sept 2026; direct winger.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Moses_Usor"
+      ],
+      "born": 2002,
+      "height": 181
+    },
+    {
+      "name": "Paul Onuachu",
+      "short": "Onuachu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 74,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Trabzonspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plusplus"
+      },
+      "basis": "Trabzonspor; 33 caps, 5 goals for Nigeria, called up June 2026; 2.01 m target man; prolific in Belgium and Turkey.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Paul_Onuachu"
+      ],
+      "born": 1994,
+      "height": 201
+    },
+    {
+      "name": "Terem Moffi",
+      "short": "Moffi",
+      "pos": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 72,
+      "style": "st_runner",
+      "nation": "NG",
+      "club": "Hamburger SV",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "pressing_forward": "plus"
+      },
+      "basis": "Hamburger SV; 23 caps, 6 goals for Nigeria, called up June 2026; quick runner in behind, Ligue 1 scorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Terem_Moffi"
+      ],
+      "born": 1999,
+      "height": 188
+    },
+    {
+      "name": "Philip Otele",
+      "short": "Otele",
+      "pos": [
+        "RW",
+        "LW"
+      ],
+      "ovr": 70,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Basel",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Basel; 5 caps, 0 goals for Nigeria, called up June 2026; fast winger.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Philip_Otele"
+      ],
+      "born": 1999,
+      "height": 185
+    },
+    {
+      "name": "Rafiu Durosinmi",
+      "short": "Durosinmi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 69,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Genk",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Genk; 3 caps, 0 goals for Nigeria, called up June 2026; tall young striker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Rafiu_Durosinmi"
+      ],
+      "born": 2003,
+      "height": 192
+    },
+    {
+      "name": "Femi Azeez",
+      "short": "Azeez",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 70,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Brighton & Hove Albion",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Brighton & Hove Albion; 2 caps, 2 goals for Nigeria, 2026 Unity Cup squad; quick winger; scored twice in two caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Femi_Azeez"
+      ],
+      "born": 2001,
+      "height": 181
+    },
+    {
+      "name": "Owen Oseni",
+      "short": "Oseni",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 64,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Plymouth Argyle",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Plymouth Argyle; 1 cap, 0 goals for Nigeria, 2026 Unity Cup squad; young striker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Owen_Oseni"
+      ],
+      "born": 2003
+    },
+    {
+      "name": "Cyriel Dessers",
+      "short": "Dessers",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Panathinaikos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Panathinaikos; 11 caps, 3 goals for Nigeria, AFCON 2025 squad; experienced scorer for Genk, Feyenoord and Rangers.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Cyriel_Dessers"
+      ],
+      "born": 1994,
+      "height": 185
+    },
+    {
+      "name": "Salim Fago Lawal",
+      "short": "Fago Lawal",
+      "pos": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 65,
+      "style": "st_runner",
+      "nation": "NG",
+      "club": "Viktoria Plzeň",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Viktoria Plzeň; 2 caps, 0 goals for Nigeria, AFCON 2025 squad; young forward in the Czech league.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Salim_Fago_Lawal"
+      ],
+      "born": 2003,
+      "height": 184
+    },
+    {
+      "name": "Umar Sadiq",
+      "short": "Sadiq",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Valencia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Valencia; 12 caps, 1 goal for Nigeria, AFCON 2025 squad; tall striker with good feet; La Liga experience.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Umar_Sadiq"
+      ],
+      "born": 1997,
+      "height": 192
+    },
+    {
+      "name": "Victor Boniface",
+      "short": "Boniface",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 75,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Bayer Leverkusen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "target_forward": "plus"
+      },
+      "basis": "Bayer Leverkusen; 12 caps, 0 goals for Nigeria, AFCON 2025 squad; Bundesliga winner with Leverkusen 2024; powerful, direct.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Victor_Boniface"
+      ],
+      "born": 2000,
+      "height": 190
+    },
+    {
+      "name": "Christantus Uche",
+      "short": "Uche",
+      "pos": [
+        "AM",
+        "CM",
+        "ST"
+      ],
+      "ovr": 69,
+      "style": "am",
+      "nation": "NG",
+      "club": "Getafe",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shadow_striker": "plus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Getafe; 3 caps, 0 goals for Nigeria, AFCON 2025 squad; tall attacking midfielder who arrives in the box.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Christantus_Uche"
+      ],
+      "born": 2003,
+      "height": 190
+    },
+    {
+      "name": "Chisom Orji",
+      "short": "Orji",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 61,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Club unverified (sources disagree); 1 cap, 0 goals for Nigeria, AFCON 2025 squad; home-based striker at AFCON 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chisom_Orji"
+      ],
+      "born": 2001
+    },
+    {
+      "name": "Nathan Tella",
+      "short": "Tella",
+      "pos": [
+        "RW",
+        "LW",
+        "RWB"
+      ],
+      "ovr": 74,
+      "style": "inside_forward",
+      "nation": "NG",
+      "club": "Bayer Leverkusen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plus",
+        "winger": "plus"
+      },
+      "basis": "Bayer Leverkusen; 1 cap, 0 goals for Nigeria, AFCON 2025 squad; Bundesliga winner with Leverkusen 2024; quick and versatile.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Nathan_Tella"
+      ],
+      "born": 1999,
+      "height": 173
+    },
+    {
+      "name": "Abdulrasheed Shehu Dabai",
+      "short": "Dabai",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Rivers United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Rivers United; uncapped for Nigeria, AFCON 2025 squad; teenage NPFL forward; NPFL factor applied; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "league": "NPFL",
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006
+    },
+    {
+      "name": "Chukwubuikem Ikwuemesi",
+      "short": "Ikwuemesi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 68,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Oud-Heverlee Leuven",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Oud-Heverlee Leuven; uncapped for Nigeria, AFCON 2025 squad; 1.95 m striker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Chukwubuikem_Ikwuemesi"
+      ],
+      "born": 2001,
+      "height": 195
+    },
+    {
+      "name": "Kelechi Iheanacho",
+      "short": "Iheanacho",
+      "pos": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 73,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Bursaspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus",
+        "false_nine": "plus"
+      },
+      "basis": "Bursaspor; 59 caps, 15 goals for Nigeria, in the Oct 2026 squad; FA Cup winner with Leicester 2021; clever finisher.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Kelechi_Iheanacho"
+      ],
+      "foot": "L",
+      "born": 1996,
+      "height": 185
+    },
+    {
+      "name": "Ibraheem Mahfus Ajasa",
+      "short": "Ajasa",
+      "pos": [
+        "LW",
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Rostov",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Rostov; uncapped for Nigeria, in the Oct 2026 squad; young forward in Russia.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ibraheem_Mahfus_Ajasa"
+      ],
+      "born": 2005,
+      "height": 180
+    },
+    {
+      "name": "Abdullahi Umar",
+      "short": "A. Umar",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_runner",
+      "nation": "NG",
+      "club": "Hradec Králové",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Hradec Králové; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; teenage forward in the Czech league; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2007
+    },
+    {
+      "name": "Umar Abubakar",
+      "short": "Abubakar",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 64,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Famalicão",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Famalicão; 1 cap, 0 goals for Nigeria, in the Oct 2026 squad; tall teenage striker; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Umar_Abubakar"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006,
+      "height": 190
+    },
+    {
+      "name": "Peter Edokpolor",
+      "short": "Edokpolor",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 62,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Benfica",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Benfica; 1 cap, 1 goal for Nigeria, in the Oct 2026 squad; scored on his debut v Russia (3–3), Oct 2026; high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "born": 2006
+    },
+    {
+      "name": "Victor Osimhen",
+      "short": "Osimhen",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 86,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Galatasaray",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plusplus",
+        "pressing_forward": "plus"
+      },
+      "basis": "Galatasaray; 51 caps, 35 goals for Nigeria, called up Sept 2026; Galatasaray's main striker (contract to 2029); 2023 African Footballer of the Year; Serie A title and Capocannoniere with Napoli 2022/23; elite runs and aerial power.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Victor_Osimhen"
+      ],
+      "foot": "R",
+      "born": 1998,
+      "height": 186,
+      "stats": {
+        "spd": 89,
+        "fin": 89,
+        "pas": 65,
+        "skl": 79,
+        "def": 41,
+        "pow": 85
+      }
+    },
+    {
+      "name": "Ademola Lookman",
+      "short": "Lookman",
+      "pos": [
+        "LW",
+        "ST",
+        "RW"
+      ],
+      "ovr": 84,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plusplus",
+        "winger": "plus"
+      },
+      "basis": "Atlético Madrid; 45 caps, 11 goals for Nigeria, called up Sept 2026; Joined Atlético Madrid from Atalanta in July 2026; 2024 African Footballer of the Year; Europa League final hat-trick 2024; direct dribbler who scores.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Ademola_Lookman"
+      ],
+      "foot": "R",
+      "born": 1997,
+      "height": 174,
+      "stats": {
+        "spd": 88,
+        "fin": 84,
+        "pas": 76,
+        "skl": 87,
+        "def": 40,
+        "pow": 66
+      }
+    },
+    {
+      "name": "Samuel Chukwueze",
+      "short": "Chukwueze",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 78,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "AC Milan",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "inside_forward": "plusplus"
+      },
+      "basis": "AC Milan; 60 caps, 7 goals for Nigeria, called up Sept 2026; AC Milan winger kept for 2026/27 after a loan at Fulham; Europa League winner with Villarreal 2021; left-footed dribbler cutting in from the right.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Samuel_Chukwueze"
+      ],
+      "foot": "L",
+      "born": 1999,
+      "height": 172,
+      "stats": {
+        "spd": 88,
+        "fin": 73,
+        "pas": 73,
+        "skl": 86,
+        "def": 33,
+        "pow": 61
+      }
+    },
+    {
+      "name": "Moses Simon",
+      "short": "Simon",
+      "pos": [
+        "LM",
+        "LW"
+      ],
+      "ovr": 76,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Paris FC",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Paris FC; 102 caps, 12 goals for Nigeria, in the Oct 2026 squad; Over 100 caps; long spell as a Ligue 1 creator with Nantes.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Moses_Simon"
+      ],
+      "foot": "R",
+      "born": 1995,
+      "height": 168,
+      "stats": {
+        "spd": 88,
+        "fin": 70,
+        "pas": 76,
+        "skl": 82,
+        "def": 44,
+        "pow": 62
+      }
+    },
+    {
+      "name": "Akor Adams",
+      "short": "Akor",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 74,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Venezia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "target_forward": "plus"
+      },
+      "basis": "Venezia; 18 caps, 7 goals for Nigeria, in the Oct 2026 squad; strong, quick runner; Ligue 1 scorer with Montpellier.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/Akor_Adams"
+      ],
+      "foot": "R",
+      "born": 2000,
+      "height": 190,
+      "stats": {
+        "spd": 82,
+        "fin": 78,
+        "pas": 58,
+        "skl": 70,
+        "def": 38,
+        "pow": 82
+      }
+    },
+    {
+      "name": "George Ilenikhena",
+      "short": "Ilenikhena",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 70,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Al-Ittihad",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Al-Ittihad; 2 caps, 1 goal for Nigeria, called up Sept 2026; scored in the Champions League as a teenager; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+        "https://en.wikipedia.org/wiki/George_Ilenikhena"
+      ],
+      "group": "wonderkid",
+      "potential": "high",
+      "foot": "R",
+      "born": 2006,
+      "height": 185,
+      "stats": {
+        "spd": 81,
+        "fin": 71,
+        "pas": 53,
+        "skl": 69,
+        "def": 31,
+        "pow": 71
+      }
+    }
+  ]
+}

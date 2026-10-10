@@ -149,7 +149,8 @@ export const playerSchema = z.strictObject({
     .regex(/^Prime \d{4}–\d{4}$/)
     .nullable(),
   potential: z.enum(["high", "elite"]).nullable(),
-  foot: z.enum(["R", "L", "B"]),
+  /** Left out when it can't be confirmed (many young players' preferred foot isn't public). */
+  foot: z.enum(["R", "L", "B"]).optional(),
   birthYear: z.number().int().min(1900).max(2012).optional(),
   heightCm: z.number().int().min(150).max(210).optional(),
   roles: z.partialRecord(z.enum(ROLES), z.enum(["plus", "plusplus"])),

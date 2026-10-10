@@ -70,7 +70,7 @@ export const playerSchema = z.object({
   league: z.string().min(2).max(40).nullable().optional(), // for chemistry, if we store it
   era: z.string().regex(/^Prime \d{4}–\d{4}$/).nullable(),          // legends only
   potential: z.enum(["high", "elite"]).nullable(),                   // wonderkids only
-  foot: z.enum(["R", "L", "B"]),
+  foot: z.enum(["R", "L", "B"]).optional(),        // left out when it can't be confirmed (Oct 2026)
   birthYear: z.number().int().min(1900).max(2012).optional(),
   heightCm: z.number().int().min(150).max(210).optional(),
   roles: z.record(z.enum(ROLES), z.enum(["plus", "plusplus"])),      // known roles with familiarity
@@ -192,7 +192,7 @@ Fails CI if any check fails:
 
 ## Building the data (its own phase, in batches)
 - **Batch = one nation or one league**, ≈ 50–120 players: e.g. Super Eagles + NPFL; Ghana/Cameroon/Senegal/Côte d'Ivoire; Egypt/Morocco/Algeria/Tunisia; Premier League; La Liga; Serie A; Bundesliga; Ligue 1; rest of world; Legends (by decade); Wonderkids.
-- For each batch: research online (official club/league/national-team sites for squads; reputable stats providers' public pages for numbers; Wikipedia for careers and awards), fill records with `basis` and `sources`, run the validator, open a PR with the summary; a reviewer checks 10 random players against the methodology.
+- For each batch: research online (official club/league/national-team sites for squads; reputable stats providers' public pages for numbers; Wikipedia for careers and awards), fill records with `basis` and `sources`, run the validator, open a PR with the summary; a reviewer checks 10 random players against the methodology. Batches are written as short specs (`data/specs/`: name, positions, OVR, playing style, roles, basis, sources) and `pnpm --filter football-data compose` generates the face stats from the style's template so the position formula lands on the chosen OVR; hand-set stats override the template.
 - **Transfermarkt-derived datasets** (e.g. `dcaribou/transfermarkt-datasets`, CC0 code/data, scraped from Transfermarkt, **updates paused since 6 July 2026**) may be used as a **research aid only** (to find names, ages, clubs to then verify) — never imported wholesale, never as the source of record. Transfermarkt's own database rights are unclear (`concerns.md`).
 - **Never** open or use EA FC / FIFA / SoFIFA / FUTBIN / FM databases or rating sites while rating players.
 

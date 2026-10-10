@@ -26,7 +26,7 @@ export type CardPlayer = {
   group: Player["group"];
   era: string | null;
   potential: Player["potential"];
-  foot: Player["foot"];
+  foot: Player["foot"] | null;
   birthYear: number | null;
   roles: Partial<Record<Role, "plus" | "plusplus">>;
 };
@@ -62,7 +62,7 @@ export type Compact = {
 
 const GROUPS = ["current", "legend", "wonderkid"] as const;
 const POTENTIAL = [null, "high", "elite"] as const;
-const FEET = ["R", "L", "B"] as const;
+const FEET = ["R", "L", "B", null] as const;
 
 export function toCompact(data: Dataset): Compact {
   const nations: string[] = [];
@@ -92,7 +92,7 @@ export function toCompact(data: Dataset): Compact {
     const flags =
       GROUPS.indexOf(p.group) |
       (POTENTIAL.indexOf(p.potential) << 2) |
-      (FEET.indexOf(p.foot) << 4) |
+      (FEET.indexOf(p.foot ?? null) << 4) |
       ((isKeeperStats(s) ? 1 : 0) << 6);
     return [
       p.id,
@@ -159,7 +159,7 @@ export function fromCompact(c: Compact): CardPlayer[] {
       group: GROUPS[flags & 3] as Player["group"],
       era: era < 0 ? null : (c.eras[era] as string),
       potential: POTENTIAL[(flags >> 2) & 3] ?? null,
-      foot: FEET[(flags >> 4) & 3] as Player["foot"],
+      foot: FEET[(flags >> 4) & 3] ?? null,
       birthYear: born || null,
       roles,
     };

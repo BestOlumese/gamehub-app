@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "validate": "node src/cli/validate.ts",
-    "build": "node src/cli/build.ts"
+    "build": "node src/cli/build.ts",
+    "compose": "node src/cli/compose.ts"
   },
   "dependencies": {
     "zod": "catalog:"
