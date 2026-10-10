@@ -1,0 +1,6259 @@
+{
+  "batch": "06 Legends",
+  "players": [
+    {
+      "id": "jay-jay-okocha",
+      "name": "Austin 'Jay-Jay' Okocha",
+      "short": "Okocha",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "CM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 83,
+        "fin": 81,
+        "pas": 91,
+        "skl": 99,
+        "def": 43,
+        "pow": 67
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2003",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1973,
+      "roles": {
+        "classic_ten": "plusplus",
+        "advanced_playmaker": "plus"
+      },
+      "basis": "1996 Olympic gold; PSG and Fenerbahçe star; BBC African Footballer of the Year 2003 and 2004; among the most gifted dribblers of his era.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jay-Jay_Okocha"
+      ]
+    },
+    {
+      "id": "nwankwo-kanu",
+      "name": "Nwankwo Kanu",
+      "short": "Kanu",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 74,
+        "fin": 89,
+        "pas": 86,
+        "skl": 94,
+        "def": 38,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "false_nine": "plusplus",
+        "target_forward": "plus"
+      },
+      "basis": "1996 Olympic gold captain; African Footballer of the Year 1996 and 1999; Champions League (Ajax 1995) and Premier League titles with Arsenal; famous touch and flair.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nwankwo_Kanu"
+      ]
+    },
+    {
+      "id": "rashidi-yekini",
+      "name": "Rashidi Yekini",
+      "short": "Yekini",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 84,
+        "fin": 94,
+        "pas": 62,
+        "skl": 76,
+        "def": 34,
+        "pow": 92
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1963,
+      "roles": {
+        "target_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Scored Nigeria's first World Cup goal (1994); AFCON 1994 winner and top scorer; 1993 African Footballer of the Year; powerful finisher.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rashidi_Yekini"
+      ]
+    },
+    {
+      "id": "daniel-amokachi",
+      "name": "Daniel Amokachi",
+      "short": "Amokachi",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 93,
+        "fin": 85,
+        "pas": 67,
+        "skl": 83,
+        "def": 37,
+        "pow": 83
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–1997",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "'The Bull': Club Brugge and Everton forward; 1995 FA Cup winner; scored at USA 1994; 1996 Olympic gold.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Daniel_Amokachi"
+      ]
+    },
+    {
+      "id": "finidi-george",
+      "name": "Finidi George",
+      "short": "Finidi",
+      "group": "legend",
+      "positions": [
+        "RM",
+        "RW"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 95,
+        "fin": 81,
+        "pas": 89,
+        "skl": 95,
+        "def": 47,
+        "pow": 71
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–1998",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1971,
+      "roles": {
+        "winger": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Ajax's right winger in the 1995 Champions League win and three Eredivisie titles; Real Betis; AFCON 1994 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Finidi_George"
+      ]
+    },
+    {
+      "id": "sunday-oliseh",
+      "name": "Sunday Oliseh",
+      "short": "Oliseh",
+      "group": "legend",
+      "positions": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 85,
+      "stats": {
+        "spd": 75,
+        "fin": 73,
+        "pas": 87,
+        "skl": 83,
+        "def": 85,
+        "pow": 81
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2000",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1974,
+      "roles": {
+        "deep_playmaker": "plusplus",
+        "anchor": "plus"
+      },
+      "basis": "Ajax, Juventus and Dortmund midfielder; famous strike vs Spain at France 1998; 1996 Olympic gold; AFCON 1994 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Sunday_Oliseh"
+      ]
+    },
+    {
+      "id": "celestine-babayaro",
+      "name": "Celestine Babayaro",
+      "short": "Babayaro",
+      "group": "legend",
+      "positions": [
+        "LWB",
+        "LB"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 91,
+        "fin": 57,
+        "pas": 79,
+        "skl": 81,
+        "def": 83,
+        "pow": 79
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1997–2004",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1978,
+      "roles": {
+        "attacking_full_back": "plusplus",
+        "wing_back": "plus"
+      },
+      "basis": "Chelsea left-back (Cup Winners' Cup 1998, FA Cup 2000); scored in the 1996 Olympic final, gold medal.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Celestine_Babayaro"
+      ]
+    },
+    {
+      "id": "vincent-enyeama",
+      "name": "Vincent Enyeama",
+      "short": "Enyeama",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 85,
+      "stats": {
+        "stp": 89,
+        "rct": 89,
+        "hdl": 81,
+        "cmd": 75,
+        "dst": 71,
+        "agi": 87
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2008–2015",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Lille goalkeeper who set a Ligue 1 unbeaten run record (2013/14); AFCON 2013 winner; heroic World Cup displays (2010, 2014).",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Vincent_Enyeama"
+      ]
+    },
+    {
+      "id": "john-obi-mikel",
+      "name": "John Obi Mikel",
+      "short": "Mikel",
+      "group": "legend",
+      "positions": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 71,
+        "fin": 61,
+        "pas": 85,
+        "skl": 83,
+        "def": 83,
+        "pow": 83
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2013",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1987,
+      "roles": {
+        "anchor": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "Chelsea midfielder: 2012 Champions League and Premier League winner; AFCON 2013 winner; 2016 Olympic bronze captain.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mikel_John_Obi"
+      ]
+    },
+    {
+      "id": "taribo-west",
+      "name": "Taribo West",
+      "short": "West",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 83,
+        "fin": 33,
+        "pas": 65,
+        "skl": 65,
+        "def": 87,
+        "pow": 89
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2000",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1974,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Inter Milan and AC Milan centre-back; UEFA Cup with Inter 1998; 1996 Olympic gold; aggressive man-marker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Taribo_West"
+      ]
+    },
+    {
+      "id": "stephen-keshi",
+      "name": "Stephen Keshi",
+      "short": "Keshi",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 77,
+        "fin": 35,
+        "pas": 69,
+        "skl": 62,
+        "def": 85,
+        "pow": 89
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1985–1994",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1962,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "\"Big Boss\": captained Nigeria to the 1994 AFCON title, then coached the Super Eagles to the 2013 AFCON.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Stephen_Keshi"
+      ]
+    },
+    {
+      "id": "uche-okechukwu",
+      "name": "Uche Okechukwu",
+      "short": "Okechukwu",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 77,
+        "fin": 36,
+        "pas": 71,
+        "skl": 62,
+        "def": 84,
+        "pow": 87
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1998",
+      "potential": null,
+      "birthYear": 1967,
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "AFCON 1994 winner and 1996 Olympic gold medallist; years at Fenerbahçe.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uche_Okechukwu"
+      ]
+    },
+    {
+      "id": "emmanuel-amuneke",
+      "name": "Emmanuel Amuneke",
+      "short": "Amuneke",
+      "group": "legend",
+      "positions": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 91,
+        "fin": 79,
+        "pas": 80,
+        "skl": 89,
+        "def": 43,
+        "pow": 71
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–1996",
+      "potential": null,
+      "birthYear": 1970,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Scored both goals in the 1994 AFCON final; 1994 African Footballer of the Year; late winner in the 1996 Olympic final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Emmanuel_Amunike"
+      ]
+    },
+    {
+      "id": "victor-ikpeba",
+      "name": "Victor Ikpeba",
+      "short": "Ikpeba",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 93,
+        "fin": 85,
+        "pas": 72,
+        "skl": 82,
+        "def": 40,
+        "pow": 78
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–1999",
+      "potential": null,
+      "birthYear": 1973,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "1997 African Footballer of the Year at Monaco; 1996 Olympic gold medallist.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Victor_Ikpeba"
+      ]
+    },
+    {
+      "id": "tijani-babangida",
+      "name": "Tijani Babangida",
+      "short": "Babangida",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 88,
+        "fin": 75,
+        "pas": 77,
+        "skl": 87,
+        "def": 39,
+        "pow": 64
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–1999",
+      "potential": null,
+      "birthYear": 1973,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Flying Ajax winger; 1996 Olympic gold medallist.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tijani_Babangida"
+      ]
+    },
+    {
+      "id": "peter-rufai",
+      "name": "Peter Rufai",
+      "short": "Rufai",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 80,
+      "stats": {
+        "stp": 82,
+        "rct": 80,
+        "hdl": 80,
+        "cmd": 80,
+        "dst": 71,
+        "agi": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1988–1996",
+      "potential": null,
+      "birthYear": 1963,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Nigeria's goalkeeper in the 1994 AFCON win and at the 1994 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Peter_Rufai"
+      ]
+    },
+    {
+      "id": "joseph-yobo",
+      "name": "Joseph Yobo",
+      "short": "Yobo",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 76,
+        "fin": 37,
+        "pas": 69,
+        "skl": 63,
+        "def": 84,
+        "pow": 85
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "stopper": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "Everton centre-back for most of a decade; AFCON 2013 winner; first Nigerian to 100 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Joseph_Yobo"
+      ]
+    },
+    {
+      "id": "obafemi-martins",
+      "name": "Obafemi Martins",
+      "short": "Martins",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 88,
+        "fin": 84,
+        "pas": 71,
+        "skl": 79,
+        "def": 40,
+        "pow": 80
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Lightning-quick striker for Inter and Newcastle, known for somersault celebrations; Coppa Italia winner 2005 and 2006.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Obafemi_Martins"
+      ]
+    },
+    {
+      "id": "yakubu-aiyegbeni",
+      "name": "Yakubu Aiyegbeni",
+      "short": "Yakubu",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 80,
+        "fin": 88,
+        "pas": 69,
+        "skl": 76,
+        "def": 38,
+        "pow": 78
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "poacher": "plus",
+        "target_forward": "plus"
+      },
+      "basis": "Scored over 90 Premier League goals for Portsmouth, Middlesbrough, Everton and Blackburn.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Yakubu_(footballer)"
+      ]
+    },
+    {
+      "id": "julius-aghahowa",
+      "name": "Julius Aghahowa",
+      "short": "Aghahowa",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "RW"
+      ],
+      "ovr": 78,
+      "stats": {
+        "spd": 86,
+        "fin": 82,
+        "pas": 67,
+        "skl": 77,
+        "def": 36,
+        "pow": 73
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2006",
+      "potential": null,
+      "birthYear": 1982,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Shakhtar Donetsk forward famous for somersault celebrations; scored at the 2002 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Julius_Aghahowa"
+      ]
+    },
+    {
+      "id": "mutiu-adepoju",
+      "name": "Mutiu Adepoju",
+      "short": "Adepoju",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 79,
+      "stats": {
+        "spd": 76,
+        "fin": 71,
+        "pas": 80,
+        "skl": 79,
+        "def": 78,
+        "pow": 84
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1998",
+      "potential": null,
+      "birthYear": 1970,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Real Sociedad midfielder; AFCON 1994 winner; headed a goal in the 3–2 win over Spain at the 1998 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mutiu_Adepoju"
+      ]
+    },
+    {
+      "id": "sunday-mba",
+      "name": "Sunday Mba",
+      "short": "Mba",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "CM"
+      ],
+      "ovr": 76,
+      "stats": {
+        "spd": 71,
+        "fin": 72,
+        "pas": 82,
+        "skl": 81,
+        "def": 41,
+        "pow": 59
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2012–2014",
+      "potential": null,
+      "birthYear": 1988,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Scored the winning goal in the 2013 AFCON final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Sunday_Mba"
+      ]
+    },
+    {
+      "id": "emmanuel-emenike",
+      "name": "Emmanuel Emenike",
+      "short": "Emenike",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 79,
+      "stats": {
+        "spd": 74,
+        "fin": 83,
+        "pas": 68,
+        "skl": 73,
+        "def": 40,
+        "pow": 88
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2011–2015",
+      "potential": null,
+      "birthYear": 1987,
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Top scorer at AFCON 2013 as Nigeria won the title.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Emmanuel_Emenike"
+      ]
+    },
+    {
+      "id": "segun-odegbami",
+      "name": "Segun Odegbami",
+      "short": "Odegbami",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 89,
+        "fin": 80,
+        "pas": 78,
+        "skl": 86,
+        "def": 41,
+        "pow": 67
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1981",
+      "potential": null,
+      "birthYear": 1952,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "\"Mathematical\": scored twice in the 1980 AFCON final as Nigeria won their first continental title.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Segun_Odegbami"
+      ]
+    },
+    {
+      "id": "christian-chukwu",
+      "name": "Christian Chukwu",
+      "short": "Chukwu",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 74,
+        "fin": 35,
+        "pas": 66,
+        "skl": 59,
+        "def": 86,
+        "pow": 84
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1975–1982",
+      "potential": null,
+      "birthYear": 1951,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "\"Chairman\": captained Nigeria to the 1980 AFCON title.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Christian_Chukwu"
+      ]
+    },
+    {
+      "id": "muda-lawal",
+      "name": "Muda Lawal",
+      "short": "M. Lawal",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 79,
+      "stats": {
+        "spd": 76,
+        "fin": 73,
+        "pas": 78,
+        "skl": 79,
+        "def": 79,
+        "pow": 84
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1984",
+      "potential": null,
+      "birthYear": 1954,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Scored in the 1980 AFCON final win; long-serving Shooting Stars midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mudashiru_Lawal"
+      ]
+    },
+    {
+      "id": "garba-lawal",
+      "name": "Garba Lawal",
+      "short": "G. Lawal",
+      "group": "legend",
+      "positions": [
+        "LM",
+        "LW"
+      ],
+      "ovr": 78,
+      "stats": {
+        "spd": 83,
+        "fin": 71,
+        "pas": 82,
+        "skl": 80,
+        "def": 65,
+        "pow": 72
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2002",
+      "potential": null,
+      "birthYear": 1974,
+      "roles": {
+        "wide_midfielder": "plus"
+      },
+      "basis": "1996 Olympic gold medallist; played at the 1998 and 2002 World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Garba_Lawal"
+      ]
+    },
+    {
+      "id": "wilson-oruma",
+      "name": "Wilson Oruma",
+      "short": "Oruma",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 77,
+      "stats": {
+        "spd": 76,
+        "fin": 71,
+        "pas": 77,
+        "skl": 79,
+        "def": 74,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2005",
+      "potential": null,
+      "birthYear": 1976,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Under-17 world champion in 1993 and 1996 Olympic gold medallist.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Wilson_Oruma"
+      ]
+    },
+    {
+      "id": "john-utaka",
+      "name": "John Utaka",
+      "short": "Utaka",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 78,
+      "stats": {
+        "spd": 84,
+        "fin": 75,
+        "pas": 74,
+        "skl": 85,
+        "def": 36,
+        "pow": 66
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2011",
+      "potential": null,
+      "birthYear": 1982,
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Lens and Rennes winger; FA Cup winner with Portsmouth 2008.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/John_Utaka"
+      ]
+    },
+    {
+      "id": "joseph-dosu",
+      "name": "Joseph Dosu",
+      "short": "Dosu",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 77,
+      "stats": {
+        "stp": 78,
+        "rct": 78,
+        "hdl": 76,
+        "cmd": 76,
+        "dst": 70,
+        "agi": 79
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–1997",
+      "potential": null,
+      "birthYear": 1973,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Nigeria's goalkeeper in the 1996 Olympic gold medal run.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Joseph_Dosu"
+      ]
+    },
+    {
+      "id": "augustine-eguavoen",
+      "name": "Augustine Eguavoen",
+      "short": "Eguavoen",
+      "group": "legend",
+      "positions": [
+        "RB"
+      ],
+      "ovr": 77,
+      "stats": {
+        "spd": 84,
+        "fin": 46,
+        "pas": 75,
+        "skl": 71,
+        "def": 78,
+        "pow": 76
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1988–1996",
+      "potential": null,
+      "birthYear": 1965,
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "AFCON 1994 winner; right-back at the 1994 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Augustine_Eguavoen"
+      ]
+    },
+    {
+      "id": "ben-iroha",
+      "name": "Ben Iroha",
+      "short": "Iroha",
+      "group": "legend",
+      "positions": [
+        "LB"
+      ],
+      "ovr": 77,
+      "stats": {
+        "spd": 86,
+        "fin": 43,
+        "pas": 73,
+        "skl": 74,
+        "def": 78,
+        "pow": 75
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1998",
+      "potential": null,
+      "birthYear": 1969,
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "AFCON 1994 winner; left-back at the 1994 and 1998 World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Benedict_Iroha"
+      ]
+    },
+    {
+      "id": "samson-siasia",
+      "name": "Samson Siasia",
+      "short": "Siasia",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 78,
+      "stats": {
+        "spd": 77,
+        "fin": 83,
+        "pas": 65,
+        "skl": 78,
+        "def": 36,
+        "pow": 77
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1987–1996",
+      "potential": null,
+      "birthYear": 1967,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "AFCON 1994 winner; scored against Argentina at the 1994 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Samson_Siasia"
+      ]
+    },
+    {
+      "id": "peter-odemwingie",
+      "name": "Peter Odemwingie",
+      "short": "Odemwingie",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "RW"
+      ],
+      "ovr": 79,
+      "stats": {
+        "spd": 79,
+        "fin": 81,
+        "pas": 73,
+        "skl": 79,
+        "def": 38,
+        "pow": 82
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2012",
+      "potential": null,
+      "birthYear": 1981,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "2008 Olympic silver medallist; 15 Premier League goals for West Brom in 2010/11.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Peter_Odemwingie"
+      ]
+    },
+    {
+      "id": "taye-taiwo",
+      "name": "Taye Taiwo",
+      "short": "Taiwo",
+      "group": "legend",
+      "positions": [
+        "LB"
+      ],
+      "ovr": 78,
+      "stats": {
+        "spd": 86,
+        "fin": 43,
+        "pas": 75,
+        "skl": 72,
+        "def": 78,
+        "pow": 77
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2011",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1985,
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Ligue 1 champion with Marseille 2010; thunderous left foot.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Taye_Taiwo"
+      ]
+    },
+    {
+      "id": "kalu-uche",
+      "name": "Kalu Uche",
+      "short": "K. Uche",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 77,
+      "stats": {
+        "spd": 74,
+        "fin": 75,
+        "pas": 80,
+        "skl": 84,
+        "def": 38,
+        "pow": 63
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2010",
+      "potential": null,
+      "birthYear": 1982,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Almería attacking midfielder; scored at the 2010 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kalu_Uche"
+      ]
+    },
+    {
+      "id": "henry-nwosu",
+      "name": "Henry Nwosu",
+      "short": "Nwosu",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 77,
+      "stats": {
+        "spd": 75,
+        "fin": 75,
+        "pas": 83,
+        "skl": 81,
+        "def": 39,
+        "pow": 61
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1980–1990",
+      "potential": null,
+      "birthYear": 1963,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "AFCON 1980 winner as a teenager.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Henry_Nwosu"
+      ]
+    },
+    {
+      "id": "ike-shorunmu",
+      "name": "Ike Shorunmu",
+      "short": "Shorunmu",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 76,
+      "stats": {
+        "stp": 78,
+        "rct": 77,
+        "hdl": 75,
+        "cmd": 74,
+        "dst": 68,
+        "agi": 74
+      },
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2002",
+      "potential": null,
+      "birthYear": 1967,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Nigeria's goalkeeper at AFCON 2000 (runners-up); Beşiktaş.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ike_Shorunmu"
+      ]
+    },
+    {
+      "id": "didier-drogba",
+      "name": "Didier Drogba",
+      "short": "Drogba",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 86,
+        "fin": 94,
+        "pas": 76,
+        "skl": 84,
+        "def": 42,
+        "pow": 96
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "target_forward": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Chelsea talisman: 2012 Champions League final equaliser and winning penalty; Premier League Golden Boot 2007 and 2010; twice African Footballer of the Year.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Didier_Drogba"
+      ]
+    },
+    {
+      "id": "samuel-etoo",
+      "name": "Samuel Eto'o",
+      "short": "Eto'o",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 94,
+        "fin": 94,
+        "pas": 78,
+        "skl": 88,
+        "def": 44,
+        "pow": 82
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Three Champions League titles (Barcelona ×2, Inter); four-time African Footballer of the Year; AFCON 2000 and 2002 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Samuel_Eto'o"
+      ]
+    },
+    {
+      "id": "george-weah",
+      "name": "George Weah",
+      "short": "Weah",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 93,
+        "fin": 93,
+        "pas": 75,
+        "skl": 91,
+        "def": 41,
+        "pow": 87
+      },
+      "nation": "LR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–1998",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1966,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "1995 Ballon d'Or and FIFA World Player of the Year, the only African to win both; AC Milan and PSG striker.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/George_Weah"
+      ]
+    },
+    {
+      "id": "yaya-toure",
+      "name": "Yaya Touré",
+      "short": "Yaya",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "DM"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 83,
+        "fin": 87,
+        "pas": 91,
+        "skl": 91,
+        "def": 75,
+        "pow": 95
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2009–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1983,
+      "roles": {
+        "box_to_box": "plusplus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "African Footballer of the Year four years running (2011–2014); Manchester City title winner with 20 league goals in 2013/14; AFCON 2015 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Yaya_Tour%C3%A9"
+      ]
+    },
+    {
+      "id": "abedi-pele",
+      "name": "Abedi Pelé",
+      "short": "Abedi",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 87,
+        "fin": 83,
+        "pas": 89,
+        "skl": 95,
+        "def": 41,
+        "pow": 65
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1964,
+      "roles": {
+        "classic_ten": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Marseille's 1993 Champions League winner; three-time African Footballer of the Year; AFCON 1982 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Abedi_Pele"
+      ]
+    },
+    {
+      "id": "roger-milla",
+      "name": "Roger Milla",
+      "short": "Milla",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 81,
+        "fin": 91,
+        "pas": 75,
+        "skl": 87,
+        "def": 33,
+        "pow": 77
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1990",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1952,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Four goals at Italia 90 aged 38 (quarter-final run); oldest World Cup scorer in 1994; twice African Footballer of the Year.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Roger_Milla"
+      ]
+    },
+    {
+      "id": "michael-essien",
+      "name": "Michael Essien",
+      "short": "Essien",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "DM"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 86,
+        "fin": 80,
+        "pas": 87,
+        "skl": 84,
+        "def": 86,
+        "pow": 94
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "box_to_box": "plusplus",
+        "ball_winner": "plus"
+      },
+      "basis": "\"The Bison\": two Premier League titles with Chelsea (2006, 2010); powerful, tireless midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Michael_Essien"
+      ]
+    },
+    {
+      "id": "tony-yeboah",
+      "name": "Tony Yeboah",
+      "short": "Yeboah",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 83,
+        "fin": 88,
+        "pas": 76,
+        "skl": 84,
+        "def": 43,
+        "pow": 83
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1992–1997",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1966,
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Bundesliga top scorer 1993 and 1994 with Frankfurt; famous volleys for Leeds.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tony_Yeboah"
+      ]
+    },
+    {
+      "id": "asamoah-gyan",
+      "name": "Asamoah Gyan",
+      "short": "Gyan",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 83,
+        "fin": 85,
+        "pas": 72,
+        "skl": 84,
+        "def": 38,
+        "pow": 84
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2008–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1985,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Ghana's record goalscorer; six World Cup goals, an African record.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Asamoah_Gyan"
+      ]
+    },
+    {
+      "id": "samuel-kuffour",
+      "name": "Samuel Kuffour",
+      "short": "Kuffour",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 77,
+        "fin": 38,
+        "pas": 68,
+        "skl": 61,
+        "def": 88,
+        "pow": 88
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1997–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Champions League winner with Bayern 2001; six Bundesliga titles.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Samuel_Kuffour"
+      ]
+    },
+    {
+      "id": "stephen-appiah",
+      "name": "Stephen Appiah",
+      "short": "Appiah",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 79,
+        "fin": 70,
+        "pas": 82,
+        "skl": 79,
+        "def": 79,
+        "pow": 82
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2008",
+      "potential": null,
+      "birthYear": 1980,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Captained Ghana at their first World Cup in 2006; Fenerbahçe and Juventus.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Stephen_Appiah"
+      ]
+    },
+    {
+      "id": "sulley-muntari",
+      "name": "Sulley Muntari",
+      "short": "Muntari",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "LM"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 79,
+        "fin": 73,
+        "pas": 81,
+        "skl": 79,
+        "def": 80,
+        "pow": 85
+      },
+      "nation": "GH",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2007–2012",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1984,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Treble winner with Inter in 2010.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Sulley_Muntari"
+      ]
+    },
+    {
+      "id": "kolo-toure",
+      "name": "Kolo Touré",
+      "short": "K. Touré",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 78,
+        "fin": 36,
+        "pas": 71,
+        "skl": 65,
+        "def": 86,
+        "pow": 90
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "stopper": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "Unbeaten Premier League title with Arsenal in 2003/04; AFCON 2015 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kolo_Tour%C3%A9"
+      ]
+    },
+    {
+      "id": "laurent-pokou",
+      "name": "Laurent Pokou",
+      "short": "Pokou",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 82,
+        "fin": 86,
+        "pas": 68,
+        "skl": 81,
+        "def": 40,
+        "pow": 83
+      },
+      "nation": "CI",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1968–1975",
+      "potential": null,
+      "birthYear": 1947,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Scored five goals in one AFCON match (1970); long held the AFCON scoring record.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Laurent_Pokou"
+      ]
+    },
+    {
+      "id": "el-hadji-diouf",
+      "name": "El Hadji Diouf",
+      "short": "Diouf",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "RW"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 87,
+        "fin": 85,
+        "pas": 65,
+        "skl": 81,
+        "def": 39,
+        "pow": 77
+      },
+      "nation": "SN",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2001–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "African Footballer of the Year 2001 and 2002; led Senegal's run to the 2002 World Cup quarter-finals.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/El_Hadji_Diouf"
+      ]
+    },
+    {
+      "id": "papa-bouba-diop",
+      "name": "Papa Bouba Diop",
+      "short": "P. B. Diop",
+      "group": "legend",
+      "positions": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 79,
+      "stats": {
+        "spd": 71,
+        "fin": 51,
+        "pas": 77,
+        "skl": 70,
+        "def": 84,
+        "pow": 86
+      },
+      "nation": "SN",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2001–2007",
+      "potential": null,
+      "birthYear": 1978,
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Scored the winner against holders France in the 2002 World Cup opener.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Papa_Bouba_Diop"
+      ]
+    },
+    {
+      "id": "rigobert-song",
+      "name": "Rigobert Song",
+      "short": "Song",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 77,
+        "fin": 35,
+        "pas": 71,
+        "skl": 61,
+        "def": 84,
+        "pow": 85
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2006",
+      "potential": null,
+      "birthYear": 1976,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "AFCON winner 2000 and 2002; played at four World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rigobert_Song"
+      ]
+    },
+    {
+      "id": "patrick-mboma",
+      "name": "Patrick Mboma",
+      "short": "Mboma",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 81,
+        "fin": 87,
+        "pas": 76,
+        "skl": 82,
+        "def": 40,
+        "pow": 86
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2002",
+      "potential": null,
+      "birthYear": 1970,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "African Footballer of the Year 2000; Olympic gold 2000; AFCON winner 2000 and 2002.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Patrick_Mboma"
+      ]
+    },
+    {
+      "id": "thomas-n-kono",
+      "name": "Thomas N'Kono",
+      "short": "N'Kono",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 83,
+      "stats": {
+        "stp": 85,
+        "rct": 85,
+        "hdl": 83,
+        "cmd": 79,
+        "dst": 73,
+        "agi": 82
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1979–1990",
+      "potential": null,
+      "birthYear": 1955,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "African Footballer of the Year 1979 and 1982; starred at the 1982 and 1990 World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Thomas_N'Kono"
+      ]
+    },
+    {
+      "id": "lauren",
+      "name": "Lauren",
+      "short": "Lauren",
+      "group": "legend",
+      "positions": [
+        "RB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 90,
+        "fin": 46,
+        "pas": 77,
+        "skl": 75,
+        "def": 81,
+        "pow": 81
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Right-back in Arsenal's unbeaten 2003/04 season; Olympic gold 2000; AFCON winner 2000 and 2002.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lauren"
+      ]
+    },
+    {
+      "id": "marc-vivien-foe",
+      "name": "Marc-Vivien Foé",
+      "short": "Foé",
+      "group": "legend",
+      "positions": [
+        "DM"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 70,
+        "fin": 54,
+        "pas": 75,
+        "skl": 73,
+        "def": 86,
+        "pow": 86
+      },
+      "nation": "CM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2003",
+      "potential": null,
+      "birthYear": 1975,
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "AFCON winner 2000 and 2002; Lens and Lyon midfielder.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Marc-Vivien_Fo%C3%A9"
+      ]
+    },
+    {
+      "id": "mohamed-aboutrika",
+      "name": "Mohamed Aboutrika",
+      "short": "Aboutrika",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 81,
+        "fin": 82,
+        "pas": 90,
+        "skl": 89,
+        "def": 49,
+        "pow": 68
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "AFCON winner 2006 and 2008, scoring the winner in the 2008 final; five CAF Champions League titles with Al Ahly.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mohamed_Aboutrika"
+      ]
+    },
+    {
+      "id": "hossam-hassan",
+      "name": "Hossam Hassan",
+      "short": "H. Hassan",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 83,
+        "fin": 86,
+        "pas": 70,
+        "skl": 80,
+        "def": 37,
+        "pow": 82
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1988–2000",
+      "potential": null,
+      "birthYear": 1966,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Three AFCON titles; one of Egypt's all-time top scorers.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hossam_Hassan"
+      ]
+    },
+    {
+      "id": "essam-el-hadary",
+      "name": "Essam El Hadary",
+      "short": "El Hadary",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 81,
+      "stats": {
+        "stp": 81,
+        "rct": 83,
+        "hdl": 81,
+        "cmd": 79,
+        "dst": 72,
+        "agi": 82
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2010",
+      "potential": null,
+      "birthYear": 1973,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Four AFCON titles; oldest player ever at a World Cup, aged 45 in 2018.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Essam_El_Hadary"
+      ]
+    },
+    {
+      "id": "ahmed-hassan",
+      "name": "Ahmed Hassan",
+      "short": "A. Hassan",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "RM"
+      ],
+      "ovr": 80,
+      "stats": {
+        "spd": 80,
+        "fin": 73,
+        "pas": 80,
+        "skl": 79,
+        "def": 78,
+        "pow": 86
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2010",
+      "potential": null,
+      "birthYear": 1975,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Four AFCON titles; one of the most-capped men's internationals ever.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ahmed_Hassan_(footballer,_born_1975)"
+      ]
+    },
+    {
+      "id": "mahmoud-el-khatib",
+      "name": "Mahmoud El Khatib",
+      "short": "El Khatib",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 78,
+        "fin": 78,
+        "pas": 89,
+        "skl": 87,
+        "def": 46,
+        "pow": 69
+      },
+      "nation": "EG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1986",
+      "potential": null,
+      "birthYear": 1954,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "African Footballer of the Year 1983; Al Ahly great.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mahmoud_El_Khatib"
+      ]
+    },
+    {
+      "id": "rabah-madjer",
+      "name": "Rabah Madjer",
+      "short": "Madjer",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 82,
+        "fin": 86,
+        "pas": 74,
+        "skl": 86,
+        "def": 42,
+        "pow": 86
+      },
+      "nation": "DZ",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1982–1990",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1958,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Backheeled a goal in Porto's 1987 European Cup final win; AFCON 1990 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rabah_Madjer"
+      ]
+    },
+    {
+      "id": "lakhdar-belloumi",
+      "name": "Lakhdar Belloumi",
+      "short": "Belloumi",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 83,
+      "stats": {
+        "spd": 81,
+        "fin": 81,
+        "pas": 86,
+        "skl": 89,
+        "def": 46,
+        "pow": 67
+      },
+      "nation": "DZ",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1979–1986",
+      "potential": null,
+      "birthYear": 1958,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "African Footballer of the Year 1981; scored the winner against West Germany at the 1982 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lakhdar_Belloumi"
+      ]
+    },
+    {
+      "id": "mustapha-hadji",
+      "name": "Mustapha Hadji",
+      "short": "Hadji",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 79,
+        "fin": 79,
+        "pas": 88,
+        "skl": 85,
+        "def": 47,
+        "pow": 69
+      },
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2002",
+      "potential": null,
+      "birthYear": 1971,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "African Footballer of the Year 1998; famous goal against Norway at the 1998 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mustapha_Hadji"
+      ]
+    },
+    {
+      "id": "noureddine-naybet",
+      "name": "Noureddine Naybet",
+      "short": "Naybet",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 72,
+        "fin": 37,
+        "pas": 67,
+        "skl": 60,
+        "def": 87,
+        "pow": 87
+      },
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2004",
+      "potential": null,
+      "birthYear": 1970,
+      "roles": {
+        "stopper": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "La Liga champion with Deportivo La Coruña in 2000; long-time Morocco captain.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Noureddine_Naybet"
+      ]
+    },
+    {
+      "id": "badou-zaki",
+      "name": "Badou Zaki",
+      "short": "Zaki",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 81,
+      "stats": {
+        "stp": 83,
+        "rct": 84,
+        "hdl": 79,
+        "cmd": 80,
+        "dst": 72,
+        "agi": 81
+      },
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1990",
+      "potential": null,
+      "birthYear": 1959,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "African Footballer of the Year 1986, when Morocco topped their World Cup group.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ezzaki_Badou"
+      ]
+    },
+    {
+      "id": "frederic-kanoute",
+      "name": "Frédéric Kanouté",
+      "short": "Kanouté",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 81,
+        "fin": 85,
+        "pas": 76,
+        "skl": 82,
+        "def": 42,
+        "pow": 83
+      },
+      "nation": "ML",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2010",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "African Footballer of the Year 2007; UEFA Cup winner with Sevilla 2006 and 2007.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Kanout%C3%A9"
+      ]
+    },
+    {
+      "id": "seydou-keita",
+      "name": "Seydou Keita",
+      "short": "S. Keita",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 79,
+        "fin": 71,
+        "pas": 84,
+        "skl": 80,
+        "def": 80,
+        "pow": 87
+      },
+      "nation": "ML",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2007–2012",
+      "potential": null,
+      "birthYear": 1980,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Champions League winner with Barcelona 2009 and 2011.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Seydou_Keita"
+      ]
+    },
+    {
+      "id": "salif-keita",
+      "name": "Salif Keïta",
+      "short": "Salif Keïta",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 81,
+        "fin": 88,
+        "pas": 74,
+        "skl": 84,
+        "def": 39,
+        "pow": 85
+      },
+      "nation": "ML",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1967–1975",
+      "potential": null,
+      "birthYear": 1946,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "The first African Footballer of the Year (1970); Saint-Étienne star.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Salif_Ke%C3%AFta_(Malian_footballer)"
+      ]
+    },
+    {
+      "id": "kalusha-bwalya",
+      "name": "Kalusha Bwalya",
+      "short": "Bwalya",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 79,
+        "fin": 79,
+        "pas": 86,
+        "skl": 86,
+        "def": 48,
+        "pow": 69
+      },
+      "nation": "ZM",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1986–1996",
+      "potential": null,
+      "birthYear": 1963,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "African Footballer of the Year 1988; hat-trick against Italy at the 1988 Olympics.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kalusha_Bwalya"
+      ]
+    },
+    {
+      "id": "lucas-radebe",
+      "name": "Lucas Radebe",
+      "short": "Radebe",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 81,
+      "stats": {
+        "spd": 76,
+        "fin": 36,
+        "pas": 67,
+        "skl": 62,
+        "def": 85,
+        "pow": 84
+      },
+      "nation": "ZA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2003",
+      "potential": null,
+      "birthYear": 1969,
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Leeds United captain; AFCON 1996 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lucas_Radebe"
+      ]
+    },
+    {
+      "id": "benni-mccarthy",
+      "name": "Benni McCarthy",
+      "short": "McCarthy",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 85,
+        "fin": 86,
+        "pas": 70,
+        "skl": 81,
+        "def": 38,
+        "pow": 82
+      },
+      "nation": "ZA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2007",
+      "potential": null,
+      "birthYear": 1977,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Champions League winner with Porto 2004; South Africa's record goalscorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Benni_McCarthy"
+      ]
+    },
+    {
+      "id": "emmanuel-adebayor",
+      "name": "Emmanuel Adebayor",
+      "short": "Adebayor",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 78,
+        "fin": 86,
+        "pas": 70,
+        "skl": 75,
+        "def": 43,
+        "pow": 92
+      },
+      "nation": "TG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "African Footballer of the Year 2008; 24 Premier League goals for Arsenal in 2007/08.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Emmanuel_Adebayor"
+      ]
+    },
+    {
+      "id": "pele",
+      "name": "Pelé",
+      "short": "Pelé",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 95,
+      "stats": {
+        "spd": 92,
+        "fin": 98,
+        "pas": 90,
+        "skl": 98,
+        "def": 42,
+        "pow": 80
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1958–1970",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1940,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "classic_ten": "plus"
+      },
+      "basis": "Three World Cups (1958, 1962, 1970); Santos's all-time great; anchor for the top of the legend scale.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Pel%C3%A9"
+      ]
+    },
+    {
+      "id": "diego-maradona",
+      "name": "Diego Maradona",
+      "short": "Maradona",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 94,
+      "stats": {
+        "spd": 87,
+        "fin": 91,
+        "pas": 95,
+        "skl": 99,
+        "def": 39,
+        "pow": 73
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1990",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1960,
+      "roles": {
+        "classic_ten": "plusplus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Won the 1986 World Cup almost alone; two Serie A titles with Napoli; dribbling anchor at the top of the scale.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Diego_Maradona"
+      ]
+    },
+    {
+      "id": "johan-cruyff",
+      "name": "Johan Cruyff",
+      "short": "Cruyff",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 95,
+        "fin": 95,
+        "pas": 97,
+        "skl": 99,
+        "def": 47,
+        "pow": 69
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1978",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1947,
+      "roles": {
+        "false_nine": "plusplus",
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Three Ballon d'Or awards; three straight European Cups with Ajax; 1974 World Cup finalist and total-football pioneer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Johan_Cruyff"
+      ]
+    },
+    {
+      "id": "zinedine-zidane",
+      "name": "Zinedine Zidane",
+      "short": "Zidane",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "CM"
+      ],
+      "ovr": 94,
+      "stats": {
+        "spd": 78,
+        "fin": 86,
+        "pas": 96,
+        "skl": 99,
+        "def": 58,
+        "pow": 84
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2006",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1972,
+      "roles": {
+        "classic_ten": "plusplus",
+        "playmaker": "plus"
+      },
+      "basis": "1998 World Cup (two goals in the final) and Euro 2000; 1998 Ballon d'Or; 2002 Champions League final volley.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Zinedine_Zidane"
+      ]
+    },
+    {
+      "id": "ronaldo-nazario",
+      "name": "Ronaldo Nazário",
+      "short": "Ronaldo",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 94,
+      "stats": {
+        "spd": 96,
+        "fin": 96,
+        "pas": 76,
+        "skl": 96,
+        "def": 30,
+        "pow": 82
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2002",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Ballon d'Or 1997 and 2002; 2002 World Cup winner and top scorer (8 goals); explosive pace and finishing.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ronaldo_(Brazilian_footballer)"
+      ]
+    },
+    {
+      "id": "franz-beckenbauer",
+      "name": "Franz Beckenbauer",
+      "short": "Beckenbauer",
+      "group": "legend",
+      "positions": [
+        "CB",
+        "DM"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 83,
+        "fin": 65,
+        "pas": 91,
+        "skl": 89,
+        "def": 95,
+        "pow": 85
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1976",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1945,
+      "roles": {
+        "ball_playing_defender": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "1974 World Cup-winning captain; Ballon d'Or 1972 and 1976; three straight European Cups with Bayern; the original attacking libero.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Franz_Beckenbauer"
+      ]
+    },
+    {
+      "id": "paolo-maldini",
+      "name": "Paolo Maldini",
+      "short": "Maldini",
+      "group": "legend",
+      "positions": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 86,
+        "fin": 48,
+        "pas": 82,
+        "skl": 82,
+        "def": 96,
+        "pow": 84
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–2003",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1968,
+      "roles": {
+        "covering_defender": "plusplus",
+        "full_back": "plus"
+      },
+      "basis": "Five European Cups/Champions Leagues with AC Milan; seven Serie A titles; benchmark for defending.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paolo_Maldini"
+      ]
+    },
+    {
+      "id": "gianluigi-buffon",
+      "name": "Gianluigi Buffon",
+      "short": "Buffon",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 92,
+      "stats": {
+        "stp": 93,
+        "rct": 93,
+        "hdl": 89,
+        "cmd": 89,
+        "dst": 75,
+        "agi": 89
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2002–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "shot_stopper": "plusplus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "2006 World Cup winner (two goals conceded all tournament); record Serie A titles with Juventus; goalkeeper anchor.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gianluigi_Buffon"
+      ]
+    },
+    {
+      "id": "lev-yashin",
+      "name": "Lev Yashin",
+      "short": "Yashin",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 92,
+      "stats": {
+        "stp": 92,
+        "rct": 92,
+        "hdl": 84,
+        "cmd": 92,
+        "dst": 74,
+        "agi": 86
+      },
+      "nation": "RU",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1956–1966",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1929,
+      "roles": {
+        "sweeper_keeper": "plusplus",
+        "shot_stopper": "plus"
+      },
+      "basis": "The only goalkeeper to win the Ballon d'Or (1963); played for the Soviet Union (shown under Russia's flag); 1960 European champion.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lev_Yashin"
+      ]
+    },
+    {
+      "id": "thierry-henry",
+      "name": "Thierry Henry",
+      "short": "Henry",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 96,
+        "fin": 94,
+        "pas": 86,
+        "skl": 94,
+        "def": 38,
+        "pow": 78
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Arsenal's record scorer; four Premier League Golden Boots; unbeaten 2003/04 title; 1998 World Cup and Euro 2000 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Thierry_Henry"
+      ]
+    },
+    {
+      "id": "ronaldinho",
+      "name": "Ronaldinho",
+      "short": "Ronaldinho",
+      "group": "legend",
+      "positions": [
+        "LW",
+        "AM"
+      ],
+      "ovr": 92,
+      "stats": {
+        "spd": 88,
+        "fin": 88,
+        "pas": 92,
+        "skl": 99,
+        "def": 36,
+        "pow": 76
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "wide_playmaker": "plusplus",
+        "classic_ten": "plus"
+      },
+      "basis": "2005 Ballon d'Or; 2006 Champions League with Barcelona; 2002 World Cup winner; peak creativity and skill.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ronaldinho"
+      ]
+    },
+    {
+      "id": "garrincha",
+      "name": "Garrincha",
+      "short": "Garrincha",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 92,
+      "stats": {
+        "spd": 99,
+        "fin": 88,
+        "pas": 89,
+        "skl": 99,
+        "def": 49,
+        "pow": 76
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1957–1966",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1933,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Two World Cups (1958, 1962) and the star of the 1962 tournament; unplayable dribbler.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Garrincha"
+      ]
+    },
+    {
+      "id": "zico",
+      "name": "Zico",
+      "short": "Zico",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 90,
+        "fin": 89,
+        "pas": 95,
+        "skl": 97,
+        "def": 53,
+        "pow": 77
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1986",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1953,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "Flamengo great: Copa Libertadores and Intercontinental Cup 1981; free-kick master.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Zico_(footballer)"
+      ]
+    },
+    {
+      "id": "romario",
+      "name": "Romário",
+      "short": "Romário",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 89,
+        "fin": 98,
+        "pas": 79,
+        "skl": 90,
+        "def": 47,
+        "pow": 91
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1988–1997",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1966,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "1994 World Cup winner and Golden Ball; FIFA World Player of the Year 1994.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rom%C3%A1rio"
+      ]
+    },
+    {
+      "id": "rivaldo",
+      "name": "Rivaldo",
+      "short": "Rivaldo",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 86,
+        "fin": 88,
+        "pas": 93,
+        "skl": 93,
+        "def": 51,
+        "pow": 74
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2002",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1972,
+      "roles": {
+        "advanced_playmaker": "plus",
+        "inside_forward": "plus"
+      },
+      "basis": "Ballon d'Or 1999; 2002 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rivaldo"
+      ]
+    },
+    {
+      "id": "roberto-carlos",
+      "name": "Roberto Carlos",
+      "short": "R. Carlos",
+      "group": "legend",
+      "positions": [
+        "LB"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 95,
+        "fin": 55,
+        "pas": 86,
+        "skl": 84,
+        "def": 91,
+        "pow": 85
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2006",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1973,
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "2002 World Cup winner; three Champions League titles with Real Madrid; the famous free kick against France in 1997.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Roberto_Carlos"
+      ]
+    },
+    {
+      "id": "cafu",
+      "name": "Cafu",
+      "short": "Cafu",
+      "group": "legend",
+      "positions": [
+        "RB"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 94,
+        "fin": 56,
+        "pas": 87,
+        "skl": 84,
+        "def": 90,
+        "pow": 88
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1970,
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "The only player in three World Cup finals; captained Brazil to the 2002 title.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Cafu"
+      ]
+    },
+    {
+      "id": "kaka",
+      "name": "Kaká",
+      "short": "Kaká",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 88,
+        "pas": 93,
+        "skl": 92,
+        "def": 53,
+        "pow": 75
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2009",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "advanced_playmaker": "plusplus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Ballon d'Or 2007; Champions League winner with Milan 2007.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kak%C3%A1"
+      ]
+    },
+    {
+      "id": "socrates",
+      "name": "Sócrates",
+      "short": "Sócrates",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 85,
+        "fin": 80,
+        "pas": 94,
+        "skl": 94,
+        "def": 80,
+        "pow": 82
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1979–1986",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1954,
+      "roles": {
+        "playmaker": "plusplus"
+      },
+      "basis": "Captained Brazil's celebrated 1982 World Cup side; famous backheels.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/S%C3%B3crates"
+      ]
+    },
+    {
+      "id": "jairzinho",
+      "name": "Jairzinho",
+      "short": "Jairzinho",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 93,
+        "fin": 86,
+        "pas": 85,
+        "skl": 95,
+        "def": 47,
+        "pow": 73
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1966–1974",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1944,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Scored in every game of Brazil's 1970 World Cup win.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jairzinho"
+      ]
+    },
+    {
+      "id": "carlos-alberto-torres",
+      "name": "Carlos Alberto Torres",
+      "short": "C. A. Torres",
+      "group": "legend",
+      "positions": [
+        "RB"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 93,
+        "fin": 52,
+        "pas": 87,
+        "skl": 84,
+        "def": 90,
+        "pow": 86
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1966–1974",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1944,
+      "roles": {
+        "attacking_full_back": "plus"
+      },
+      "basis": "Captained Brazil to the 1970 World Cup and scored the famous fourth goal in the final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Carlos_Alberto_Torres"
+      ]
+    },
+    {
+      "id": "marcelo",
+      "name": "Marcelo",
+      "short": "Marcelo",
+      "group": "legend",
+      "positions": [
+        "LB"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 93,
+        "fin": 53,
+        "pas": 84,
+        "skl": 80,
+        "def": 90,
+        "pow": 87
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2011–2018",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1988,
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Five Champions League titles with Real Madrid; flair left-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Marcelo_(footballer,_born_1988)"
+      ]
+    },
+    {
+      "id": "juninho-pernambucano",
+      "name": "Juninho Pernambucano",
+      "short": "Juninho",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 82,
+        "fin": 76,
+        "pas": 92,
+        "skl": 89,
+        "def": 80,
+        "pow": 80
+      },
+      "nation": "BR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2001–2009",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1975,
+      "roles": {
+        "playmaker": "plus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "Seven straight Ligue 1 titles with Lyon; one of the great free-kick takers.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Juninho_Pernambucano"
+      ]
+    },
+    {
+      "id": "alfredo-di-stefano",
+      "name": "Alfredo Di Stéfano",
+      "short": "Di Stéfano",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 91,
+        "fin": 96,
+        "pas": 83,
+        "skl": 96,
+        "def": 52,
+        "pow": 93
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1950–1962",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1926,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "false_nine": "plus"
+      },
+      "basis": "Scored in five straight European Cup finals as Real Madrid won them all.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Alfredo_Di_St%C3%A9fano"
+      ]
+    },
+    {
+      "id": "gabriel-batistuta",
+      "name": "Gabriel Batistuta",
+      "short": "Batistuta",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 91,
+        "fin": 91,
+        "pas": 83,
+        "skl": 91,
+        "def": 45,
+        "pow": 88
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1991–2001",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1969,
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Fiorentina great; Serie A title with Roma 2001; ferocious shot.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gabriel_Batistuta"
+      ]
+    },
+    {
+      "id": "juan-roman-riquelme",
+      "name": "Juan Román Riquelme",
+      "short": "Riquelme",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 85,
+        "fin": 87,
+        "pas": 91,
+        "skl": 93,
+        "def": 49,
+        "pow": 74
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "Classic No. 10 who led Boca Juniors to Copa Libertadores titles.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme"
+      ]
+    },
+    {
+      "id": "javier-zanetti",
+      "name": "Javier Zanetti",
+      "short": "Zanetti",
+      "group": "legend",
+      "positions": [
+        "RB"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 94,
+        "fin": 53,
+        "pas": 82,
+        "skl": 81,
+        "def": 89,
+        "pow": 84
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1973,
+      "roles": {
+        "full_back": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Inter captain in the 2010 treble; over 850 games for the club.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Javier_Zanetti"
+      ]
+    },
+    {
+      "id": "mario-kempes",
+      "name": "Mario Kempes",
+      "short": "Kempes",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 88,
+        "fin": 89,
+        "pas": 79,
+        "skl": 91,
+        "def": 44,
+        "pow": 90
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1982",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1954,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Top scorer at the 1978 World Cup, with two goals in the final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mario_Kempes"
+      ]
+    },
+    {
+      "id": "daniel-passarella",
+      "name": "Daniel Passarella",
+      "short": "Passarella",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 80,
+        "fin": 40,
+        "pas": 72,
+        "skl": 66,
+        "def": 91,
+        "pow": 93
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1976–1986",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1953,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Captained Argentina to the 1978 World Cup; prolific scoring defender.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Daniel_Passarella"
+      ]
+    },
+    {
+      "id": "sergio-aguero",
+      "name": "Sergio Agüero",
+      "short": "Agüero",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 91,
+        "fin": 94,
+        "pas": 75,
+        "skl": 87,
+        "def": 45,
+        "pow": 88
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2011–2020",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1988,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Manchester City's record scorer; the last-minute title winner in 2012.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Sergio_Ag%C3%BCero"
+      ]
+    },
+    {
+      "id": "javier-mascherano",
+      "name": "Javier Mascherano",
+      "short": "Mascherano",
+      "group": "legend",
+      "positions": [
+        "DM",
+        "CB"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 79,
+        "fin": 61,
+        "pas": 83,
+        "skl": 79,
+        "def": 92,
+        "pow": 90
+      },
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2007–2016",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "anchor": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "Two Olympic golds; two Champions League titles with Barcelona.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Javier_Mascherano"
+      ]
+    },
+    {
+      "id": "enzo-francescoli",
+      "name": "Enzo Francescoli",
+      "short": "Francescoli",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 87,
+        "fin": 87,
+        "pas": 91,
+        "skl": 91,
+        "def": 49,
+        "pow": 71
+      },
+      "nation": "UY",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1961,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "\"El Príncipe\": three Copa América titles; River Plate and Marseille great.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Enzo_Francescoli"
+      ]
+    },
+    {
+      "id": "diego-forlan",
+      "name": "Diego Forlán",
+      "short": "Forlán",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 86,
+        "fin": 91,
+        "pas": 80,
+        "skl": 89,
+        "def": 45,
+        "pow": 86
+      },
+      "nation": "UY",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1979,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Golden Ball at the 2010 World Cup; two European Golden Shoes.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Diego_Forl%C3%A1n"
+      ]
+    },
+    {
+      "id": "gerd-muller",
+      "name": "Gerd Müller",
+      "short": "G. Müller",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 95,
+        "fin": 97,
+        "pas": 82,
+        "skl": 92,
+        "def": 49,
+        "pow": 95
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1966–1976",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1945,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Scored the winner in the 1974 World Cup final; 365 Bundesliga goals.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gerd_M%C3%BCller"
+      ]
+    },
+    {
+      "id": "lothar-matthaus",
+      "name": "Lothar Matthäus",
+      "short": "Matthäus",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 91,
+        "fin": 84,
+        "pas": 92,
+        "skl": 90,
+        "def": 88,
+        "pow": 96
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1996",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1961,
+      "roles": {
+        "box_to_box": "plusplus"
+      },
+      "basis": "Captained West Germany to the 1990 World Cup; Ballon d'Or 1990.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lothar_Matth%C3%A4us"
+      ]
+    },
+    {
+      "id": "oliver-kahn",
+      "name": "Oliver Kahn",
+      "short": "Kahn",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 89,
+      "stats": {
+        "stp": 91,
+        "rct": 89,
+        "hdl": 87,
+        "cmd": 90,
+        "dst": 83,
+        "agi": 92
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2006",
+      "potential": null,
+      "birthYear": 1969,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Golden Ball at the 2002 World Cup; Champions League winner with Bayern 2001.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Oliver_Kahn"
+      ]
+    },
+    {
+      "id": "philipp-lahm",
+      "name": "Philipp Lahm",
+      "short": "Lahm",
+      "group": "legend",
+      "positions": [
+        "RB",
+        "DM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 96,
+        "fin": 54,
+        "pas": 87,
+        "skl": 86,
+        "def": 89,
+        "pow": 88
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2017",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1983,
+      "roles": {
+        "full_back": "plusplus",
+        "inverted_full_back": "plus"
+      },
+      "basis": "Captained Germany to the 2014 World Cup; Champions League with Bayern 2013.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Philipp_Lahm"
+      ]
+    },
+    {
+      "id": "miroslav-klose",
+      "name": "Miroslav Klose",
+      "short": "Klose",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 89,
+        "fin": 93,
+        "pas": 73,
+        "skl": 83,
+        "def": 42,
+        "pow": 88
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2002–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Record 16 World Cup goals; 2014 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Miroslav_Klose"
+      ]
+    },
+    {
+      "id": "karl-heinz-rummenigge",
+      "name": "Karl-Heinz Rummenigge",
+      "short": "Rummenigge",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 89,
+        "fin": 92,
+        "pas": 81,
+        "skl": 90,
+        "def": 49,
+        "pow": 90
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1978–1986",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1955,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Ballon d'Or 1980 and 1981.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Karl-Heinz_Rummenigge"
+      ]
+    },
+    {
+      "id": "toni-kroos",
+      "name": "Toni Kroos",
+      "short": "Kroos",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 86,
+        "fin": 83,
+        "pas": 93,
+        "skl": 94,
+        "def": 84,
+        "pow": 86
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2013–2024",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1990,
+      "roles": {
+        "deep_playmaker": "plusplus",
+        "playmaker": "plus"
+      },
+      "basis": "Six Champions League titles; 2014 World Cup winner; metronomic passer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Toni_Kroos"
+      ]
+    },
+    {
+      "id": "bastian-schweinsteiger",
+      "name": "Bastian Schweinsteiger",
+      "short": "Schweinsteiger",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 90,
+        "fin": 80,
+        "pas": 88,
+        "skl": 87,
+        "def": 86,
+        "pow": 96
+      },
+      "nation": "DE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2016",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "2014 World Cup winner; Champions League with Bayern 2013.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Bastian_Schweinsteiger"
+      ]
+    },
+    {
+      "id": "roberto-baggio",
+      "name": "Roberto Baggio",
+      "short": "Baggio",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 92,
+      "stats": {
+        "spd": 88,
+        "fin": 92,
+        "pas": 96,
+        "skl": 97,
+        "def": 57,
+        "pow": 78
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–2001",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1967,
+      "roles": {
+        "classic_ten": "plusplus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Ballon d'Or 1993; carried Italy to the 1994 World Cup final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Roberto_Baggio"
+      ]
+    },
+    {
+      "id": "franco-baresi",
+      "name": "Franco Baresi",
+      "short": "Baresi",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 87,
+        "fin": 45,
+        "pas": 85,
+        "skl": 76,
+        "def": 94,
+        "pow": 95
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1985–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1960,
+      "roles": {
+        "covering_defender": "plusplus"
+      },
+      "basis": "Milan captain with three European Cups; 1982 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Franco_Baresi"
+      ]
+    },
+    {
+      "id": "andrea-pirlo",
+      "name": "Andrea Pirlo",
+      "short": "Pirlo",
+      "group": "legend",
+      "positions": [
+        "DM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 81,
+        "fin": 61,
+        "pas": 87,
+        "skl": 82,
+        "def": 93,
+        "pow": 95
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1979,
+      "roles": {
+        "deep_playmaker": "plusplus"
+      },
+      "basis": "2006 World Cup winner; two Champions League titles with Milan.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Andrea_Pirlo"
+      ]
+    },
+    {
+      "id": "francesco-totti",
+      "name": "Francesco Totti",
+      "short": "Totti",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 85,
+        "fin": 90,
+        "pas": 95,
+        "skl": 93,
+        "def": 53,
+        "pow": 76
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "advanced_playmaker": "plus",
+        "false_nine": "plus"
+      },
+      "basis": "Roma captain and record scorer; 2006 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Francesco_Totti"
+      ]
+    },
+    {
+      "id": "alessandro-del-piero",
+      "name": "Alessandro Del Piero",
+      "short": "Del Piero",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "AM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 92,
+        "pas": 78,
+        "skl": 88,
+        "def": 48,
+        "pow": 91
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1974,
+      "roles": {
+        "shadow_striker": "plus"
+      },
+      "basis": "Juventus record appearance-maker and scorer; 2006 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Alessandro_Del_Piero"
+      ]
+    },
+    {
+      "id": "fabio-cannavaro",
+      "name": "Fabio Cannavaro",
+      "short": "Cannavaro",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 83,
+        "fin": 43,
+        "pas": 73,
+        "skl": 70,
+        "def": 94,
+        "pow": 94
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1973,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Ballon d'Or 2006 after captaining Italy to the World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Fabio_Cannavaro"
+      ]
+    },
+    {
+      "id": "alessandro-nesta",
+      "name": "Alessandro Nesta",
+      "short": "Nesta",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 80,
+        "fin": 45,
+        "pas": 76,
+        "skl": 69,
+        "def": 94,
+        "pow": 93
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2007",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "covering_defender": "plusplus"
+      },
+      "basis": "2006 World Cup winner; two Champions League titles with Milan.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Alessandro_Nesta"
+      ]
+    },
+    {
+      "id": "dino-zoff",
+      "name": "Dino Zoff",
+      "short": "Zoff",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 89,
+      "stats": {
+        "stp": 90,
+        "rct": 93,
+        "hdl": 86,
+        "cmd": 88,
+        "dst": 80,
+        "agi": 90
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1968–1982",
+      "potential": null,
+      "birthYear": 1942,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Captained Italy to the 1982 World Cup at 40.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Dino_Zoff"
+      ]
+    },
+    {
+      "id": "paolo-rossi",
+      "name": "Paolo Rossi",
+      "short": "Rossi",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 88,
+        "fin": 94,
+        "pas": 75,
+        "skl": 84,
+        "def": 42,
+        "pow": 86
+      },
+      "nation": "IT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1978–1982",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1956,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Golden Boot and Ballon d'Or 1982; hat-trick against Brazil.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paolo_Rossi"
+      ]
+    },
+    {
+      "id": "michel-platini",
+      "name": "Michel Platini",
+      "short": "Platini",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 91,
+        "fin": 91,
+        "pas": 98,
+        "skl": 97,
+        "def": 56,
+        "pow": 77
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1978–1987",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1955,
+      "roles": {
+        "advanced_playmaker": "plusplus"
+      },
+      "basis": "Three straight Ballon d'Or awards (1983–85); nine goals at Euro 1984.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Michel_Platini"
+      ]
+    },
+    {
+      "id": "lilian-thuram",
+      "name": "Lilian Thuram",
+      "short": "Thuram",
+      "group": "legend",
+      "positions": [
+        "RB",
+        "CB"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 93,
+        "fin": 54,
+        "pas": 87,
+        "skl": 85,
+        "def": 91,
+        "pow": 85
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1996–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "full_back": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "1998 World Cup winner; scored both goals in the semi-final against Croatia.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lilian_Thuram"
+      ]
+    },
+    {
+      "id": "marcel-desailly",
+      "name": "Marcel Desailly",
+      "short": "Desailly",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 83,
+        "fin": 44,
+        "pas": 75,
+        "skl": 68,
+        "def": 91,
+        "pow": 94
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–2002",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1968,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "1998 World Cup and Euro 2000 winner; Champions League with Marseille and Milan.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Marcel_Desailly"
+      ]
+    },
+    {
+      "id": "patrick-vieira",
+      "name": "Patrick Vieira",
+      "short": "Vieira",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 81,
+        "pas": 89,
+        "skl": 89,
+        "def": 88,
+        "pow": 93
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "box_to_box": "plusplus",
+        "ball_winner": "plus"
+      },
+      "basis": "Captained Arsenal's unbeaten 2003/04 side; 1998 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Patrick_Vieira"
+      ]
+    },
+    {
+      "id": "claude-makelele",
+      "name": "Claude Makélélé",
+      "short": "Makélélé",
+      "group": "legend",
+      "positions": [
+        "DM"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 79,
+        "fin": 62,
+        "pas": 86,
+        "skl": 80,
+        "def": 91,
+        "pow": 93
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2000–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1973,
+      "roles": {
+        "anchor": "plusplus"
+      },
+      "basis": "The holding role was named after him; Champions League with Real Madrid 2002.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Claude_Mak%C3%A9l%C3%A9l%C3%A9"
+      ]
+    },
+    {
+      "id": "franck-ribery",
+      "name": "Franck Ribéry",
+      "short": "Ribéry",
+      "group": "legend",
+      "positions": [
+        "LW"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 96,
+        "fin": 87,
+        "pas": 85,
+        "skl": 94,
+        "def": 50,
+        "pow": 77
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2007–2016",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1983,
+      "roles": {
+        "winger": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Treble winner with Bayern in 2013.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Franck_Rib%C3%A9ry"
+      ]
+    },
+    {
+      "id": "raymond-kopa",
+      "name": "Raymond Kopa",
+      "short": "Kopa",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 86,
+        "pas": 94,
+        "skl": 93,
+        "def": 54,
+        "pow": 72
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1955–1962",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1931,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Ballon d'Or 1958; three European Cups with Real Madrid.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Raymond_Kopa"
+      ]
+    },
+    {
+      "id": "eric-cantona",
+      "name": "Éric Cantona",
+      "short": "Cantona",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 86,
+        "fin": 92,
+        "pas": 82,
+        "skl": 89,
+        "def": 48,
+        "pow": 88
+      },
+      "nation": "FR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1991–1997",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1966,
+      "roles": {
+        "false_nine": "plus"
+      },
+      "basis": "\"King Eric\": four Premier League titles with Manchester United.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Eric_Cantona"
+      ]
+    },
+    {
+      "id": "marco-van-basten",
+      "name": "Marco van Basten",
+      "short": "van Basten",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 92,
+        "fin": 97,
+        "pas": 84,
+        "skl": 95,
+        "def": 49,
+        "pow": 92
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1987–1993",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1964,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Three Ballon d'Or awards; the famous volley in the Euro 1988 final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Marco_van_Basten"
+      ]
+    },
+    {
+      "id": "ruud-gullit",
+      "name": "Ruud Gullit",
+      "short": "Gullit",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 86,
+        "fin": 87,
+        "pas": 98,
+        "skl": 97,
+        "def": 53,
+        "pow": 74
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1993",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1962,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Ballon d'Or 1987; captained the Netherlands to Euro 1988.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ruud_Gullit"
+      ]
+    },
+    {
+      "id": "frank-rijkaard",
+      "name": "Frank Rijkaard",
+      "short": "Rijkaard",
+      "group": "legend",
+      "positions": [
+        "DM"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 81,
+        "fin": 65,
+        "pas": 87,
+        "skl": 84,
+        "def": 96,
+        "pow": 94
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1985–1995",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1962,
+      "roles": {
+        "anchor": "plusplus"
+      },
+      "basis": "Euro 1988 winner; three European Cups with Milan and Ajax.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Frank_Rijkaard"
+      ]
+    },
+    {
+      "id": "dennis-bergkamp",
+      "name": "Dennis Bergkamp",
+      "short": "Bergkamp",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 89,
+        "fin": 93,
+        "pas": 85,
+        "skl": 90,
+        "def": 47,
+        "pow": 91
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1969,
+      "roles": {
+        "false_nine": "plusplus"
+      },
+      "basis": "Unbeaten with Arsenal in 2003/04; the famous goal against Argentina at the 1998 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Dennis_Bergkamp"
+      ]
+    },
+    {
+      "id": "arjen-robben",
+      "name": "Arjen Robben",
+      "short": "Robben",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 93,
+        "fin": 93,
+        "pas": 88,
+        "skl": 95,
+        "def": 47,
+        "pow": 74
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2009–2017",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1984,
+      "roles": {
+        "inside_forward": "plusplus"
+      },
+      "basis": "Scored the winner in the 2013 Champions League final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Arjen_Robben"
+      ]
+    },
+    {
+      "id": "edwin-van-der-sar",
+      "name": "Edwin van der Sar",
+      "short": "van der Sar",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 88,
+      "stats": {
+        "stp": 89,
+        "rct": 92,
+        "hdl": 85,
+        "cmd": 85,
+        "dst": 80,
+        "agi": 89
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2010",
+      "potential": null,
+      "birthYear": 1970,
+      "roles": {
+        "shot_stopper": "plus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "Champions League winner with Ajax 1995 and Manchester United 2008.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Edwin_van_der_Sar"
+      ]
+    },
+    {
+      "id": "johan-neeskens",
+      "name": "Johan Neeskens",
+      "short": "Neeskens",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 87,
+        "fin": 80,
+        "pas": 88,
+        "skl": 89,
+        "def": 85,
+        "pow": 93
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1971–1978",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1951,
+      "roles": {
+        "box_to_box": "plusplus"
+      },
+      "basis": "Two World Cup finals; three European Cups with Ajax.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Johan_Neeskens"
+      ]
+    },
+    {
+      "id": "jaap-stam",
+      "name": "Jaap Stam",
+      "short": "Stam",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 81,
+        "fin": 43,
+        "pas": 77,
+        "skl": 72,
+        "def": 91,
+        "pow": 94
+      },
+      "nation": "NL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Treble winner with Manchester United in 1999.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jaap_Stam"
+      ]
+    },
+    {
+      "id": "xavi",
+      "name": "Xavi",
+      "short": "Xavi",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 92,
+      "stats": {
+        "spd": 91,
+        "fin": 86,
+        "pas": 96,
+        "skl": 97,
+        "def": 83,
+        "pow": 85
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2008–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "playmaker": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "2010 World Cup, two European Championships and four Champions League titles with Barcelona.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Xavi"
+      ]
+    },
+    {
+      "id": "andres-iniesta",
+      "name": "Andrés Iniesta",
+      "short": "Iniesta",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 92,
+      "stats": {
+        "spd": 89,
+        "fin": 88,
+        "pas": 96,
+        "skl": 96,
+        "def": 85,
+        "pow": 88
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2008–2015",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "playmaker": "plusplus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Scored the winning goal in the 2010 World Cup final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Andr%C3%A9s_Iniesta"
+      ]
+    },
+    {
+      "id": "iker-casillas",
+      "name": "Iker Casillas",
+      "short": "Casillas",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 91,
+      "stats": {
+        "stp": 91,
+        "rct": 91,
+        "hdl": 91,
+        "cmd": 92,
+        "dst": 81,
+        "agi": 93
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2002–2012",
+      "potential": null,
+      "birthYear": 1981,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Captained Spain to the 2010 World Cup and Euros 2008 and 2012.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iker_Casillas"
+      ]
+    },
+    {
+      "id": "carles-puyol",
+      "name": "Carles Puyol",
+      "short": "Puyol",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 80,
+        "fin": 42,
+        "pas": 75,
+        "skl": 67,
+        "def": 94,
+        "pow": 94
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Headed Spain into the 2010 World Cup final; Barcelona captain.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Carles_Puyol"
+      ]
+    },
+    {
+      "id": "raul",
+      "name": "Raúl",
+      "short": "Raúl",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 92,
+        "pas": 82,
+        "skl": 91,
+        "def": 48,
+        "pow": 90
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Three Champions League titles with Real Madrid.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ra%C3%BAl_Gonz%C3%A1lez"
+      ]
+    },
+    {
+      "id": "xabi-alonso",
+      "name": "Xabi Alonso",
+      "short": "Xabi Alonso",
+      "group": "legend",
+      "positions": [
+        "DM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 81,
+        "fin": 62,
+        "pas": 85,
+        "skl": 77,
+        "def": 94,
+        "pow": 92
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "deep_playmaker": "plusplus"
+      },
+      "basis": "2010 World Cup winner; Champions League with Liverpool 2005 and Real Madrid 2014.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Xabi_Alonso"
+      ]
+    },
+    {
+      "id": "david-villa",
+      "name": "David Villa",
+      "short": "Villa",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 87,
+        "fin": 91,
+        "pas": 81,
+        "skl": 89,
+        "def": 46,
+        "pow": 88
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2013",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Spain's record goalscorer; 2010 World Cup and Euro 2008 winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/David_Villa"
+      ]
+    },
+    {
+      "id": "fernando-torres",
+      "name": "Fernando Torres",
+      "short": "Torres",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 96,
+        "fin": 91,
+        "pas": 73,
+        "skl": 89,
+        "def": 46,
+        "pow": 83
+      },
+      "nation": "ES",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2007–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1984,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Scored the winner in the Euro 2008 final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Fernando_Torres"
+      ]
+    },
+    {
+      "id": "bobby-charlton",
+      "name": "Bobby Charlton",
+      "short": "B. Charlton",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 88,
+        "fin": 90,
+        "pas": 95,
+        "skl": 96,
+        "def": 56,
+        "pow": 74
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1960–1970",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1937,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "1966 World Cup winner; Ballon d'Or 1966; European Cup 1968.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Bobby_Charlton"
+      ]
+    },
+    {
+      "id": "bobby-moore",
+      "name": "Bobby Moore",
+      "short": "Moore",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 85,
+        "fin": 44,
+        "pas": 89,
+        "skl": 78,
+        "def": 92,
+        "pow": 92
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1962–1972",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1941,
+      "roles": {
+        "covering_defender": "plusplus"
+      },
+      "basis": "Captained England to the 1966 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Bobby_Moore"
+      ]
+    },
+    {
+      "id": "steven-gerrard",
+      "name": "Steven Gerrard",
+      "short": "Gerrard",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 86,
+        "fin": 80,
+        "pas": 90,
+        "skl": 90,
+        "def": 86,
+        "pow": 96
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2013",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "box_to_box": "plusplus"
+      },
+      "basis": "Captained Liverpool's 2005 Champions League comeback in Istanbul.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Steven_Gerrard"
+      ]
+    },
+    {
+      "id": "frank-lampard",
+      "name": "Frank Lampard",
+      "short": "Lampard",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 87,
+        "fin": 81,
+        "pas": 90,
+        "skl": 88,
+        "def": 88,
+        "pow": 92
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2013",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1978,
+      "roles": {
+        "box_to_box": "plus",
+        "shadow_striker": "plus"
+      },
+      "basis": "Chelsea's record goalscorer; Champions League 2012.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Frank_Lampard"
+      ]
+    },
+    {
+      "id": "alan-shearer",
+      "name": "Alan Shearer",
+      "short": "Shearer",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 90,
+        "fin": 91,
+        "pas": 80,
+        "skl": 89,
+        "def": 46,
+        "pow": 90
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–2002",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1970,
+      "roles": {
+        "target_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "The Premier League's record goalscorer (260).",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Alan_Shearer"
+      ]
+    },
+    {
+      "id": "david-beckham",
+      "name": "David Beckham",
+      "short": "Beckham",
+      "group": "legend",
+      "positions": [
+        "RM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 94,
+        "fin": 81,
+        "pas": 90,
+        "skl": 93,
+        "def": 76,
+        "pow": 81
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1997–2006",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1975,
+      "roles": {
+        "wide_playmaker": "plusplus"
+      },
+      "basis": "Treble winner with Manchester United in 1999; famous free kicks and crosses.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/David_Beckham"
+      ]
+    },
+    {
+      "id": "gary-lineker",
+      "name": "Gary Lineker",
+      "short": "Lineker",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 90,
+        "fin": 93,
+        "pas": 73,
+        "skl": 85,
+        "def": 43,
+        "pow": 86
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1992",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1960,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Golden Boot at the 1986 World Cup; never booked in his career.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gary_Lineker"
+      ]
+    },
+    {
+      "id": "wayne-rooney",
+      "name": "Wayne Rooney",
+      "short": "Rooney",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 91,
+        "fin": 93,
+        "pas": 82,
+        "skl": 88,
+        "def": 45,
+        "pow": 88
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1985,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Manchester United's record goalscorer; Champions League 2008.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Wayne_Rooney"
+      ]
+    },
+    {
+      "id": "gordon-banks",
+      "name": "Gordon Banks",
+      "short": "Banks",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 89,
+      "stats": {
+        "stp": 91,
+        "rct": 91,
+        "hdl": 86,
+        "cmd": 87,
+        "dst": 78,
+        "agi": 90
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1963–1972",
+      "potential": null,
+      "birthYear": 1937,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "1966 World Cup winner; the famous save from Pelé in 1970.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gordon_Banks"
+      ]
+    },
+    {
+      "id": "john-terry",
+      "name": "John Terry",
+      "short": "Terry",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 80,
+        "fin": 42,
+        "pas": 77,
+        "skl": 67,
+        "def": 91,
+        "pow": 94
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2012",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1980,
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Chelsea captain: five Premier League titles and the 2012 Champions League.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/John_Terry"
+      ]
+    },
+    {
+      "id": "paul-scholes",
+      "name": "Paul Scholes",
+      "short": "Scholes",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 86,
+        "fin": 79,
+        "pas": 94,
+        "skl": 93,
+        "def": 79,
+        "pow": 82
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1974,
+      "roles": {
+        "playmaker": "plusplus"
+      },
+      "basis": "11 Premier League titles with Manchester United.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paul_Scholes"
+      ]
+    },
+    {
+      "id": "paul-gascoigne",
+      "name": "Paul Gascoigne",
+      "short": "Gascoigne",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 85,
+        "fin": 87,
+        "pas": 94,
+        "skl": 90,
+        "def": 52,
+        "pow": 74
+      },
+      "nation": "GB-ENG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1988–1996",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1967,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Star of Italia 90 and Euro 96.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paul_Gascoigne"
+      ]
+    },
+    {
+      "id": "eusebio",
+      "name": "Eusébio",
+      "short": "Eusébio",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 92,
+        "fin": 96,
+        "pas": 84,
+        "skl": 94,
+        "def": 50,
+        "pow": 94
+      },
+      "nation": "PT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1961–1972",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1942,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Ballon d'Or 1965; nine goals at the 1966 World Cup; European Cup with Benfica 1962.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Eus%C3%A9bio"
+      ]
+    },
+    {
+      "id": "luis-figo",
+      "name": "Luís Figo",
+      "short": "Figo",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 99,
+        "fin": 88,
+        "pas": 86,
+        "skl": 97,
+        "def": 49,
+        "pow": 78
+      },
+      "nation": "PT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "winger": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Ballon d'Or 2000; FIFA World Player of the Year 2001.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lu%C3%ADs_Figo"
+      ]
+    },
+    {
+      "id": "rui-costa",
+      "name": "Rui Costa",
+      "short": "Rui Costa",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 86,
+        "fin": 86,
+        "pas": 94,
+        "skl": 90,
+        "def": 52,
+        "pow": 71
+      },
+      "nation": "PT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1972,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "Fiorentina and Milan playmaker; Champions League 2003.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rui_Costa"
+      ]
+    },
+    {
+      "id": "deco",
+      "name": "Deco",
+      "short": "Deco",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 84,
+        "fin": 86,
+        "pas": 90,
+        "skl": 93,
+        "def": 47,
+        "pow": 71
+      },
+      "nation": "PT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2003–2008",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Champions League winner with Porto 2004 and Barcelona 2006.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Deco"
+      ]
+    },
+    {
+      "id": "george-best",
+      "name": "George Best",
+      "short": "Best",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 91,
+      "stats": {
+        "spd": 97,
+        "fin": 85,
+        "pas": 88,
+        "skl": 98,
+        "def": 50,
+        "pow": 78
+      },
+      "nation": "GB-NIR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1965–1972",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1946,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Ballon d'Or 1968; European Cup winner with Manchester United.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/George_Best"
+      ]
+    },
+    {
+      "id": "kenny-dalglish",
+      "name": "Kenny Dalglish",
+      "short": "Dalglish",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 90,
+        "fin": 92,
+        "pas": 80,
+        "skl": 89,
+        "def": 48,
+        "pow": 90
+      },
+      "nation": "GB-SCT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1975–1985",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1951,
+      "roles": {
+        "false_nine": "plus"
+      },
+      "basis": "Three European Cups with Liverpool; Scotland's joint record scorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kenny_Dalglish"
+      ]
+    },
+    {
+      "id": "denis-law",
+      "name": "Denis Law",
+      "short": "Law",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 95,
+        "pas": 75,
+        "skl": 86,
+        "def": 46,
+        "pow": 88
+      },
+      "nation": "GB-SCT",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1962–1970",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1940,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Ballon d'Or 1964; Scotland's joint record scorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Denis_Law"
+      ]
+    },
+    {
+      "id": "ferenc-puskas",
+      "name": "Ferenc Puskás",
+      "short": "Puskás",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 93,
+      "stats": {
+        "spd": 95,
+        "fin": 95,
+        "pas": 86,
+        "skl": 96,
+        "def": 52,
+        "pow": 94
+      },
+      "nation": "HU",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1950–1962",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1927,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "84 goals in 85 games for Hungary; three European Cups with Real Madrid.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferenc_Pusk%C3%A1s"
+      ]
+    },
+    {
+      "id": "hristo-stoichkov",
+      "name": "Hristo Stoichkov",
+      "short": "Stoichkov",
+      "group": "legend",
+      "positions": [
+        "ST",
+        "LW"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 89,
+        "fin": 93,
+        "pas": 85,
+        "skl": 91,
+        "def": 50,
+        "pow": 92
+      },
+      "nation": "BG",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1990–1997",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1966,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Ballon d'Or 1994; joint top scorer at the 1994 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hristo_Stoichkov"
+      ]
+    },
+    {
+      "id": "gheorghe-hagi",
+      "name": "Gheorghe Hagi",
+      "short": "Hagi",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 88,
+        "fin": 88,
+        "pas": 95,
+        "skl": 94,
+        "def": 53,
+        "pow": 74
+      },
+      "nation": "RO",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1987–2000",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1965,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "Romania's greatest player; UEFA Cup winner with Galatasaray 2000.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gheorghe_Hagi"
+      ]
+    },
+    {
+      "id": "andriy-shevchenko",
+      "name": "Andriy Shevchenko",
+      "short": "Shevchenko",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 91,
+        "fin": 93,
+        "pas": 84,
+        "skl": 90,
+        "def": 46,
+        "pow": 92
+      },
+      "nation": "UA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2005",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1976,
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Ballon d'Or 2004; Champions League winner with Milan 2003.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Andriy_Shevchenko"
+      ]
+    },
+    {
+      "id": "zlatan-ibrahimovic",
+      "name": "Zlatan Ibrahimović",
+      "short": "Ibrahimović",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 90,
+      "stats": {
+        "spd": 88,
+        "fin": 94,
+        "pas": 80,
+        "skl": 92,
+        "def": 45,
+        "pow": 89
+      },
+      "nation": "SE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2016",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "target_forward": "plusplus",
+        "false_nine": "plus"
+      },
+      "basis": "Sweden's record goalscorer; league titles in four countries.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Zlatan_Ibrahimovi%C4%87"
+      ]
+    },
+    {
+      "id": "pavel-nedved",
+      "name": "Pavel Nedvěd",
+      "short": "Nedvěd",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 84,
+        "fin": 88,
+        "pas": 93,
+        "skl": 95,
+        "def": 54,
+        "pow": 74
+      },
+      "nation": "CZ",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2005",
+      "potential": null,
+      "foot": "B",
+      "birthYear": 1972,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Ballon d'Or 2003; tireless two-footed Juventus and Lazio star.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Pavel_Nedv%C4%9Bd"
+      ]
+    },
+    {
+      "id": "michael-laudrup",
+      "name": "Michael Laudrup",
+      "short": "Laudrup",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 88,
+        "fin": 86,
+        "pas": 92,
+        "skl": 96,
+        "def": 51,
+        "pow": 73
+      },
+      "nation": "DK",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1985–1996",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1964,
+      "roles": {
+        "advanced_playmaker": "plusplus"
+      },
+      "basis": "Playmaker of Barcelona's \"Dream Team\"; European Cup 1992.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Michael_Laudrup"
+      ]
+    },
+    {
+      "id": "peter-schmeichel",
+      "name": "Peter Schmeichel",
+      "short": "Schmeichel",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 90,
+      "stats": {
+        "stp": 92,
+        "rct": 92,
+        "hdl": 87,
+        "cmd": 90,
+        "dst": 84,
+        "agi": 93
+      },
+      "nation": "DK",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1991–2001",
+      "potential": null,
+      "birthYear": 1963,
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Euro 1992 winner; captained Manchester United in the 1999 Champions League final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Peter_Schmeichel"
+      ]
+    },
+    {
+      "id": "davor-suker",
+      "name": "Davor Šuker",
+      "short": "Šuker",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 90,
+        "fin": 92,
+        "pas": 73,
+        "skl": 84,
+        "def": 43,
+        "pow": 87
+      },
+      "nation": "HR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1995–2000",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1968,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Golden Boot at the 1998 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Davor_%C5%A0uker"
+      ]
+    },
+    {
+      "id": "ryan-giggs",
+      "name": "Ryan Giggs",
+      "short": "Giggs",
+      "group": "legend",
+      "positions": [
+        "LW"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 94,
+        "fin": 85,
+        "pas": 84,
+        "skl": 94,
+        "def": 45,
+        "pow": 74
+      },
+      "nation": "GB-WLS",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1993–2009",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1973,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "13 Premier League titles and two Champions League titles with Manchester United.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ryan_Giggs"
+      ]
+    },
+    {
+      "id": "gareth-bale",
+      "name": "Gareth Bale",
+      "short": "Bale",
+      "group": "legend",
+      "positions": [
+        "RW"
+      ],
+      "ovr": 89,
+      "stats": {
+        "spd": 92,
+        "fin": 92,
+        "pas": 85,
+        "skl": 94,
+        "def": 47,
+        "pow": 75
+      },
+      "nation": "GB-WLS",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2012–2020",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1989,
+      "roles": {
+        "inside_forward": "plusplus"
+      },
+      "basis": "Five Champions League titles; overhead kick in the 2018 final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Gareth_Bale"
+      ]
+    },
+    {
+      "id": "roy-keane",
+      "name": "Roy Keane",
+      "short": "Keane",
+      "group": "legend",
+      "positions": [
+        "CM"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 86,
+        "fin": 81,
+        "pas": 89,
+        "skl": 89,
+        "def": 86,
+        "pow": 95
+      },
+      "nation": "IE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2003",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1971,
+      "roles": {
+        "ball_winner": "plusplus"
+      },
+      "basis": "Manchester United captain; seven Premier League titles.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Roy_Keane"
+      ]
+    },
+    {
+      "id": "park-ji-sung",
+      "name": "Park Ji-sung",
+      "short": "Park Ji-sung",
+      "group": "legend",
+      "positions": [
+        "CM",
+        "RW"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 83,
+        "fin": 75,
+        "pas": 83,
+        "skl": 82,
+        "def": 80,
+        "pow": 86
+      },
+      "nation": "KR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2005–2011",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1981,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Four Premier League titles and the 2008 Champions League with Manchester United.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Park_Ji-sung"
+      ]
+    },
+    {
+      "id": "cha-bum-kun",
+      "name": "Cha Bum-kun",
+      "short": "Cha Bum-kun",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 84,
+      "stats": {
+        "spd": 85,
+        "fin": 86,
+        "pas": 76,
+        "skl": 86,
+        "def": 40,
+        "pow": 84
+      },
+      "nation": "KR",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1978–1986",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1953,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "UEFA Cup winner with Frankfurt 1980 and Leverkusen 1988.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Cha_Bum-kun"
+      ]
+    },
+    {
+      "id": "hugo-sanchez",
+      "name": "Hugo Sánchez",
+      "short": "H. Sánchez",
+      "group": "legend",
+      "positions": [
+        "ST"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 91,
+        "fin": 93,
+        "pas": 74,
+        "skl": 85,
+        "def": 45,
+        "pow": 87
+      },
+      "nation": "MX",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1984–1992",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1958,
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Five Pichichi trophies; 38 goals in one La Liga season.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hugo_S%C3%A1nchez"
+      ]
+    },
+    {
+      "id": "rafael-marquez",
+      "name": "Rafael Márquez",
+      "short": "Márquez",
+      "group": "legend",
+      "positions": [
+        "CB",
+        "DM"
+      ],
+      "ovr": 85,
+      "stats": {
+        "spd": 83,
+        "fin": 41,
+        "pas": 81,
+        "skl": 73,
+        "def": 88,
+        "pow": 87
+      },
+      "nation": "MX",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2002–2010",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1979,
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Champions League winner with Barcelona 2006 and 2009; captain at five World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Rafael_M%C3%A1rquez"
+      ]
+    },
+    {
+      "id": "elias-figueroa",
+      "name": "Elías Figueroa",
+      "short": "Figueroa",
+      "group": "legend",
+      "positions": [
+        "CB"
+      ],
+      "ovr": 87,
+      "stats": {
+        "spd": 80,
+        "fin": 41,
+        "pas": 82,
+        "skl": 77,
+        "def": 90,
+        "pow": 89
+      },
+      "nation": "CL",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1980",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1946,
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Three-time South American Footballer of the Year.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/El%C3%ADas_Figueroa"
+      ]
+    },
+    {
+      "id": "carlos-valderrama",
+      "name": "Carlos Valderrama",
+      "short": "Valderrama",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 81,
+        "fin": 86,
+        "pas": 91,
+        "skl": 89,
+        "def": 50,
+        "pow": 69
+      },
+      "nation": "CO",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1987–1998",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1961,
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "South American Footballer of the Year 1987 and 1993.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Carlos_Valderrama"
+      ]
+    },
+    {
+      "id": "teofilo-cubillas",
+      "name": "Teófilo Cubillas",
+      "short": "Cubillas",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 86,
+      "stats": {
+        "spd": 83,
+        "fin": 82,
+        "pas": 92,
+        "skl": 92,
+        "def": 46,
+        "pow": 69
+      },
+      "nation": "PE",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1970–1980",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1949,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Ten World Cup goals; South American Footballer of the Year 1972.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Te%C3%B3filo_Cubillas"
+      ]
+    },
+    {
+      "id": "jose-luis-chilavert",
+      "name": "José Luis Chilavert",
+      "short": "Chilavert",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 84,
+      "stats": {
+        "stp": 84,
+        "rct": 88,
+        "hdl": 83,
+        "cmd": 81,
+        "dst": 74,
+        "agi": 85
+      },
+      "nation": "PY",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1994–2002",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1965,
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Free-kick-scoring goalkeeper; IFFHS best goalkeeper three times.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jos%C3%A9_Luis_Chilavert"
+      ]
+    },
+    {
+      "id": "rene-higuita",
+      "name": "René Higuita",
+      "short": "Higuita",
+      "group": "legend",
+      "positions": [
+        "GK"
+      ],
+      "ovr": 82,
+      "stats": {
+        "stp": 84,
+        "rct": 84,
+        "hdl": 79,
+        "cmd": 82,
+        "dst": 80,
+        "agi": 82
+      },
+      "nation": "CO",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1989–1995",
+      "potential": null,
+      "birthYear": 1966,
+      "roles": {
+        "sweeper_keeper": "plusplus"
+      },
+      "basis": "The scorpion kick; Copa Libertadores winner with Atlético Nacional 1989.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ren%C3%A9_Higuita"
+      ]
+    },
+    {
+      "id": "landon-donovan",
+      "name": "Landon Donovan",
+      "short": "Donovan",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 78,
+        "fin": 81,
+        "pas": 87,
+        "skl": 87,
+        "def": 46,
+        "pow": 66
+      },
+      "nation": "US",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2006–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1982,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Joint US record scorer; the injury-time winner against Algeria in 2010.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Landon_Donovan"
+      ]
+    },
+    {
+      "id": "tim-cahill",
+      "name": "Tim Cahill",
+      "short": "Cahill",
+      "group": "legend",
+      "positions": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 79,
+        "fin": 79,
+        "pas": 86,
+        "skl": 90,
+        "def": 45,
+        "pow": 67
+      },
+      "nation": "AU",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 2004–2014",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1979,
+      "roles": {
+        "shadow_striker": "plus"
+      },
+      "basis": "Australia's record goalscorer; scored at three World Cups.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tim_Cahill"
+      ]
+    },
+    {
+      "id": "hidetoshi-nakata",
+      "name": "Hidetoshi Nakata",
+      "short": "Nakata",
+      "group": "legend",
+      "positions": [
+        "AM"
+      ],
+      "ovr": 82,
+      "stats": {
+        "spd": 79,
+        "fin": 79,
+        "pas": 86,
+        "skl": 88,
+        "def": 48,
+        "pow": 70
+      },
+      "nation": "JP",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1998–2004",
+      "potential": null,
+      "foot": "R",
+      "birthYear": 1977,
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Serie A title with Roma in 2001.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hidetoshi_Nakata"
+      ]
+    },
+    {
+      "id": "oleg-blokhin",
+      "name": "Oleg Blokhin",
+      "short": "Blokhin",
+      "group": "legend",
+      "positions": [
+        "LW"
+      ],
+      "ovr": 88,
+      "stats": {
+        "spd": 96,
+        "fin": 84,
+        "pas": 84,
+        "skl": 93,
+        "def": 44,
+        "pow": 74
+      },
+      "nation": "UA",
+      "club": null,
+      "clubAsOf": null,
+      "era": "Prime 1972–1982",
+      "potential": null,
+      "foot": "L",
+      "birthYear": 1952,
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Ballon d'Or 1975; Cup Winners' Cup with Dynamo Kyiv 1975.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Oleg_Blokhin"
+      ]
+    }
+  ]
+}

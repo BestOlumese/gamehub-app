@@ -112,6 +112,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
   - [x] 03 Africa (299 from 16 nations' squads and call-ups), Oct 2026.
   - [x] 04 Europe (568 from 24 nations' squads and call-ups; covers the big-five leagues), Oct 2026.
   - [x] 05 Americas and Asia (248 from 14 nations), Oct 2026. Full-backs and wingers also list their natural wide alternate (wing-back / wide midfield).
+  - [x] 06 Legends (194: 38 Nigerian, 76 African), each with its Wikipedia source checked to exist.
 - [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
 - [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
 
