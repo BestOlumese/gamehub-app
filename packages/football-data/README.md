@@ -2,7 +2,7 @@
 
 The player database for **Football Draft** (`docs/games/football-draft/`). Static, versioned JSON validated by a Zod schema.
 
-> Status: **format proof only.** This folder holds `sample.players.json` (60 players) to prove the schema and the rating scale. The package code (schema, validator, compact build) and the full ~1,200-player set are built in the "Football data" phase (`docs/phases.md`). Spec: `docs/games/football-draft/player-database.md`.
+> Status: **tooling built (Phase 10).** Schema, validator and compact build are in `src/`; the 60-player `sample.players.json` passes. The full ~1,200-player set is added batch by batch in `data/batches/`. Spec: `docs/games/football-draft/player-database.md`.
 
 ## What's in a record
 
@@ -40,9 +40,13 @@ Names and public facts only, with **our own ratings**. No photos, badges, kits, 
 - **Clubs** were checked online in October 2026 (`docs/research/sources.md`) for: Osimhen, Lookman, Iwobi, Bassey, Aina, Chukwueze, Onyedika, Nwabali, Mbappé, Haaland, Bellingham, Vinícius, Kane, Yamal, and the two NPFL players (as of May 2026). Everyone else has `club: null` until the data phase verifies them — including Salah, whose Liverpool exit was announced in March 2026.
 - Ratings are **ours**, built from public facts (honours, roles, league level, reputation) in each `basis`. They have not been compared with any video game.
 
-## Planned commands (data phase)
+## Commands
 
 ```bash
-pnpm --filter football-data validate   # schema + quotas + distribution checks (player-database.md)
-pnpm --filter football-data build      # emits dist/players.min.json (compact tuples for the realtime Worker)
+pnpm --filter football-data validate             # sample + batches so far (quota progress)
+pnpm --filter football-data validate --release   # everything, quotas and rating spread included
+pnpm --filter football-data build                # dist/players.min.json (compact tuples for the realtime Worker)
+pnpm --filter football-data build --release      # also freezes the version's content hash (data/hashes.json)
 ```
+
+Node 24 runs the scripts straight from TypeScript (imports name their `.ts` files). `pnpm test` also validates the batches, so CI fails on a bad record.

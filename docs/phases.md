@@ -106,7 +106,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** a 4-player timed game (2 humans, 2 bots) ends by the clock with correct net worth places; an 8-player game runs smoothly on a low-end phone; balance report attached; rows per game within the estimate.
 
 ## Phase 10 — Football data (batches)
-- [ ] `packages/football-data`: Zod schema, validator (quotas, distribution, banned words), compact build, the 60-player sample passing.
+- [x] `packages/football-data`: Zod schema, validator (quotas, distribution, banned words, sources, club freshness, frozen versions), compact build, the 60-player sample passing; batches in `data/batches/`, validated in CI.
 - [ ] Batches, each researched online with `basis` + `sources` and reviewed: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
 - [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
 - [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
