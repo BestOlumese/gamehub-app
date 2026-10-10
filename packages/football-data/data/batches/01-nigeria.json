@@ -539,7 +539,8 @@
       "short": "Oputa",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 60,
       "stats": {
@@ -744,7 +745,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 60,
       "stats": {
@@ -813,7 +815,8 @@
       "short": "E. Michael",
       "group": "wonderkid",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 60,
       "stats": {
@@ -845,7 +848,8 @@
       "short": "Bewene",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 62,
       "stats": {
@@ -876,7 +880,8 @@
       "short": "I. James",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 64,
       "stats": {
@@ -975,7 +980,8 @@
       "short": "Igboke",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 61,
       "stats": {
@@ -1526,7 +1532,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -1561,7 +1568,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 69,
       "stats": {
@@ -2000,7 +2008,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 68,
       "stats": {
@@ -2102,7 +2111,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 70,
       "stats": {
@@ -2576,7 +2586,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 63,
       "stats": {

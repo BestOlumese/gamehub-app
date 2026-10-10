@@ -283,7 +283,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "RW"
+        "RW",
+        "RWB"
       ],
       "ovr": 73,
       "stats": {
@@ -662,7 +663,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -696,7 +698,8 @@
       "short": "Ezzalzouli",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -764,7 +767,8 @@
       "short": "Akhomach",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -798,7 +802,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 70,
       "stats": {
@@ -832,7 +837,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 71,
       "stats": {
@@ -934,7 +940,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -969,7 +976,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 75,
       "stats": {
@@ -1342,7 +1350,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 71,
       "stats": {
@@ -1685,7 +1694,8 @@
       "group": "wonderkid",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 74,
       "stats": {
@@ -1720,7 +1730,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 78,
       "stats": {
@@ -1755,7 +1766,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -1824,7 +1836,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 73,
       "stats": {
@@ -1958,7 +1971,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 85,
       "stats": {
@@ -2125,7 +2139,8 @@
       "short": "Hany",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {
@@ -2287,7 +2302,8 @@
       "short": "Hamdy",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 68,
       "stats": {
@@ -2320,7 +2336,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 73,
       "stats": {
@@ -2454,7 +2471,8 @@
       "short": "Adel",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 71,
       "stats": {
@@ -2486,7 +2504,8 @@
       "short": "Hassan",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "stats": {
@@ -2519,7 +2538,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 73,
       "stats": {
@@ -2685,7 +2705,8 @@
       "short": "Konan",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "stats": {
@@ -2821,7 +2842,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 75,
       "stats": {
@@ -2856,7 +2878,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -3026,7 +3049,8 @@
       "short": "Adingra",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -3061,7 +3085,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 81,
       "stats": {
@@ -3096,7 +3121,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -3199,7 +3225,8 @@
       "group": "wonderkid",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -3266,7 +3293,8 @@
       "short": "Touré",
       "group": "wonderkid",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 71,
       "stats": {
@@ -3299,7 +3327,8 @@
       "short": "Pépé",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "stats": {
@@ -3467,7 +3496,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 76,
       "stats": {
@@ -3537,7 +3567,8 @@
       "short": "Hadjam",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "stats": {
@@ -3636,7 +3667,8 @@
       "short": "Belghali",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 73,
       "stats": {
@@ -4043,7 +4075,8 @@
       "short": "Moussa",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -4076,7 +4109,8 @@
       "short": "Mahrez",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "stats": {
@@ -4144,7 +4178,8 @@
       "short": "Belaïli",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 72,
       "stats": {
@@ -4177,7 +4212,8 @@
       "short": "Bouanani",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "stats": {
@@ -4411,7 +4447,8 @@
       "short": "Tolo",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "stats": {
@@ -4477,7 +4514,8 @@
       "short": "Yongwa",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 69,
       "stats": {
@@ -4510,7 +4548,8 @@
       "short": "Tchamadeu",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "stats": {
@@ -4644,7 +4683,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 84,
       "stats": {
@@ -4846,7 +4886,8 @@
       "short": "Nkoudou",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "stats": {
@@ -4879,7 +4920,8 @@
       "short": "Bassogog",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 69,
       "stats": {
@@ -4912,7 +4954,8 @@
       "short": "Ngamaleu",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 69,
       "stats": {
@@ -5012,7 +5055,8 @@
       "group": "wonderkid",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 63,
       "stats": {
@@ -5147,7 +5191,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 73,
       "stats": {
@@ -5180,7 +5225,8 @@
       "short": "Mensah",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "stats": {
@@ -5213,7 +5259,8 @@
       "short": "Baba",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 69,
       "stats": {
@@ -5378,7 +5425,8 @@
       "short": "Köhn",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 72,
       "stats": {
@@ -5579,7 +5627,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 82,
       "stats": {
@@ -5615,7 +5664,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 82,
       "stats": {
@@ -5649,7 +5699,8 @@
       "short": "Sulemana",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -5682,7 +5733,8 @@
       "short": "Fatawu",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -5717,7 +5769,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 74,
       "stats": {
@@ -5786,7 +5839,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 72,
       "stats": {
@@ -5820,7 +5874,8 @@
       "short": "Osman",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "stats": {
@@ -5887,7 +5942,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 68,
       "stats": {
@@ -5920,7 +5976,8 @@
       "short": "Bonsu Baah",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -5953,7 +6010,8 @@
       "short": "Paintsil",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -6052,7 +6110,8 @@
       "short": "Abdi",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 72,
       "stats": {
@@ -6085,7 +6144,8 @@
       "short": "Valery",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {
@@ -6356,7 +6416,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 71,
       "stats": {
@@ -6389,7 +6450,8 @@
       "short": "Tounekti",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -6488,7 +6550,8 @@
       "short": "Traoré",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 72,
       "stats": {
@@ -6822,7 +6885,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -6957,7 +7021,8 @@
       "short": "Diarra",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "stats": {
@@ -7056,7 +7121,8 @@
       "short": "Modiba",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 70,
       "stats": {
@@ -7089,7 +7155,8 @@
       "short": "Mudau",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "stats": {
@@ -7289,7 +7356,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 71,
       "stats": {
@@ -7357,7 +7425,8 @@
       "short": "Maseko",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "stats": {
@@ -7555,7 +7624,8 @@
       "short": "Wan-Bissaka",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -7589,7 +7659,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 71,
       "stats": {
@@ -7856,7 +7927,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -7957,7 +8029,8 @@
       "short": "Bongonda",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "stats": {
@@ -8357,7 +8430,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 77,
       "stats": {
@@ -8392,7 +8466,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 73,
       "stats": {
@@ -8525,7 +8600,8 @@
       "short": "Kaboré",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 68,
       "stats": {
@@ -8724,7 +8800,8 @@
       "short": "Sylla",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 68,
       "stats": {
@@ -8856,7 +8933,8 @@
       "short": "Sylla",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "stats": {
@@ -8889,7 +8967,8 @@
       "short": "Baldé",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "stats": {
@@ -9084,7 +9163,8 @@
       "short": "Moreira",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "stats": {
@@ -9116,7 +9196,8 @@
       "short": "Pina",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "stats": {
@@ -9277,7 +9358,8 @@
       "short": "Mendes",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "stats": {
@@ -9309,7 +9391,8 @@
       "short": "Jovane",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "stats": {
@@ -9440,7 +9523,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -9474,7 +9558,8 @@
       "short": "Allevinah",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "stats": {
@@ -9540,7 +9625,8 @@
       "short": "A. Oyono",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "stats": {
@@ -9639,7 +9725,8 @@
       "short": "Babicka",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 68,
       "stats": {
@@ -9672,7 +9759,8 @@
       "short": "Ekomié",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 66,
       "stats": {
@@ -9771,7 +9859,8 @@
       "short": "Banda",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 69,
       "stats": {
@@ -9868,7 +9957,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "LW"
+        "LW",
+        "LWB"
       ],
       "ovr": 67,
       "stats": {
@@ -9964,7 +10054,8 @@
       "short": "Lungu",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 66,
       "stats": {

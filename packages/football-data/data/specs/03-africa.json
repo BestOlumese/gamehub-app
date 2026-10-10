@@ -201,7 +201,8 @@
       "short": "Ouahdi",
       "pos": [
         "RB",
-        "RW"
+        "RW",
+        "RWB"
       ],
       "ovr": 73,
       "style": "fb",
@@ -465,7 +466,8 @@
       "short": "Rahimi",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 74,
       "style": "inside_forward",
@@ -488,7 +490,8 @@
       "name": "Abde Ezzalzouli",
       "short": "Ezzalzouli",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -534,7 +537,8 @@
       "name": "Ilias Akhomach",
       "short": "Akhomach",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -557,7 +561,8 @@
       "short": "Yassine",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -580,7 +585,8 @@
       "short": "Talbi",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 71,
       "style": "winger",
@@ -649,7 +655,8 @@
       "short": "Seghir",
       "pos": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 76,
       "style": "inside_forward",
@@ -673,7 +680,8 @@
       "short": "Adli",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -927,7 +935,8 @@
       "short": "Mendy",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -1162,7 +1171,8 @@
       "short": "Mbaye",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -1188,7 +1198,8 @@
       "short": "Sarr",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -1212,7 +1223,8 @@
       "short": "Mané",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 79,
       "style": "st_complete",
@@ -1267,7 +1279,8 @@
       "short": "Diao",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 73,
       "style": "winger",
@@ -1357,7 +1370,8 @@
       "short": "Salah",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 85,
       "style": "st_complete",
@@ -1477,7 +1491,8 @@
       "name": "Mohamed Hany",
       "short": "Hany",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -1584,7 +1599,8 @@
       "name": "Mohamed Hamdy",
       "short": "Hamdy",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 68,
       "style": "fb",
@@ -1606,7 +1622,8 @@
       "short": "Zizo",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 73,
       "style": "winger",
@@ -1696,7 +1713,8 @@
       "name": "Ibrahim Adel",
       "short": "Adel",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 71,
       "style": "winger",
@@ -1717,7 +1735,8 @@
       "name": "Haissem Hassan",
       "short": "Hassan",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -1739,7 +1758,8 @@
       "short": "Trézéguet",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 73,
       "style": "winger",
@@ -1850,7 +1870,8 @@
       "name": "Ghislain Konan",
       "short": "Konan",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -1942,7 +1963,8 @@
       "short": "Doué",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 75,
       "style": "fb",
@@ -1966,7 +1988,8 @@
       "short": "Singo",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -2083,7 +2106,8 @@
       "name": "Simon Adingra",
       "short": "Adingra",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -2107,7 +2131,8 @@
       "short": "Diallo",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 81,
       "style": "inside_forward",
@@ -2131,7 +2156,8 @@
       "short": "Guessand",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -2201,7 +2227,8 @@
       "short": "Diomande",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -2248,7 +2275,8 @@
       "name": "Bazoumana Touré",
       "short": "Touré",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 71,
       "style": "winger",
@@ -2272,7 +2300,8 @@
       "name": "Nicolas Pépé",
       "short": "Pépé",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "style": "inside_forward",
@@ -2385,7 +2414,8 @@
       "short": "Bensebaini",
       "pos": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -2433,7 +2463,8 @@
       "name": "Jaouen Hadjam",
       "short": "Hadjam",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -2499,7 +2530,8 @@
       "name": "Rafik Belghali",
       "short": "Belghali",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 73,
       "style": "fb",
@@ -2774,7 +2806,8 @@
       "name": "Anis Hadj Moussa",
       "short": "Moussa",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -2796,7 +2829,8 @@
       "name": "Riyad Mahrez",
       "short": "Mahrez",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "style": "inside_forward",
@@ -2842,7 +2876,8 @@
       "name": "Youcef Belaïli",
       "short": "Belaïli",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -2864,7 +2899,8 @@
       "name": "Badredine Bouanani",
       "short": "Bouanani",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -3021,7 +3057,8 @@
       "name": "Nouhou Tolo",
       "short": "Tolo",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -3065,7 +3102,8 @@
       "name": "Darlin Yongwa",
       "short": "Yongwa",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -3087,7 +3125,8 @@
       "name": "Junior Tchamadeu",
       "short": "Tchamadeu",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "style": "fb",
@@ -3177,7 +3216,8 @@
       "short": "Mbeumo",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 84,
       "style": "inside_forward",
@@ -3315,7 +3355,8 @@
       "name": "Georges-Kévin Nkoudou",
       "short": "Nkoudou",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -3337,7 +3378,8 @@
       "name": "Christian Bassogog",
       "short": "Bassogog",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 69,
       "style": "winger",
@@ -3359,7 +3401,8 @@
       "name": "Moumi Ngamaleu",
       "short": "Ngamaleu",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 69,
       "style": "winger",
@@ -3428,7 +3471,8 @@
       "short": "Fernandez",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 63,
       "style": "winger",
@@ -3521,7 +3565,8 @@
       "short": "Seidu",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 73,
       "style": "fb",
@@ -3543,7 +3588,8 @@
       "name": "Gideon Mensah",
       "short": "Mensah",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -3565,7 +3611,8 @@
       "name": "Abdul Rahman Baba",
       "short": "Baba",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -3675,7 +3722,8 @@
       "name": "Derrick Köhn",
       "short": "Köhn",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 72,
       "style": "fb",
@@ -3812,7 +3860,8 @@
       "short": "Kudus",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 82,
       "style": "inside_forward",
@@ -3837,7 +3886,8 @@
       "short": "Semenyo",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 82,
       "style": "inside_forward",
@@ -3860,7 +3910,8 @@
       "name": "Kamaldeen Sulemana",
       "short": "Sulemana",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -3882,7 +3933,8 @@
       "name": "Abdul Fatawu",
       "short": "Fatawu",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -3906,7 +3958,8 @@
       "short": "Nuamah",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -3953,7 +4006,8 @@
       "short": "Ayew",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -3976,7 +4030,8 @@
       "name": "Ibrahim Osman",
       "short": "Osman",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -4021,7 +4076,8 @@
       "short": "Königsdörffer",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -4043,7 +4099,8 @@
       "name": "Christopher Bonsu Baah",
       "short": "Bonsu Baah",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -4065,7 +4122,8 @@
       "name": "Joseph Paintsil",
       "short": "Paintsil",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -4131,7 +4189,8 @@
       "name": "Ali Abdi",
       "short": "Abdi",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 72,
       "style": "fb",
@@ -4153,7 +4212,8 @@
       "name": "Yan Valery",
       "short": "Valery",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -4336,7 +4396,8 @@
       "short": "Achouri",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 71,
       "style": "winger",
@@ -4358,7 +4419,8 @@
       "name": "Sebastian Tounekti",
       "short": "Tounekti",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -4424,7 +4486,8 @@
       "name": "Hamari Traoré",
       "short": "Traoré",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 72,
       "style": "fb",
@@ -4648,7 +4711,8 @@
       "short": "Nene",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -4739,7 +4803,8 @@
       "name": "Gaoussou Diarra",
       "short": "Diarra",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -4807,7 +4872,8 @@
       "name": "Aubrey Modiba",
       "short": "Modiba",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -4829,7 +4895,8 @@
       "name": "Khuliso Mudau",
       "short": "Mudau",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -4963,7 +5030,8 @@
       "short": "Appollis",
       "pos": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 71,
       "style": "winger",
@@ -5009,7 +5077,8 @@
       "name": "Thapelo Maseko",
       "short": "Maseko",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -5141,7 +5210,8 @@
       "name": "Aaron Wan-Bissaka",
       "short": "Wan-Bissaka",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -5164,7 +5234,8 @@
       "short": "Masuaku",
       "pos": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 71,
       "style": "fb",
@@ -5343,7 +5414,8 @@
       "short": "Elia",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -5411,7 +5483,8 @@
       "name": "Théo Bongonda",
       "short": "Bongonda",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -5681,7 +5754,8 @@
       "short": "Ouattara",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -5705,7 +5779,8 @@
       "short": "Traoré",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 73,
       "style": "inside_forward",
@@ -5794,7 +5869,8 @@
       "name": "Pierre Landry Kaboré",
       "short": "Kaboré",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -5927,7 +6003,8 @@
       "name": "Issiaga Sylla",
       "short": "Sylla",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 68,
       "style": "fb",
@@ -6015,7 +6092,8 @@
       "name": "Dembo Sylla",
       "short": "Sylla",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "style": "fb",
@@ -6037,7 +6115,8 @@
       "name": "Aliou Baldé",
       "short": "Baldé",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -6168,7 +6247,8 @@
       "name": "Steven Moreira",
       "short": "Moreira",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 68,
       "style": "fb",
@@ -6189,7 +6269,8 @@
       "name": "Wagner Pina",
       "short": "Pina",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -6295,7 +6376,8 @@
       "name": "Ryan Mendes",
       "short": "Mendes",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -6316,7 +6398,8 @@
       "name": "Jovane Cabral",
       "short": "Jovane",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -6403,7 +6486,8 @@
       "short": "Bouanga",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 77,
       "style": "inside_forward",
@@ -6426,7 +6510,8 @@
       "name": "Jim Allevinah",
       "short": "Allevinah",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -6470,7 +6555,8 @@
       "name": "Anthony Oyono",
       "short": "A. Oyono",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -6536,7 +6622,8 @@
       "name": "Shavy Babicka",
       "short": "Babicka",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -6558,7 +6645,8 @@
       "name": "Jacques Ekomié",
       "short": "Ekomié",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 66,
       "style": "fb",
@@ -6624,7 +6712,8 @@
       "name": "Lameck Banda",
       "short": "Banda",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 69,
       "style": "winger",
@@ -6688,7 +6777,8 @@
       "short": "L. Musonda",
       "pos": [
         "LB",
-        "LW"
+        "LW",
+        "LWB"
       ],
       "ovr": 67,
       "style": "fb",
@@ -6751,7 +6841,8 @@
       "name": "Gamphani Lungu",
       "short": "Lungu",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 66,
       "style": "winger",

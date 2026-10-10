@@ -463,7 +463,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 66,
       "stats": {

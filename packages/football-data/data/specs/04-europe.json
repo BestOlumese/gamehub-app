@@ -96,7 +96,8 @@
       "short": "Koundé",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 84,
       "style": "fb",
@@ -189,7 +190,8 @@
       "name": "Théo Hernandez",
       "short": "Hernandez",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 82,
       "style": "fb",
@@ -237,7 +239,8 @@
       "name": "Lucas Digne",
       "short": "Digne",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -259,7 +262,8 @@
       "name": "Malo Gusto",
       "short": "Gusto",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -329,7 +333,8 @@
       "name": "Adrien Truffert",
       "short": "Truffert",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -667,7 +672,8 @@
       "short": "Olise",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 86,
       "style": "inside_forward",
@@ -691,7 +697,8 @@
       "name": "Bradley Barcola",
       "short": "Barcola",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 82,
       "style": "winger",
@@ -888,7 +895,8 @@
       "short": "Coman",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -1014,7 +1022,8 @@
       "short": "Alexander-Arnold",
       "pos": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 85,
       "style": "fb",
@@ -1100,7 +1109,8 @@
       "short": "James",
       "pos": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 83,
       "style": "fb",
@@ -1121,7 +1131,8 @@
       "name": "Lewis Hall",
       "short": "Hall",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -1142,7 +1153,8 @@
       "short": "O'Reilly",
       "pos": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -1163,7 +1175,8 @@
       "short": "Livramento",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -1308,7 +1321,8 @@
       "short": "White",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -1349,7 +1363,8 @@
       "short": "Lewis",
       "pos": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -1370,7 +1385,8 @@
       "short": "Lewis-Skelly",
       "pos": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -1702,7 +1718,8 @@
       "name": "Anthony Gordon",
       "short": "Gordon",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 82,
       "style": "winger",
@@ -1769,7 +1786,8 @@
       "short": "Rashford",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 80,
       "style": "inside_forward",
@@ -1810,7 +1828,8 @@
       "name": "Noni Madueke",
       "short": "Madueke",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -1874,7 +1893,8 @@
       "short": "Bowen",
       "pos": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 80,
       "style": "inside_forward",
@@ -1935,7 +1955,8 @@
       "short": "Ngumoha",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -1958,7 +1979,8 @@
       "name": "Harvey Barnes",
       "short": "Barnes",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -2207,7 +2229,8 @@
       "short": "Pubill",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -2228,7 +2251,8 @@
       "name": "Iván Fresneda",
       "short": "Fresneda",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 75,
       "style": "fb",
@@ -2249,7 +2273,8 @@
       "name": "Fran García",
       "short": "García",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -2340,7 +2365,8 @@
       "short": "Llorente",
       "pos": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 82,
       "style": "fb",
@@ -2727,7 +2753,8 @@
       "short": "Yamal",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 90,
       "style": "st_complete",
@@ -2761,7 +2788,8 @@
       "name": "Nico Williams",
       "short": "Williams",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 84,
       "style": "winger",
@@ -2830,7 +2858,8 @@
       "name": "Yéremy Pino",
       "short": "Pino",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -2851,7 +2880,8 @@
       "name": "Víctor Muñoz",
       "short": "Muñoz",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -2935,7 +2965,8 @@
       "name": "Jesús Rodríguez",
       "short": "Rodríguez",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -3235,7 +3266,8 @@
       "name": "Maximilian Mittelstädt",
       "short": "Mittelstädt",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -3257,7 +3289,8 @@
       "short": "Raum",
       "pos": [
         "LB",
-        "LM"
+        "LM",
+        "LWB"
       ],
       "ovr": 80,
       "style": "fb",
@@ -3279,7 +3312,8 @@
       "name": "Nathaniel Brown",
       "short": "Brown",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -3301,7 +3335,8 @@
       "short": "Baku",
       "pos": [
         "RB",
-        "RW"
+        "RW",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -3568,7 +3603,8 @@
       "name": "Said El Mala",
       "short": "Mala",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -3617,7 +3653,8 @@
       "short": "Sané",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 82,
       "style": "inside_forward",
@@ -3640,7 +3677,8 @@
       "short": "Gnabry",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 81,
       "style": "inside_forward",
@@ -3662,7 +3700,8 @@
       "short": "Adeyemi",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -3749,7 +3788,8 @@
       "name": "Jamie Leweling",
       "short": "Leweling",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -3770,7 +3810,8 @@
       "name": "Chris Führich",
       "short": "Führich",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -3812,7 +3853,8 @@
       "name": "Kevin Schade",
       "short": "Schade",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -3991,7 +4033,8 @@
       "name": "Giovanni Di Lorenzo",
       "short": "Lorenzo",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 81,
       "style": "fb",
@@ -4104,7 +4147,8 @@
       "short": "Cambiaso",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 80,
       "style": "fb",
@@ -4126,7 +4170,8 @@
       "name": "Destiny Udogie",
       "short": "Udogie",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -4170,7 +4215,8 @@
       "name": "Michael Kayode",
       "short": "Kayode",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -4237,7 +4283,8 @@
       "name": "Matteo Ruggeri",
       "short": "Ruggeri",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -4577,7 +4624,8 @@
       "short": "Chiesa",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -4600,7 +4648,8 @@
       "name": "Matteo Politano",
       "short": "Politano",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "style": "inside_forward",
@@ -4622,7 +4671,8 @@
       "name": "Riccardo Orsolini",
       "short": "Orsolini",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "style": "inside_forward",
@@ -4644,7 +4694,8 @@
       "name": "Mattia Zaccagni",
       "short": "Zaccagni",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -4843,7 +4894,8 @@
       "name": "Nuno Mendes",
       "short": "Mendes",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 87,
       "style": "fb",
@@ -4866,7 +4918,8 @@
       "short": "Cancelo",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 82,
       "style": "fb",
@@ -4890,7 +4943,8 @@
       "short": "Dalot",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -4975,7 +5029,8 @@
       "name": "Nuno Tavares",
       "short": "Tavares",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -4996,7 +5051,8 @@
       "name": "Nélson Semedo",
       "short": "Semedo",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -5239,7 +5295,8 @@
       "name": "Rafael Leão",
       "short": "Leão",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 83,
       "style": "winger",
@@ -5306,7 +5363,8 @@
       "name": "Francisco Conceição",
       "short": "Conceição",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 81,
       "style": "winger",
@@ -5327,7 +5385,8 @@
       "name": "Francisco Trincão",
       "short": "Trincão",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 80,
       "style": "inside_forward",
@@ -5349,7 +5408,8 @@
       "short": "Neto",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 80,
       "style": "winger",
@@ -5370,7 +5430,8 @@
       "name": "Gonçalo Guedes",
       "short": "Guedes",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -5659,7 +5720,8 @@
       "short": "Hato",
       "pos": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -5708,7 +5770,8 @@
       "short": "Geertruida",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -5936,7 +5999,8 @@
       "short": "Gakpo",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 83,
       "style": "inside_forward",
@@ -6029,7 +6093,8 @@
       "name": "Noa Lang",
       "short": "Lang",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -6051,7 +6116,8 @@
       "name": "Crysencio Summerville",
       "short": "Summerville",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -6208,7 +6274,8 @@
       "short": "Cuyper",
       "pos": [
         "LB",
-        "LM"
+        "LM",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -6231,7 +6298,8 @@
       "short": "Castagne",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -6253,7 +6321,8 @@
       "name": "Thomas Meunier",
       "short": "Meunier",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -6478,7 +6547,8 @@
       "short": "Doku",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 84,
       "style": "winger",
@@ -6502,7 +6572,8 @@
       "short": "Trossard",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 80,
       "style": "inside_forward",
@@ -6569,7 +6640,8 @@
       "name": "Dodi Lukébakio",
       "short": "Lukébakio",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 78,
       "style": "inside_forward",
@@ -6617,7 +6689,8 @@
       "short": "Saelemaekers",
       "pos": [
         "RW",
-        "RB"
+        "RB",
+        "RM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -6640,7 +6713,8 @@
       "name": "Malick Fofana",
       "short": "Fofana",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -6662,7 +6736,8 @@
       "name": "Mika Godts",
       "short": "Godts",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -6685,7 +6760,8 @@
       "short": "Moreira",
       "pos": [
         "LW",
-        "LB"
+        "LB",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -7103,7 +7179,8 @@
       "short": "Perišić",
       "pos": [
         "LW",
-        "LWB"
+        "LWB",
+        "LM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -7301,7 +7378,8 @@
       "short": "Ryerson",
       "pos": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -7370,7 +7448,8 @@
       "name": "Fredrik André Bjørkan",
       "short": "Bjørkan",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -7626,7 +7705,8 @@
       "name": "Antonio Nusa",
       "short": "Nusa",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 80,
       "style": "winger",
@@ -7648,7 +7728,8 @@
       "name": "Andreas Schjelderup",
       "short": "Schjelderup",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -7670,7 +7751,8 @@
       "name": "Oscar Bobb",
       "short": "Bobb",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -7756,7 +7838,8 @@
       "name": "Gabriel Gudmundsson",
       "short": "Gudmundsson",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -7778,7 +7861,8 @@
       "short": "Svensson",
       "pos": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -8014,7 +8098,8 @@
       "name": "Anthony Elanga",
       "short": "Elanga",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 81,
       "style": "winger",
@@ -8147,7 +8232,8 @@
       "name": "Rasmus Kristensen",
       "short": "Kristensen",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -8169,7 +8255,8 @@
       "name": "Alexander Bah",
       "short": "Bah",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -8418,7 +8505,8 @@
       "name": "Gustav Isaksen",
       "short": "Isaksen",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "style": "inside_forward",
@@ -8440,7 +8528,8 @@
       "name": "Andreas Skov Olsen",
       "short": "Skov Olsen",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "style": "inside_forward",
@@ -8613,7 +8702,8 @@
       "short": "Rodriguez",
       "pos": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -8635,7 +8725,8 @@
       "name": "Silvan Widmer",
       "short": "Widmer",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 75,
       "style": "fb",
@@ -8830,7 +8921,8 @@
       "name": "Dan Ndoye",
       "short": "Ndoye",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 80,
       "style": "winger",
@@ -8895,7 +8987,8 @@
       "short": "Vargas",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "style": "winger",
@@ -8980,7 +9073,8 @@
       "short": "Posch",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 77,
       "style": "fb",
@@ -9044,7 +9138,8 @@
       "short": "Mwene",
       "pos": [
         "LB",
-        "RB"
+        "RB",
+        "LWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -9066,7 +9161,8 @@
       "short": "Prass",
       "pos": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -9285,7 +9381,8 @@
       "name": "Patrick Wimmer",
       "short": "Wimmer",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -9392,7 +9489,8 @@
       "name": "Matty Cash",
       "short": "Cash",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -9640,7 +9738,8 @@
       "name": "Michał Skóraś",
       "short": "Skóraś",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -9662,7 +9761,8 @@
       "name": "Oskar Pietuszewski",
       "short": "Pietuszewski",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -9953,7 +10053,8 @@
       "name": "Andrija Živković",
       "short": "Živković",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "style": "winger",
@@ -10147,7 +10248,8 @@
       "name": "Vitaliy Mykolenko",
       "short": "Mykolenko",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "style": "fb",
@@ -10232,7 +10334,8 @@
       "short": "Tsyhankov",
       "pos": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 76,
       "style": "inside_forward",
@@ -10295,7 +10398,8 @@
       "name": "Oleksandr Zubkov",
       "short": "Zubkov",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -10401,7 +10505,8 @@
       "name": "Andriy Yarmolenko",
       "short": "Yarmolenko",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "inside_forward",
@@ -10558,7 +10663,8 @@
       "short": "Kadıoğlu",
       "pos": [
         "LB",
-        "RB"
+        "RB",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -10581,7 +10687,8 @@
       "name": "Eren Elmalı",
       "short": "Elmalı",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -10604,7 +10711,8 @@
       "short": "Müldür",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 75,
       "style": "fb",
@@ -10860,7 +10968,8 @@
       "short": "Yıldız",
       "pos": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 85,
       "style": "inside_forward",
@@ -10884,7 +10993,8 @@
       "name": "Kerem Aktürkoğlu",
       "short": "Aktürkoğlu",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -10907,7 +11017,8 @@
       "short": "B. Yılmaz",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 77,
       "style": "winger",
@@ -10929,7 +11040,8 @@
       "name": "Oğuz Aydın",
       "short": "Aydın",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -10973,7 +11085,8 @@
       "name": "İlhan Fakılı",
       "short": "Fakılı",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 66,
       "style": "winger",
@@ -11021,7 +11134,8 @@
       "name": "Andy Robertson",
       "short": "Robertson",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "style": "fb",
@@ -11089,7 +11203,8 @@
       "name": "Aaron Hickey",
       "short": "Hickey",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -11173,7 +11288,8 @@
       "name": "Kieran Tierney",
       "short": "Tierney",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -11216,7 +11332,8 @@
       "name": "Nathan Patterson",
       "short": "Patterson",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 72,
       "style": "fb",
@@ -11324,7 +11441,8 @@
       "name": "Khvicha Kvaratskhelia",
       "short": "Kvaratskhelia",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 88,
       "style": "winger",
@@ -11436,7 +11554,8 @@
       "name": "Zuriko Davitashvili",
       "short": "Davitashvili",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -11459,7 +11578,8 @@
       "short": "Tsitaishvili",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -11503,7 +11623,8 @@
       "name": "Otar Kakabadze",
       "short": "Kakabadze",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -11569,7 +11690,8 @@
       "short": "Kharebashvili",
       "pos": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 64,
       "style": "fb",
@@ -11770,7 +11892,8 @@
       "name": "Žan Karničnik",
       "short": "Karničnik",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -11836,7 +11959,8 @@
       "name": "Petar Stojanović",
       "short": "Stojanović",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "style": "fb",
@@ -11882,7 +12006,8 @@
       "name": "Milos Kerkez",
       "short": "Kerkez",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 81,
       "style": "fb",
@@ -11946,7 +12071,8 @@
       "short": "Sallai",
       "pos": [
         "RW",
-        "RB"
+        "RB",
+        "RM"
       ],
       "ovr": 75,
       "style": "winger",
@@ -12009,7 +12135,8 @@
       "name": "Bendegúz Bolla",
       "short": "Bolla",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -12053,7 +12180,8 @@
       "short": "Styles",
       "pos": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -12141,7 +12269,8 @@
       "short": "Hložek",
       "pos": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 76,
       "style": "inside_forward",
@@ -12162,7 +12291,8 @@
       "name": "Vladimír Coufal",
       "short": "Coufal",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 74,
       "style": "fb",
@@ -12247,7 +12377,8 @@
       "name": "Lukáš Provod",
       "short": "Provod",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 73,
       "style": "winger",
@@ -12311,7 +12442,8 @@
       "name": "Jaroslav Zelený",
       "short": "Zelený",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 70,
       "style": "fb",
@@ -12375,7 +12507,8 @@
       "name": "Christos Tzolis",
       "short": "Tzolis",
       "pos": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "style": "winger",
@@ -12417,7 +12550,8 @@
       "name": "Kostas Tsimikas",
       "short": "Tsimikas",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "style": "fb",
@@ -12502,7 +12636,8 @@
       "name": "Georgios Masouras",
       "short": "Masouras",
       "pos": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "style": "winger",
@@ -12607,7 +12742,8 @@
       "name": "Lazaros Rota",
       "short": "Rota",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "style": "fb",

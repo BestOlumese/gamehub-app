@@ -142,7 +142,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 84,
       "stats": {
@@ -279,7 +280,8 @@
       "short": "Hernandez",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 82,
       "stats": {
@@ -349,7 +351,8 @@
       "short": "Digne",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "stats": {
@@ -382,7 +385,8 @@
       "short": "Gusto",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -485,7 +489,8 @@
       "short": "Truffert",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "stats": {
@@ -967,7 +972,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 86,
       "stats": {
@@ -1002,7 +1008,8 @@
       "short": "Barcola",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 82,
       "stats": {
@@ -1279,7 +1286,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -1471,7 +1479,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 85,
       "stats": {
@@ -1601,7 +1610,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 83,
       "stats": {
@@ -1633,7 +1643,8 @@
       "short": "Hall",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -1665,7 +1676,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -1697,7 +1709,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -1919,7 +1932,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -1982,7 +1996,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -2014,7 +2029,8 @@
       "group": "wonderkid",
       "positions": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -2472,7 +2488,8 @@
       "short": "Gordon",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 82,
       "stats": {
@@ -2572,7 +2589,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 80,
       "stats": {
@@ -2635,7 +2653,8 @@
       "short": "Madueke",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -2732,7 +2751,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "ST"
+        "ST",
+        "RM"
       ],
       "ovr": 80,
       "stats": {
@@ -2826,7 +2846,8 @@
       "group": "wonderkid",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -2858,7 +2879,8 @@
       "short": "Barnes",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -3218,7 +3240,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -3250,7 +3273,8 @@
       "short": "Fresneda",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 75,
       "stats": {
@@ -3282,7 +3306,8 @@
       "short": "García",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "stats": {
@@ -3417,7 +3442,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CM"
+        "CM",
+        "RWB"
       ],
       "ovr": 82,
       "stats": {
@@ -3981,7 +4007,8 @@
       "group": "wonderkid",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 90,
       "stats": {
@@ -4016,7 +4043,8 @@
       "short": "Williams",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 84,
       "stats": {
@@ -4118,7 +4146,8 @@
       "short": "Pino",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -4150,7 +4179,8 @@
       "short": "Muñoz",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -4278,7 +4308,8 @@
       "short": "Rodríguez",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 75,
       "stats": {
@@ -4732,7 +4763,8 @@
       "short": "Mittelstädt",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -4765,7 +4797,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "LM"
+        "LM",
+        "LWB"
       ],
       "ovr": 80,
       "stats": {
@@ -4798,7 +4831,8 @@
       "short": "Brown",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "stats": {
@@ -4831,7 +4865,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "RW"
+        "RW",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -5228,7 +5263,8 @@
       "short": "Mala",
       "group": "wonderkid",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -5297,7 +5333,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 82,
       "stats": {
@@ -5331,7 +5368,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 81,
       "stats": {
@@ -5364,7 +5402,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -5495,7 +5534,8 @@
       "short": "Leweling",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "stats": {
@@ -5527,7 +5567,8 @@
       "short": "Führich",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -5591,7 +5632,8 @@
       "short": "Schade",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -5858,7 +5900,8 @@
       "short": "Lorenzo",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 81,
       "stats": {
@@ -6026,7 +6069,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 80,
       "stats": {
@@ -6059,7 +6103,8 @@
       "short": "Udogie",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -6125,7 +6170,8 @@
       "short": "Kayode",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -6225,7 +6271,8 @@
       "short": "Ruggeri",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "stats": {
@@ -6728,7 +6775,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -6762,7 +6810,8 @@
       "short": "Politano",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -6795,7 +6844,8 @@
       "short": "Orsolini",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -6828,7 +6878,8 @@
       "short": "Zaccagni",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -7124,7 +7175,8 @@
       "short": "Mendes",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 87,
       "stats": {
@@ -7158,7 +7210,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 82,
       "stats": {
@@ -7193,7 +7246,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -7322,7 +7376,8 @@
       "short": "Tavares",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -7354,7 +7409,8 @@
       "short": "Semedo",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -7718,7 +7774,8 @@
       "short": "Leão",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 83,
       "stats": {
@@ -7818,7 +7875,8 @@
       "short": "Conceição",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 81,
       "stats": {
@@ -7850,7 +7908,8 @@
       "short": "Trincão",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 80,
       "stats": {
@@ -7883,7 +7942,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 80,
       "stats": {
@@ -7915,7 +7975,8 @@
       "short": "Guedes",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -8326,7 +8387,8 @@
       "group": "wonderkid",
       "positions": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -8395,7 +8457,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -8733,7 +8796,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 83,
       "stats": {
@@ -8870,7 +8934,8 @@
       "short": "Lang",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -8903,7 +8968,8 @@
       "short": "Summerville",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -9137,7 +9203,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "LM"
+        "LM",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -9171,7 +9238,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -9204,7 +9272,8 @@
       "short": "Meunier",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 74,
       "stats": {
@@ -9539,7 +9608,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 84,
       "stats": {
@@ -9574,7 +9644,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 80,
       "stats": {
@@ -9674,7 +9745,8 @@
       "short": "Lukébakio",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 78,
       "stats": {
@@ -9744,7 +9816,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "RB"
+        "RB",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -9778,7 +9851,8 @@
       "short": "Fofana",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -9811,7 +9885,8 @@
       "short": "Godts",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -9845,7 +9920,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "LB"
+        "LB",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -10470,7 +10546,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "LWB"
+        "LWB",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -10767,7 +10844,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "LB"
+        "LB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -10869,7 +10947,8 @@
       "short": "Bjørkan",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 74,
       "stats": {
@@ -11238,7 +11317,8 @@
       "short": "Nusa",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 80,
       "stats": {
@@ -11271,7 +11351,8 @@
       "short": "Schjelderup",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -11304,7 +11385,8 @@
       "short": "Bobb",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 77,
       "stats": {
@@ -11434,7 +11516,8 @@
       "short": "Gudmundsson",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 77,
       "stats": {
@@ -11467,7 +11550,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -11824,7 +11908,8 @@
       "short": "Elanga",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 81,
       "stats": {
@@ -12023,7 +12108,8 @@
       "short": "Kristensen",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -12056,7 +12142,8 @@
       "short": "Bah",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -12422,7 +12509,8 @@
       "short": "Isaksen",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 79,
       "stats": {
@@ -12455,7 +12543,8 @@
       "short": "Skov Olsen",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "stats": {
@@ -12716,7 +12805,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 74,
       "stats": {
@@ -12749,7 +12839,8 @@
       "short": "Widmer",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 75,
       "stats": {
@@ -13043,7 +13134,8 @@
       "short": "Ndoye",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 80,
       "stats": {
@@ -13141,7 +13233,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 78,
       "stats": {
@@ -13270,7 +13363,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 77,
       "stats": {
@@ -13367,7 +13461,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "RB"
+        "RB",
+        "LWB"
       ],
       "ovr": 74,
       "stats": {
@@ -13400,7 +13495,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 76,
       "stats": {
@@ -13729,7 +13825,8 @@
       "short": "Wimmer",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "stats": {
@@ -13891,7 +13988,8 @@
       "short": "Cash",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 79,
       "stats": {
@@ -14260,7 +14358,8 @@
       "short": "Skóraś",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 74,
       "stats": {
@@ -14293,7 +14392,8 @@
       "short": "Pietuszewski",
       "group": "wonderkid",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 70,
       "stats": {
@@ -14723,7 +14823,8 @@
       "short": "Živković",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 76,
       "stats": {
@@ -15016,7 +15117,8 @@
       "short": "Mykolenko",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 78,
       "stats": {
@@ -15145,7 +15247,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "AM"
+        "AM",
+        "RM"
       ],
       "ovr": 76,
       "stats": {
@@ -15241,7 +15344,8 @@
       "short": "Zubkov",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 74,
       "stats": {
@@ -15402,7 +15506,8 @@
       "short": "Yarmolenko",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -15636,7 +15741,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "RB"
+        "RB",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -15670,7 +15776,8 @@
       "short": "Elmalı",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "stats": {
@@ -15704,7 +15811,8 @@
       "group": "current",
       "positions": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 75,
       "stats": {
@@ -16079,7 +16187,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 85,
       "stats": {
@@ -16114,7 +16223,8 @@
       "short": "Aktürkoğlu",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -16148,7 +16258,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 77,
       "stats": {
@@ -16181,7 +16292,8 @@
       "short": "Aydın",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -16247,7 +16359,8 @@
       "short": "Fakılı",
       "group": "wonderkid",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 66,
       "stats": {
@@ -16315,7 +16428,8 @@
       "short": "Robertson",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 79,
       "stats": {
@@ -16416,7 +16530,8 @@
       "short": "Hickey",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 76,
       "stats": {
@@ -16544,7 +16659,8 @@
       "short": "Tierney",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 74,
       "stats": {
@@ -16609,7 +16725,8 @@
       "short": "Patterson",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 72,
       "stats": {
@@ -16770,7 +16887,8 @@
       "short": "Kvaratskhelia",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 88,
       "stats": {
@@ -16937,7 +17055,8 @@
       "short": "Davitashvili",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 74,
       "stats": {
@@ -16971,7 +17090,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -17037,7 +17157,8 @@
       "short": "Kakabadze",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {
@@ -17136,7 +17257,8 @@
       "group": "wonderkid",
       "positions": [
         "LB",
-        "CB"
+        "CB",
+        "LWB"
       ],
       "ovr": 64,
       "stats": {
@@ -17434,7 +17556,8 @@
       "short": "Karničnik",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {
@@ -17533,7 +17656,8 @@
       "short": "Stojanović",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 69,
       "stats": {
@@ -17601,7 +17725,8 @@
       "short": "Kerkez",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 81,
       "stats": {
@@ -17698,7 +17823,8 @@
       "group": "current",
       "positions": [
         "RW",
-        "RB"
+        "RB",
+        "RM"
       ],
       "ovr": 75,
       "stats": {
@@ -17794,7 +17920,8 @@
       "short": "Bolla",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {
@@ -17860,7 +17987,8 @@
       "group": "current",
       "positions": [
         "LB",
-        "CM"
+        "CM",
+        "LWB"
       ],
       "ovr": 70,
       "stats": {
@@ -17990,7 +18118,8 @@
       "group": "current",
       "positions": [
         "LW",
-        "AM"
+        "AM",
+        "LM"
       ],
       "ovr": 76,
       "stats": {
@@ -18022,7 +18151,8 @@
       "short": "Coufal",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 74,
       "stats": {
@@ -18151,7 +18281,8 @@
       "short": "Provod",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 73,
       "stats": {
@@ -18248,7 +18379,8 @@
       "short": "Zelený",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 70,
       "stats": {
@@ -18345,7 +18477,8 @@
       "short": "Tzolis",
       "group": "current",
       "positions": [
-        "LW"
+        "LW",
+        "LM"
       ],
       "ovr": 79,
       "stats": {
@@ -18409,7 +18542,8 @@
       "short": "Tsimikas",
       "group": "current",
       "positions": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 76,
       "stats": {
@@ -18538,7 +18672,8 @@
       "short": "Masouras",
       "group": "current",
       "positions": [
-        "RW"
+        "RW",
+        "RM"
       ],
       "ovr": 72,
       "stats": {
@@ -18698,7 +18833,8 @@
       "short": "Rota",
       "group": "current",
       "positions": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 70,
       "stats": {

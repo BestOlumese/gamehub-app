@@ -4,6 +4,7 @@ import {
   datasetSchema,
   isKeeperStats,
   POSITION_GROUP,
+  POSITIONS,
   ROLE_POSITIONS,
   type Dataset,
   type Player,
@@ -227,9 +228,14 @@ export function validate(
     need("wonderkids", QUOTAS.wonderkids);
     need("nigerianWonderkids", QUOTAS.nigerianWonderkids);
     need("keepers", QUOTAS.keepers);
-    for (const [pos, n] of primary)
-      if (pos !== "GK" && n < QUOTAS.perPosition)
-        errors.push(`quota: ${pos} ${n} < ${QUOTAS.perPosition}`);
+    // Players who can play each outfield position (primary or alternate): wing-backs and wide
+    // midfielders are mostly listed as full-backs and wingers first.
+    for (const pos of POSITIONS) {
+      if (pos === "GK") continue;
+      const n = players.filter((p) => p.positions.includes(pos)).length;
+      if (n < QUOTAS.perPosition)
+        errors.push(`quota: ${pos} playable by ${n} < ${QUOTAS.perPosition}`);
+    }
     for (const [nation, n] of nations)
       if (n > QUOTAS.maxNationShare * counts.total)
         errors.push(`quota: ${nation} is over 15 % of the set (${n})`);

@@ -174,7 +174,7 @@ The realtime Worker needs the data to build option sets. `pnpm --filter football
 | Legends | ≥ 150 (≥ 25 Nigerian, ≥ 50 African) |
 | Wonderkids | ≥ 80 (≥ 10 Nigerian) |
 | Goalkeepers | ≥ 110 |
-| Each other position (primary) | ≥ 40 |
+| Each other position (primary or alternate: wing-backs and wide midfielders are mostly listed as full-backs and wingers first) | ≥ 40 |
 | Players per nation | no nation > 15 % of the set |
 
 ## Validation script (`pnpm --filter football-data validate`)

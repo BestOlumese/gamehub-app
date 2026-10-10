@@ -1,0 +1,5562 @@
+{
+  "batch": "05 Americas and Asia: national-team squads and call-ups, Oct 2026",
+  "players": [
+    {
+      "name": "Alisson",
+      "short": "Alisson",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 85,
+      "style": "gk",
+      "nation": "BR",
+      "club": "Liverpool",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "Liverpool; 83 caps, 0 goals for Brazil, 2026 World Cup squad; Liverpool; Champions League 2019, Premier League 2020 and 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Alisson_Becker"
+      ],
+      "stats": {
+        "stp": 86,
+        "rct": 84,
+        "hdl": 82,
+        "cmd": 80,
+        "dst": 78,
+        "agi": 80
+      },
+      "foot": "R",
+      "born": 1992,
+      "height": 193
+    },
+    {
+      "name": "Ederson",
+      "short": "Ederson",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 83,
+      "style": "gk_sweeper",
+      "nation": "BR",
+      "club": "Fenerbahçe",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_keeper": "plusplus",
+        "sweeper_keeper": "plus"
+      },
+      "basis": "Fenerbahçe; 32 caps, 0 goals for Brazil, 2026 World Cup squad; treble winner with Manchester City 2023; long passing.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Ederson_(footballer,_born_1993)"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Hugo Souza",
+      "short": "Souza",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 74,
+      "style": "gk",
+      "nation": "BR",
+      "club": "Corinthians",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Corinthians; 2 caps, 0 goals for Brazil, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Hugo_Souza"
+      ],
+      "height": 196
+    },
+    {
+      "name": "Marquinhos",
+      "short": "Marquinhos",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 84,
+      "style": "cb_ball",
+      "nation": "BR",
+      "club": "Paris Saint-Germain",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "covering_defender": "plusplus",
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Paris Saint-Germain; 112 caps, 7 goals for Brazil, in the Oct 2026 squad; captained Paris Saint-Germain to the 2025 Champions League; over 110 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Marquinhos"
+      ],
+      "foot": "R",
+      "height": 183
+    },
+    {
+      "name": "Gabriel Magalhães",
+      "short": "Magalhães",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 86,
+      "style": "cb",
+      "nation": "BR",
+      "club": "Arsenal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Arsenal; 24 caps, 1 goal for Brazil, in the Oct 2026 squad; Arsenal's aerial threat at both ends.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Gabriel_Magalhães"
+      ],
+      "foot": "L",
+      "height": 190
+    },
+    {
+      "name": "Éder Militão",
+      "short": "Militão",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 83,
+      "style": "cb",
+      "nation": "BR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus",
+        "covering_defender": "plus"
+      },
+      "basis": "Real Madrid; 38 caps, 2 goals for Brazil, called up Nov 2025; Champions League winner with Real Madrid 2022.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Éder_Militão"
+      ],
+      "height": 186
+    },
+    {
+      "name": "Vanderson",
+      "short": "Vanderson",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 78,
+      "style": "fb",
+      "nation": "BR",
+      "club": "Monaco",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plus"
+      },
+      "basis": "Monaco; 9 caps, 1 goal for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Vanderson_(footballer,_born_2001)"
+      ],
+      "height": 173
+    },
+    {
+      "name": "Douglas Santos",
+      "short": "Santos",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 75,
+      "style": "fb",
+      "nation": "BR",
+      "club": "Zenit Saint Petersburg",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Zenit Saint Petersburg; 14 caps, 0 goals for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Douglas_Santos_(footballer,_born_1994)"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Vitor Reis",
+      "short": "Reis",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 72,
+      "style": "cb_ball",
+      "nation": "BR",
+      "club": "Manchester City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Manchester City; 2 caps, 0 goals for Brazil, in the Oct 2026 squad; teenage centre-back signed by Manchester City; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Vitor_Reis"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 186
+    },
+    {
+      "name": "Bruno Guimarães",
+      "short": "Guimarães",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 86,
+      "style": "cm_b2b",
+      "nation": "BR",
+      "club": "Arsenal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plusplus",
+        "playmaker": "plus"
+      },
+      "basis": "Arsenal; 51 caps, 4 goals for Brazil, in the Oct 2026 squad; captained Newcastle to the 2025 League Cup; Arsenal.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Bruno_Guimarães"
+      ],
+      "height": 182
+    },
+    {
+      "name": "Casemiro",
+      "short": "Casemiro",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 79,
+      "style": "dm",
+      "nation": "BR",
+      "club": "Inter Miami",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plusplus"
+      },
+      "basis": "Inter Miami; 91 caps, 10 goals for Brazil, 2026 World Cup squad; five Champions League titles with Real Madrid.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Casemiro"
+      ],
+      "foot": "R",
+      "height": 185
+    },
+    {
+      "name": "Lucas Paquetá",
+      "short": "Paquetá",
+      "pos": [
+        "AM",
+        "CM"
+      ],
+      "ovr": 81,
+      "style": "am",
+      "nation": "BR",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Flamengo; 67 caps, 13 goals for Brazil, 2026 World Cup squad; Conference League winner with West Ham 2023.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Lucas_Paquetá"
+      ],
+      "height": 183
+    },
+    {
+      "name": "Douglas Luiz",
+      "short": "Luiz",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 78,
+      "style": "cm_b2b",
+      "nation": "BR",
+      "club": "Juventus",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Juventus; 20 caps, 0 goals for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Douglas_Luiz"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Andrey Santos",
+      "short": "Santos",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 79,
+      "style": "cm_b2b",
+      "nation": "BR",
+      "club": "Manchester United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Manchester United; 8 caps, 0 goals for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Andrey_Santos"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Fabinho",
+      "short": "Fabinho",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 76,
+      "style": "dm",
+      "nation": "BR",
+      "club": "Trabzonspor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Trabzonspor; 36 caps, 0 goals for Brazil, 2026 World Cup squad; Champions League 2019 with Liverpool.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Fabinho_(footballer,_born_1993)"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Vinícius Júnior",
+      "short": "Júnior",
+      "pos": [
+        "LW",
+        "ST",
+        "LM"
+      ],
+      "ovr": 88,
+      "style": "st_complete",
+      "nation": "BR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Real Madrid; 57 caps, 14 goals for Brazil, in the Oct 2026 squad; Real Madrid; scored in the 2022 and 2024 Champions League finals; FIFA Best player 2024.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Vinícius_Júnior"
+      ],
+      "stats": {
+        "spd": 95,
+        "fin": 86,
+        "pas": 80,
+        "skl": 92,
+        "def": 30,
+        "pow": 68
+      },
+      "foot": "R",
+      "born": 2000,
+      "height": 176
+    },
+    {
+      "name": "Raphinha",
+      "short": "Raphinha",
+      "pos": [
+        "RW",
+        "LW",
+        "RM"
+      ],
+      "ovr": 87,
+      "style": "inside_forward",
+      "nation": "BR",
+      "club": "Barcelona",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plusplus",
+        "winger": "plus"
+      },
+      "basis": "Barcelona; 43 caps, 12 goals for Brazil, called up Oct 2026; La Liga winner and Barcelona's top creator-scorer in 2024/25.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Raphinha"
+      ],
+      "foot": "L",
+      "height": 176
+    },
+    {
+      "name": "Rodrygo",
+      "short": "Rodrygo",
+      "pos": [
+        "RW",
+        "LW",
+        "RM"
+      ],
+      "ovr": 83,
+      "style": "inside_forward",
+      "nation": "BR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plus",
+        "winger": "plus"
+      },
+      "basis": "Real Madrid; 37 caps, 9 goals for Brazil, called up Nov 2025; Champions League winner with Real Madrid 2022 and 2024.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Rodrygo"
+      ],
+      "height": 174
+    },
+    {
+      "name": "Matheus Cunha",
+      "short": "Cunha",
+      "pos": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 83,
+      "style": "am",
+      "nation": "BR",
+      "club": "Manchester United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shadow_striker": "plus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Manchester United; 28 caps, 4 goals for Brazil, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Matheus_Cunha"
+      ],
+      "height": 183
+    },
+    {
+      "name": "Gabriel Martinelli",
+      "short": "Martinelli",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 81,
+      "style": "winger",
+      "nation": "BR",
+      "club": "Al-Hilal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Al-Hilal; 27 caps, 5 goals for Brazil, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Gabriel_Martinelli"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Gabriel Jesus",
+      "short": "Jesus",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 78,
+      "style": "st_complete",
+      "nation": "BR",
+      "club": "Barcelona",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Barcelona; 64 caps, 19 goals for Brazil, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Gabriel_Jesus"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Richarlison",
+      "short": "Richarlison",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 78,
+      "style": "st_complete",
+      "nation": "BR",
+      "club": "Tottenham Hotspur",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Tottenham Hotspur; 54 caps, 20 goals for Brazil, 2026 World Cup squad; 20 goals for Brazil.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Richarlison"
+      ],
+      "height": 184
+    },
+    {
+      "name": "Neymar",
+      "short": "Neymar",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 80,
+      "style": "am",
+      "nation": "BR",
+      "club": "Santos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Santos; 130 caps, 80 goals for Brazil, 2026 World Cup squad; Brazil's record goalscorer; Champions League winner with Barcelona 2015.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Neymar"
+      ],
+      "foot": "R",
+      "born": 1992,
+      "height": 175
+    },
+    {
+      "name": "Endrick",
+      "short": "Endrick",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 77,
+      "style": "st_complete",
+      "nation": "BR",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Real Madrid; 24 caps, 4 goals for Brazil, in the Oct 2026 squad; Real Madrid; scored for Brazil at Wembley at 17.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Endrick_(footballer,_born_2006)"
+      ],
+      "stats": {
+        "spd": 84,
+        "fin": 78,
+        "pas": 58,
+        "skl": 78,
+        "def": 30,
+        "pow": 74
+      },
+      "foot": "L",
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 173
+    },
+    {
+      "name": "Estêvão",
+      "short": "Estêvão",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 82,
+      "style": "st_complete",
+      "nation": "BR",
+      "club": "Chelsea",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plus",
+        "winger": "plus"
+      },
+      "basis": "Chelsea; 14 caps, 6 goals for Brazil, in the Oct 2026 squad; Chelsea; already six goals for Brazil as a teenager.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Estêvão_Willian"
+      ],
+      "stats": {
+        "spd": 84,
+        "fin": 76,
+        "pas": 76,
+        "skl": 88,
+        "def": 30,
+        "pow": 56
+      },
+      "foot": "L",
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "elite",
+      "height": 178
+    },
+    {
+      "name": "Pedro",
+      "short": "Pedro",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 77,
+      "style": "st_poacher",
+      "nation": "BR",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Flamengo; 8 caps, 2 goals for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Pedro_(footballer,_born_1997)"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Samuel Lino",
+      "short": "Lino",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 76,
+      "style": "winger",
+      "nation": "BR",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Flamengo; 4 caps, 2 goals for Brazil, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Samuel_Lino"
+      ],
+      "height": 177
+    },
+    {
+      "name": "Rayan",
+      "short": "Rayan",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "BR",
+      "club": "Bournemouth",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Bournemouth; 8 caps, 2 goals for Brazil, in the Oct 2026 squad; teenage winger; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+        "https://en.wikipedia.org/wiki/Rayan_(footballer,_born_2006)"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 187
+    },
+    {
+      "name": "Emiliano Martínez",
+      "short": "Martínez",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 85,
+      "style": "gk",
+      "nation": "AR",
+      "club": "Chelsea",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plusplus"
+      },
+      "basis": "Chelsea; 70 caps, 0 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner and best goalkeeper; Copa América 2021 and 2024.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Emiliano_Martínez"
+      ],
+      "height": 195
+    },
+    {
+      "name": "Gerónimo Rulli",
+      "short": "Rulli",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 79,
+      "style": "gk",
+      "nation": "AR",
+      "club": "Manchester City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Manchester City; 9 caps, 0 goals for Argentina, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Gerónimo_Rulli"
+      ],
+      "height": 189
+    },
+    {
+      "name": "Juan Musso",
+      "short": "Musso",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 76,
+      "style": "gk",
+      "nation": "AR",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Atlético Madrid; 4 caps, 0 goals for Argentina, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Juan_Musso"
+      ],
+      "height": 193
+    },
+    {
+      "name": "Cristian Romero",
+      "short": "Romero",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 85,
+      "style": "cb",
+      "nation": "AR",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Atlético Madrid; 61 caps, 5 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner; captained Tottenham to the 2025 Europa League.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Cristian_Romero"
+      ],
+      "foot": "R",
+      "height": 185
+    },
+    {
+      "name": "Lisandro Martínez",
+      "short": "Martínez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 82,
+      "style": "cb_ball",
+      "nation": "AR",
+      "club": "Manchester United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus",
+        "stopper": "plus"
+      },
+      "basis": "Manchester United; 38 caps, 2 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Lisandro_Martínez"
+      ],
+      "foot": "L",
+      "height": 175
+    },
+    {
+      "name": "Nicolás Otamendi",
+      "short": "Otamendi",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "AR",
+      "club": "River Plate",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "River Plate; 140 caps, 9 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner; 140 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Nicolás_Otamendi"
+      ],
+      "foot": "R",
+      "born": 1988,
+      "height": 183
+    },
+    {
+      "name": "Nahuel Molina",
+      "short": "Molina",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 79,
+      "style": "fb",
+      "nation": "AR",
+      "club": "Roma",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plus"
+      },
+      "basis": "Roma; 65 caps, 1 goal for Argentina, 2026 World Cup squad; 2022 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Nahuel_Molina"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Nicolás Tagliafico",
+      "short": "Tagliafico",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 77,
+      "style": "fb",
+      "nation": "AR",
+      "club": "Lyon",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Lyon; 84 caps, 1 goal for Argentina, in the Oct 2026 squad; 2022 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Nicolás_Tagliafico"
+      ],
+      "foot": "L",
+      "height": 170
+    },
+    {
+      "name": "Gonzalo Montiel",
+      "short": "Montiel",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 76,
+      "style": "fb",
+      "nation": "AR",
+      "club": "River Plate",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "River Plate; 45 caps, 2 goals for Argentina, 2026 World Cup squad; scored the winning penalty in the 2022 World Cup final.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Gonzalo_Montiel"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Marcos Acuña",
+      "short": "Acuña",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 75,
+      "style": "fb",
+      "nation": "AR",
+      "club": "River Plate",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "River Plate; 62 caps, 0 goals for Argentina, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Marcos_Acuña"
+      ],
+      "height": 172
+    },
+    {
+      "name": "Facundo Medina",
+      "short": "Medina",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 77,
+      "style": "cb",
+      "nation": "AR",
+      "club": "Bayer Leverkusen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Bayer Leverkusen; 16 caps, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Facundo_Medina"
+      ],
+      "height": 184
+    },
+    {
+      "name": "Leonardo Balerdi",
+      "short": "Balerdi",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 77,
+      "style": "cb",
+      "nation": "AR",
+      "club": "Roma",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Roma; 13 caps, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Leonardo_Balerdi"
+      ],
+      "height": 187
+    },
+    {
+      "name": "Juan Foyth",
+      "short": "Foyth",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "ovr": 77,
+      "style": "cb",
+      "nation": "AR",
+      "club": "Villarreal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Villarreal; 22 caps, 0 goals for Argentina, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Juan_Foyth"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Valentín Barco",
+      "short": "Barco",
+      "pos": [
+        "LB",
+        "CM",
+        "LWB"
+      ],
+      "ovr": 76,
+      "style": "fb",
+      "nation": "AR",
+      "club": "Chelsea",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Chelsea; 7 caps, 2 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Valentín_Barco"
+      ],
+      "height": 172
+    },
+    {
+      "name": "Alexis Mac Allister",
+      "short": "Allister",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 86,
+      "style": "cm_play",
+      "nation": "AR",
+      "club": "Liverpool",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plusplus",
+        "box_to_box": "plus"
+      },
+      "basis": "Liverpool; 57 caps, 7 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner; Premier League winner with Liverpool 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Alexis_Mac_Allister"
+      ],
+      "foot": "R",
+      "height": 176
+    },
+    {
+      "name": "Enzo Fernández",
+      "short": "Fernández",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 85,
+      "style": "cm_play",
+      "nation": "AR",
+      "club": "Manchester City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plusplus",
+        "deep_playmaker": "plus"
+      },
+      "basis": "Manchester City; 51 caps, 8 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner and best young player; Club World Cup winner with Chelsea 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Enzo_Fernández"
+      ],
+      "foot": "R",
+      "height": 178
+    },
+    {
+      "name": "Rodrigo De Paul",
+      "short": "Paul",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 80,
+      "style": "cm_b2b",
+      "nation": "AR",
+      "club": "Inter Miami",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Inter Miami; 95 caps, 2 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Rodrigo_De_Paul"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Giovani Lo Celso",
+      "short": "Celso",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 78,
+      "style": "am",
+      "nation": "AR",
+      "club": "Betis",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Betis; 69 caps, 5 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Giovani_Lo_Celso"
+      ],
+      "height": 177
+    },
+    {
+      "name": "Leandro Paredes",
+      "short": "Paredes",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 77,
+      "style": "dm",
+      "nation": "AR",
+      "club": "Boca Juniors",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "deep_playmaker": "plus"
+      },
+      "basis": "Boca Juniors; 84 caps, 5 goals for Argentina, 2026 World Cup squad; 2022 World Cup winner.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Leandro_Paredes"
+      ],
+      "height": 182
+    },
+    {
+      "name": "Exequiel Palacios",
+      "short": "Palacios",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 77,
+      "style": "cm_b2b",
+      "nation": "AR",
+      "club": "Ipswich Town",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Ipswich Town; 44 caps, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Exequiel_Palacios"
+      ],
+      "height": 177
+    },
+    {
+      "name": "Nico Paz",
+      "short": "Paz",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 81,
+      "style": "am",
+      "nation": "AR",
+      "club": "Como",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plusplus"
+      },
+      "basis": "Como; 14 caps, 4 goals for Argentina, in the Oct 2026 squad; Real Madrid academy playmaker, breakout at Como.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Nico_Paz"
+      ],
+      "foot": "L",
+      "height": 185
+    },
+    {
+      "name": "Thiago Almada",
+      "short": "Almada",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 76,
+      "style": "am",
+      "nation": "AR",
+      "club": "River Plate",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "River Plate; 21 caps, 5 goals for Argentina, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Thiago_Almada"
+      ],
+      "height": 163
+    },
+    {
+      "name": "Guido Rodríguez",
+      "short": "Rodríguez",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 75,
+      "style": "dm",
+      "nation": "AR",
+      "club": "Valencia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Valencia; 30 caps, 1 goal for Argentina, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Guido_Rodríguez"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Equi Fernández",
+      "short": "Fernández",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 75,
+      "style": "cm_b2b",
+      "nation": "AR",
+      "club": "Bayer Leverkusen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Bayer Leverkusen; 1 cap, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Equi_Fernández"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Lionel Messi",
+      "short": "Messi",
+      "pos": [
+        "RW",
+        "AM",
+        "RM"
+      ],
+      "ovr": 86,
+      "style": "inside_forward",
+      "nation": "AR",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "wide_playmaker": "plusplus",
+        "false_nine": "plus"
+      },
+      "basis": "Without a club; 208 caps for Argentina, in the Oct 2026 squad; eight Ballon d'Or awards; 2022 World Cup winner and best player; four Champions League titles with Barcelona.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Lionel_Messi"
+      ],
+      "foot": "L",
+      "born": 1987,
+      "height": 170
+    },
+    {
+      "name": "Julián Alvarez",
+      "short": "Alvarez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 86,
+      "style": "st_complete",
+      "nation": "AR",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "pressing_forward": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Atlético Madrid; 62 caps, 16 goals for Argentina, in the Oct 2026 squad; 2022 World Cup winner; treble with Manchester City 2023.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Julián_Alvarez"
+      ],
+      "height": 170
+    },
+    {
+      "name": "Lautaro Martínez",
+      "short": "Martínez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 86,
+      "style": "st_complete",
+      "nation": "AR",
+      "club": "Internazionale",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plusplus",
+        "poacher": "plus"
+      },
+      "basis": "Internazionale; 87 caps, 42 goals for Argentina, in the Oct 2026 squad; scored the winner in the 2024 Copa América final and was its top scorer; Inter captain.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Lautaro_Martínez"
+      ],
+      "foot": "R",
+      "height": 174
+    },
+    {
+      "name": "Nico González",
+      "short": "González",
+      "pos": [
+        "LW",
+        "RW",
+        "LM"
+      ],
+      "ovr": 78,
+      "style": "winger",
+      "nation": "AR",
+      "club": "Juventus",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Juventus; 60 caps, 6 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Nico_González_(footballer,_born_1998)"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Giuliano Simeone",
+      "short": "Simeone",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 78,
+      "style": "winger",
+      "nation": "AR",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Atlético Madrid; 17 caps, 3 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Giuliano_Simeone"
+      ],
+      "height": 173
+    },
+    {
+      "name": "Matías Soulé",
+      "short": "Soulé",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 79,
+      "style": "am",
+      "nation": "AR",
+      "club": "Roma",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Roma; 1 cap, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Matías_Soulé"
+      ],
+      "foot": "L",
+      "height": 176
+    },
+    {
+      "name": "Gianluca Prestianni",
+      "short": "Prestianni",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 72,
+      "style": "winger",
+      "nation": "AR",
+      "club": "Benfica",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Benfica; 3 caps, 1 goal for Argentina, in the Oct 2026 squad; teenage winger at Benfica; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Gianluca_Prestianni"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 166
+    },
+    {
+      "name": "Santiago Castro",
+      "short": "Castro",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 75,
+      "style": "st_complete",
+      "nation": "AR",
+      "club": "Roma",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Roma; 1 cap, 0 goals for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/Santiago_Castro_(footballer,_born_2004)"
+      ],
+      "height": 182
+    },
+    {
+      "name": "José Manuel López",
+      "short": "López",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 75,
+      "style": "st_poacher",
+      "nation": "AR",
+      "club": "Palmeiras",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Palmeiras; 8 caps, 1 goal for Argentina, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+        "https://en.wikipedia.org/wiki/José_Manuel_López_(footballer)"
+      ],
+      "height": 190
+    },
+    {
+      "name": "Sergio Rochet",
+      "short": "Rochet",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 77,
+      "style": "gk",
+      "nation": "UY",
+      "club": "Internacional",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Internacional; 36 caps, 0 goals for Uruguay, 2026 World Cup squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Sergio_Rochet"
+      ],
+      "height": 189
+    },
+    {
+      "name": "Fernando Muslera",
+      "short": "Muslera",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 72,
+      "style": "gk",
+      "nation": "UY",
+      "club": "Estudiantes",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Estudiantes; 137 caps, 0 goals for Uruguay, 2026 World Cup squad; Uruguay's most-capped goalkeeper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Fernando_Muslera"
+      ],
+      "born": 1986,
+      "height": 190
+    },
+    {
+      "name": "Santiago Mele",
+      "short": "Mele",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 73,
+      "style": "gk",
+      "nation": "UY",
+      "club": "Independiente",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Independiente; 9 caps, 0 goals for Uruguay, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Santiago_Mele"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Ronald Araújo",
+      "short": "Araújo",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 83,
+      "style": "cb",
+      "nation": "UY",
+      "club": "Liverpool",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Liverpool; 29 caps, 1 goal for Uruguay, in the Oct 2026 squad; very quick, physical centre-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Ronald_Araújo"
+      ],
+      "foot": "R",
+      "height": 191
+    },
+    {
+      "name": "José María Giménez",
+      "short": "Giménez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 80,
+      "style": "cb",
+      "nation": "UY",
+      "club": "Deportivo A Coruña",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Deportivo A Coruña; 101 caps, 8 goals for Uruguay, in the Oct 2026 squad; over 100 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/José_María_Giménez"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Mathías Olivera",
+      "short": "Olivera",
+      "pos": [
+        "LB",
+        "CB",
+        "LWB"
+      ],
+      "ovr": 79,
+      "style": "fb",
+      "nation": "UY",
+      "club": "Napoli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Napoli; 40 caps, 2 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Mathías_Olivera"
+      ],
+      "height": 184
+    },
+    {
+      "name": "Sebastián Cáceres",
+      "short": "Cáceres",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 75,
+      "style": "cb",
+      "nation": "UY",
+      "club": "Celta Vigo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Celta Vigo; 27 caps, 0 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Sebastián_Cáceres"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Nahitan Nández",
+      "short": "Nández",
+      "pos": [
+        "RB",
+        "CM",
+        "RWB"
+      ],
+      "ovr": 73,
+      "style": "fb",
+      "nation": "UY",
+      "club": "Al-Qadsiah",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Al-Qadsiah; 74 caps, 0 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Nahitan_Nández"
+      ],
+      "height": 172
+    },
+    {
+      "name": "Joaquín Piquerez",
+      "short": "Piquerez",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "UY",
+      "club": "Palmeiras",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Palmeiras; 22 caps, 0 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Joaquín_Piquerez"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Federico Valverde",
+      "short": "Valverde",
+      "pos": [
+        "CM",
+        "RW"
+      ],
+      "ovr": 88,
+      "style": "cm_b2b",
+      "nation": "UY",
+      "club": "Real Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plusplus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Real Madrid; 76 caps, 9 goals for Uruguay, called up Oct 2026; two Champions League titles with Real Madrid; tireless, long-range shot.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Federico_Valverde"
+      ],
+      "foot": "R",
+      "height": 182
+    },
+    {
+      "name": "Manuel Ugarte",
+      "short": "Ugarte",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 81,
+      "style": "dm",
+      "nation": "UY",
+      "club": "Manchester United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plusplus"
+      },
+      "basis": "Manchester United; 39 caps, 1 goal for Uruguay, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Manuel_Ugarte_(footballer)"
+      ],
+      "height": 182
+    },
+    {
+      "name": "Rodrigo Bentancur",
+      "short": "Bentancur",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 79,
+      "style": "cm_b2b",
+      "nation": "UY",
+      "club": "Tottenham Hotspur",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Tottenham Hotspur; 80 caps, 3 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Rodrigo_Bentancur"
+      ],
+      "height": 187
+    },
+    {
+      "name": "Lucas Torreira",
+      "short": "Torreira",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 77,
+      "style": "dm",
+      "nation": "UY",
+      "club": "Galatasaray",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plus"
+      },
+      "basis": "Galatasaray; 43 caps, 0 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Lucas_Torreira"
+      ],
+      "height": 166
+    },
+    {
+      "name": "Giorgian de Arrascaeta",
+      "short": "Arrascaeta",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 80,
+      "style": "am",
+      "nation": "UY",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plusplus"
+      },
+      "basis": "Flamengo; 62 caps, 14 goals for Uruguay, in the Oct 2026 squad; Copa Libertadores winner with Flamengo 2019 and 2022.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Giorgian_de_Arrascaeta"
+      ],
+      "height": 174
+    },
+    {
+      "name": "Nicolás de la Cruz",
+      "short": "Cruz",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 76,
+      "style": "cm_play",
+      "nation": "UY",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Flamengo; 37 caps, 5 goals for Uruguay, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Nicolás_de_la_Cruz"
+      ],
+      "height": 167
+    },
+    {
+      "name": "Rodrigo Zalazar",
+      "short": "Zalazar",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 77,
+      "style": "am",
+      "nation": "UY",
+      "club": "Sporting CP",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Sporting CP; 11 caps, 3 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Rodrigo_Zalazar"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Maximiliano Araújo",
+      "short": "Araújo",
+      "pos": [
+        "LW",
+        "LB",
+        "LM"
+      ],
+      "ovr": 78,
+      "style": "winger",
+      "nation": "UY",
+      "club": "Sporting CP",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "wing_back": "plus"
+      },
+      "basis": "Sporting CP; 34 caps, 8 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Maximiliano_Araújo"
+      ],
+      "height": 176
+    },
+    {
+      "name": "Facundo Pellistri",
+      "short": "Pellistri",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 75,
+      "style": "winger",
+      "nation": "UY",
+      "club": "Panathinaikos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Panathinaikos; 41 caps, 2 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Facundo_Pellistri"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Darwin Núñez",
+      "short": "Núñez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 80,
+      "style": "st_runner",
+      "nation": "UY",
+      "club": "Al-Diriyah",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plusplus"
+      },
+      "basis": "Al-Diriyah; 44 caps, 16 goals for Uruguay, in the Oct 2026 squad; explosive striker, 16 goals for Uruguay.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Darwin_Núñez"
+      ],
+      "foot": "R",
+      "height": 185
+    },
+    {
+      "name": "Rodrigo Aguirre",
+      "short": "Aguirre",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_poacher",
+      "nation": "UY",
+      "club": "UANL",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "UANL; 13 caps, 4 goals for Uruguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Rodrigo_Aguirre"
+      ],
+      "height": 186
+    },
+    {
+      "name": "Camilo Vargas",
+      "short": "Vargas",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 75,
+      "style": "gk",
+      "nation": "CO",
+      "club": "Atlas",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Atlas; 47 caps, 0 goals for Colombia, 2026 World Cup squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Camilo_Vargas"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Kevin Mier",
+      "short": "Mier",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 73,
+      "style": "gk",
+      "nation": "CO",
+      "club": "Cruz Azul",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Cruz Azul; 4 caps, 0 goals for Colombia, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Kevin_Mier"
+      ],
+      "height": 190
+    },
+    {
+      "name": "Daniel Muñoz",
+      "short": "Muñoz",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 81,
+      "style": "fb",
+      "nation": "CO",
+      "club": "Nottingham Forest",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Nottingham Forest; 54 caps, 5 goals for Colombia, in the Oct 2026 squad; marauding right-back, Crystal Palace FA Cup winner 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Daniel_Muñoz_(footballer)"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Jhon Lucumí",
+      "short": "Lucumí",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 80,
+      "style": "cb_ball",
+      "nation": "CO",
+      "club": "Juventus",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Juventus; 44 caps, 1 goal for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Jhon_Lucumí"
+      ],
+      "foot": "L",
+      "height": 187
+    },
+    {
+      "name": "Davinson Sánchez",
+      "short": "Sánchez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 75,
+      "style": "cb",
+      "nation": "CO",
+      "club": "Galatasaray",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Galatasaray; 87 caps, 4 goals for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Davinson_Sánchez"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Carlos Cuesta",
+      "short": "Cuesta",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 75,
+      "style": "cb",
+      "nation": "CO",
+      "club": "Vasco da Gama",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Vasco da Gama; 24 caps, 0 goals for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Carlos_Cuesta_(footballer)"
+      ],
+      "height": 179
+    },
+    {
+      "name": "Yerry Mina",
+      "short": "Mina",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 73,
+      "style": "cb",
+      "nation": "CO",
+      "club": "Cagliari",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Cagliari; 55 caps, 8 goals for Colombia, 2026 World Cup squad; scored three headers at the 2018 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Yerry_Mina"
+      ],
+      "height": 195
+    },
+    {
+      "name": "Johan Mojica",
+      "short": "Mojica",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 73,
+      "style": "fb",
+      "nation": "CO",
+      "club": "Getafe",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Getafe; 49 caps, 1 goal for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Johan_Mojica"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Jefferson Lerma",
+      "short": "Lerma",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 78,
+      "style": "dm",
+      "nation": "CO",
+      "club": "Crystal Palace",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plus"
+      },
+      "basis": "Crystal Palace; 70 caps, 5 goals for Colombia, 2026 World Cup squad; FA Cup winner with Crystal Palace 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Jefferson_Lerma"
+      ],
+      "height": 179
+    },
+    {
+      "name": "Richard Ríos",
+      "short": "Ríos",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 79,
+      "style": "cm_b2b",
+      "nation": "CO",
+      "club": "Al-Ittihad",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "Al-Ittihad; 40 caps, 2 goals for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Richard_Ríos"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Kevin Castaño",
+      "short": "Castaño",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 74,
+      "style": "dm",
+      "nation": "CO",
+      "club": "Atlético Mineiro",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Atlético Mineiro; 29 caps, 0 goals for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Kevin_Castaño"
+      ],
+      "height": 177
+    },
+    {
+      "name": "Jhon Arias",
+      "short": "Arias",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 78,
+      "style": "winger",
+      "nation": "CO",
+      "club": "Palmeiras",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Palmeiras; 46 caps, 7 goals for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Jhon_Arias_(footballer)"
+      ],
+      "height": 170
+    },
+    {
+      "name": "Jorge Carrascal",
+      "short": "Carrascal",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 75,
+      "style": "am",
+      "nation": "CO",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Flamengo; 24 caps, 2 goals for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Jorge_Carrascal"
+      ],
+      "height": 180
+    },
+    {
+      "name": "Yáser Asprilla",
+      "short": "Asprilla",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 75,
+      "style": "am",
+      "nation": "CO",
+      "club": "Girona",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Girona; 14 caps, 2 goals for Colombia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Yáser_Asprilla"
+      ],
+      "height": 176
+    },
+    {
+      "name": "James Rodríguez",
+      "short": "Rodríguez",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 77,
+      "style": "am",
+      "nation": "CO",
+      "club": "Atlético Nacional",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "classic_ten": "plusplus"
+      },
+      "basis": "Atlético Nacional; 131 caps, 31 goals for Colombia, 2026 World Cup squad; Golden Boot at the 2014 World Cup; player of the 2024 Copa América.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/James_Rodríguez"
+      ],
+      "foot": "L",
+      "born": 1991,
+      "height": 181
+    },
+    {
+      "name": "Juan Fernando Quintero",
+      "short": "Quintero",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 73,
+      "style": "am",
+      "nation": "CO",
+      "club": "Independiente Medellín",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Independiente Medellín; 53 caps, 6 goals for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Juan_Fernando_Quintero"
+      ],
+      "foot": "L",
+      "height": 168
+    },
+    {
+      "name": "Juan Cuadrado",
+      "short": "Cuadrado",
+      "pos": [
+        "RW",
+        "RB",
+        "RM"
+      ],
+      "ovr": 71,
+      "style": "winger",
+      "nation": "CO",
+      "club": "Millonarios",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Millonarios; 116 caps, 11 goals for Colombia, 2026 World Cup squad; over 110 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Juan_Cuadrado"
+      ],
+      "foot": "R",
+      "born": 1988,
+      "height": 176
+    },
+    {
+      "name": "Wilmar Barrios",
+      "short": "Barrios",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 73,
+      "style": "dm",
+      "nation": "CO",
+      "club": "Zenit Saint Petersburg",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Zenit Saint Petersburg; 55 caps, 1 goal for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Wilmar_Barrios"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Luis Díaz",
+      "short": "Díaz",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 87,
+      "style": "winger",
+      "nation": "CO",
+      "club": "Bayern Munich",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus",
+        "inside_forward": "plus"
+      },
+      "basis": "Bayern Munich; 79 caps, 23 goals for Colombia, 2026 World Cup squad; Premier League winner with Liverpool 2025; Bayern Munich.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Luis_Díaz_(footballer,_born_1997)"
+      ],
+      "foot": "R",
+      "height": 180
+    },
+    {
+      "name": "Luis Suárez",
+      "short": "L. Suárez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 78,
+      "style": "st_poacher",
+      "nation": "CO",
+      "club": "Sporting CP",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Sporting CP; 20 caps, 6 goals for Colombia, in the Oct 2026 squad; prolific Colombian striker at Sporting.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Luis_Suárez_(Colombian_footballer)"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Jhon Córdoba",
+      "short": "Córdoba",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 75,
+      "style": "st_target",
+      "nation": "CO",
+      "club": "Krasnodar",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Krasnodar; 24 caps, 6 goals for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Jhon_Córdoba"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Rafael Santos Borré",
+      "short": "Borré",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_complete",
+      "nation": "CO",
+      "club": "River Plate",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "River Plate; 44 caps, 6 goals for Colombia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+        "https://en.wikipedia.org/wiki/Rafael_Santos_Borré"
+      ],
+      "height": 174
+    },
+    {
+      "name": "Hernán Galíndez",
+      "short": "Galíndez",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 72,
+      "style": "gk",
+      "nation": "EC",
+      "club": "Huracán",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Huracán; 41 caps, 0 goals for Ecuador, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Hernán_Galíndez"
+      ],
+      "height": 189
+    },
+    {
+      "name": "Moisés Caicedo",
+      "short": "Caicedo",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "ovr": 87,
+      "style": "dm",
+      "nation": "EC",
+      "club": "Chelsea",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plusplus",
+        "box_to_box": "plus"
+      },
+      "basis": "Chelsea; 65 caps, 3 goals for Ecuador, 2026 World Cup squad; Chelsea's ball-winner; Conference League and Club World Cup winner 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Moisés_Caicedo"
+      ],
+      "foot": "R",
+      "height": 178
+    },
+    {
+      "name": "Willian Pacho",
+      "short": "Pacho",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 84,
+      "style": "cb",
+      "nation": "EC",
+      "club": "Paris Saint-Germain",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus",
+        "covering_defender": "plus"
+      },
+      "basis": "Paris Saint-Germain; 41 caps, 2 goals for Ecuador, in the Oct 2026 squad; Champions League winner with Paris Saint-Germain 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Willian_Pacho"
+      ],
+      "foot": "L",
+      "height": 188
+    },
+    {
+      "name": "Piero Hincapié",
+      "short": "Hincapié",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 83,
+      "style": "cb",
+      "nation": "EC",
+      "club": "Arsenal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus",
+        "full_back": "plus"
+      },
+      "basis": "Arsenal; 56 caps, 3 goals for Ecuador, 2026 World Cup squad; Bundesliga winner with Leverkusen 2024.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Piero_Hincapié"
+      ],
+      "foot": "L",
+      "height": 184
+    },
+    {
+      "name": "Pervis Estupiñán",
+      "short": "Estupiñán",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 80,
+      "style": "fb",
+      "nation": "EC",
+      "club": "Milan",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Milan; 58 caps, 5 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Pervis_Estupiñán"
+      ],
+      "foot": "L",
+      "height": 175
+    },
+    {
+      "name": "Ángelo Preciado",
+      "short": "Preciado",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "EC",
+      "club": "Atlético Mineiro",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Atlético Mineiro; 61 caps, 0 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Ángelo_Preciado"
+      ],
+      "height": 174
+    },
+    {
+      "name": "Joel Ordóñez",
+      "short": "Ordóñez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 75,
+      "style": "cb",
+      "nation": "EC",
+      "club": "Club Brugge",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Club Brugge; 20 caps, 0 goals for Ecuador, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Joel_Ordóñez"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Félix Torres",
+      "short": "Torres",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 74,
+      "style": "cb",
+      "nation": "EC",
+      "club": "Internacional",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Internacional; 52 caps, 5 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Félix_Torres_(footballer,_born_1997)"
+      ],
+      "height": 187
+    },
+    {
+      "name": "Alan Franco",
+      "short": "Franco",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 73,
+      "style": "cm_b2b",
+      "nation": "EC",
+      "club": "Atlético Mineiro",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Atlético Mineiro; 64 caps, 1 goal for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Alan_Franco_(footballer,_born_1998)"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Gonzalo Plata",
+      "short": "Plata",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 76,
+      "style": "winger",
+      "nation": "EC",
+      "club": "Flamengo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Flamengo; 54 caps, 9 goals for Ecuador, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Gonzalo_Plata"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Kendry Páez",
+      "short": "Páez",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 72,
+      "style": "am",
+      "nation": "EC",
+      "club": "Chelsea U21",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Chelsea U21; 27 caps, 2 goals for Ecuador, 2026 World Cup squad; teenage playmaker signed by Chelsea; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Kendry_Páez"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 178
+    },
+    {
+      "name": "Enner Valencia",
+      "short": "Valencia",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_poacher",
+      "nation": "EC",
+      "club": "Boca Juniors",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Boca Juniors; 109 caps, 49 goals for Ecuador, 2026 World Cup squad; Ecuador's record goalscorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Enner_Valencia"
+      ],
+      "born": 1989,
+      "height": 177
+    },
+    {
+      "name": "Jeremy Sarmiento",
+      "short": "Sarmiento",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "EC",
+      "club": "Middlesbrough",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Middlesbrough; 26 caps, 2 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Jeremy_Sarmiento"
+      ],
+      "height": 178
+    },
+    {
+      "name": "John Yeboah",
+      "short": "Yeboah",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "EC",
+      "club": "Venezia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Venezia; 30 caps, 3 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/John_Yeboah"
+      ],
+      "height": 170
+    },
+    {
+      "name": "Alan Minda",
+      "short": "Minda",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "EC",
+      "club": "Atlético Mineiro",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Atlético Mineiro; 24 caps, 2 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Alan_Minda"
+      ],
+      "height": 171
+    },
+    {
+      "name": "Kevin Rodríguez",
+      "short": "Rodríguez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_complete",
+      "nation": "EC",
+      "club": "Union Saint-Gilloise",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Union Saint-Gilloise; 35 caps, 2 goals for Ecuador, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Kevin_Rodríguez_(footballer,_born_2000)"
+      ],
+      "height": 190
+    },
+    {
+      "name": "Nilson Angulo",
+      "short": "Angulo",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 74,
+      "style": "winger",
+      "nation": "EC",
+      "club": "Sunderland",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Sunderland; 21 caps, 3 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Nilson_Angulo"
+      ],
+      "height": 184
+    },
+    {
+      "name": "Pedro Vite",
+      "short": "Vite",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 72,
+      "style": "am",
+      "nation": "EC",
+      "club": "UNAM",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "UNAM; 24 caps, 1 goal for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Pedro_Vite"
+      ],
+      "height": 168
+    },
+    {
+      "name": "Denil Castillo",
+      "short": "Castillo",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 72,
+      "style": "cm_b2b",
+      "nation": "EC",
+      "club": "Midtjylland",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Midtjylland; 7 caps, 0 goals for Ecuador, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+        "https://en.wikipedia.org/wiki/Denil_Castillo"
+      ],
+      "height": 187
+    },
+    {
+      "name": "Christian Pulisic",
+      "short": "Pulisic",
+      "pos": [
+        "RW",
+        "AM",
+        "LW"
+      ],
+      "ovr": 83,
+      "style": "inside_forward",
+      "nation": "US",
+      "club": "AC Milan",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "AC Milan; 90 caps, 33 goals for United States, 2026 World Cup squad; Champions League winner with Chelsea 2021; 33 goals for the US.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Christian_Pulisic"
+      ],
+      "foot": "R",
+      "born": 1998
+    },
+    {
+      "name": "Weston McKennie",
+      "short": "McKennie",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 79,
+      "style": "cm_b2b",
+      "nation": "US",
+      "club": "Juventus",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Juventus; 71 caps, 12 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Weston_McKennie"
+      ],
+      "born": 1998
+    },
+    {
+      "name": "Tyler Adams",
+      "short": "Adams",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 78,
+      "style": "dm",
+      "nation": "US",
+      "club": "Bournemouth",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_winner": "plusplus"
+      },
+      "basis": "Bournemouth; 62 caps, 2 goals for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Tyler_Adams"
+      ],
+      "born": 1999
+    },
+    {
+      "name": "Antonee Robinson",
+      "short": "Robinson",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 79,
+      "style": "fb",
+      "nation": "US",
+      "club": "Fulham",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Fulham; 62 caps, 5 goals for United States, in the Oct 2026 squad; very quick, crossing left-back.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Antonee_Robinson"
+      ],
+      "foot": "L",
+      "born": 1997
+    },
+    {
+      "name": "Sergiño Dest",
+      "short": "Dest",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 77,
+      "style": "fb",
+      "nation": "US",
+      "club": "PSV Eindhoven",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plus"
+      },
+      "basis": "PSV Eindhoven; 46 caps, 3 goals for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Sergiño_Dest"
+      ],
+      "born": 2000
+    },
+    {
+      "name": "Chris Richards",
+      "short": "Richards",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 77,
+      "style": "cb",
+      "nation": "US",
+      "club": "Crystal Palace",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Crystal Palace; 43 caps, 4 goals for United States, in the Oct 2026 squad; FA Cup winner with Crystal Palace 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Chris_Richards_(soccer)"
+      ],
+      "born": 2000
+    },
+    {
+      "name": "Mark McKenzie",
+      "short": "McKenzie",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 74,
+      "style": "cb",
+      "nation": "US",
+      "club": "Toulouse",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Toulouse; 30 caps, 0 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Mark_McKenzie_(soccer,_born_1999)"
+      ],
+      "born": 1999
+    },
+    {
+      "name": "Joe Scally",
+      "short": "Scally",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "US",
+      "club": "Borussia Mönchengladbach",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Borussia Mönchengladbach; 28 caps, 0 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Joe_Scally"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Yunus Musah",
+      "short": "Musah",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 77,
+      "style": "cm_b2b",
+      "nation": "US",
+      "club": "AC Milan",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "AC Milan; 50 caps, 1 goal for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Yunus_Musah"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Malik Tillman",
+      "short": "Tillman",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 78,
+      "style": "am",
+      "nation": "US",
+      "club": "Bayer Leverkusen",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Bayer Leverkusen; 39 caps, 7 goals for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Malik_Tillman"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Gio Reyna",
+      "short": "Reyna",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 76,
+      "style": "am",
+      "nation": "US",
+      "club": "Strasbourg",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Strasbourg; 47 caps, 10 goals for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Gio_Reyna"
+      ],
+      "born": 2002
+    },
+    {
+      "name": "Johnny Cardoso",
+      "short": "Cardoso",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 76,
+      "style": "dm",
+      "nation": "US",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Atlético Madrid; 23 caps, 0 goals for United States, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Johnny_Cardoso"
+      ],
+      "born": 2001
+    },
+    {
+      "name": "Folarin Balogun",
+      "short": "Balogun",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 78,
+      "style": "st_runner",
+      "nation": "US",
+      "club": "Monaco",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Monaco; 31 caps, 12 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Folarin_Balogun"
+      ],
+      "born": 2001
+    },
+    {
+      "name": "Timothy Weah",
+      "short": "Weah",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 76,
+      "style": "winger",
+      "nation": "US",
+      "club": "Marseille",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Marseille; 53 caps, 7 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Timothy_Weah"
+      ],
+      "born": 2000
+    },
+    {
+      "name": "Brenden Aaronson",
+      "short": "Aaronson",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 75,
+      "style": "am",
+      "nation": "US",
+      "club": "Leeds United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Leeds United; 59 caps, 9 goals for United States, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Brenden_Aaronson"
+      ],
+      "born": 2000
+    },
+    {
+      "name": "Ricardo Pepi",
+      "short": "Pepi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 75,
+      "style": "st_poacher",
+      "nation": "US",
+      "club": "PSV Eindhoven",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "PSV Eindhoven; 42 caps, 13 goals for United States, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Ricardo_Pepi"
+      ],
+      "born": 2003
+    },
+    {
+      "name": "Alex Freeman",
+      "short": "Freeman",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "US",
+      "club": "Villarreal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Villarreal; 26 caps, 3 goals for United States, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Alex_Freeman"
+      ],
+      "born": 2004
+    },
+    {
+      "name": "Matt Turner",
+      "short": "Turner",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 72,
+      "style": "gk",
+      "nation": "US",
+      "club": "New England Revolution",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "New England Revolution; 55 caps, 0 goals for United States, 2026 World Cup squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Matt_Turner_(soccer)"
+      ],
+      "born": 1994
+    },
+    {
+      "name": "Matt Freese",
+      "short": "Freese",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 72,
+      "style": "gk",
+      "nation": "US",
+      "club": "New York City FC",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "New York City FC; 20 caps, 0 goals for United States, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Matt_Freese"
+      ],
+      "born": 1998
+    },
+    {
+      "name": "Diego Kochen",
+      "short": "Kochen",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 63,
+      "style": "gk",
+      "nation": "US",
+      "club": "Lyngby",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Lyngby; 2 caps, 0 goals for United States, in the Oct 2026 squad; teenage keeper; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Diego_Kochen"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Cavan Sullivan",
+      "short": "Sullivan",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 64,
+      "style": "am",
+      "nation": "US",
+      "club": "Philadelphia Union",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Philadelphia Union; 3 caps, 1 goal for United States, in the Oct 2026 squad; debuted in MLS at 15; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Cavan_Sullivan"
+      ],
+      "born": 2009,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Julian Hall",
+      "short": "Hall",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "st_poacher",
+      "nation": "US",
+      "club": "New York Red Bulls",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "New York Red Bulls; 4 caps, 3 goals for United States, in the Oct 2026 squad; teenage striker, 3 goals in 4 caps; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Julian_Hall_(soccer)"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Mathis Albert",
+      "short": "Albert",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 62,
+      "style": "cm_b2b",
+      "nation": "US",
+      "club": "Borussia Dortmund",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Borussia Dortmund; 4 caps, 1 goal for United States, in the Oct 2026 squad; teenage midfielder at Dortmund; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Mathis_Albert"
+      ],
+      "born": 2009,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 179
+    },
+    {
+      "name": "Zavier Gozo",
+      "short": "Gozo",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 62,
+      "style": "winger",
+      "nation": "US",
+      "club": "Crystal Palace",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Crystal Palace; 1 cap, 0 goals for United States, in the Oct 2026 squad; teenage winger; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Zavier_Gozo"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Edson Álvarez",
+      "short": "Álvarez",
+      "pos": [
+        "DM",
+        "CB"
+      ],
+      "ovr": 78,
+      "style": "dm",
+      "nation": "MX",
+      "club": "West Ham United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plusplus",
+        "ball_winner": "plus"
+      },
+      "basis": "West Ham United; 102 caps, 7 goals for Mexico, 2026 World Cup squad; over 100 caps; Ajax and West Ham.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Edson_Álvarez"
+      ],
+      "born": 1997,
+      "height": 187
+    },
+    {
+      "name": "Johan Vásquez",
+      "short": "Vásquez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 77,
+      "style": "cb",
+      "nation": "MX",
+      "club": "Genoa",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Genoa; 53 caps, 3 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Johan_Vásquez_(footballer,_born_1998)"
+      ],
+      "born": 1998,
+      "height": 184
+    },
+    {
+      "name": "Santiago Giménez",
+      "short": "Giménez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 79,
+      "style": "st_poacher",
+      "nation": "MX",
+      "club": "Porto",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plusplus"
+      },
+      "basis": "Porto; 54 caps, 6 goals for Mexico, in the Oct 2026 squad; prolific for Feyenoord before moves to Milan and Porto.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Santiago_Giménez"
+      ],
+      "born": 2001,
+      "height": 185
+    },
+    {
+      "name": "Raúl Jiménez",
+      "short": "Jiménez",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 74,
+      "style": "st_target",
+      "nation": "MX",
+      "club": "Wolverhampton Wanderers",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Wolverhampton Wanderers; 128 caps, 48 goals for Mexico, 2026 World Cup squad; 48 goals for Mexico.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Raúl_Jiménez"
+      ],
+      "born": 1991,
+      "height": 188
+    },
+    {
+      "name": "Hirving Lozano",
+      "short": "Lozano",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 74,
+      "style": "winger",
+      "nation": "MX",
+      "club": "LA Galaxy",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "LA Galaxy; 76 caps, 18 goals for Mexico, in the Oct 2026 squad; scored the winner v Germany at the 2018 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Hirving_Lozano"
+      ],
+      "born": 1995,
+      "height": 175
+    },
+    {
+      "name": "César Montes",
+      "short": "Montes",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 74,
+      "style": "cb",
+      "nation": "MX",
+      "club": "Lokomotiv Moscow",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Lokomotiv Moscow; 71 caps, 4 goals for Mexico, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/César_Montes"
+      ],
+      "born": 1997,
+      "height": 195
+    },
+    {
+      "name": "Orbelín Pineda",
+      "short": "Pineda",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 73,
+      "style": "am",
+      "nation": "MX",
+      "club": "Monterrey",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Monterrey; 97 caps, 12 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Orbelín_Pineda"
+      ],
+      "born": 1996,
+      "height": 173
+    },
+    {
+      "name": "Luis Chávez",
+      "short": "Chávez",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 74,
+      "style": "cm_play",
+      "nation": "MX",
+      "club": "Dynamo Moscow",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Dynamo Moscow; 48 caps, 5 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Luis_Chávez_(footballer)"
+      ],
+      "foot": "L",
+      "born": 1996,
+      "height": 178
+    },
+    {
+      "name": "Roberto Alvarado",
+      "short": "Alvarado",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "MX",
+      "club": "Guadalajara",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Guadalajara; 76 caps, 5 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Roberto_Alvarado"
+      ],
+      "born": 1998,
+      "height": 176
+    },
+    {
+      "name": "Jorge Sánchez",
+      "short": "Sánchez",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 72,
+      "style": "fb",
+      "nation": "MX",
+      "club": "Atlas",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Atlas; 65 caps, 3 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Jorge_Sánchez_(footballer,_born_1997)"
+      ],
+      "born": 1997,
+      "height": 175
+    },
+    {
+      "name": "Israel Reyes",
+      "short": "Reyes",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 72,
+      "style": "cb",
+      "nation": "MX",
+      "club": "América",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "América; 41 caps, 2 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Israel_Reyes"
+      ],
+      "born": 2000,
+      "height": 180
+    },
+    {
+      "name": "Luis Romo",
+      "short": "Romo",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 72,
+      "style": "dm",
+      "nation": "MX",
+      "club": "Guadalajara",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Guadalajara; 69 caps, 5 goals for Mexico, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Luis_Romo"
+      ],
+      "born": 1995,
+      "height": 182
+    },
+    {
+      "name": "Alexis Vega",
+      "short": "Vega",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "MX",
+      "club": "Toluca",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Toluca; 53 caps, 7 goals for Mexico, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Alexis_Vega_(Mexican_footballer)"
+      ],
+      "born": 1997,
+      "height": 175
+    },
+    {
+      "name": "Julián Quiñones",
+      "short": "Quiñones",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_complete",
+      "nation": "MX",
+      "club": "Al-Qadsiah",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Al-Qadsiah; 27 caps, 6 goals for Mexico, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Julián_Quiñones"
+      ],
+      "born": 1997,
+      "height": 180
+    },
+    {
+      "name": "Raúl Rangel",
+      "short": "Rangel",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 71,
+      "style": "gk",
+      "nation": "MX",
+      "club": "Guadalajara",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Guadalajara; 21 caps, 0 goals for Mexico, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Raúl_Rangel_(footballer)"
+      ],
+      "born": 2000,
+      "height": 190
+    },
+    {
+      "name": "Gilberto Mora",
+      "short": "Mora",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 70,
+      "style": "am",
+      "nation": "MX",
+      "club": "Tijuana",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Tijuana; 13 caps, 1 goal for Mexico, in the Oct 2026 squad; capped at 16; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Gilberto_Mora"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 168
+    },
+    {
+      "name": "Hugo Camberos",
+      "short": "Camberos",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 63,
+      "style": "winger",
+      "nation": "MX",
+      "club": "Guadalajara",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Guadalajara; 2 caps, 0 goals for Mexico, in the Oct 2026 squad; teenage winger; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+        "https://en.wikipedia.org/wiki/Hugo_Camberos"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 167
+    },
+    {
+      "name": "Alphonso Davies",
+      "short": "Davies",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 83,
+      "style": "fb",
+      "nation": "CA",
+      "club": "Bayern Munich",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "attacking_full_back": "plusplus"
+      },
+      "basis": "Bayern Munich; 59 caps, 15 goals for Canada, 2026 World Cup squad; Champions League winner with Bayern 2020; one of the fastest players in Europe.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Alphonso_Davies"
+      ],
+      "foot": "L",
+      "born": 2000,
+      "height": 185
+    },
+    {
+      "name": "Jonathan David",
+      "short": "David",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 82,
+      "style": "st_complete",
+      "nation": "CA",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Atlético Madrid; 85 caps, 43 goals for Canada, in the Oct 2026 squad; Ligue 1 champion with Lille 2021; Canada's record scorer.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Jonathan_David"
+      ],
+      "born": 2000,
+      "height": 178
+    },
+    {
+      "name": "Tajon Buchanan",
+      "short": "Buchanan",
+      "pos": [
+        "RW",
+        "RB",
+        "RM"
+      ],
+      "ovr": 77,
+      "style": "winger",
+      "nation": "CA",
+      "club": "Villarreal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Villarreal; 67 caps, 8 goals for Canada, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Tajon_Buchanan"
+      ],
+      "born": 1999,
+      "height": 183
+    },
+    {
+      "name": "Stephen Eustáquio",
+      "short": "Eustáquio",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 76,
+      "style": "cm_play",
+      "nation": "CA",
+      "club": "Swansea City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Swansea City; 64 caps, 5 goals for Canada, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Stephen_Eustáquio"
+      ],
+      "born": 1996,
+      "height": 178
+    },
+    {
+      "name": "Moïse Bombito",
+      "short": "Bombito",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "CA",
+      "club": "Nice",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Nice; 23 caps, 0 goals for Canada, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Moïse_Bombito"
+      ],
+      "born": 2000,
+      "height": 191
+    },
+    {
+      "name": "Alistair Johnston",
+      "short": "Johnston",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 76,
+      "style": "fb",
+      "nation": "CA",
+      "club": "Celtic",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Celtic; 63 caps, 1 goal for Canada, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Alistair_Johnston"
+      ],
+      "born": 1998,
+      "height": 180
+    },
+    {
+      "name": "Ismaël Koné",
+      "short": "Koné",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 75,
+      "style": "cm_b2b",
+      "nation": "CA",
+      "club": "Sassuolo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Sassuolo; 42 caps, 4 goals for Canada, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Ismaël_Koné"
+      ],
+      "born": 2002,
+      "height": 188
+    },
+    {
+      "name": "Derek Cornelius",
+      "short": "Cornelius",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 73,
+      "style": "cb",
+      "nation": "CA",
+      "club": "Marseille",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Marseille; 48 caps, 1 goal for Canada, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Derek_Cornelius"
+      ],
+      "born": 1997,
+      "height": 187
+    },
+    {
+      "name": "Niko Sigur",
+      "short": "Sigur",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 72,
+      "style": "dm",
+      "nation": "CA",
+      "club": "Toulouse",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Toulouse; 25 caps, 2 goals for Canada, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Niko_Sigur"
+      ],
+      "born": 2003,
+      "height": 180
+    },
+    {
+      "name": "Nathan Saliba",
+      "short": "Saliba",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 72,
+      "style": "cm_b2b",
+      "nation": "CA",
+      "club": "Villarreal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Villarreal; 21 caps, 3 goals for Canada, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Nathan_Saliba"
+      ],
+      "born": 2004,
+      "height": 174
+    },
+    {
+      "name": "Tani Oluwaseyi",
+      "short": "Oluwaseyi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_runner",
+      "nation": "CA",
+      "club": "Villarreal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Villarreal; 31 caps, 2 goals for Canada, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Tani_Oluwaseyi"
+      ],
+      "born": 2000,
+      "height": 188
+    },
+    {
+      "name": "Jacob Shaffelburg",
+      "short": "Shaffelburg",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 72,
+      "style": "winger",
+      "nation": "CA",
+      "club": "Los Angeles FC",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Los Angeles FC; 39 caps, 8 goals for Canada, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Jacob_Shaffelburg"
+      ],
+      "born": 1999,
+      "height": 178
+    },
+    {
+      "name": "Cyle Larin",
+      "short": "Larin",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_poacher",
+      "nation": "CA",
+      "club": "Southampton",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Southampton; 95 caps, 32 goals for Canada, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Cyle_Larin"
+      ],
+      "born": 1995,
+      "height": 188
+    },
+    {
+      "name": "Dayne St. Clair",
+      "short": "St. Clair",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 73,
+      "style": "gk",
+      "nation": "CA",
+      "club": "Inter Miami",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Inter Miami; 22 caps, 0 goals for Canada, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Dayne_St._Clair"
+      ],
+      "born": 1997,
+      "height": 191
+    },
+    {
+      "name": "Maxime Crépeau",
+      "short": "Crépeau",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 72,
+      "style": "gk",
+      "nation": "CA",
+      "club": "Orlando City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Orlando City; 37 caps, 0 goals for Canada, 2026 World Cup squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Maxime_Crépeau"
+      ],
+      "born": 1994,
+      "height": 181
+    },
+    {
+      "name": "Richard Chukwu",
+      "short": "Chukwu",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 60,
+      "style": "cb",
+      "nation": "CA",
+      "club": "Toronto FC",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Toronto FC; 2 caps, 0 goals for Canada, in the Oct 2026 squad; teenage centre-back; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Richard_Chukwu"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 183
+    },
+    {
+      "name": "Takefusa Kubo",
+      "short": "Kubo",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 81,
+      "style": "inside_forward",
+      "nation": "JP",
+      "club": "Real Sociedad",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plusplus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Real Sociedad; 54 caps, 7 goals for Japan, in the Oct 2026 squad; left-footed dribbler; Real Sociedad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Takefusa_Kubo"
+      ],
+      "foot": "L",
+      "born": 2001,
+      "height": 173
+    },
+    {
+      "name": "Kaoru Mitoma",
+      "short": "Mitoma",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 81,
+      "style": "winger",
+      "nation": "JP",
+      "club": "Brighton & Hove Albion",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Brighton & Hove Albion; 31 caps, 9 goals for Japan, called up Mar 2026; famous one-on-one dribbler; Brighton.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Kaoru_Mitoma"
+      ],
+      "born": 1997,
+      "height": 178
+    },
+    {
+      "name": "Wataru Endo",
+      "short": "Endo",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 77,
+      "style": "dm",
+      "nation": "JP",
+      "club": "Liverpool",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus",
+        "ball_winner": "plus"
+      },
+      "basis": "Liverpool; 73 caps, 4 goals for Japan, 2026 World Cup squad; Japan captain; Premier League winner with Liverpool 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Wataru_Endo"
+      ],
+      "born": 1993,
+      "height": 178
+    },
+    {
+      "name": "Daichi Kamada",
+      "short": "Kamada",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 78,
+      "style": "cm_play",
+      "nation": "JP",
+      "club": "Crystal Palace",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Crystal Palace; 57 caps, 14 goals for Japan, in the Oct 2026 squad; Europa League winner with Frankfurt 2022.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Daichi_Kamada"
+      ],
+      "born": 1996,
+      "height": 180
+    },
+    {
+      "name": "Ritsu Dōan",
+      "short": "Dōan",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 80,
+      "style": "inside_forward",
+      "nation": "JP",
+      "club": "Eintracht Frankfurt",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plus"
+      },
+      "basis": "Eintracht Frankfurt; 73 caps, 12 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Ritsu_Dōan"
+      ],
+      "foot": "L",
+      "born": 1998,
+      "height": 172
+    },
+    {
+      "name": "Hiroki Itō",
+      "short": "Itō",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 79,
+      "style": "cb_ball",
+      "nation": "JP",
+      "club": "Bayern Munich",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "ball_playing_defender": "plus"
+      },
+      "basis": "Bayern Munich; 32 caps, 1 goal for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Hiroki_Itō_(footballer,_born_1999)"
+      ],
+      "foot": "L",
+      "born": 1999,
+      "height": 188
+    },
+    {
+      "name": "Kō Itakura",
+      "short": "Itakura",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "JP",
+      "club": "Borussia Mönchengladbach",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Borussia Mönchengladbach; 44 caps, 2 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Kō_Itakura"
+      ],
+      "born": 1997,
+      "height": 188
+    },
+    {
+      "name": "Takehiro Tomiyasu",
+      "short": "Tomiyasu",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "JP",
+      "club": "Crystal Palace",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Crystal Palace; 46 caps, 1 goal for Japan, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Takehiro_Tomiyasu"
+      ],
+      "born": 1998,
+      "height": 187
+    },
+    {
+      "name": "Ayase Ueda",
+      "short": "Ueda",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 77,
+      "style": "st_poacher",
+      "nation": "JP",
+      "club": "Lille",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Lille; 47 caps, 22 goals for Japan, in the Oct 2026 squad; 22 goals for Japan.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Ayase_Ueda"
+      ],
+      "born": 1998,
+      "height": 182
+    },
+    {
+      "name": "Keito Nakamura",
+      "short": "Nakamura",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 76,
+      "style": "winger",
+      "nation": "JP",
+      "club": "Lyon",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Lyon; 33 caps, 11 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Keito_Nakamura"
+      ],
+      "born": 2000,
+      "height": 181
+    },
+    {
+      "name": "Ao Tanaka",
+      "short": "Tanaka",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 76,
+      "style": "cm_b2b",
+      "nation": "JP",
+      "club": "Leeds United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Leeds United; 45 caps, 8 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Ao_Tanaka"
+      ],
+      "born": 1998,
+      "height": 186
+    },
+    {
+      "name": "Daizen Maeda",
+      "short": "Maeda",
+      "pos": [
+        "LW",
+        "ST",
+        "LM"
+      ],
+      "ovr": 77,
+      "style": "winger",
+      "nation": "JP",
+      "club": "Ipswich Town",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus",
+        "pressing_forward": "plus"
+      },
+      "basis": "Ipswich Town; 33 caps, 5 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Daizen_Maeda"
+      ],
+      "born": 1997,
+      "height": 173
+    },
+    {
+      "name": "Takumi Minamino",
+      "short": "Minamino",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 77,
+      "style": "am",
+      "nation": "JP",
+      "club": "Monaco",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Monaco; 73 caps, 26 goals for Japan, called up Nov 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Takumi_Minamino"
+      ],
+      "born": 1995,
+      "height": 172
+    },
+    {
+      "name": "Junya Itō",
+      "short": "J. Itō",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 74,
+      "style": "winger",
+      "nation": "JP",
+      "club": "Genk",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Genk; 77 caps, 16 goals for Japan, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Junya_Itō"
+      ],
+      "born": 1993,
+      "height": 176
+    },
+    {
+      "name": "Zion Suzuki",
+      "short": "Suzuki",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 77,
+      "style": "gk",
+      "nation": "JP",
+      "club": "Aston Villa",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Aston Villa; 31 caps, 0 goals for Japan, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Zion_Suzuki"
+      ],
+      "born": 2002,
+      "height": 190
+    },
+    {
+      "name": "Yukinari Sugawara",
+      "short": "Sugawara",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 74,
+      "style": "fb",
+      "nation": "JP",
+      "club": "Cagliari",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Cagliari; 25 caps, 2 goals for Japan, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Yukinari_Sugawara"
+      ],
+      "born": 2000,
+      "height": 179
+    },
+    {
+      "name": "Ryūnosuke Satō",
+      "short": "Satō",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 66,
+      "style": "am",
+      "nation": "JP",
+      "club": "Valencia",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Valencia; 6 caps, 0 goals for Japan, called up Sep 2026; teenage playmaker; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Japan_national_football_team",
+        "https://en.wikipedia.org/wiki/Ryūnosuke_Satō"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 171
+    },
+    {
+      "name": "Son Heung-min",
+      "short": "Son",
+      "pos": [
+        "LW",
+        "ST",
+        "LM"
+      ],
+      "ovr": 81,
+      "style": "inside_forward",
+      "nation": "KR",
+      "club": "Los Angeles FC",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plusplus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Los Angeles FC; 151 caps, 59 goals for South Korea, in the Oct 2026 squad; captained Tottenham to the 2025 Europa League; Premier League Golden Boot 2021/22; Puskás Award 2020.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Son_Heung-min"
+      ],
+      "born": 1992,
+      "height": 183
+    },
+    {
+      "name": "Kim Min-jae",
+      "short": "Kim Min-jae",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 83,
+      "style": "cb",
+      "nation": "KR",
+      "club": "Bayern Munich",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Bayern Munich; 85 caps, 4 goals for South Korea, in the Oct 2026 squad; Serie A title with Napoli 2023 and the league's best defender; Bayern Munich.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Kim_Min-jae_(footballer)"
+      ],
+      "born": 1996,
+      "height": 190
+    },
+    {
+      "name": "Lee Kang-in",
+      "short": "Lee Kang-in",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 80,
+      "style": "am",
+      "nation": "KR",
+      "club": "Atlético Madrid",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plusplus"
+      },
+      "basis": "Atlético Madrid; 53 caps, 11 goals for South Korea, in the Oct 2026 squad; Champions League winner with Paris Saint-Germain 2025.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Lee_Kang-in"
+      ],
+      "foot": "L",
+      "born": 2001,
+      "height": 173
+    },
+    {
+      "name": "Hwang In-beom",
+      "short": "Hwang In-beom",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 78,
+      "style": "cm_play",
+      "nation": "KR",
+      "club": "Porto",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Porto; 78 caps, 7 goals for South Korea, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Hwang_In-beom"
+      ],
+      "born": 1996,
+      "height": 177
+    },
+    {
+      "name": "Hwang Hee-chan",
+      "short": "Hwang Hee-chan",
+      "pos": [
+        "RW",
+        "ST",
+        "RM"
+      ],
+      "ovr": 74,
+      "style": "inside_forward",
+      "nation": "KR",
+      "club": "Schalke 04",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "inside_forward": "plus"
+      },
+      "basis": "Schalke 04; 85 caps, 17 goals for South Korea, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Hwang_Hee-chan"
+      ],
+      "born": 1996,
+      "height": 177
+    },
+    {
+      "name": "Lee Jae-sung",
+      "short": "Lee Jae-sung",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 73,
+      "style": "am",
+      "nation": "KR",
+      "club": "Mainz 05",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Mainz 05; 110 caps, 15 goals for South Korea, in the Oct 2026 squad; over 110 caps.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Lee_Jae-sung"
+      ],
+      "born": 1992,
+      "height": 180
+    },
+    {
+      "name": "Oh Hyeon-gyu",
+      "short": "Oh Hyeon-gyu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 73,
+      "style": "st_poacher",
+      "nation": "KR",
+      "club": "Beşiktaş",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Beşiktaş; 34 caps, 8 goals for South Korea, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Oh_Hyeon-gyu"
+      ],
+      "born": 2001,
+      "height": 187
+    },
+    {
+      "name": "Cho Gue-sung",
+      "short": "Cho Gue-sung",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 72,
+      "style": "st_target",
+      "nation": "KR",
+      "club": "Midtjylland",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Midtjylland; 46 caps, 12 goals for South Korea, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Cho_Gue-sung"
+      ],
+      "born": 1998,
+      "height": 188
+    },
+    {
+      "name": "Seol Young-woo",
+      "short": "Seol Young-woo",
+      "pos": [
+        "RB",
+        "LB",
+        "RWB"
+      ],
+      "ovr": 73,
+      "style": "fb",
+      "nation": "KR",
+      "club": "FC Augsburg",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "FC Augsburg; 40 caps, 0 goals for South Korea, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Seol_Young-woo"
+      ],
+      "born": 1998,
+      "height": 183
+    },
+    {
+      "name": "Paik Seung-ho",
+      "short": "Paik Seung-ho",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 72,
+      "style": "cm_play",
+      "nation": "KR",
+      "club": "Birmingham City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Birmingham City; 30 caps, 3 goals for South Korea, called up Sep 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Paik_Seung-ho"
+      ],
+      "born": 1997,
+      "height": 182
+    },
+    {
+      "name": "Kim Seung-gyu",
+      "short": "Kim Seung-gyu",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 71,
+      "style": "gk",
+      "nation": "KR",
+      "club": "FC Tokyo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "FC Tokyo; 92 caps, 0 goals for South Korea, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Kim_Seung-gyu"
+      ],
+      "born": 1990,
+      "height": 189
+    },
+    {
+      "name": "Yang Min-hyeok",
+      "short": "Yang Min-hyeok",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 68,
+      "style": "winger",
+      "nation": "KR",
+      "club": "Westerlo",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Westerlo; 2 caps, 0 goals for South Korea, called up Nov 2025; teenage winger; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Yang_Min-hyeok"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 176
+    },
+    {
+      "name": "Kim Min-su",
+      "short": "Kim Min-su",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 63,
+      "style": "winger",
+      "nation": "KR",
+      "club": "Rangers",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Rangers; 3 caps, 0 goals for South Korea, in the Oct 2026 squad; teenage winger at Rangers; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+        "https://en.wikipedia.org/wiki/Kim_Min-su_(footballer,_born_2006)"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 177
+    },
+    {
+      "name": "Mathew Ryan",
+      "short": "Ryan",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 74,
+      "style": "gk",
+      "nation": "AU",
+      "club": "Levante",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Levante; 105 caps, 0 goals for Australia, 2026 World Cup squad; over 100 caps for Australia.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Mathew_Ryan"
+      ],
+      "born": 1992,
+      "height": 184
+    },
+    {
+      "name": "Harry Souttar",
+      "short": "Souttar",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 73,
+      "style": "cb",
+      "nation": "AU",
+      "club": "Leicester City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Leicester City; 44 caps, 11 goals for Australia, in the Oct 2026 squad; towering centre-back, 11 goals for Australia.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Harry_Souttar"
+      ],
+      "born": 1998,
+      "height": 198
+    },
+    {
+      "name": "Jordan Bos",
+      "short": "Bos",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 73,
+      "style": "fb",
+      "nation": "AU",
+      "club": "Feyenoord",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Feyenoord; 31 caps, 4 goals for Australia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Jordan_Bos"
+      ],
+      "born": 2002,
+      "height": 183
+    },
+    {
+      "name": "Jackson Irvine",
+      "short": "Irvine",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 72,
+      "style": "cm_b2b",
+      "nation": "AU",
+      "club": "Cerezo Osaka",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Cerezo Osaka; 88 caps, 14 goals for Australia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Jackson_Irvine"
+      ],
+      "born": 1993,
+      "height": 189
+    },
+    {
+      "name": "Riley McGree",
+      "short": "McGree",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 72,
+      "style": "am",
+      "nation": "AU",
+      "club": "Middlesbrough",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Middlesbrough; 37 caps, 1 goal for Australia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Riley_McGree"
+      ],
+      "born": 1998,
+      "height": 178
+    },
+    {
+      "name": "Connor Metcalfe",
+      "short": "Metcalfe",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 70,
+      "style": "cm_b2b",
+      "nation": "AU",
+      "club": "St. Pauli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "St. Pauli; 42 caps, 3 goals for Australia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Connor_Metcalfe"
+      ],
+      "born": 1999,
+      "height": 183
+    },
+    {
+      "name": "Aziz Behich",
+      "short": "Behich",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 67,
+      "style": "fb",
+      "nation": "AU",
+      "club": "Melbourne City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Melbourne City; 89 caps, 3 goals for Australia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Aziz_Behich"
+      ],
+      "born": 1990,
+      "height": 170
+    },
+    {
+      "name": "Miloš Degenek",
+      "short": "Degenek",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 68,
+      "style": "cb",
+      "nation": "AU",
+      "club": "APOEL",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "APOEL; 57 caps, 1 goal for Australia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Miloš_Degenek"
+      ],
+      "born": 1994,
+      "height": 187
+    },
+    {
+      "name": "Nestory Irankunda",
+      "short": "Irankunda",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "AU",
+      "club": "Sporting CP",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Sporting CP; 21 caps, 7 goals for Australia, in the Oct 2026 squad; teenage winger, already 7 goals for Australia; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Nestory_Irankunda"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 175
+    },
+    {
+      "name": "Lucas Herrington",
+      "short": "Herrington",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 64,
+      "style": "cb",
+      "nation": "AU",
+      "club": "Hull City",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Hull City; 8 caps, 0 goals for Australia, in the Oct 2026 squad; teenage centre-back; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+        "https://en.wikipedia.org/wiki/Lucas_Herrington"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 192
+    },
+    {
+      "name": "Mehdi Taremi",
+      "short": "Taremi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 77,
+      "style": "st_complete",
+      "nation": "IR",
+      "club": "Al Wasl",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus",
+        "poacher": "plus"
+      },
+      "basis": "Al Wasl; 111 caps, 60 goals for Iran, in the Oct 2026 squad; 60 goals for Iran; scored twice v England at the 2022 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Mehdi_Taremi"
+      ],
+      "born": 1992,
+      "height": 187
+    },
+    {
+      "name": "Sardar Azmoun",
+      "short": "Azmoun",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 74,
+      "style": "st_complete",
+      "nation": "IR",
+      "club": "Shabab Al-Ahli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Shabab Al-Ahli; 93 caps, 57 goals for Iran, in the Oct 2026 squad; 57 goals for Iran.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Sardar_Azmoun"
+      ],
+      "height": 186
+    },
+    {
+      "name": "Alireza Beiranvand",
+      "short": "Beiranvand",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 70,
+      "style": "gk",
+      "nation": "IR",
+      "club": "Tractor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Tractor; 90 caps, 0 goals for Iran, in the Oct 2026 squad; saved a Cristiano Ronaldo penalty at the 2018 World Cup.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Alireza_Beiranvand"
+      ],
+      "height": 195
+    },
+    {
+      "name": "Saeid Ezatolahi",
+      "short": "Ezatolahi",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 70,
+      "style": "dm",
+      "nation": "IR",
+      "club": "Shabab Al-Ahli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Shabab Al-Ahli; 88 caps, 2 goals for Iran, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Saeid_Ezatolahi"
+      ],
+      "height": 190
+    },
+    {
+      "name": "Mohammad Mohebi",
+      "short": "Mohebi",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 70,
+      "style": "am",
+      "nation": "IR",
+      "club": "Rijeka",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Rijeka; 40 caps, 15 goals for Iran, called up Sep 2026; 15 goals for Iran.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Mohammad_Mohebi"
+      ],
+      "born": 1998,
+      "height": 185
+    },
+    {
+      "name": "Ramin Rezaeian",
+      "short": "Rezaeian",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 68,
+      "style": "fb",
+      "nation": "IR",
+      "club": "Foolad",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Foolad; 79 caps, 10 goals for Iran, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Ramin_Rezaeian"
+      ],
+      "height": 184
+    },
+    {
+      "name": "Ali Gholizadeh",
+      "short": "Gholizadeh",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 70,
+      "style": "winger",
+      "nation": "IR",
+      "club": "Lech Poznań",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Lech Poznań; 44 caps, 7 goals for Iran, called up Mar 2026.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Ali_Gholizadeh"
+      ],
+      "height": 176
+    },
+    {
+      "name": "Shojae Khalilzadeh",
+      "short": "Khalilzadeh",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 66,
+      "style": "cb",
+      "nation": "IR",
+      "club": "Tractor",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Tractor; 63 caps, 2 goals for Iran, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Iran_national_football_team",
+        "https://en.wikipedia.org/wiki/Shojae_Khalilzadeh"
+      ],
+      "height": 182
+    },
+    {
+      "name": "Salem Al-Dawsari",
+      "short": "Al-Dawsari",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 74,
+      "style": "winger",
+      "nation": "SA",
+      "club": "Al-Hilal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Al-Hilal; 114 caps, 27 goals for Saudi Arabia, 2026 World Cup squad; scored the winner v Argentina at the 2022 World Cup; Asian Player of the Year 2022.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Salem_Al-Dawsari"
+      ],
+      "born": 1991,
+      "height": 172
+    },
+    {
+      "name": "Firas Al-Buraikan",
+      "short": "Al-Buraikan",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 71,
+      "style": "st_complete",
+      "nation": "SA",
+      "club": "Al-Ahli",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Al-Ahli; 80 caps, 19 goals for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Firas_Al-Buraikan"
+      ],
+      "born": 2000,
+      "height": 181
+    },
+    {
+      "name": "Saud Abdulhamid",
+      "short": "Abdulhamid",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 71,
+      "style": "fb",
+      "nation": "SA",
+      "club": "Lens",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Lens; 58 caps, 1 goal for Saudi Arabia, 2026 World Cup squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Saud_Abdulhamid"
+      ],
+      "height": 171
+    },
+    {
+      "name": "Hassan Al-Tambakti",
+      "short": "Al-Tambakti",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 70,
+      "style": "cb",
+      "nation": "SA",
+      "club": "Al-Hilal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Al-Hilal; 60 caps, 1 goal for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Hassan_Al-Tambakti"
+      ],
+      "born": 1999,
+      "height": 182
+    },
+    {
+      "name": "Mohamed Kanno",
+      "short": "Kanno",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 70,
+      "style": "cm_b2b",
+      "nation": "SA",
+      "club": "Al-Hilal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Al-Hilal; 86 caps, 8 goals for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Mohamed_Kanno"
+      ],
+      "born": 1994
+    },
+    {
+      "name": "Musab Al-Juwayr",
+      "short": "Al-Juwayr",
+      "pos": [
+        "AM"
+      ],
+      "ovr": 69,
+      "style": "am",
+      "nation": "SA",
+      "club": "Al-Qadsiah",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Al-Qadsiah; 40 caps, 6 goals for Saudi Arabia, recent call-up.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Musab_Al-Juwayr"
+      ],
+      "height": 175
+    },
+    {
+      "name": "Mohammed Al-Owais",
+      "short": "Al-Owais",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 68,
+      "style": "gk",
+      "nation": "SA",
+      "club": "Al-Hilal",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Al-Hilal; 73 caps, 0 goals for Saudi Arabia, in the Oct 2026 squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Mohammed_Al-Owais"
+      ],
+      "born": 1991,
+      "height": 187
+    },
+    {
+      "name": "Abdullah Al-Hamdan",
+      "short": "Al-Hamdan",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 67,
+      "style": "st_poacher",
+      "nation": "SA",
+      "club": "Al-Nassr",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Al-Nassr; 60 caps, 14 goals for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Abdullah_Al-Hamdan"
+      ],
+      "born": 1999,
+      "height": 184
+    },
+    {
+      "name": "Nawaf Boushal",
+      "short": "Boushal",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "ovr": 64,
+      "style": "fb",
+      "nation": "SA",
+      "club": "Al-Nassr",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Al-Nassr; 32 caps, 0 goals for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Nawaf_Boushal"
+      ],
+      "born": 1999,
+      "height": 173
+    },
+    {
+      "name": "Abdulelah Al-Amri",
+      "short": "Al-Amri",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 64,
+      "style": "cb",
+      "nation": "SA",
+      "club": "Al-Nassr",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Al-Nassr; 51 caps, 2 goals for Saudi Arabia, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+        "https://en.wikipedia.org/wiki/Abdulelah_Al-Amri"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Gustavo Gómez",
+      "short": "G. Gómez",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "PY",
+      "club": "Palmeiras",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plusplus"
+      },
+      "basis": "Palmeiras; 96 caps, 4 goals for Paraguay, in the Oct 2026 squad; Palmeiras captain; Copa Libertadores 2020 and 2021.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Gustavo_Gómez"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Omar Alderete",
+      "short": "Alderete",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 76,
+      "style": "cb",
+      "nation": "PY",
+      "club": "Sunderland",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Sunderland; 42 caps, 3 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Omar_Alderete"
+      ],
+      "height": 188
+    },
+    {
+      "name": "Diego Gómez",
+      "short": "D. Gómez",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 77,
+      "style": "cm_b2b",
+      "nation": "PY",
+      "club": "Brighton & Hove Albion",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Brighton & Hove Albion; 30 caps, 3 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Diego_Gómez_(Paraguayan_footballer)"
+      ],
+      "height": 183
+    },
+    {
+      "name": "Miguel Almirón",
+      "short": "Almirón",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "ovr": 74,
+      "style": "am",
+      "nation": "PY",
+      "club": "Atlanta United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Atlanta United; 82 caps, 12 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Miguel_Almirón"
+      ],
+      "height": 174
+    },
+    {
+      "name": "Julio Enciso",
+      "short": "Enciso",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "ovr": 76,
+      "style": "am",
+      "nation": "PY",
+      "club": "Ipswich Town",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Ipswich Town; 39 caps, 5 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Julio_Enciso_(footballer,_born_2004)"
+      ],
+      "height": 173
+    },
+    {
+      "name": "Ramón Sosa",
+      "short": "Sosa",
+      "pos": [
+        "LW",
+        "LM"
+      ],
+      "ovr": 73,
+      "style": "winger",
+      "nation": "PY",
+      "club": "Palmeiras",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Palmeiras; 32 caps, 1 goal for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Ramón_Sosa"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Andrés Cubas",
+      "short": "Cubas",
+      "pos": [
+        "DM"
+      ],
+      "ovr": 72,
+      "style": "dm",
+      "nation": "PY",
+      "club": "Vancouver Whitecaps",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "anchor": "plus"
+      },
+      "basis": "Vancouver Whitecaps; 40 caps, 0 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Andrés_Cubas"
+      ],
+      "height": 169
+    },
+    {
+      "name": "Mathías Villasanti",
+      "short": "Villasanti",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 71,
+      "style": "cm_b2b",
+      "nation": "PY",
+      "club": "Grêmio",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Grêmio; 52 caps, 0 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Mathías_Villasanti"
+      ],
+      "height": 178
+    },
+    {
+      "name": "Júnior Alonso",
+      "short": "Alonso",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "ovr": 71,
+      "style": "cb",
+      "nation": "PY",
+      "club": "Atlanta United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Atlanta United; 77 caps, 3 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Júnior_Alonso"
+      ],
+      "height": 185
+    },
+    {
+      "name": "Antonio Sanabria",
+      "short": "Sanabria",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 71,
+      "style": "st_complete",
+      "nation": "PY",
+      "club": "Internacional",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Internacional; 50 caps, 7 goals for Paraguay, in the Oct 2026 squad.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Antonio_Sanabria"
+      ],
+      "height": 182
+    },
+    {
+      "name": "Roberto Fernández",
+      "short": "R. Fernández",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 70,
+      "style": "gk",
+      "nation": "PY",
+      "club": "Cerro Porteño",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Cerro Porteño; 31 caps, 0 goals for Paraguay, 2026 World Cup squad; shot-stopper.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+        "https://en.wikipedia.org/wiki/Gatito_Fernández"
+      ],
+      "height": 191
+    }
+  ]
+}

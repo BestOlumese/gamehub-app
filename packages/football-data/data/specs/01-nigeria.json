@@ -375,7 +375,8 @@
       "name": "Chibueze Oputa",
       "short": "Oputa",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 60,
       "style": "fb",
@@ -516,7 +517,8 @@
       "short": "Adekunle",
       "pos": [
         "RB",
-        "CB"
+        "CB",
+        "RWB"
       ],
       "ovr": 60,
       "style": "fb",
@@ -563,7 +565,8 @@
       "name": "Emmanuel Michael",
       "short": "E. Michael",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 60,
       "style": "fb",
@@ -586,7 +589,8 @@
       "name": "Abdullahi Bewene",
       "short": "Bewene",
       "pos": [
-        "RB"
+        "RB",
+        "RWB"
       ],
       "ovr": 62,
       "style": "fb",
@@ -606,7 +610,8 @@
       "name": "Isaac James",
       "short": "I. James",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 64,
       "style": "fb",
@@ -672,7 +677,8 @@
       "name": "Kenneth Igboke",
       "short": "Igboke",
       "pos": [
-        "LB"
+        "LB",
+        "LWB"
       ],
       "ovr": 61,
       "style": "fb",
@@ -1079,7 +1085,8 @@
       "short": "Ejuke",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 74,
       "style": "winger",
@@ -1103,7 +1110,8 @@
       "short": "Sor",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 69,
       "style": "winger",
@@ -1428,7 +1436,8 @@
       "short": "Usor",
       "pos": [
         "LW",
-        "RW"
+        "RW",
+        "LM"
       ],
       "ovr": 68,
       "style": "winger",
@@ -1497,7 +1506,8 @@
       "short": "Otele",
       "pos": [
         "RW",
-        "LW"
+        "LW",
+        "RM"
       ],
       "ovr": 70,
       "style": "winger",
@@ -1819,7 +1829,8 @@
       "short": "Ajasa",
       "pos": [
         "LW",
-        "ST"
+        "ST",
+        "LM"
       ],
       "ovr": 63,
       "style": "winger",
