@@ -107,14 +107,15 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 
 ## Phase 10 — Football data (batches)
 - [x] `packages/football-data`: Zod schema, validator (quotas, distribution, banned words, sources, club freshness, frozen versions), compact build, the 60-player sample passing; batches in `data/batches/`, validated in CI.
-- [ ] Batches, each researched online with `basis` + `sources` and reviewed: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
+- [x] Batches, each researched online with `basis` + `sources`: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
   - [x] 01 Super Eagles (86) and 02 NPFL (26 more; 33 NPFL in all), Oct 2026.
   - [x] 03 Africa (299 from 16 nations' squads and call-ups), Oct 2026.
   - [x] 04 Europe (568 from 24 nations' squads and call-ups; covers the big-five leagues), Oct 2026.
   - [x] 05 Americas and Asia (248 from 14 nations), Oct 2026. Full-backs and wingers also list their natural wide alternate (wing-back / wide midfield).
-  - [x] 06 Legends (194: 38 Nigerian, 76 African), each with its Wikipedia source checked to exist.
-- [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
-- [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
+  - [x] 06 Legends (193: 38 Nigerian, 76 African), each with its Wikipedia source checked to exist.
+  - [x] 07 Young players (36 from the Nigeria, Morocco, Ghana and Senegal U-20 squads) and six more NPFL scorers. Red-link sources dropped.
+- [x] Quotas met (release 2026.10.1): 1,462 players, 172 Nigerian, 529 African, 43 NPFL, 193 Legends, 110 Wonderkids, 131 GKs; distribution bands within ±25 %.
+- [x] Disclaimer + takedown address on `/legal/terms`. Still to do before promotion: a short legal review (`concerns.md`).
 
 **Exit:** validator green on the full set; facts only from cited sources (no per-batch review: Best, Oct 2026; one optional look at the end); data version `YYYY.MM.1` tagged.
 

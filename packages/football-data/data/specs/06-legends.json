@@ -2825,28 +2825,6 @@
       "born": 1961
     },
     {
-      "name": "Oliver Kahn",
-      "short": "Kahn",
-      "pos": [
-        "GK"
-      ],
-      "ovr": 89,
-      "style": "gk",
-      "nation": "DE",
-      "club": null,
-      "clubAsOf": null,
-      "group": "legend",
-      "era": "Prime 1996–2006",
-      "roles": {
-        "shot_stopper": "plusplus"
-      },
-      "basis": "Golden Ball at the 2002 World Cup; Champions League winner with Bayern 2001.",
-      "sources": [
-        "https://en.wikipedia.org/wiki/Oliver_Kahn"
-      ],
-      "born": 1969
-    },
-    {
       "name": "Philipp Lahm",
       "short": "Lahm",
       "pos": [

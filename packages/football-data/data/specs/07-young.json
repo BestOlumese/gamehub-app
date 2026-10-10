@@ -1,0 +1,826 @@
+{
+  "batch": "07 Young players: U-20 squads (Nigeria, Morocco, Ghana, Senegal), Oct 2026",
+  "players": [
+    {
+      "name": "Daniel Bameyi",
+      "short": "Bameyi",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 62,
+      "style": "cb",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Nigeria U-20 squad; Nigeria U-20 regular (11 caps); current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Daniel_Bameyi"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 179
+    },
+    {
+      "name": "Clinton Jephta",
+      "short": "Jephta",
+      "pos": [
+        "RW",
+        "ST",
+        "RM"
+      ],
+      "ovr": 61,
+      "style": "winger",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "winger": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Nigeria U-20 squad; young Enyimba forward; NPFL factor applied; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Clinton_Jephta"
+      ],
+      "league": "NPFL",
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Kparobo Arierhi",
+      "short": "Arierhi",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "st_runner",
+      "nation": "NG",
+      "club": "Lillestrøm",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Lillestrøm; Nigeria U-20 squad; teenage striker in Norway; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Kparobo_Arierhi"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 175
+    },
+    {
+      "name": "Precious Benjamin",
+      "short": "Benjamin",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 62,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "1899 Hoffenheim",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "1899 Hoffenheim; Nigeria U-20 squad; young striker at Hoffenheim; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Precious_Benjamin"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 182
+    },
+    {
+      "name": "Emmanuel Chukwu",
+      "short": "Chukwu",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 61,
+      "style": "cb",
+      "nation": "NG",
+      "club": "1899 Hoffenheim",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "1899 Hoffenheim; Nigeria U-20 squad; young centre-back at Hoffenheim; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Odinaka Okoro",
+      "short": "Okoro",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 57,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Sporting Lagos",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Sporting Lagos; Nigeria U-20 squad; teenage Sporting Lagos defender; NPFL factor applied; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "league": "NPFL",
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Ba Abba Maigari",
+      "short": "Maigari",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 57,
+      "style": "cb",
+      "nation": "NG",
+      "club": "El-Kanemi Warriors",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "El-Kanemi Warriors; Nigeria U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Auwal Ibrahim",
+      "short": "Ibrahim",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 58,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Akwa United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Akwa United; Nigeria U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Adamu Shafiu Duguri",
+      "short": "Duguri",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 57,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Wikki Tourists",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Wikki Tourists; Nigeria U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Yushau Armiyau",
+      "short": "Armiyau",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 57,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Katsina United",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Katsina United; Nigeria U-20 squad; Katsina United midfielder; NPFL factor applied; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "league": "NPFL",
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Simon Karshe Cletus",
+      "short": "Cletus",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 56,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": "Mavlon",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Mavlon; Nigeria U-20 squad; 17-year-old midfielder; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Bidemi Amole",
+      "short": "Amole",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 56,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Real Sapphire",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Real Sapphire; Nigeria U-20 squad; 17-year-old striker; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Rickson Theophilus Mendos",
+      "short": "Mendos",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 57,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Niger Tornadoes",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Niger Tornadoes; Nigeria U-20 squad; Niger Tornadoes forward; NPFL factor applied; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "league": "NPFL",
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Abubakar Rufai",
+      "short": "Rufai",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 54,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Mavlon",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Mavlon; Nigeria U-20 squad; 17-year-old goalkeeper; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Divine Oliseh",
+      "short": "Oliseh",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 57,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Without a club; Nigeria U-20 squad; teenage forward; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Tahir Maigana",
+      "short": "Maigana",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 55,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Without a club; Nigeria U-20 squad; 17-year-old forward; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Nigeria_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Othmane Maamma",
+      "short": "Maamma",
+      "pos": [
+        "RW",
+        "RM"
+      ],
+      "ovr": 70,
+      "style": "winger",
+      "nation": "MA",
+      "club": "Watford",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "winger": "plusplus"
+      },
+      "basis": "Watford; 1 cap, 0 goals for Morocco, called up May 2026; Golden Ball at the 2025 U-20 World Cup, which Morocco won.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_football_team",
+        "https://en.wikipedia.org/wiki/Othmane_Maamma"
+      ],
+      "born": 2005
+    },
+    {
+      "name": "Yassir Zabiri",
+      "short": "Zabiri",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 70,
+      "style": "st_poacher",
+      "nation": "MA",
+      "club": "Racing Santander",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Racing Santander; 1 cap, 0 goals for Morocco, in the Oct 2026 squad; scored both goals in the 2025 U-20 World Cup final win over Argentina.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_football_team",
+        "https://en.wikipedia.org/wiki/Yassir_Zabiri"
+      ],
+      "born": 2005,
+      "height": 177
+    },
+    {
+      "name": "Hamza Koutoune",
+      "short": "Koutoune",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 63,
+      "style": "cb",
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Morocco U-20 squad; 2025 U-20 World Cup winner; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Hamza_Koutoune"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 177
+    },
+    {
+      "name": "Fouad Zahouani",
+      "short": "Zahouani",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 62,
+      "style": "fb",
+      "nation": "MA",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Morocco U-20 squad; 2025 U-20 World Cup winner; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Fouad_Zahouani"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 181
+    },
+    {
+      "name": "Smail Bakhty",
+      "short": "Bakhty",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "ovr": 64,
+      "style": "fb",
+      "nation": "MA",
+      "club": "Sturm Graz",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "full_back": "plus"
+      },
+      "basis": "Sturm Graz; Morocco U-20 squad; 2025 U-20 World Cup winner; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Mohamed Hamony",
+      "short": "Hamony",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 60,
+      "style": "st_runner",
+      "nation": "MA",
+      "club": "Girona B",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Girona B; Morocco U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Morocco_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Mohamed_Hamony"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 178
+    },
+    {
+      "name": "Andrews Adjabeng",
+      "short": "Adjabeng",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "st_complete",
+      "nation": "GH",
+      "club": "Real Sociedad",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Real Sociedad; Ghana U-20 squad; young striker at Real Sociedad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Andrews_Adjabeng"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 175
+    },
+    {
+      "name": "Lord Afrifa",
+      "short": "Afrifa",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 60,
+      "style": "cm_b2b",
+      "nation": "GH",
+      "club": "Sturm Graz",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Sturm Graz; Ghana U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Denis Marfo",
+      "short": "Marfo",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 58,
+      "style": "cb",
+      "nation": "GH",
+      "club": "Internacional",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Internacional; Ghana U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Musibau Aziz",
+      "short": "Aziz",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "GH",
+      "club": "Dreams",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Dreams; Ghana U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Ishmael Addo",
+      "short": "Addo",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 56,
+      "style": "cm_b2b",
+      "nation": "GH",
+      "club": "Heart of Lions",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Heart of Lions; Ghana U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Yakubu Saeed",
+      "short": "Saeed",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 55,
+      "style": "gk",
+      "nation": "GH",
+      "club": "Medeama",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Medeama; Ghana U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ghana_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Pape Daouda Diong",
+      "short": "Diong",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 62,
+      "style": "cm_b2b",
+      "nation": "SN",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Senegal U-20 squad; young midfielder at Strasbourg; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Pape_Daouda_Diong"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 190
+    },
+    {
+      "name": "Pierre Dorival",
+      "short": "Dorival",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 62,
+      "style": "cm_play",
+      "nation": "SN",
+      "club": "Lyon",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Lyon; Senegal U-20 squad; young midfielder at Lyon; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Clayton Diandy",
+      "short": "Diandy",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 61,
+      "style": "st_runner",
+      "nation": "SN",
+      "club": "Aris Thessaloniki",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Aris Thessaloniki; Senegal U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Clayton_Diandy"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 174
+    },
+    {
+      "name": "Papa Magueye Gaye",
+      "short": "Gaye",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "SN",
+      "club": "Sion",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Sion; Senegal U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Lassana Traoré",
+      "short": "L. Traoré",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 58,
+      "style": "cb",
+      "nation": "SN",
+      "club": null,
+      "clubAsOf": null,
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Club unverified (sources disagree); Senegal U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team",
+        "https://en.wikipedia.org/wiki/Lassana_Traoré_(footballer)"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high",
+      "height": 180
+    },
+    {
+      "name": "Yaya Diémé",
+      "short": "Diémé",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 56,
+      "style": "st_poacher",
+      "nation": "SN",
+      "club": "Diambars",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Diambars; Senegal U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team"
+      ],
+      "born": 2007,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Omar Sarr",
+      "short": "Sarr",
+      "pos": [
+        "CM"
+      ],
+      "ovr": 55,
+      "style": "cm_b2b",
+      "nation": "SN",
+      "club": "Diambars",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "box_to_box": "plus"
+      },
+      "basis": "Diambars; Senegal U-20 squad; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Taly Dia",
+      "short": "Dia",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 54,
+      "style": "cb",
+      "nation": "SN",
+      "club": "United Académie",
+      "clubAsOf": "2026-10",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "United Académie; Senegal U-20 squad; 18-year-old centre-back; current ability rated, high potential.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Senegal_national_under-20_football_team"
+      ],
+      "born": 2008,
+      "group": "wonderkid",
+      "potential": "high"
+    }
+  ]
+}

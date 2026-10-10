@@ -89,7 +89,7 @@ export const datasetSchema = z.object({
 Refinements (in the validator, below): GK ⇔ `keeperStats`; `era` only and always for legends; `potential` only and always for wonderkids; wonderkids born ≥ data year − 20; roles must belong to one of the player's positions (or a neighbouring position group).
 
 ### Compact runtime format
-The realtime Worker needs the data to build option sets. `pnpm --filter football-data build` emits `dist/players.min.json` as **tuples** (`[id, short, posBits, ovr, s1..s6, nationIdx, clubIdx, flags, roleBits]` + lookup tables for nations/clubs/names). Estimated size for 1,200 players: ~110–140 KB raw, ~35–45 KB gzip (⚠️ estimate; measure in the data phase). The Worker parses it **lazily on the first football action** of an isolate and keeps it in module scope (cold-start CPU matters on Free — `13-free-tier-budget.md`). The browser never downloads the database: option sets arrive inside the seat's view with full card data.
+The realtime Worker needs the data to build option sets. `pnpm --filter football-data build` emits `dist/players.min.json` as **tuples** (`[id, short, posBits, ovr, s1..s6, nationIdx, clubIdx, flags, roleBits]` + lookup tables for nations/clubs/names). Measured for release 2026.10.1 (1,462 players): 143.9 KB raw, 51.5 KB gzip. The Worker parses it **lazily on the first football action** of an isolate and keeps it in module scope (cold-start CPU matters on Free — `13-free-tier-budget.md`). The browser never downloads the database: option sets arrive inside the seat's view with full card data.
 
 ## Face stats — definitions
 
@@ -166,7 +166,7 @@ The realtime Worker needs the data to build option sets. `pnpm --filter football
 
 | Quota | Minimum |
 |---|---|
-| Total players | 1,200 (target 1,150–1,300) |
+| Total players | 1,200 (release 2026.10.1 has 1,462: every recent Super Eagles call-up, the big nations' squads, 193 legends) |
 | **Nigerian** players (current + legends + wonderkids) | **≥ 120** |
 | **African** players (incl. Nigerian) | **≥ 250** |
 | Current Super Eagles squad members (last 2 call-up lists) | 100 % |

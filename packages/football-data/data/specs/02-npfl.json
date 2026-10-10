@@ -568,6 +568,127 @@
       "sources": [
         "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
       ]
+    },
+    {
+      "name": "Chinedu Nwosu",
+      "short": "Nwosu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Bendel Insurance",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Bendel Insurance forward; 3 goals early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Kayode Oke Solomon",
+      "short": "Oke Solomon",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Bendel Insurance",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Bendel Insurance forward; 3 goals early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Gideon Monday",
+      "short": "G. Monday",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 59,
+      "style": "st_target",
+      "nation": "NG",
+      "club": "Plateau United",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "target_forward": "plus"
+      },
+      "basis": "Plateau United forward; 3 goals early in 2026/27, including a winning header; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League",
+        "https://www.plateauunitedfc.com/npfl26-gideon-mondays-header-seals-back-to-back-wins-for-plateau-united"
+      ]
+    },
+    {
+      "name": "Jibrin Ibrahim",
+      "short": "J. Ibrahim",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Plateau United",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Plateau United forward; 3 goals early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Joseph Atule",
+      "short": "Atule",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 58,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Barau",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Barau forward; 3 goals early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Sugau Aliyu",
+      "short": "Aliyu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 57,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Barau",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Barau forward; 3 goals early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
     }
   ]
 }

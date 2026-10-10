@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of use" updated="9 October 2026">
+    <LegalPage title="Terms of use" updated="10 October 2026">
       <p>
         These terms are the deal between you and GameHub. They&apos;re written to be read. By
         creating an account you agree to them.
@@ -18,9 +18,9 @@ export default function TermsPage() {
 
       <h2>What GameHub is</h2>
       <p>
-        GameHub is a free website for playing Whot, Ludo, Snakes &amp; Ladders, Chess, Tic-tac-toe
-        and Rock Paper Scissors with other people online. It&apos;s a non-commercial project. There
-        are no coins, no purchases, no ads and no prizes.
+        GameHub is a free website for playing Whot, Ludo, Snakes &amp; Ladders, Chess, Draughts,
+        Naija Plots, Tic-tac-toe and Rock Paper Scissors with other people online. It&apos;s a
+        non-commercial project. There are no coins, no purchases, no ads and no prizes.
       </p>
 
       <h2>You must be 18 or older</h2>
@@ -62,6 +62,18 @@ export default function TermsPage() {
       <p>
         GameHub has no money in it, and you must not use it for gambling or betting of any kind,
         including bets arranged outside the site.
+      </p>
+
+      <h2>Real footballers in Football Draft</h2>
+      <p>
+        Football Draft uses real footballers&apos; names and public facts about them, like their
+        positions, nationality, clubs and achievements. The ratings are our own opinion. We
+        don&apos;t use photos, club badges, kits or league logos. GameHub isn&apos;t affiliated with
+        or endorsed by any player, club, league, federation, EA Sports or FIFA.
+      </p>
+      <p>
+        If you&apos;re a player, or you represent one, and want to be taken out, email{" "}
+        {contactEmail}. We remove the player in the next data update, within 14 days.
       </p>
 
       <h2>The service</h2>
