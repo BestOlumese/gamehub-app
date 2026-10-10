@@ -1,0 +1,572 @@
+{
+  "batch": "02 Nigeria: NPFL (2025/26 leaders, 2026/27 early form)",
+  "players": [
+    {
+      "name": "Lucky Jimoh",
+      "short": "Jimoh",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 64,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Enugu Rangers' No. 1 in the 2025/26 title win; 15 league clean sheets, second in the NPFL; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://www.thisdaylive.com/2026/07/14/ilechukwu-nwobodo-lead-rangers-sweep-at-2026-league-bloggers-awards/",
+        "https://gh.soccerway.com/player/lucky-jimoh/KMIqIQl2"
+      ]
+    },
+    {
+      "name": "Osagie Onisodumeya",
+      "short": "Onisodumeya",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 61,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Rivers United",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Rivers United keeper, runners-up 2025/26; 14 league clean sheets; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Ifeanyi Emmanuel",
+      "short": "I. Emmanuel",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 59,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Niger Tornadoes",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Niger Tornadoes keeper; 13 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Okiemute Odah",
+      "short": "Odah",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 58,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Abia Warriors",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Abia Warriors keeper; 12 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Abuchi Okeke",
+      "short": "Okeke",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 58,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Kano Pillars",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Kano Pillars keeper; 12 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Godwill Utum",
+      "short": "Utum",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 57,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Wikki Tourists",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Wikki Tourists keeper; 11 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Abdullahi Zalli",
+      "short": "Zalli",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 57,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Katsina United",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Katsina United keeper; 11 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Vincent Edafe",
+      "short": "Edafe",
+      "pos": [
+        "GK"
+      ],
+      "ovr": 57,
+      "style": "gk",
+      "nation": "NG",
+      "club": "Warri Wolves",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shot_stopper": "plus"
+      },
+      "basis": "Warri Wolves keeper; 10 league clean sheets in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Chidozie Iwundu",
+      "short": "Iwundu",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 64,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-07",
+      "league": "NPFL",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Enugu Rangers defender in the 2025/26 title win; League Bloggers Awards Defender of the Season 2026; threat at set pieces; NPFL factor applied.",
+      "sources": [
+        "https://www.thisdaylive.com/2026/07/14/ilechukwu-nwobodo-lead-rangers-sweep-at-2026-league-bloggers-awards/",
+        "https://www.fotmob.com/players/1616133"
+      ],
+      "rep": 1
+    },
+    {
+      "name": "David Sholumade",
+      "short": "Sholumade",
+      "pos": [
+        "CB"
+      ],
+      "ovr": 63,
+      "style": "cb",
+      "nation": "NG",
+      "club": "Rivers United",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "stopper": "plus"
+      },
+      "basis": "Rivers United defender (runners-up 2025/26, CAF Champions League); shortlisted for the 2026 League Bloggers Awards Defender of the Season; NPFL factor applied.",
+      "sources": [
+        "https://www.thisdaylive.com/2026/07/14/ilechukwu-nwobodo-lead-rangers-sweep-at-2026-league-bloggers-awards/",
+        "https://gh.soccerway.com/player/sholumade-bolu/fZJv2BrO"
+      ],
+      "born": 2003,
+      "height": 186
+    },
+    {
+      "name": "Chidiebere Nwobodo",
+      "short": "Nwobodo",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 66,
+      "style": "cm_b2b",
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-07",
+      "league": "NPFL",
+      "roles": {
+        "box_to_box": "plus",
+        "roaming_midfielder": "plus"
+      },
+      "basis": "Enugu Rangers midfielder, back from APR (Rwanda) for the 2025/26 title win; League Bloggers Awards Player of the Season 2026; NPFL factor applied.",
+      "sources": [
+        "https://www.thisdaylive.com/2026/07/14/ilechukwu-nwobodo-lead-rangers-sweep-at-2026-league-bloggers-awards/",
+        "https://www.panafricafootball.com/?p=42805"
+      ],
+      "rep": 1
+    },
+    {
+      "name": "Kazeem Adeyanju",
+      "short": "Adeyanju",
+      "pos": [
+        "RM",
+        "CM"
+      ],
+      "ovr": 61,
+      "style": "wide_mid",
+      "nation": "NG",
+      "club": "Plateau United",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "wide_midfielder": "plus",
+        "wide_playmaker": "plus"
+      },
+      "basis": "Plateau United wide midfielder; second in the NPFL for assists in 2025/26 (7); good set-piece delivery; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://www.fotmob.com/players/1819210/kazeem-adeyanju"
+      ]
+    },
+    {
+      "name": "Hadi Haruna",
+      "short": "Hadi",
+      "pos": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 62,
+      "style": "am",
+      "nation": "NG",
+      "club": "Remo Stars",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shadow_striker": "plus",
+        "advanced_playmaker": "plus"
+      },
+      "basis": "Remo Stars attacker; 6 NPFL assists in 2025/26; over 90 league games for Remo; home-based Nigeria (CHAN) player; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://us.soccerway.com/player/haruna-hadi/dxclS8aL/"
+      ],
+      "born": 2001,
+      "foot": "R"
+    },
+    {
+      "name": "Rabiu Ali",
+      "short": "Rabiu Ali",
+      "pos": [
+        "CM",
+        "AM"
+      ],
+      "ovr": 58,
+      "style": "cm_play",
+      "nation": "NG",
+      "club": "Kano Pillars",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "playmaker": "plus"
+      },
+      "basis": "Kano Pillars captain ('Pele'), still creating at 45 with 4 assists in 2025/26; several NPFL titles; 18 Nigeria caps; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/Rabiu_Ali"
+      ],
+      "rep": 2,
+      "born": 1980,
+      "height": 180
+    },
+    {
+      "name": "Ahmed Musa",
+      "short": "Musa",
+      "pos": [
+        "LW",
+        "ST"
+      ],
+      "ovr": 66,
+      "style": "winger",
+      "nation": "NG",
+      "club": "Kano Pillars",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "winger": "plus",
+        "inside_forward": "plus"
+      },
+      "basis": "Former Super Eagles captain, 110 caps; two goals v Argentina at the 2014 World Cup and two v Iceland in 2018; back at Kano Pillars (4 assists 2025/26); NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/Ahmed_Musa"
+      ],
+      "rep": 3,
+      "born": 1992,
+      "height": 171
+    },
+    {
+      "name": "Godwin Obaje",
+      "short": "Obaje",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 66,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Enugu Rangers",
+      "clubAsOf": "2026-07",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Joint NPFL top scorer 2025/26 (14 goals) for champions Enugu Rangers; in the 2026 League Bloggers Awards Team of the Season; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://www.thisdaylive.com/2026/07/14/ilechukwu-nwobodo-lead-rangers-sweep-at-2026-league-bloggers-awards/",
+        "https://en.wikipedia.org/wiki/Godwin_Obaje"
+      ],
+      "born": 1996,
+      "height": 188
+    },
+    {
+      "name": "Victor Mbaoma",
+      "short": "Mbaoma",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 67,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Remo Stars",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus",
+        "advanced_forward": "plus"
+      },
+      "basis": "Joint NPFL top scorer 2025/26 (14 goals) for Remo Stars; earlier a prolific scorer in Algeria; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/Victor_Mbaoma"
+      ],
+      "born": 1996,
+      "height": 184
+    },
+    {
+      "name": "Jonathan Mairiga",
+      "short": "Mairiga",
+      "pos": [
+        "AM",
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "am",
+      "nation": "NG",
+      "club": "Wikki Tourists",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "shadow_striker": "plusplus"
+      },
+      "basis": "Teenage attacking midfielder who won the 2025/26 NPFL Golden Boot (14 goals) for Wikki Tourists; current ability rated, high potential; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/Jonathan_Mairiga"
+      ],
+      "born": 2006,
+      "group": "wonderkid",
+      "potential": "high"
+    },
+    {
+      "name": "Chukwuemeka Obioma",
+      "short": "Obioma",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 65,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Abia Warriors",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Abia Warriors striker; 11 goals in 2025/26 and leading the 2026/27 scoring chart; 2022/23 NPFL Golden Boot; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/Chukwuemeka_Obioma"
+      ],
+      "born": 1998
+    },
+    {
+      "name": "Joseph Arumala",
+      "short": "Arumala",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Ikorodu City",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Ikorodu City forward; 12 NPFL goals in 2025/26, joint fourth; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Uche Collins",
+      "short": "Collins",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 63,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Katsina United",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Katsina United forward; 12 NPFL goals in 2025/26, joint fourth, including a hat-trick in a 4–4 at Wikki Tourists; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Michael Chidera",
+      "short": "Chidera",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 62,
+      "style": "st_complete",
+      "nation": "NG",
+      "club": "Enyimba",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "advanced_forward": "plus"
+      },
+      "basis": "Enyimba forward; 11 NPFL goals in 2025/26; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Evwierhurhoma Igbunu",
+      "short": "Igbunu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 61,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Warri Wolves",
+      "clubAsOf": "2026-05",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Warri Wolves forward; 10 NPFL goals in 2025/26, including a hat-trick in a 4–3 at Ikorodu City; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Alex Oweilayefa",
+      "short": "Oweilayefa",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 62,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Bendel Insurance",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Bendel Insurance forward; 10 NPFL goals in 2025/26 with a hat-trick v Ikorodu City; 3 more early in 2026/27; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2025%E2%80%9326_Nigeria_Premier_Football_League",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Muhammad Zulkifilu",
+      "short": "Zulkifilu",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 60,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Ranchers Bees",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Ranchers Bees forward; 5 goals early in 2026/27 including a hat-trick v Abia Warriors; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    },
+    {
+      "name": "Sadiq Rilwan",
+      "short": "Rilwan",
+      "pos": [
+        "ST"
+      ],
+      "ovr": 60,
+      "style": "st_poacher",
+      "nation": "NG",
+      "club": "Doma United",
+      "clubAsOf": "2026-09",
+      "league": "NPFL",
+      "roles": {
+        "poacher": "plus"
+      },
+      "basis": "Doma United forward; 5 goals early in 2026/27, joint second in the scoring chart; NPFL factor applied.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Nigeria_Premier_Football_League"
+      ]
+    }
+  ]
+}

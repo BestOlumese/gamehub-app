@@ -108,6 +108,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 ## Phase 10 — Football data (batches)
 - [x] `packages/football-data`: Zod schema, validator (quotas, distribution, banned words, sources, club freshness, frozen versions), compact build, the 60-player sample passing; batches in `data/batches/`, validated in CI.
 - [ ] Batches, each researched online with `basis` + `sources` and reviewed: Super Eagles + NPFL → other African nations → each big-five league → rest of world → Legends (by decade) → Wonderkids.
+  - [x] 01 Super Eagles (86) and 02 NPFL (26 more; 33 NPFL in all), Oct 2026. Review: Best, 10 random players each.
 - [ ] Quotas met: ≥ 1,200 players, ≥ 120 Nigerian, ≥ 250 African, ≥ 150 Legends, ≥ 80 Wonderkids, ≥ 110 GKs; distribution bands within ±25 %.
 - [ ] Disclaimer + takedown address on `/legal/terms`; a short legal review is recommended before promotion (`concerns.md`).
 
