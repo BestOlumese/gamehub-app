@@ -101,6 +101,29 @@ Why these gap targets: they keep the draft meaningful (a better team usually win
 
 Tuning knobs (in this order): attack rate (0.30), progress-duel scale (/6), xG bases, conversion constants, possession exponent (6). The final constants and results are logged in this file's tuning log.
 
+### Tuning log
+
+**2026-10-11, dataset 2026.10.1** (`packages/engine/src/games/football/match.ts`, constants `C`; test `match.test.ts`, 1,500 matches in CI, seeded).
+
+1. Proposed constants: 2.16 goals, 8.1 shots a team, 48 % on target, **0.3 yellows a match** (fouls came only from lost duels). A 3-point better team won 70 %.
+2. Fouls became a per-minute chance for the side without the ball (`foulPerMin` 0.22), booked players foul less and less harshly (second yellows were piling up: 0.47 reds a match). Attack rate 0.50, xG × 0.95, on-target base 0.25.
+3. Strength sensitivity softened a lot: **possession exponent 2** (not 6), **duel scale 20** (not 6), **quality scale 200** (not 60). Attack rate 0.52.
+
+| Metric | Result | Band |
+|---|---|---|
+| Goals per match | 2.66 | 2.55–2.95 |
+| Draws | 24.9 % | 22–29 % |
+| 0–0 | 6.7 % | 5–10 % |
+| Shots per team | 10.8 | 10.5–14.5 |
+| On target | 38.9 % | 30–40 % |
+| xG per shot | 0.121 | 0.09–0.13 |
+| Yellows / reds per match | 3.19 / 0.14 | 2.5–4.5 / 0.05–0.20 |
+| Possession: mean, 5th–95th percentile | 50.0 %, 41–59 % | 50 ± 1, 90 % within 36–64 |
+| Knockouts going to penalties | 11.6 % | 8–16 % |
+| Win at +3 / +5 / +10 / +15 rating | 53 / 58 / 76 / 87 % | 46–54 / 55–64 / 72–84 / 84–93 % |
+
+Team rating here is the card rating (`draft.md`); the match also counts familiarity, chemistry and fatigue, which is part of why the effective gap is larger than the rating gap and the engine needed softening.
+
 ## CPU and persistence plan
 - A half is ~50 loop iterations with a handful of RNG draws each → **well under 1 ms** of CPU; a whole match including extra time and penalties < 2 ms. Fits the 10 ms Free limit with large headroom (`13-free-tier-budget.md`; confirm with the benchmark).
 - **Simulate each half in one invocation**, at its kickoff (the first half at kickoff, the second when the half-time window closes, extra time after its break). Subs/tactics from half-time are inputs to the next half.

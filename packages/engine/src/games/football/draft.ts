@@ -6,7 +6,7 @@ import type { FootballDataset, FootballPlayer, Position } from "./types";
 
 export type DraftLuck = "balanced" | "wild" | "elite";
 
-type Luck = {
+export type Luck = {
   /** Weights for T1 Elite (86+), T2 Star (82–85), T3 Strong (77–81), T4 Solid (72–76), T5 Squad (≤ 71). */
   tiers: readonly [number, number, number, number, number];
   legend: number;
@@ -218,10 +218,10 @@ export const highestOvr = (options: readonly FootballPlayer[]) =>
 export function autoDraft(
   stream: (pick: number) => Rng,
   pool: Pool,
-  luck: DraftLuck,
+  luck: DraftLuck | Luck,
   subs: 5 | 7 = 7,
 ): { formation: number; xi: Record<number, string>; subs: string[]; rating: number } {
-  const L = LUCK[luck];
+  const L = typeof luck === "string" ? LUCK[luck] : luck;
   const f = formationOptions(stream(0), 5)[0] as number;
   const slots = formation(f).slots;
   const xi: Record<number, string> = {};
