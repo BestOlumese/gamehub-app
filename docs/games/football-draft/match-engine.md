@@ -97,7 +97,7 @@ Test: **10,000 matches** between two auto-drafted Balanced teams with default ta
 | Knockout: penalty shoot-out share of matches | 8 – 16 % |
 | Same seed ⇒ identical event list | 100 % |
 
-Why these gap targets: they keep the draft meaningful (a better team usually wins) while leaving real upsets, roughly matching bookmaker odds between clearly unequal top-flight sides. They are Proposals to be confirmed by Best after the first calibration run.
+Why these gap targets: they keep the draft meaningful (a better team usually wins) while leaving real upsets, roughly matching bookmaker odds between clearly unequal top-flight sides. Confirmed by Best after the first calibration run (Oct 2026: +3 wins 53 %, +5 58 %, +10 76 %, +15 87 %).
 
 Tuning knobs (in this order): attack rate (0.30), progress-duel scale (/6), xG bases, conversion constants, possession exponent (6). The final constants and results are logged in this file's tuning log.
 

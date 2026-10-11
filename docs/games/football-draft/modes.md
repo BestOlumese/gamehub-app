@@ -7,7 +7,7 @@ Everyone drafts **at the same time and privately** (`draft.md`), arranges their 
 
 | Managers | Format | Default |
 |---|---|---|
-| 2 | **Single match** · or **best of 3** (Proposal: same drafted teams, tactics/lineup editable between matches; decider match is a knockout with extra time + penalties) | Single match |
+| 2 | **Single match** · or **best of 3** (decided with Best, Oct 2026: the host picks, single by default; same drafted teams, tactics/lineup editable between matches; decider match is a knockout with extra time + penalties) | Single match |
 | 3–8 | Host picks **mini league** (round robin) or **knockout** | League for 3–5, knockout for 6–8 |
 
 ### Mini league
@@ -38,7 +38,7 @@ Everyone drafts **at the same time and privately** (`draft.md`), arranges their 
 ## 3. Inside tournaments
 A football stage is a stage like any other (`16-tournaments.md`): tables of 2 (knockout ties) or 3–8 (mini leagues), top K advance.
 
-**Proposal (Best to confirm):** each player **drafts once**, at the first football stage, and **keeps that team** for every later football stage. Between stages they may change lineup, roles and tactics, but not the squad. Reasons: drafting takes 2–3 minutes per stage otherwise, and keeping your team gives the tournament a story. If a stage of a different game sits between football stages, the team waits safely (stored in the tournament, `16-tournaments.md`).
+**Decided with Best (Oct 2026):** each player **drafts once**, at the first football stage, and **keeps that team** for every later football stage. Between stages they may change lineup, roles and tactics, but not the squad. Reasons: drafting takes 2–3 minutes per stage otherwise, and keeping your team gives the tournament a story. If a stage of a different game sits between football stages, the team waits safely (stored in the tournament, `16-tournaments.md`).
 
 ## Rules (RuleConfig) and Naija Standard preset
 

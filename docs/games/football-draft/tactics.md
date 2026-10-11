@@ -135,7 +135,7 @@ Each player card lists the roles they know, with a level (`player-database.md`):
 | **base** (role belongs to their position but isn't listed) | 0 | — |
 | **out of position** (role of a position they can't play) | position penalty above | red badge |
 
-## Chemistry (Proposal — Best to confirm; default on; room rule "Chemistry: on/off")
+## Chemistry (decided with Best, Oct 2026: on by default; room rule "Chemistry: on/off")
 
 Simple, transparent links. No adjacency diagrams.
 
