@@ -25,7 +25,7 @@ Inspiration: FC 26's draft (formation 1 of 5, captain 1 of 5, 1 of 5 for each sp
 - A disconnected manager keeps drafting by auto-pick (their seat isn't frozen); when they come back they continue from the current pick.
 
 ## Team rating (shown on the card and used by the solo run)
-`teamRating = round(mean effective OVR of the XI + 0.1 × Σ max(0, ovr_i − mean))` — a mean with a small boost for stars, like a football game would show (exact FC formula unknown; this one is ours). Subs don't count.
+`teamRating = round(mean + 0.1 × Σ max(0, r_i − mean))` over the starters' `r_i = OVR − position penalty` — a mean with a small boost for stars, like a football game would show (exact FC formula unknown; this one is ours). Subs don't count. **Familiarity and chemistry are left out** (as built, Oct 2026): they count in matches and are shown on their own; with them in, every drafted team rated like a world XI (median 87 on Balanced).
 
 ## Probability — how an option set is built
 
@@ -100,7 +100,15 @@ Targets (Proposal — community FC drafts typically land in the mid-80s on EA's 
 Tuning loop: adjust tier weights → rerun → record the final weights and the observed numbers in this file ("Tuning log") before launch. The same test checks: no duplicates in any set, legend cap respected, floor guarantee, captain guarantee.
 
 ### Tuning log
-_(empty until the full dataset exists; each entry: date, dataset version, weights, results.)_
+**2026-10-11, dataset 2026.10.1 (1,462 players: 193 Legends, but only 46 current players rated 86+).** Team rating without familiarity (above). The proposed Legend weights put a Legend in 94–100 % of teams (Legends are mostly T1 and also fill floor guarantees), so Legend weights came down a lot.
+
+| Preset | Tier weights T1/T2/T3/T4/T5 | Legend × | p10 | Median | p90 | Max | ≥ 1 Legend |
+|---|---|---|---|---|---|---|---|
+| Balanced | 1 / 5 / 11 / 12 / 6 | 0.06 | 82 | 83 | 84 | 86 | 45.6 % |
+| Wild | 2 / 4 / 7 / 10 / 11 | 0.12 | 81 | 82 | 83 | 87 | 64.7 % |
+| Elite | 5 / 8 / 8 / 2 / 0 | 0.05 | 85 | 86 | 87 | 89 | 69.2 % |
+
+10,000 auto-drafted teams per preset (`DRAFT_TEAMS=10000 pnpm vitest run draft` in `packages/engine`); CI runs 400 per preset. All targets met. The auto-pick always takes the best option, so real (human) drafts spread wider than this.
 
 ## State and actions (draft part; full types in `modes.md`)
 
