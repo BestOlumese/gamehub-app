@@ -88,6 +88,21 @@ Set before kickoff and at half-time. Every effect is a **multiplier or additive 
 | **Tempo** | 0–100 (default 50) | Attacks per minute ×(1 + (t−50) × 0.004); chance quality ×(1 − (t−50) × 0.002); fatigue +(t−50) × 0.3 %. |
 | **Players in box** | 1–5 (default 3) | Chance conversion ×(1 + (n−3) × 0.04); opponent transition chance quality ×(1 + (n−3) × 0.06). |
 
+## Matchups (Best, Oct 2026: tactics and decisions must matter, not just ratings)
+
+Each minute the attacking side's **build-up** meets the defending side's **defensive approach**; the result is an edge on the progress duel and a factor on chance quality (`matchup()` in `match.ts`, strength `C.matchup` = 1.5):
+
+| Build-up \ their defence | Balanced / mid block | High press | Deep block |
+|---|---|---|---|
+| Balanced | 0 | −0.05 | −0.05 |
+| Short passing | +0.05 | −0.30 + 0.02 × (our midfield PAS − 75): pressed into mistakes unless the passers are good | **+0.25**: patience breaks a low block |
+| Long ball | −0.05 + 0.01 × (our attack POW − their defence POW) | **+0.30**: goes over the press | −0.30 + 0.02 × (POW matchup): heads it away |
+| Counter | +0.15 × how high their line is + 0.01 × pace matchup | **+0.20** (+ the high line) | **−0.30**: no space to run into |
+
+Plus, whatever the style: pace against a high line (line > 50) adds up to +0.15 when our attackers are quicker than their defenders. Counters also attack 40 % more often right after winning the ball and make "counter" chances (base xG 0.20). A deep block attacks 10 % less and concedes more long shots and crosses; a press tires the team 20 % faster and fouls more.
+
+Measured (1,200 equal-strength matches per cell, Oct 2026): the right answer to an extreme setup turns about 33 % wins into about 53 % (≈ 5 rating points); the wrong one drops to 14–20 %. Against a balanced side no setup gains more than ~6 points, so balanced is safe but never the best answer. Tests: `match.test.ts` → "tactics matter".
+
 ## Player roles (ours)
 
 Each slot gets a role (from its position's list) and a **focus** (1–3 options per role). Role + focus shift which face stats count most for that slot and which events the player is picked for (shooter, crosser, tackler…).
@@ -157,7 +172,7 @@ With chemistry **off**, everyone counts as 1 (no effect), and the UI hides chemi
 
 - **Window: 40 s** (Proposal) after the first half's playback ends. Both managers act at the same time; the countdown is server time.
 - Allowed: up to **5 substitutions in total for the match** (half-time and, in knockouts, before extra time; +1 extra in extra time), any formation change (players keep their roles where the position exists; otherwise default role), all team tactics.
-- **No live changes during play** — the simulation of each half is fixed once it starts.
+- **Live changes too** (Best, Oct 2026): tactics, roles, formation and subs can also be changed **at any minute** during play (`match-engine.md` → Live decisions). The half-time window stays for bigger rethinks.
 - Timeout → no changes (keep the team). A disconnected manager gets the same default.
 - Bots: a simple rule set (bring on a fresher sub with higher effective OVR at a slot below 70 % fitness; switch to Counter + Deep block when leading by 2; to High press + Players in box 4 when trailing).
 

@@ -5,9 +5,10 @@ import { autoDraft, makePool, type Luck } from "./draft";
 import {
   applyChange,
   DEFAULT_TACTICS,
-  playHalf,
-  playMatch,
+  playMatch as play,
+  playMinutes,
   shootout,
+  startHalf,
   startMatch,
   whyNotChange,
   winner,
@@ -15,10 +16,20 @@ import {
   type MatchState,
   type TeamSheet,
 } from "./match";
-import { sheetOf } from "./sheets";
+import { lookupOf, sheetOf } from "./sheets";
 import { testDataset } from "./test-data";
 
 const pool = makePool(testDataset);
+const get = lookupOf(pool);
+const streams = (seed: string) => (key: string) => seededRng(`${seed}:${key}`);
+/** A whole match with no changes, all streams from one seed. */
+const playMatch = (s: MatchState, rng: { seed: string }) => play(s, streams(rng.seed), get);
+const playHalf = (s: MatchState, rng: { seed: string }) => {
+  const k = startHalf(s, streams(rng.seed));
+  const r = playMinutes(k.state, 999, streams(rng.seed), get);
+  return { state: r.state, events: [...k.events, ...r.events] };
+};
+const R = (seed: string) => ({ seed });
 const N = Number(process.env.MATCHES ?? 1500);
 const opts = { knockout: false, chemistry: true, subsPerMatch: 5 };
 const teams = Array.from({ length: 120 }, (_, t) =>
@@ -45,9 +56,9 @@ function check(s: MatchState, ev: MatchEvent[]) {
 
 describe("football match engine", () => {
   it("same seed, same match; a different seed, a different one", () => {
-    const a = playMatch(startMatch(sheet(0), sheet(1), opts), seededRng("same"));
-    const b = playMatch(startMatch(sheet(0), sheet(1), opts), seededRng("same"));
-    const c = playMatch(startMatch(sheet(0), sheet(1), opts), seededRng("other"));
+    const a = playMatch(startMatch(sheet(0), sheet(1), opts), R("same"));
+    const b = playMatch(startMatch(sheet(0), sheet(1), opts), R("same"));
+    const c = playMatch(startMatch(sheet(0), sheet(1), opts), R("other"));
     expect(a.events).toEqual(b.events);
     expect(a.state).toEqual(b.state);
     expect(c.events).not.toEqual(a.events);
@@ -55,11 +66,11 @@ describe("football match engine", () => {
 
   it("halves: kickoff and half time, then full time; stats match the events", () => {
     let s = startMatch(sheet(2), sheet(3), opts);
-    const h1 = playHalf(s, seededRng("h1"));
+    const h1 = playHalf(s, R("h1"));
     expect(h1.events[0]?.t).toBe("kickoff");
     expect(h1.events.at(-1)?.t).toBe("half_time");
     s = h1.state;
-    const h2 = playHalf(s, seededRng("h2"));
+    const h2 = playHalf(s, R("h2"));
     expect(h2.events.at(-1)?.t).toBe("full_time");
     check(h2.state, [...h1.events, ...h2.events]);
     expect(winner(h2.state)).not.toBeNull();
@@ -70,12 +81,12 @@ describe("football match engine", () => {
     for (let i = 0; i < 300 && found < 5; i++) {
       const r = playMatch(
         startMatch(sheet(i), sheet(i + 1), { ...opts, knockout: true }),
-        seededRng(`ko${i}`),
+        R(`ko${i}`),
       );
       expect(winner(r.state)).not.toBe("draw");
       if (!r.state.pens) continue;
       found++;
-      expect(r.state.halves).toBe(4);
+      expect(r.state.half).toBe(4);
       const pens = r.events.filter((e) => e.t === "pen");
       pens.forEach((e, k) => expect(e.team).toBe(k % 2));
       const last = pens.at(-1);
@@ -85,19 +96,19 @@ describe("football match engine", () => {
   });
 
   it("half-time changes: subs come on fresh, and run out at the limit", () => {
-    let s = playHalf(startMatch(sheet(4), sheet(5), opts), seededRng("x")).state;
+    let s = playHalf(startMatch(sheet(4), sheet(5), opts), R("x")).state;
     const t = s.teams[0];
     for (let k = 0; k < 5; k++) {
-      const off = t.xi[k + 1]?.player.id as string;
-      const on = s.teams[0].bench[0]?.id as string;
+      const off = t.xi[k + 1]?.id as string;
+      const on = s.teams[0].bench[0] as string;
       expect(whyNotChange(s, 0, { type: "sub", off, on })).toBeNull();
-      s = applyChange(s, 0, { type: "sub", off, on }, 45).state;
+      s = applyChange(s, 0, { type: "sub", off, on }).state;
     }
     expect(s.teams[0].subsUsed).toBe(5);
-    const on = s.teams[0].bench[0]?.id as string;
-    expect(
-      whyNotChange(s, 0, { type: "sub", off: s.teams[0].xi[9]?.player.id as string, on }),
-    ).toBe("No subs left");
+    const on = s.teams[0].bench[0] as string;
+    expect(whyNotChange(s, 0, { type: "sub", off: s.teams[0].xi[9]?.id as string, on })).toBe(
+      "No subs left",
+    );
     expect(s.teams[0].xi[1]?.fit).toBe(100);
   });
 
@@ -111,7 +122,7 @@ describe("football match engine", () => {
       for (let i = 0; i < 200; i++) {
         const a = mk(sheet(i));
         const b = (other ?? ((x) => x))(sheet(i + 7));
-        const r = playMatch(startMatch(a, b, opts), seededRng(`t${i}`));
+        const r = playMatch(startMatch(a, b, opts), R(`t${i}`));
         n += r.events.filter((e) => e.t === "chance" && e.team === 0 && e.kind === kind).length;
       }
       return n;
@@ -128,10 +139,7 @@ describe("football match engine", () => {
   });
 
   it("commentary: every event gets a line or none, templates have no banned words", () => {
-    const r = playMatch(
-      startMatch(sheet(8), sheet(9), { ...opts, knockout: true }),
-      seededRng("c"),
-    );
+    const r = playMatch(startMatch(sheet(8), sheet(9), { ...opts, knockout: true }), R("c"));
     const names = {
       player: (id: string) => pool.byId.get(id)?.short ?? "?",
       team: (s: 0 | 1) => (s ? "Away" : "Home"),
@@ -141,9 +149,47 @@ describe("football match engine", () => {
       if (line !== null) expect(line).not.toMatch(/\{|\}|undefined|\?/);
     }
     for (const l of ALL_LINES) expect(l).not.toMatch(/\bFUT\b|ultimate team|\bicons?\b/i);
-    const s = shootout(r.state, seededRng("p")).events[0];
+    const s = shootout(r.state, streams("p"), get).events[0];
     if (s) expect(commentary(s, names, [1, 1])).toMatch(/scores|wrong way|saved|misses/);
   });
+});
+
+describe("tactics matter (Best, Oct 2026: the right answer is worth about 5 rating points)", () => {
+  const T = (o: Partial<typeof DEFAULT_TACTICS>) => ({ ...DEFAULT_TACTICS, ...o });
+  const winRate = (mine: typeof DEFAULT_TACTICS, theirs: typeof DEFAULT_TACTICS, n = 600) => {
+    let w = 0;
+    for (let i = 0; i < n; i++) {
+      const a = { ...sheet(i), tactics: mine };
+      const b = { ...sheet(i * 7 + 3), tactics: theirs };
+      if (
+        playMatch(startMatch(a, b, opts), R(`tac:${i}`)).state.score.reduce(
+          (x, y, k) => (k ? x - y : y),
+          0,
+        ) > 0
+      )
+        w++;
+    }
+    return w / n;
+  };
+  it("long balls and a press beat a pressing, short-passing side; short passing breaks a deep block", () => {
+    const press = T({ defence: "high_press", line: 70, build: "short" });
+    expect(winRate(T({ build: "long", defence: "high_press", line: 65 }), press)).toBeGreaterThan(
+      winRate(T({}), press) + 0.15,
+    );
+    const deep = T({ defence: "deep_block", line: 30, build: "counter" });
+    expect(winRate(T({ build: "short", defence: "deep_block", line: 35 }), deep)).toBeGreaterThan(
+      winRate(T({}), deep) + 0.15,
+    );
+  }, 300_000);
+  it("no setup is a free win against a balanced side", () => {
+    const base = winRate(T({}), T({}));
+    for (const t of [
+      T({ build: "short", defence: "high_press", line: 70 }),
+      T({ build: "counter", defence: "deep_block", line: 30 }),
+      T({ build: "long" }),
+    ])
+      expect(winRate(t, T({}))).toBeLessThan(base + 0.1);
+  }, 300_000);
 });
 
 describe("match calibration (bands in match-engine.md)", () => {
@@ -162,7 +208,7 @@ describe("match calibration (bands in match-engine.md)", () => {
     };
     const pos: number[] = [];
     for (let i = 0; i < N; i++) {
-      const r = playMatch(startMatch(sheet(i), sheet(i * 7 + 3), opts), seededRng(`cal:${i}`));
+      const r = playMatch(startMatch(sheet(i), sheet(i * 7 + 3), opts), R(`cal:${i}`));
       check(r.state, r.events);
       const st = r.state.stats;
       acc.goals += r.state.score[0] + r.state.score[1];
@@ -178,7 +224,7 @@ describe("match calibration (bands in match-engine.md)", () => {
         acc.ko++;
         const k = playMatch(
           startMatch(sheet(i), sheet(i * 7 + 3), { ...opts, knockout: true }),
-          seededRng(`ko:${i}`),
+          R(`ko:${i}`),
         );
         if (k.state.pens) acc.pens++;
       }
@@ -259,7 +305,7 @@ describe("match calibration (bands in match-engine.md)", () => {
         const [a, b] = pairs[i % pairs.length]!;
         const s = playMatch(
           startMatch(sheetOf(a, pool), sheetOf(b, pool), opts),
-          seededRng(`g:${gap}:${i}`),
+          R(`g:${gap}:${i}`),
         ).state;
         if (s.score[0] > s.score[1]) w++;
       }

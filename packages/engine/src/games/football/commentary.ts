@@ -32,6 +32,7 @@ const LINES = {
   long_shot: ["{player} tries his luck from distance…"],
   free_kick_chance: ["{player} lines up the free kick…"],
   corner_chance: ["Corner swung in, {player} goes for it…"],
+  counter: ["{team} break at pace, {player} away…", "Counter-attack! {player} has space…"],
   direct: ["Long ball forward, {player} chasing…", "{team} go direct for {player}…"],
   corner: ["Corner to {team}."],
   offside: ["Flag's up. {player} went too early.", "Offside against {player}."],
@@ -41,6 +42,7 @@ const LINES = {
   red: ["RED CARD! {player} is off. {team} down to ten."],
   second_yellow: ["Second yellow for {player}! He's off, {team} down to ten."],
   sub: ["Change for {team}: {on} comes on for {off}."],
+  tactics: ["{team} change their approach.", "New instructions from the {team} bench."],
   kickoff: ["We're under way."],
   half_time: ["Half time. {score}."],
   full_time: ["Full time! {score}.", "That's it! {score}."],
@@ -107,6 +109,8 @@ export function commentary(
         player: names.player(e.player),
         team: names.team(e.team),
       });
+    case "tactics":
+      return line(LINES.tactics, { team: names.team(e.team) });
     case "sub":
       return line(LINES.sub, {
         team: names.team(e.team),

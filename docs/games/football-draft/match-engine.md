@@ -124,6 +124,15 @@ Tuning knobs (in this order): attack rate (0.30), progress-duel scale (/6), xG b
 
 Team rating here is the card rating (`draft.md`); the match also counts familiarity, chemistry and fatigue, which is part of why the effective gap is larger than the rating gap and the engine needed softening.
 
+## Live decisions (Best, Oct 2026)
+
+Managers can change tactics, roles, formation or make subs **at any minute**, so the match is played **minute by minute** (`startHalf`, `playMinutes`, `applyChange` in `match.ts`):
+
+- **Fixed randomness per minute.** Every minute draws from its own stream (`${seed}:match:${id}:h${half}:m${minute}`; stoppage and penalties have their own). A change only alters what happens next through the change itself; tapping something meaningless can't re-roll the future.
+- **No future events on phones.** The server plays and sends the match in **chunks of 3 match minutes** (one every ≈ 2.7 s of real time at 40 s a half), so a modified client can see at most ~3 minutes ahead. A change takes effect from the next minute not yet sent: the server applies it to the state and plays on from there.
+- **Cost:** one alarm and one state write per chunk ≈ 30 per 90 minutes, plus one per change ≈ **35–45 rows per match** (vs 6–8 before). 100,000 rows/day ≈ 2,500 matches a day. Keeping the room awake instead would cost DO duration (13,000 GB-s/day ≈ 700 matches).
+- Changes are rate-limited per manager (one per match minute) and logged as `tactics` / `sub` events in the commentary.
+
 ## CPU and persistence plan
 - A half is ~50 loop iterations with a handful of RNG draws each → **well under 1 ms** of CPU; a whole match including extra time and penalties < 2 ms. Fits the 10 ms Free limit with large headroom (`13-free-tier-budget.md`; confirm with the benchmark).
 - **Simulate each half in one invocation**, at its kickoff (the first half at kickoff, the second when the half-time window closes, extra time after its break). Subs/tactics from half-time are inputs to the next half.
@@ -133,7 +142,7 @@ Team rating here is the card rating (`draft.md`); the match also counts familiar
 ## Presentation
 - **Playback:** each half plays over **40 s** of real time (Proposal; extra-time halves 15 s), i.e. ≈ 0.9 s per match minute. The server sends the half's event list with `startedAt` (server time) as soon as it's simulated; the client reveals each event when `serverNow() ≥ startedAt + offset(m, o)`. Full match ≈ 80 s + 40 s half-time window.
 - **Reconnect:** the client receives the same list and `startedAt` in the snapshot and jumps straight to the current minute (events before "now" render instantly).
-- **No spoilers:** the second-half list isn't sent before the second half starts (it doesn't exist yet), and a half's list is sent at its start — a modified client could peek ahead **within the current half** only. Accepted: there are no live decisions during a half, so peeking gives no advantage.
+- **No spoilers:** the second-half list isn't sent before the second half starts (it doesn't exist yet), and a half's list is sent at its start — a modified client could peek ahead **within the current half** only. Superseded by live decisions (above): events are sent in 3-minute chunks, so peeking is limited to ~3 minutes.
 - **Quick sim** (viewer toggle): show the half's result immediately. In head-to-head rooms the half-time window still opens at the normal time for everyone (server time), so quick-simming saves nothing but suspense. In a **solo run**, "Skip" ends playback for real (the server advances immediately — no other human to wait for).
 - **Ticker:** score, minute, possession %, shots (on target), xG, corners, cards — updated as events reveal.
 - **Commentary:** template lines (below), one per event, plain lively English with occasional Naija flavour, never insulting. Big moments (goal, red card, penalty miss, full time) get a larger card and a sound.
