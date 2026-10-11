@@ -210,6 +210,14 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 - Pitch: flat green `#2E7D4F` with white lines at 60 % opacity, slot dots with the player's monogram, chemistry pips under each.
 - Match screen: scoreboard bar (team names are the managers' names), minute, ticker row; commentary feed (newest on top, big moments as cards); half-time sheet with subs and tactics.
 - Components: `PlayerCard`, `OptionSet` (5 cards in a scroll-snap row), `Pitch`, `FormationPicker`, `TacticsSheet`, `CommentaryFeed`, `MatchTicker`, `LeagueTable`.
+- **Decided with Best (Oct 2026), after research (Dribbble fantasy-draft and live-score shots, FotMob's timeline, Football Manager's touchline shouts and its mobile reviews: cramped tactic screens, fiddly buttons):**
+  - **Draft:** your **pitch on top** filling up as you pick (the slot being picked glows), team rating and chemistry above it, the **5 option cards in a sideways scroll-snap row** under it, pick ring (20 s) in the header.
+  - **Card:** the band card above (white rounded, tier band, Legends Ankara band, Wonderkid sprout, big OVR left, initials circle, short name, position chip, flag, club small, six stats in two rows of three).
+  - **Arrange:** **tap one, tap another** to swap (pitch slots and bench); drag also works on computers. A red "−6" badge on a player out of position; team rating updates live. Buttons: Tactics, Roles, Ready.
+  - **Match:** scoreboard bar (managers' names, score, minute) and ticker (possession, shots (on target), xG, corners, cards), then a **live mini-pitch strip** (which third the ball is in, flashes on chances and goals), then the **commentary feed** (newest on top; goals, red cards and penalty misses as cards).
+  - **Live decisions:** four **one-tap shouts** at the bottom (Attack, Hold, Press, Counter), each a full tactic; **Manage** opens a sheet with subs (n left), roles and tactics. Shouts and changes show in the feed for both sides.
+  - **Tactics sheet:** chips for "With the ball" (Balanced, Short, Long, Counter) and "Without it" (Balanced, Press, Mid block, Deep), each with a one-line hint of what it beats ("Long: goes over a press"); **More** reveals line height, width, tempo and players in the box. **The opponent's current style is shown** ("They play: Press + Short").
+  - **Big moments:** goal card slides into the feed, the scoreboard pulses, a short crowd sound (respects the sound setting); red cards and missed penalties get a smaller card. No full-screen splash.
 
 ### Tournaments
 - Lobby: stage list as numbered cards ("1 · Whot · tables of 4 · top 2"), projected flow "32 → 16 → 8 → 1", entrant list, capacity estimate line.
