@@ -11,6 +11,7 @@ import {
   type GameSlug,
   type RuleConfigBase,
 } from "@gamehub/engine";
+import { footballGame } from "./football";
 
 /** A game with its types erased; the room validates everything at the edges with each game's zod schemas. */
 export type AnyGame = GameDefinition<unknown, unknown, unknown, RuleConfigBase>;
@@ -27,5 +28,7 @@ const registry: Partial<Record<GameSlug, AnyGame>> = {
 };
 
 export function gameFor(slug: GameSlug): AnyGame | null {
+  // Football Draft is built on first use (it parses the player data).
+  if (slug === "football") return footballGame();
   return registry[slug] ?? null;
 }

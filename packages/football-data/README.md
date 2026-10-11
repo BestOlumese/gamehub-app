@@ -46,7 +46,7 @@ Names and public facts only, with **our own ratings**. No photos, badges, kits, 
 pnpm --filter football-data validate             # sample + batches so far (quota progress)
 pnpm --filter football-data validate --release   # everything, quotas and rating spread included
 pnpm --filter football-data build                # dist/players.min.json (compact tuples for the realtime Worker)
-pnpm --filter football-data build --release      # also freezes the version's content hash (data/hashes.json)
+pnpm --filter football-data build --release      # also freezes the version's content hash (data/hashes.json) and writes src/release.generated.ts, the Worker's copy (`@gamehub/football-data/release`, parsed on first use)
 ```
 
 Node 24 runs the scripts straight from TypeScript (imports name their `.ts` files). `pnpm test` also validates the batches, so CI fails on a bad record.

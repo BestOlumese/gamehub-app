@@ -1,4 +1,6 @@
 import {
+  footballNaija,
+  type FootballView,
   chessNaija,
   draughtsNaija,
   ludoNaija,
@@ -1353,3 +1355,100 @@ describe("naija plots", () => {
     expect(timeouts).toBe(0);
   }, 20_000);
 });
+
+describe("football draft", () => {
+  type Live = {
+    room: {
+      state: {
+        managers: Array<{
+          offer: { ids: Array<string | number> } | null;
+          xi: Record<number, string>;
+        }>;
+        phase: string;
+      };
+      deadlines: { bot?: number; auto?: number };
+    };
+  };
+  const fv = (c: Client) => c.last().view as FootballView;
+  /** Runs the room's alarm now, whatever it was waiting for (bot think time, the next tick). */
+  async function fireNow(stub: RoomStub) {
+    await runInDurableObject(stub, (inst) => {
+      const d = (inst as unknown as Live).room.deadlines;
+      if (d.bot !== undefined) d.bot = 0;
+      if (d.auto !== undefined) d.auto = 0;
+    });
+    await runDurableObjectAlarm(stub);
+  }
+
+  it("solo: a one-seat room drafts with full cards for your options only", async () => {
+    const code = await createRoom({ game: "football", rules: footballNaija, players: 1 });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    expect(fv(host).mode).toBe("solo");
+    const formations = fv(host).me?.offer;
+    expect(formations?.kind).toBe("formation");
+    act(host, { type: "pick", choice: formations?.ids[0] });
+    await until(host, () => fv(host).me?.offer?.kind === "captain", "captain options");
+    const ids = fv(host).me?.offer?.ids as string[];
+    for (const id of ids) expect(fv(host).cards[id]?.ovr).toBeGreaterThan(0);
+    expect(JSON.stringify(fv(host))).not.toMatch(/"seed"/);
+  });
+
+  it("vs a bot: the bot's picks stay hidden; after the draft the match plays in ticks", async () => {
+    const code = await createRoom({
+      game: "football",
+      rules: footballNaija,
+      players: 2,
+      botLevel: "medium",
+      seatBotsNow: true,
+    });
+    const host = await connect(code, "u-host", "host");
+    host.send({ t: "hello" });
+    await host.next(snapshot);
+    host.send({ t: "start" });
+    await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
+    const stub = env.Room.getByName(code);
+    // Draft: take the first option every time; let the bot pick on its alarms.
+    for (let k = 0; k < 19; k++) {
+      const before = host.last().v;
+      act(host, { type: "pick", choice: fv(host).me?.offer?.ids[0] });
+      await host.next((m) => m.t === "snapshot" && m.v > before, `pick ${k}`);
+      await fireNow(stub);
+    }
+    for (let k = 0; k < 25 && (fv(host).managers[1]?.pick ?? 0) < 19; k++) await fireNow(stub);
+    const botPicks = await runInDurableObject(stub, (inst) =>
+      Object.values((inst as unknown as Live).room.state.managers[1]?.xi ?? {}),
+    );
+    const mine = Object.values(fv(host).me?.xi ?? {});
+    const seen = JSON.stringify(fv(host));
+    for (const id of botPicks) if (!mine.includes(id)) expect(seen).not.toContain(`"${id}"`);
+    expect(fv(host).managers[1]).toEqual({ pick: 19, total: 19, ready: expect.any(Boolean) });
+    // Ready up; the bot readies on its alarm; kickoff reveals both teams.
+    act(host, { type: "ready" });
+    for (let k = 0; k < 5 && fv(host).phase === "draft"; k++) {
+      await new Promise((r) => setTimeout(r, 50));
+      await fireNow(stub);
+    }
+    await until(host, () => fv(host).phase === "live", "kickoff");
+    expect(fv(host).rounds[0]?.[0]?.teams).not.toBeNull();
+    // Ticks play the match a few minutes at a time.
+    await fireNow(stub);
+    await until(host, () => (fv(host).rounds[0]?.[0]?.live?.minute ?? 0) >= 3, "first chunk");
+    const f = fv(host).rounds[0]?.[0];
+    expect(f?.log.some((e) => e.t === "ball")).toBe(true);
+    expect(f?.live?.minute).toBeLessThanOrEqual(LEAD_LIMIT);
+    // A shout during play.
+    act(host, { type: "shout", shout: "press" });
+    await until(
+      host,
+      () => fv(host).rounds[0]?.[0]?.live?.tactics[0].defence === "high_press",
+      "shout applied",
+    );
+  }, 30_000);
+});
+
+/** A tick sends at most the minutes already played back plus three; right after kickoff that's a handful. */
+const LEAD_LIMIT = 8;

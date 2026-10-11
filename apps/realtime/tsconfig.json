@@ -2,7 +2,9 @@
   "extends": "@gamehub/config/tsconfig/base.json",
   "compilerOptions": {
     "lib": ["ES2024"],
-    "types": ["@cloudflare/vitest-pool-workers/types"]
+    "types": ["@cloudflare/vitest-pool-workers/types"],
+    // @gamehub/football-data's sources import their .ts files (they run under Node directly).
+    "allowImportingTsExtensions": true
   },
   "include": ["worker-configuration.d.ts", "src", "test", "*.ts"]
 }

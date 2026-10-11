@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema.ts",
-    "./compact": "./src/compact.ts"
+    "./compact": "./src/compact.ts",
+    "./release": "./src/release.ts"
   },
   "scripts": {
     "lint": "eslint .",

@@ -71,7 +71,8 @@ export const clientRoomMsg = z.discriminatedUnion("t", [
     t: z.literal("config"),
     game: gameSlugSchema,
     rules: z.unknown(),
-    players: z.number().int().min(2).max(8),
+    /** 1 only for Football Draft's solo run; each game clamps it to its own range. */
+    players: z.number().int().min(1).max(8),
     botLevel: botLevelSchema.nullable(),
     firstPlayer: firstPlayerSchema,
     /** Seat bots in the empty seats now ("play a bot" in a 2-player room). */
@@ -140,8 +141,8 @@ export const createRoomRequest = z.object({
   rules: z.unknown(),
   /** Bots for empty seats when the host starts; null = wait for humans. */
   botLevel: botLevelSchema.nullable(),
-  /** Seats for this room (2–8, clamped to the game's range). Defaults to the game's maximum. */
-  players: z.number().int().min(2).max(8).optional(),
+  /** Seats for this room (1–8, clamped to the game's range). Defaults to the game's maximum. */
+  players: z.number().int().min(1).max(8).optional(),
   /** Put bots in every empty seat now ("play a bot"), rather than only when the host starts. */
   seatBotsNow: z.boolean().default(false),
   firstPlayer: firstPlayerSchema.default("random"),

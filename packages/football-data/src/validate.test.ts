@@ -152,3 +152,12 @@ describe("specs and batches", () => {
     }
   });
 });
+
+describe("the released copy for the Worker", () => {
+  it("release.generated.ts is the compact form of the batches (run `build --release` after a change)", async () => {
+    const dir = new URL("../data", import.meta.url).pathname;
+    const { RELEASE_JSON } = await import("./release.generated.ts");
+    const data = datasetSchema.parse(readDataset(dir));
+    expect(JSON.parse(RELEASE_JSON)).toEqual(toCompact(data));
+  });
+});

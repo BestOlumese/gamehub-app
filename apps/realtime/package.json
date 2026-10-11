@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@gamehub/engine": "workspace:*",
+    "@gamehub/football-data": "workspace:*",
     "@gamehub/protocol": "workspace:*",
     "jose": "6.2.12",
     "partyserver": "0.5.10",

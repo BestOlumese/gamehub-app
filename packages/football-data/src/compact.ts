@@ -28,6 +28,8 @@ export type CardPlayer = {
   potential: Player["potential"];
   foot: Player["foot"] | null;
   birthYear: number | null;
+  /** Only stored for some leagues (NPFL); chemistry links by it. */
+  league: string | null;
   roles: Partial<Record<Role, "plus" | "plusplus">>;
 };
 
@@ -50,6 +52,7 @@ type Tuple = [
   number, // roles known at "plusplus"
   number, // era index, -1 = none
   number, // birth year, 0 = unknown
+  number, // league index, -1 = none
 ];
 
 export type Compact = {
@@ -57,6 +60,7 @@ export type Compact = {
   nations: string[];
   clubs: string[];
   eras: string[];
+  leagues: string[];
   players: Tuple[];
 };
 
@@ -68,6 +72,7 @@ export function toCompact(data: Dataset): Compact {
   const nations: string[] = [];
   const clubs: string[] = [];
   const eras: string[] = [];
+  const leagues: string[] = [];
   const index = (list: string[], x: string) => {
     let i = list.indexOf(x);
     if (i < 0) i = list.push(x) - 1;
@@ -108,9 +113,10 @@ export function toCompact(data: Dataset): Compact {
       plusplus,
       p.era === null ? -1 : index(eras, p.era),
       p.birthYear ?? 0,
+      p.league ? index(leagues, p.league) : -1,
     ];
   });
-  return { v: data.version, nations, clubs, eras, players };
+  return { v: data.version, nations, clubs, eras, leagues, players };
 }
 
 export function fromCompact(c: Compact): CardPlayer[] {
@@ -134,6 +140,7 @@ export function fromCompact(c: Compact): CardPlayer[] {
       plusplus,
       era,
       born,
+      league,
     ] = t;
     const positions: Position[] = [];
     for (let k = 0; k < 3; k++) {
@@ -161,6 +168,7 @@ export function fromCompact(c: Compact): CardPlayer[] {
       potential: POTENTIAL[(flags >> 2) & 3] ?? null,
       foot: FEET[(flags >> 4) & 3] ?? null,
       birthYear: born || null,
+      league: league >= 0 ? (c.leagues[league] ?? null) : null,
       roles,
     };
   });

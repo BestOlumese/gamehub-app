@@ -211,6 +211,9 @@ importers:
       '@gamehub/engine':
         specifier: workspace:*
         version: link:../../packages/engine
+      '@gamehub/football-data':
+        specifier: workspace:*
+        version: link:../../packages/football-data
       '@gamehub/protocol':
         specifier: workspace:*
         version: link:../../packages/protocol
