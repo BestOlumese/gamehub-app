@@ -9,6 +9,7 @@ export const GAME_SLUGS = [
   "chess",
   "draughts",
   "plots",
+  "football",
 ] as const;
 export type GameSlug = (typeof GAME_SLUGS)[number];
 

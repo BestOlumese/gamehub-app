@@ -102,6 +102,8 @@ export type MatchEvent =
     }
   | { m: number; o: number; t: "sub"; team: Side; off: string; on: string }
   | { m: number; o: number; t: "tactics"; team: Side; tactics: Tactics }
+  /** Where the ball spent the minute (for the mini-pitch): 0 own third, 1 middle, 2 final third. */
+  | { m: number; o: number; t: "ball"; team: Side; zone: 0 | 1 | 2 }
   | {
       m: number;
       o: number;
@@ -164,6 +166,8 @@ export type MatchState = {
   ballMinutes: [number, number];
   /** The side whose move broke down last minute (the other side counters). */
   lastFail: Side | null;
+  /** Who had the ball last minute (for the mini-pitch). */
+  lastBall: Side;
 };
 
 /**
@@ -287,13 +291,24 @@ function slotPos(t: TeamState, i: number, x: Live): Position {
   return formation(t.formation).slots[i]?.pos ?? x.pos;
 }
 
+/** Chemistry depends only on who plays where, so it's cached by lineup (asked for every minute). */
+const chemCache = new Map<string, number[]>();
+function chemFor(t: TeamState, players: FootballPlayer[]): number[] {
+  const key = t.xi.map((x) => `${x.id}@${x.pos}`).join(",");
+  let pts = chemCache.get(key);
+  if (!pts) {
+    pts = chemistry(
+      t.xi.map((x, i) => ({ player: players[i] as FootballPlayer, pos: x.pos, role: x.role })),
+    );
+    if (chemCache.size > 512) chemCache.clear();
+    chemCache.set(key, pts);
+  }
+  return pts;
+}
+
 function units(t: TeamState, chem: boolean, get: Lookup): Units {
   const players = t.xi.map((x) => get(x.id));
-  const pts = chem
-    ? chemistry(
-        t.xi.map((x, i) => ({ player: players[i] as FootballPlayer, pos: x.pos, role: x.role })),
-      )
-    : null;
+  const pts = chem ? chemFor(t, players) : null;
   const eff = t.xi.map(
     (x, i) =>
       (players[i] as FootballPlayer).ovr -
@@ -454,6 +469,7 @@ export function startMatch(
     pens: null,
     ballMinutes: [0, 0],
     lastFail: null,
+    lastBall: 0,
   };
 }
 
@@ -566,6 +582,13 @@ export function playMinutes(prev: MatchState, until: number, streams: Streams, g
 }
 
 function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
+  const at = ev.length;
+  const zone = playMinuteInner(m, rng, get, ev);
+  ev.splice(at, 0, { m: clockMinute(m), o: -1, t: "ball", team: m.lastBall, zone });
+}
+
+/** Plays the minute; returns where the ball mostly was (for the mini-pitch). */
+function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]): 0 | 1 | 2 {
   const mm = clockMinute(m);
   let o = 0;
   const push = (e: MatchEvent) => ev.push(e);
@@ -577,6 +600,7 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
   const side: Side = u(rng) < a / (a + b) ? 0 : 1;
   const opp: Side = side === 0 ? 1 : 0;
   m.ballMinutes[side]++;
+  m.lastBall = side;
   const T = m.teams[side];
   const D = m.teams[opp];
   const tac = T.tactics;
@@ -587,7 +611,7 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
   if (u(rng) < C.foulPerMin * (dtac.defence === "high_press" ? 1.15 : 1)) {
     foul(m, opp, side, rng, get, push, mm, next);
     fatigue(m);
-    return;
+    return 1;
   }
   // 2. An attacking move?
   let rate = C.attackRate * (1 + (tac.tempo - 50) * 0.004);
@@ -596,7 +620,7 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
   if (transition && tac.build === "counter") rate *= 1.4;
   if (u(rng) >= rate) {
     fatigue(m);
-    return;
+    return tac.defence === "deep_block" ? 0 : 1;
   }
   // 3. Progress duel, with the style matchup.
   const direct = tac.build === "long" && u(rng) < 0.25;
@@ -606,7 +630,7 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
   if (u(rng) >= sigmoid(edge)) {
     m.lastFail = side;
     fatigue(m);
-    return;
+    return 1;
   }
   // 4. Chance type.
   const kind: ChanceKind =
@@ -621,11 +645,12 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
     const runner = shooter(T, rng, get);
     push({ m: mm, o: next(), t: "offside", team: side, player: runner.id });
     fatigue(m);
-    return;
+    return 2;
   }
   // 5–7. Shooter, assister, xG and the outcome.
   shoot(m, side, kind, transition, U, style, rng, get, push, mm, next);
   fatigue(m);
+  return 2;
 }
 
 function fatigue(m: MatchState) {

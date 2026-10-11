@@ -2,6 +2,9 @@ import { fc, test } from "@fast-check/vitest";
 import { expect } from "vitest";
 import { chess } from "./games/chess";
 import { draughts, draughtsEnglish } from "./games/draughts";
+import { createFootballGame } from "./games/football/game";
+import { footballNaija } from "./games/football/rules";
+import { testDataset } from "./games/football/test-data";
 import { ludo } from "./games/ludo";
 import { plots } from "./games/plots";
 import { rps } from "./games/rps";
@@ -13,6 +16,7 @@ import type { GameDefinition, RuleConfigBase, SeatIndex } from "./types";
 
 type Any = GameDefinition<unknown, unknown, unknown, RuleConfigBase>;
 const T0 = 1_000_000;
+const football = createFootballGame(testDataset);
 /** Deep games (rare jumps and timeouts) or shallow ones (lots of both), by env. */
 const DEEP = !!process.env.ALL_FUZZ_DEEP;
 const JUMP_ONE_IN = DEEP ? 60 : 3;
@@ -111,6 +115,15 @@ const games: Array<[string, Any, RuleConfigBase, number, number, number]> = [
   ["draughts", draughts as unknown as Any, draughts.presets.naija, 2, 2, 600],
   ["english checkers", draughts as unknown as Any, draughtsEnglish, 2, 2, 600],
   ["naija plots", plots as unknown as Any, plots.presets.naija, 2, 8, 3000],
+  ["football draft", football as unknown as Any, footballNaija, 1, 8, 4000],
+  [
+    "football draft, best of 3, 5 subs",
+    football as unknown as Any,
+    { ...footballNaija, mode: "h2h_bo3", subs: 5, subsPerMatch: 3 } as RuleConfigBase,
+    2,
+    2,
+    4000,
+  ],
 ];
 
 for (const [name, def, rules, min, max, steps] of games)

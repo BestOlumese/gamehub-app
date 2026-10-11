@@ -109,6 +109,8 @@ export function commentary(
         player: names.player(e.player),
         team: names.team(e.team),
       });
+    case "ball":
+      return null;
     case "tactics":
       return line(LINES.tactics, { team: names.team(e.team) });
     case "sub":

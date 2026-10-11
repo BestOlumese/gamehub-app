@@ -1,7 +1,8 @@
 import type { GameSlug } from "@gamehub/engine";
 
 export type GameInfo = {
-  slug: GameSlug;
+  /** Football Draft joins the list (and gets its art) once its table is built. */
+  slug: Exclude<GameSlug, "football">;
   name: string;
   players: string;
   blurb: string;

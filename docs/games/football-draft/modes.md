@@ -146,3 +146,16 @@ type FootballAction =
 | Solo run (up to 4 matches) | ≈ 6 | ≈ 4 × ~5 | **≈ 25–30** |
 
 Matches of a round share each write (one row holds the whole room), which is why a league costs little more than a knockout. Requests are dominated by alarms (pick deadlines with lazy re-arming, half starts, windows) ≈ the same order as rows.
+
+## As built (engine, Oct 2026)
+
+`createFootballGame(dataset)` in `packages/engine/src/games/football/game.ts` (browser entry `@gamehub/engine/football`: types, pitch, ratings, commentary, shouts; no zod, no data).
+
+- **Phases:** `draft` (each manager picks at their own pace; finished managers arrange until Ready or their 90 s run out) → `live` (matches play in 3-minute chunks: the room's auto-advance sends a `tick` every 3 match minutes, ≈ 2.7 s; a tick plays up to the playback clock + 3 minutes, so a late tick catches up) → `break` (half-time, extra-time break; window = 3 minutes of playback + `halfTimeSeconds`) → `between` (after a round) → `over`.
+- **Single match and best of 3 are knockouts** (extra time, penalties): a 1v1 always has a winner. Best of 3 is first to two wins.
+- **Live decisions:** `shout` (attack, hold, press, counter), `tactics`, `role`, `formation`, `swap` (pitch ↔ pitch moves players; bench ↔ pitch is a substitution) at any time in a match, one every 2 s per manager. Before kickoff and between matches the same actions edit the team sheet. Solo runs can `skip` the rest of a half.
+- **Bots:** draft by the auto-pick (Easy: one of the top three by OVR); Ready at once; in matches they react through `botReply` after each tick: tired players off from 60', Attack when behind from 55', Hold when 2 up from 65'. Solo-run bot XIs use the same rules inside the tick.
+- **Seeds:** `state.seed` (drawn at setup, never in a view) feeds `${seed}:draft:${seat}:${pick}`, `${seed}:match:${fixture}:h${half}:m${minute}`, `${seed}:solo:…`, `${seed}:bracket`.
+- **Views:** your own draft (options as full cards) and team; others only `{ pick, total, ready }`; teams revealed at kickoff. Only one fixture is sent in full (yours, or the first still playing): its teams, live state and the current half's events plus earlier goals, subs and red cards; others are a score line. Engine events (broadcast to everyone) carry no player ids during the draft (`pick_made { seat }`).
+- **Measured (8-manager league, 4 matches at once):** a tick p50 1.0 ms, p95 2.5 ms (max ≈ 9 ms, first-call warm-up); a pick p95 ≈ 1 ms. State ≈ 24 KB; the largest view ≈ 26 KB.
+- **Tests:** `game.test.ts` (every mode, hidden information, live changes, lead limit, determinism) and the cross-game fuzz (`all-games.fuzz.test.ts`, football with 1–8 managers and best of 3).

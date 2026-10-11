@@ -30,3 +30,12 @@ export type {
 } from "./games/draughts";
 export { plots, plotsNaija, plotsRulesSchema } from "./games/plots";
 export type { PlotsAction, PlotsRules, PlotsState, PlotsView } from "./games/plots";
+export { createFootballGame, footballNaija, footballRulesSchema } from "./games/football";
+export type {
+  FootballAction,
+  FootballDataset,
+  FootballPlayer,
+  FootballRules,
+  FootballState,
+  FootballView,
+} from "./games/football";

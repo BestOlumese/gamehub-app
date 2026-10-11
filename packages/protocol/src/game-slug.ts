@@ -12,6 +12,7 @@ const slugs = [
   "chess",
   "draughts",
   "plots",
+  "football",
 ] as const satisfies readonly GameSlug[];
 type Missing = Exclude<GameSlug, (typeof slugs)[number]>;
 const _complete: [Missing] extends [never] ? true : Missing = true;

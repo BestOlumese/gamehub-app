@@ -5,8 +5,8 @@ import { games } from "./games";
 import { gameFor } from "./playable-games";
 
 describe("games list", () => {
-  it("lists every launch game once, in engine order", () => {
-    expect(games.map((g) => g.slug)).toEqual([...GAME_SLUGS]);
+  it("lists every launch game once, in engine order (Football Draft joins with its table)", () => {
+    expect(games.map((g) => g.slug)).toEqual(GAME_SLUGS.filter((s) => s !== "football"));
   });
 
   it("the setup sheet's player counts match each engine", () => {

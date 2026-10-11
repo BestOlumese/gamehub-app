@@ -19,6 +19,7 @@ export const GAME_NAMES: Record<GameSlug, string> = {
   chess: "Chess",
   draughts: "Draft",
   plots: "Naija Plots",
+  football: "Football Draft",
 };
 
 /** Seats each game allows (matches the engines' min/maxPlayers; checked in games.test.ts). */
@@ -31,6 +32,7 @@ export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
   chess: [2, 2],
   draughts: [2, 2],
   plots: [2, 8],
+  football: [1, 8],
 };
 
 /** RPS players throw together, so nobody "goes first". */
