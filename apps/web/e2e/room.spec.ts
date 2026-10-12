@@ -1050,10 +1050,10 @@ test("football draft: two phones draft and play a full match with a half-time su
     .click();
   await host.page.getByRole("button", { name: "2", exact: true }).click();
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
-  await host.page
-    .getByRole("group", { name: "How long a half takes" })
-    .getByText("30 s", { exact: true })
-    .click();
+  // A short custom half (60 → 30 s) through the Custom stepper.
+  await host.page.getByRole("button", { name: "Custom", exact: true }).click();
+  for (let i = 0; i < 3; i++) await host.page.getByRole("button", { name: "Shorter" }).click();
+  await expect(host.page.getByText("0:30", { exact: true })).toBeVisible();
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // seats (a friend) → review
   await host.page.getByRole("button", { name: "Create room" }).click();

@@ -69,7 +69,10 @@ export function MatchView({
   act,
   subsPerMatch,
   canSkip,
+  highlights,
 }: {
+  /** Room rule: quiet minutes fly by, attacks play out slower. */
+  highlights: boolean;
   subsPerMatch: number;
   /** Solo run: skip the rest of the half (no one else to wait for). */
   canSkip: boolean;
@@ -96,8 +99,8 @@ export function MatchView({
   }, [offset]);
   const live = fixture.live;
   const timed = useMemo(
-    () => schedule(fixture.log, fixture.startedAt, msPerMinute),
-    [fixture.log, fixture.startedAt, msPerMinute],
+    () => schedule(fixture.log, fixture.startedAt, msPerMinute, highlights),
+    [fixture.log, fixture.startedAt, msPerMinute, highlights],
   );
   const events = shown(timed, now);
   const { score, pens } = scoreOf(events);

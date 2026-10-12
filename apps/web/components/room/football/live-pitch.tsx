@@ -391,7 +391,8 @@ export function LivePitch({
     function step(dt: number) {
       const { plan, lineup: line, offset, perMinute } = input.current;
       const now = Date.now() + offset;
-      const scale = Math.min(1.5, Math.max(0.6, DEFAULT_MINUTE / perMinute));
+      // Longer matches move a little calmer, but players never crawl or race.
+      const scale = Math.min(1.3, Math.max(0.75, Math.sqrt(DEFAULT_MINUTE / perMinute)));
       const m = latest(plan.modes, now);
       const mode: Mode = m?.mode ?? "kickoff";
       const boxSide = m?.side ?? null;

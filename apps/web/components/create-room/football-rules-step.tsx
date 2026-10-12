@@ -2,6 +2,7 @@
 
 import { footballNaija, type FootballRules } from "@gamehub/engine/football";
 import { Segmented } from "@gamehub/ui/forms/segmented";
+import { useState } from "react";
 import { PresetStrip, Section, Toggle } from "./rule-controls";
 
 type Props = { rules: FootballRules; players: number; onChange: (r: FootballRules) => void };
@@ -71,12 +72,27 @@ export function FootballRulesStep({ rules, players, onChange }: Props) {
           onChange={(v) => set("turnSeconds", v)}
           options={[10, 20, 30].map((n) => ({ value: n, label: `${n} s` }))}
         />
-        <Segmented
-          label="How long a half takes"
+        <MatchLength
           value={rules.playbackSecondsPerHalf}
+          halfTime={rules.halfTimeSeconds}
           onChange={(v) => set("playbackSecondsPerHalf", v)}
-          options={[30, 40, 60].map((n) => ({ value: n, label: `${n} s` }))}
         />
+        <div className="space-y-1">
+          <Segmented
+            label="Playback"
+            value={rules.highlights ? "highlights" : "even"}
+            onChange={(v) => set("highlights", v === "highlights")}
+            options={[
+              { value: "highlights" as const, label: "Highlights" },
+              { value: "even" as const, label: "Every minute" },
+            ]}
+          />
+          <p className="px-1 text-sm text-ink-2">
+            {rules.highlights
+              ? "Quiet minutes fly by; attacks play out slowly so you can follow them."
+              : "Every minute takes the same time."}
+          </p>
+        </div>
       </div>
       <Section title="Playing">
         <Toggle
@@ -98,5 +114,98 @@ export function FootballRulesStep({ rules, players, onChange }: Props) {
         </div>
       </Section>
     </div>
+  );
+}
+
+const LENGTHS = [
+  { s: 40, label: "Quick", sub: "40 s" },
+  { s: 60, label: "Standard", sub: "60 s" },
+  { s: 120, label: "Long", sub: "2 min" },
+  { s: 240, label: "Full", sub: "4 min" },
+] as const;
+const MIN_HALF = 20;
+const MAX_HALF = 600;
+const clock = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+
+/** Match length per half: four presets, or a custom time (design decision, Oct 2026). */
+function MatchLength({
+  value,
+  halfTime,
+  onChange,
+}: {
+  value: number;
+  halfTime: number;
+  onChange: (sec: number) => void;
+}) {
+  const preset = LENGTHS.some((l) => l.s === value);
+  const [custom, setCustom] = useState(!preset);
+  // 10 s steps up to 2 minutes, 30 s steps above.
+  const step = (dir: 1 | -1) => {
+    const inc = value > 120 || (value === 120 && dir > 0) ? 30 : 10;
+    onChange(Math.min(MAX_HALF, Math.max(MIN_HALF, value + dir * inc)));
+  };
+  const total = Math.round((value * 2 + halfTime) / 60);
+  return (
+    <fieldset className="space-y-2">
+      <legend className="mb-2 px-1 text-sm font-semibold">Match length (per half)</legend>
+      <div className="grid grid-cols-4 gap-1.5">
+        {LENGTHS.map((l) => {
+          const on = !custom && value === l.s;
+          return (
+            <button
+              key={l.s}
+              type="button"
+              aria-pressed={on}
+              onClick={() => {
+                setCustom(false);
+                onChange(l.s);
+              }}
+              className={`flex flex-col items-center rounded-control border px-1 py-1.5 ${on ? "border-brand bg-brand-soft text-brand-strong" : "border-line bg-surface"}`}
+            >
+              <span className="text-sm font-semibold">{l.label}</span>
+              <span className="text-xs text-ink-2">{l.sub}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex items-center gap-3 px-1">
+        <button
+          type="button"
+          aria-pressed={custom}
+          onClick={() => setCustom(true)}
+          className={`text-sm font-semibold ${custom ? "text-brand-strong" : "text-ink-2 underline"}`}
+        >
+          Custom
+        </button>
+        {custom ? (
+          <div className="flex items-center gap-2" role="group" aria-label="Custom half length">
+            <button
+              type="button"
+              aria-label="Shorter"
+              disabled={value <= MIN_HALF}
+              onClick={() => step(-1)}
+              className="size-9 rounded-control border border-line bg-surface text-lg font-bold disabled:opacity-40"
+            >
+              −
+            </button>
+            <span className="w-14 text-center font-bold tabular-nums" aria-live="polite">
+              {clock(value)}
+            </span>
+            <button
+              type="button"
+              aria-label="Longer"
+              disabled={value >= MAX_HALF}
+              onClick={() => step(1)}
+              className="size-9 rounded-control border border-line bg-surface text-lg font-bold disabled:opacity-40"
+            >
+              +
+            </button>
+          </div>
+        ) : null}
+      </div>
+      <p className="px-1 text-sm text-ink-2">
+        A match takes about {total} minute{total === 1 ? "" : "s"} with half time.
+      </p>
+    </fieldset>
   );
 }

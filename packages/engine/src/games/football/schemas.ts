@@ -15,7 +15,9 @@ export const footballRulesSchema: z.ZodType<FootballRules> = z.object({
   subs: z.union([z.literal(5), z.literal(7)]),
   arrangeSeconds: z.number().int().min(30).max(180),
   halfTimeSeconds: z.number().int().min(20).max(90),
-  playbackSecondsPerHalf: z.number().int().min(20).max(90),
+  playbackSecondsPerHalf: z.number().int().min(20).max(600),
+  // Rooms made before highlights existed (and older tabs) play every minute evenly.
+  highlights: z.boolean().default(false),
   subsPerMatch: z.union([z.literal(3), z.literal(5)]),
   betweenMatchesSeconds: z.number().int().min(15).max(90),
 });

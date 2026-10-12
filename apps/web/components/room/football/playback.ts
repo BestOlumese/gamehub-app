@@ -23,6 +23,9 @@ export function segmentStart(log: readonly MatchEvent[]): number {
   return 0;
 }
 
+/** Highlights: how far ahead of the real clock quiet minutes may run (the server sends 3). */
+const AHEAD_MINUTES = 1.5;
+
 /** Moments worth reading: a minute with one of these plays slower on screen. */
 const BUSY = new Set(["chance", "shot", "goal", "save", "corner", "offside", "free_kick"]);
 
@@ -32,11 +35,16 @@ const BUSY = new Set(["chance", "shot", "goal", "save", "corner", "offside", "fr
  * one every PEN_MS. A minute with an attack in it gets up to twice the time so the build-up can
  * be read, as long as the screen stays within PLAYBACK_SLACK_MINUTES of the real clock; the
  * quiet minutes after it run shorter until it has caught up.
+ *
+ * Highlights (a room rule, on by default): quiet minutes run at under half time, banking up to
+ * AHEAD_MINUTES ahead of the real clock (the server is always 3 minutes ahead, so those minutes
+ * are here), and a minute with an attack spends the bank: up to three times as long.
  */
 export function schedule(
   log: readonly MatchEvent[],
   startedAt: number,
   perMinute: number,
+  highlights = false,
 ): Timed[] {
   const from = segmentStart(log);
   const out: Timed[] = log.slice(0, from).map((e) => ({ e, at: 0 }));
@@ -60,10 +68,17 @@ export function schedule(
     let j = i + 1;
     while (j < seg.length && seg[j]?.t !== "ball" && !isEnd(seg[j] as MatchEvent)) j++;
     const inside = seg.slice(i + 1, j);
+    // How far behind the real clock the screen is (negative: ahead).
     const behind = t - (startedAt + minute * perMinute);
-    const dur = inside.some((x) => BUSY.has(x.t))
-      ? perMinute + Math.min(perMinute, Math.max(0, slack - behind))
-      : Math.max(perMinute * 0.55, perMinute - behind);
+    const busy = inside.some((x) => BUSY.has(x.t));
+    const dur = highlights
+      ? busy
+        ? perMinute + Math.min(perMinute * 2, Math.max(0, slack - behind))
+        : // Gain time, but never past AHEAD_MINUTES ahead.
+          Math.max(perMinute * 0.45, perMinute - Math.max(0, AHEAD_MINUTES * perMinute + behind))
+      : busy
+        ? perMinute + Math.min(perMinute, Math.max(0, slack - behind))
+        : Math.max(perMinute * 0.55, perMinute - behind);
     out.push({ e, at: t });
     inside.forEach((x, k) => out.push({ e: x, at: t + ((k + 1) * dur) / (inside.length + 1) }));
     t += dur;

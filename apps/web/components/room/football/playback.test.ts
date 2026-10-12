@@ -72,6 +72,23 @@ describe("football playback", () => {
     expect(clockOf(shown(t2, 99999), 1)).toBe("HT");
   });
 
+  it("highlights: quiet minutes fly (never more than 1.5 ahead), attacks spend it (up to 3×)", () => {
+    const log: MatchEvent[] = [{ m: 0, o: 0, t: "kickoff" }];
+    for (let m = 1; m <= 45; m++) {
+      log.push(ball(m));
+      if (m % 10 === 0) log.push({ m, o: 0, t: "chance", team: 0, kind: "cross", player: "a" });
+    }
+    const t = schedule(log, 0, 1000, true).filter((x) => x.e.t === "ball");
+    const len = t.map((x, k) => ((t[k + 1]?.at ?? x.at + 1000) - x.at) / 1000);
+    t.forEach((x, k) => {
+      expect(x.at - k * 1000).toBeGreaterThanOrEqual(-1500 - 1);
+      expect(x.at - k * 1000).toBeLessThanOrEqual(1500 + 1);
+    });
+    // Quiet minutes are short; the attack in minute 10 takes far longer than a normal minute.
+    expect(len[0]).toBeLessThan(0.5);
+    expect(len[9]).toBeGreaterThan(2);
+  });
+
   it("earlier halves are already shown; a shoot-out shows kick by kick", () => {
     const pens: MatchEvent[] = [
       { m: 0, o: 0, t: "kickoff" },

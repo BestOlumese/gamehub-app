@@ -16,8 +16,13 @@ export type FootballRules = {
   arrangeSeconds: number;
   /** Half-time and extra-time breaks (20–90 s). */
   halfTimeSeconds: number;
-  /** Real time a 45-minute half takes to play (20–90 s). */
+  /** Real time a 45-minute half takes to play (20–600 s; Quick 40, Standard 60, Long 120, Full 240). */
   playbackSecondsPerHalf: number;
+  /**
+   * Highlights: quiet minutes fly by and attacks play out slower, same total length (Best,
+   * Oct 2026: on by default). Off: every minute takes the same time.
+   */
+  highlights: boolean;
   subsPerMatch: 3 | 5;
   /** Between league rounds, knockout ties and solo matches (15–90 s). */
   betweenMatchesSeconds: number;
@@ -32,7 +37,8 @@ export const footballNaija: FootballRules = {
   subs: 7,
   arrangeSeconds: 90,
   halfTimeSeconds: 40,
-  playbackSecondsPerHalf: 40,
+  playbackSecondsPerHalf: 60,
+  highlights: true,
   subsPerMatch: 5,
   betweenMatchesSeconds: 30,
 };

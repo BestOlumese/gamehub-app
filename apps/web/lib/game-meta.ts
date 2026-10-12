@@ -261,6 +261,13 @@ const MODE_NAME: Record<FootballRules["mode"], string> = {
   solo: "Solo run",
 };
 
+const halfLength = (sec: number) =>
+  sec < 60
+    ? `${sec} s`
+    : sec % 60
+      ? `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`
+      : `${sec / 60} min`;
+
 /** Football Draft rules in plain words. */
 export const describeFootballRules = (r: FootballRules) =>
   [
@@ -268,7 +275,8 @@ export const describeFootballRules = (r: FootballRules) =>
     `${r.draftLuck[0]?.toUpperCase()}${r.draftLuck.slice(1)} draft`,
     r.chemistry ? "Chemistry on" : "No chemistry",
     `${r.turnSeconds} s picks`,
-    `${r.playbackSecondsPerHalf} s halves`,
+    `${halfLength(r.playbackSecondsPerHalf)} halves`,
+    ...(r.highlights ? ["Highlights"] : []),
     ...(r.subsPerMatch !== footballNaija.subsPerMatch ? [`${r.subsPerMatch} subs`] : []),
   ].join(" · ");
 
