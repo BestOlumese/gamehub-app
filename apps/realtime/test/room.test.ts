@@ -145,6 +145,16 @@ const view = (c: Client) => c.last().view as TttState;
 let actionSeq = 0;
 const act = (c: Client, a: unknown) =>
   c.send({ t: "act", id: `a${++actionSeq}`, v: c.last().v, a });
+/** Sends an action and waits for its ack; a reject or room error fails the test with its code. */
+async function actOk(c: Client, a: unknown) {
+  const id = `a${++actionSeq}`;
+  c.send({ t: "act", id, v: c.last().v, a });
+  const reply = await c.next(
+    (m) => ((m.t === "ack" || m.t === "reject") && m.id === id) || m.t === "error",
+    `reply to ${JSON.stringify(a)}`,
+  );
+  if (reply.t !== "ack") throw new Error(`refused ${JSON.stringify(a)}: ${JSON.stringify(reply)}`);
+}
 
 describe("room creation", () => {
   it("refuses unsigned or badly signed requests", async () => {
@@ -1411,28 +1421,35 @@ describe("football draft", () => {
     host.send({ t: "start" });
     await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
     const stub = env.Room.getByName(code);
-    // Draft: take the first option every time; let the bot pick on its alarms.
+    // Draft: take the first option every time; let the bot pick on its alarms. Each pick waits
+    // for its own ack and the new offer: a bot alarm firing on its own (slow CI) also sends a
+    // newer snapshot, and picking from the old offer would be refused.
     for (let k = 0; k < 19; k++) {
-      const before = host.last().v;
-      act(host, { type: "pick", choice: fv(host).me?.offer?.ids[0] });
-      await host.next((m) => m.t === "snapshot" && m.v > before, `pick ${k}`);
+      await actOk(host, { type: "pick", choice: fv(host).me?.offer?.ids[0] });
+      await until(host, () => (fv(host).me?.pick ?? 0) > k, `pick ${k}`);
       await fireNow(stub);
     }
     for (let k = 0; k < 25 && (fv(host).managers[1]?.pick ?? 0) < 19; k++) await fireNow(stub);
     const botPicks = await runInDurableObject(stub, (inst) =>
       Object.values((inst as unknown as Live).room.state.managers[1]?.xi ?? {}),
     );
-    const mine = Object.values(fv(host).me?.xi ?? {});
+    // Both sides may pick the same player (draft.md), so only ids the host doesn't hold itself
+    // (XI, bench, offer) count as the bot's secrets.
+    const mine = JSON.stringify(fv(host).me);
     const seen = JSON.stringify(fv(host));
-    for (const id of botPicks) if (!mine.includes(id)) expect(seen).not.toContain(`"${id}"`);
+    for (const id of botPicks) if (!mine.includes(`"${id}"`)) expect(seen).not.toContain(`"${id}"`);
     expect(fv(host).managers[1]).toEqual({ pick: 19, total: 19, ready: expect.any(Boolean) });
     // Ready up; the bot readies on its alarm; kickoff reveals both teams.
-    act(host, { type: "ready" });
-    // Keep firing the alarm until the host sees kickoff: on a slow CI machine the ready can land
-    // after the first few alarms.
+    await actOk(host, { type: "ready" });
+    // Keep firing the alarm until the host sees kickoff (the bot readies on one of them).
     const kickoffBy = Date.now() + 10_000;
     while (fv(host).phase !== "live") {
-      if (Date.now() > kickoffBy) throw new Error("timed out waiting for kickoff");
+      if (Date.now() > kickoffBy) {
+        const managers = await runInDurableObject(stub, (inst) =>
+          (inst as unknown as Live).room.state.managers.map((m) => ({ ...m, sheet: undefined })),
+        );
+        throw new Error(`timed out waiting for kickoff: ${JSON.stringify(managers)}`);
+      }
       await new Promise((r) => setTimeout(r, 50));
       await fireNow(stub);
     }
@@ -1444,7 +1461,7 @@ describe("football draft", () => {
     expect(f?.log.some((e) => e.t === "ball")).toBe(true);
     expect(f?.live?.minute).toBeLessThanOrEqual(LEAD_LIMIT);
     // A shout during play.
-    act(host, { type: "shout", shout: "press" });
+    await actOk(host, { type: "shout", shout: "press" });
     await until(
       host,
       () => fv(host).rounds[0]?.[0]?.live?.tactics[0].defence === "high_press",
