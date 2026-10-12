@@ -1000,6 +1000,9 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
     timeout: 15_000,
   });
   await shot(p, "football-match-360");
+  // A few minutes in: the live pitch with the ball on someone.
+  await expect(p.getByText(/^[3-9]'$/)).toBeVisible({ timeout: 30_000 });
+  await shot(p, "football-live-pitch-360");
   await p.getByRole("button", { name: /^Manage/ }).click();
   await expect(p.getByText("With the ball")).toBeVisible();
   await shot(p, "football-manage-360");

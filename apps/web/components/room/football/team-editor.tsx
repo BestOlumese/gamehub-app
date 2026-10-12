@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { teamNumbers } from "./draft-view";
 import { sendChange } from "./live-changes";
-import { Pitch } from "./pitch";
+import { ChemistryKey, Pitch } from "./pitch";
 
 /**
  * Your team on the pitch with the bench under it: tap one, tap another to swap (design decision).
@@ -70,6 +70,7 @@ export function TeamEditor({
         selected={first && "slot" in first ? first.slot : null}
         onSlot={(slot) => tap({ slot })}
       />
+      <ChemistryKey />
       <div className="flex gap-1.5 overflow-x-auto pb-1" aria-label="Bench">
         {sheet.bench.map((id, i) => {
           const c = cards[id];

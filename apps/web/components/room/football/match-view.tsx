@@ -16,7 +16,7 @@ import { sfx } from "../sounds";
 import { mmss } from "../use-now";
 import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
-import { BallStrip } from "./pitch";
+import { LivePitch } from "./live-pitch";
 import { clockOf, schedule, scoreOf, shown, statsOf } from "./playback";
 
 const COLOURS: [string, string] = ["#2F6FD6", "#E07A2E"];
@@ -105,10 +105,6 @@ export function MatchView({
   const clock = clockOf(events, half);
   const stats = live ? statsOf(live.base, events, half) : null;
   const feed = feedOf(events, names, cards);
-  const lastBall = [...events].reverse().find((e) => e.t === "ball");
-  const last = events.at(-1);
-  const flash =
-    last?.t === "goal" ? "goal" : last?.t === "chance" || last?.t === "shot" ? "chance" : null;
   const ended = !!fixture.result && events.length === timed.length;
   const atBreak = !!breakFor && events.length === timed.length;
 
@@ -141,11 +137,17 @@ export function MatchView({
         className={`flex items-center gap-2 rounded-card border border-line bg-surface px-3 py-2 shadow-sm transition-transform ${pulse ? "scale-[1.02] ring-2 ring-accent" : ""}`}
         aria-live="polite"
       >
-        <span className="min-w-0 flex-1 truncate text-right font-bold">{names[0]}</span>
+        <span className="flex min-w-0 flex-1 items-center justify-end gap-1.5 font-bold">
+          <span className="truncate">{names[0]}</span>
+          <TeamDot colour={COLOURS[0]} />
+        </span>
         <span className="font-display text-2xl font-extrabold tabular-nums">
           {score[0]}–{score[1]}
         </span>
-        <span className="min-w-0 flex-1 truncate font-bold">{names[1]}</span>
+        <span className="flex min-w-0 flex-1 items-center gap-1.5 font-bold">
+          <TeamDot colour={COLOURS[1]} />
+          <span className="truncate">{names[1]}</span>
+        </span>
         <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-bold tabular-nums">
           {clock}
         </span>
@@ -183,8 +185,15 @@ export function MatchView({
           </span>
         </p>
       ) : null}
-      {lastBall?.t === "ball" ? (
-        <BallStrip team={lastBall.team} zone={lastBall.zone} flash={flash} colours={COLOURS} />
+      {fixture.teams && live ? (
+        <LivePitch
+          timed={timed}
+          now={now}
+          kick={fixture.teams}
+          current={live.now}
+          cards={cards}
+          colours={COLOURS}
+        />
       ) : null}
 
       {atBreak && breakFor && mySide !== null ? (
@@ -205,7 +214,7 @@ export function MatchView({
       ) : null}
 
       {/* Commentary: newest on top; goals, red cards and missed penalties as cards. */}
-      <ol className="flex max-h-[42dvh] flex-col gap-1.5 overflow-y-auto" aria-label="Commentary">
+      <ol className="flex max-h-[30dvh] flex-col gap-1.5 overflow-y-auto" aria-label="Commentary">
         {feed.map((l) =>
           l.big ? (
             <li
@@ -234,7 +243,6 @@ export function MatchView({
                   variant={on ? "primary" : "secondary"}
                   className="px-1"
                   aria-pressed={on}
-                  disabled={!ready}
                   onClick={() =>
                     sendChange("tactics", () => act({ type: "shout", shout: s }), true)
                   }
@@ -284,5 +292,16 @@ export function MatchView({
         />
       ) : null}
     </div>
+  );
+}
+
+/** A team's colour on the live pitch, next to its name on the scoreboard. */
+function TeamDot({ colour }: { colour: string }) {
+  return (
+    <span
+      className="inline-block size-2.5 shrink-0 rounded-full border border-white shadow-[0_0_0_1px_rgb(0_0_0/0.15)]"
+      style={{ background: colour }}
+      aria-hidden="true"
+    />
   );
 }

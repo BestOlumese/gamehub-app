@@ -12,7 +12,8 @@ import {
   type FootballView,
 } from "@gamehub/engine/football";
 import { TimerRing } from "../timer-ring";
-import { Pitch } from "./pitch";
+import { formationLean } from "./look";
+import { FormationShape, Pitch } from "./pitch";
 import { PlayerCard } from "./player-card";
 
 type Me = NonNullable<FootballView["me"]>;
@@ -95,23 +96,27 @@ export function DraftView({
       </div>
 
       {offer.kind === "formation" ? (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <ul className="flex flex-col gap-1.5" aria-label="Formations">
           {offer.ids.map((id) => {
             const f = FORMATIONS.find((x) => x.id === id);
             return (
-              <button
-                key={id}
-                type="button"
-                disabled={!ready}
-                onClick={() => act({ type: "pick", choice: id })}
-                className="flex flex-col gap-2 rounded-card border border-line bg-surface p-2 text-left shadow-sm active:scale-[0.98]"
-              >
-                <Pitch formationId={id as number} xi={{}} cards={{}} compact tiny />
-                <span className="font-bold">{f?.name}</span>
-              </button>
+              <li key={id}>
+                <button
+                  type="button"
+                  disabled={!ready}
+                  onClick={() => act({ type: "pick", choice: id })}
+                  className="flex w-full items-center gap-3 rounded-card border border-line bg-surface px-2 py-1.5 text-left shadow-sm active:scale-[0.98]"
+                >
+                  <FormationShape id={id as number} className="h-16 w-[3.2rem] shrink-0" />
+                  <span className="min-w-0">
+                    <span className="block font-display font-bold">{f?.name}</span>
+                    <span className="block text-xs text-ink-2">{formationLean(id as number)}</span>
+                  </span>
+                </button>
+              </li>
             );
           })}
-        </div>
+        </ul>
       ) : (
         <>
           <Pitch

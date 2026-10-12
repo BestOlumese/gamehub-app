@@ -44,13 +44,11 @@ function Chips<T extends string>({
   value,
   options,
   onChange,
-  disabled,
 }: {
   label: string;
   value: T;
   options: Array<{ value: T; label: string; hint: string }>;
   onChange: (v: T) => void;
-  disabled: boolean;
 }) {
   return (
     <fieldset className="space-y-1.5">
@@ -60,7 +58,6 @@ function Chips<T extends string>({
           <button
             key={o.value}
             type="button"
-            disabled={disabled}
             aria-pressed={value === o.value}
             onClick={() => onChange(o.value)}
             className={`h-10 rounded-control border text-sm font-semibold ${value === o.value ? "border-brand bg-brand-soft text-brand-strong" : "border-line bg-surface"}`}
@@ -190,14 +187,12 @@ export function ManageSheet({
             value={t.build}
             options={BUILD}
             onChange={(build) => set({ build })}
-            disabled={!ready}
           />
           <Chips
             label="Without it"
             value={t.defence}
             options={DEFENCE}
             onChange={(defence) => set({ defence })}
-            disabled={!ready}
           />
           <button
             type="button"

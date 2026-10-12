@@ -1,12 +1,41 @@
 "use client";
 
 import { formation, positionPenalty, type Card } from "@gamehub/engine/football";
-import { initials } from "./look";
+import { useId } from "react";
+
+/** Grass: soft mowing stripes in two greens (design decision, Oct 2026). */
+export const GRASS = "repeating-linear-gradient(to bottom, #2E7D4F 0 10%, #2A744A 10% 20%)";
+
+/** Ring colour for a player's chemistry points (0–3). */
+const CHEM_RING = ["rgb(255 255 255 / 0.55)", "#F2C14E", "#F2C14E", "#8EE59B"] as const;
+
+/** The key to the ring colours, under a pitch that shows chemistry. */
+export function ChemistryKey() {
+  const item = (colour: string, label: string) => (
+    <span className="flex items-center gap-1">
+      <span
+        className="inline-block size-3 rounded-full bg-surface"
+        style={{ boxShadow: `0 0 0 2px ${colour}` }}
+      />
+      {label}
+    </span>
+  );
+  return (
+    <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-2">
+      <span>Chemistry ring:</span>
+      {item("#C9BFAF", "none")}
+      {item("#F2C14E", "some")}
+      {item("#4CC368", "full")}
+    </p>
+  );
+}
 
 /**
- * A flat green pitch (design system: #2E7D4F, white lines at 60 %) with the formation's slots,
- * your goal at the bottom. Slot dots carry the player's initials, short name and OVR; empty slots
- * show the position. `glow`: the slot being drafted; `selected`: the first tap of a swap.
+ * The pitch with the formation's slots, your goal at the bottom (design decision, Oct 2026:
+ * "rating discs" on mowing stripes). A filled slot is a disc with the player's OVR, its ring
+ * coloured by chemistry, a red corner badge when he's out of position, and his short name in a
+ * pill under it. Empty slots show the position. `glow`: the slot being drafted; `selected`: the
+ * first tap of a swap.
  */
 export function Pitch({
   formationId,
@@ -17,19 +46,17 @@ export function Pitch({
   selected,
   onSlot,
   compact,
-  tiny,
 }: {
-  /** Formation thumbnails: small dots, no labels. */
-  tiny?: boolean;
   formationId: number | null;
   /** Player id in each slot (or missing). */
   xi: Record<number, string | undefined>;
   cards: Record<string, Card>;
-  /** Chemistry points per slot (0–3), shown as pips. */
+  /** Chemistry points per slot (0–3), shown as the disc's ring. */
   chem?: number[];
   glow?: number | null;
   selected?: number | null;
   onSlot?: (slot: number) => void;
+  /** The draft: a shorter pitch so the option cards fit under it. */
   compact?: boolean;
 }) {
   const slots = formationId ? formation(formationId).slots : [];
@@ -37,9 +64,9 @@ export function Pitch({
     <div
       className="relative mx-auto w-full overflow-hidden rounded-card"
       style={{
-        aspectRatio: compact ? "4 / 3" : "3 / 4",
-        maxHeight: compact ? "36dvh" : "46dvh",
-        background: "#2E7D4F",
+        aspectRatio: compact ? "1 / 1" : "4 / 5",
+        maxHeight: compact ? "42dvh" : "54dvh",
+        background: GRASS,
       }}
     >
       <PitchLines />
@@ -49,40 +76,44 @@ export function Pitch({
         const pen = c ? positionPenalty(c, s.pos) : 0;
         const lit = glow === i;
         const picked = selected === i;
+        const pts = chem?.[i] ?? 0;
+        const ring =
+          lit || picked ? "#E6A23C" : c && chem ? CHEM_RING[pts] : "rgb(255 255 255 / 0.8)";
         return (
           <Slot
             key={i}
             onClick={onSlot ? () => onSlot(i) : undefined}
-            aria-label={c ? `${c.short}, ${s.pos}, ${c.ovr}` : `Empty ${s.pos}`}
-            className="absolute flex w-[18%] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0.5"
+            aria-label={
+              c
+                ? `${c.short}, ${s.pos}, ${c.ovr}${pen ? `, out of position −${pen}` : ""}${chem ? `, chemistry ${pts} of 3` : ""}`
+                : `Empty ${s.pos}`
+            }
+            className="absolute flex w-[22%] -translate-x-1/2 -translate-y-1/2 flex-col items-center"
             style={{
-              // The keeper gets the bottom of the pitch to himself; everyone else is spread from the
-              // back line (y 18 → 74 %) to the strikers (y 86 → 10 %), so a back three's middle
-              // centre-back doesn't sit on the keeper and labels stay off the edges.
-              left: `${Math.min(91, Math.max(9, s.x))}%`,
-              top: `${s.pos === "GK" ? 89 : 10 + ((86 - s.y) / 68) * 64}%`,
+              // The keeper sits at the bottom on his own; everyone else is spread from the back line
+              // (y 18 → 73 %) to the strikers (y 86 → 9 %), so rows don't run into each other.
+              left: `${Math.min(90, Math.max(10, s.x))}%`,
+              top: `${s.pos === "GK" ? 88 : 9 + ((86 - s.y) / 68) * 64}%`,
             }}
           >
             <span
-              className={`flex ${tiny ? "size-[min(5vw,1.25rem)] text-[0px]" : compact ? "size-[min(8vw,2.2rem)] text-[min(2.8vw,0.75rem)]" : "size-[min(9vw,2.6rem)] text-[min(3vw,0.8rem)]"} items-center justify-center rounded-full border-2 font-bold transition-transform ${c ? "bg-surface text-ink" : "border-dashed bg-white/15 text-white"} ${lit ? "scale-110 border-accent ring-4 ring-accent/60" : picked ? "border-accent ring-4 ring-accent" : "border-white/80"}`}
+              className={`relative flex ${compact ? "size-[min(7.5vw,2rem)] text-[min(3.2vw,0.85rem)]" : "size-[min(8.5vw,2.3rem)] text-[min(3.6vw,0.95rem)]"} items-center justify-center rounded-full font-extrabold tabular-nums transition-transform ${c ? "bg-surface text-ink shadow-sm" : "border-2 border-dashed bg-white/10 text-[min(2.8vw,0.75rem)] text-white"} ${lit ? "scale-110" : ""}`}
+              style={
+                c
+                  ? { boxShadow: `0 0 0 ${lit || picked ? 4 : 3}px ${ring}` }
+                  : { borderColor: lit ? "#E6A23C" : "rgb(255 255 255 / 0.7)" }
+              }
             >
-              {c ? initials(c.name) : s.pos}
+              {c ? c.ovr : s.pos}
+              {c && pen ? (
+                <span className="absolute -top-1.5 -right-2 rounded-full bg-danger px-1 text-[9px] leading-4 font-bold text-white">
+                  −{pen}
+                </span>
+              ) : null}
             </span>
             {c ? (
-              <span className="max-w-full truncate rounded bg-black/35 px-1 text-[min(2.6vw,0.7rem)] leading-tight font-semibold text-white">
-                <span className="font-bold tabular-nums">{c.ovr}</span> {c.short}
-              </span>
-            ) : null}
-            {c && pen ? (
-              <span className="rounded bg-danger px-1 text-[10px] font-bold text-ink">−{pen}</span>
-            ) : c && chem ? (
-              <span className="flex gap-0.5" aria-label={`Chemistry ${chem[i] ?? 0} of 3`}>
-                {[0, 1, 2].map((k) => (
-                  <span
-                    key={k}
-                    className={`size-1.5 rounded-full ${k < (chem[i] ?? 0) ? "bg-accent" : "bg-white/35"}`}
-                  />
-                ))}
+              <span className="relative -mt-1.5 max-w-full truncate rounded-full bg-[rgb(0_0_0/0.55)] px-1.5 text-[min(2.6vw,0.7rem)] leading-4 font-semibold text-white">
+                {c.short}
               </span>
             ) : null}
           </Slot>
@@ -92,7 +123,7 @@ export function Pitch({
   );
 }
 
-/** A slot: a button when it can be tapped, otherwise a plain element (pitches sit inside buttons). */
+/** A slot: a button when it can be tapped, otherwise a plain element. */
 function Slot({
   onClick,
   children,
@@ -116,7 +147,6 @@ function Slot({
 }
 
 function PitchLines() {
-  const line = "rgb(255 255 255 / 0.6)";
   return (
     <svg
       viewBox="0 0 100 100"
@@ -124,12 +154,17 @@ function PitchLines() {
       className="absolute inset-0 size-full"
       aria-hidden="true"
     >
-      <g fill="none" stroke={line} strokeWidth="0.6" vectorEffect="non-scaling-stroke">
-        <rect x="3" y="2" width="94" height="96" />
+      <g
+        fill="none"
+        stroke="rgb(255 255 255 / 0.45)"
+        strokeWidth="1"
+        vectorEffect="non-scaling-stroke"
+      >
+        <rect x="3" y="2" width="94" height="96" rx="0.5" />
         <line x1="3" y1="50" x2="97" y2="50" />
-        <circle cx="50" cy="50" r="9" />
-        <rect x="25" y="2" width="50" height="14" />
-        <rect x="25" y="84" width="50" height="14" />
+        <ellipse cx="50" cy="50" rx="11" ry="8" />
+        <rect x="24" y="2" width="52" height="13" />
+        <rect x="24" y="85" width="52" height="13" />
         <rect x="38" y="2" width="24" height="5" />
         <rect x="38" y="93" width="24" height="5" />
       </g>
@@ -137,52 +172,31 @@ function PitchLines() {
   );
 }
 
-/** The mini-pitch strip on the match screen: which third the ball is in, lighting up on chances. */
-export function BallStrip({
-  team,
-  zone,
-  flash,
-  colours,
-}: {
-  /** Who had it (0 home attacks right, 1 away attacks left). */
-  team: 0 | 1;
-  zone: 0 | 1 | 2;
-  flash: "goal" | "chance" | null;
-  colours: [string, string];
-}) {
-  // Home attacks to the right: its final third is the right third; away's is the left.
-  const third = team === 0 ? zone : 2 - zone;
+/**
+ * A formation's shape for the formation list: solid dots on plain stripes, no lines under them
+ * (design decision, Oct 2026).
+ */
+export function FormationShape({ id, className }: { id: number; className?: string }) {
+  const slots = formation(id).slots;
+  const grass = `fs-grass-${useId()}`;
   return (
-    <div
-      className="relative h-10 overflow-hidden rounded-control"
-      style={{ background: "#2E7D4F" }}
-      aria-hidden="true"
-    >
-      <svg viewBox="0 0 100 20" preserveAspectRatio="none" className="absolute inset-0 size-full">
-        <g
-          fill="none"
-          stroke="rgb(255 255 255 / 0.6)"
-          strokeWidth="0.5"
-          vectorEffect="non-scaling-stroke"
-        >
-          <rect x="1" y="1" width="98" height="18" />
-          <line x1="50" y1="1" x2="50" y2="19" />
-          <circle cx="50" cy="10" r="4" />
-          <rect x="1" y="5" width="9" height="10" />
-          <rect x="90" y="5" width="9" height="10" />
-        </g>
-      </svg>
-      <div
-        className={`absolute inset-y-0 w-1/3 transition-[left] duration-500 ${flash ? "animate-pulse" : ""}`}
-        style={{
-          left: `${third * 33.33}%`,
-          background: flash === "goal" ? "rgb(230 162 60 / 0.55)" : `${colours[team]}55`,
-        }}
-      />
-      <span
-        className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink bg-white shadow-sm transition-[left] duration-500"
-        style={{ left: `${third * 33.33 + 16.66 + (flash ? (team === 0 ? 10 : -10) : 0)}%` }}
-      />
-    </div>
+    <svg viewBox="0 0 60 76" className={className} aria-hidden="true">
+      <defs>
+        <pattern id={grass} width="60" height="15.2" patternUnits="userSpaceOnUse">
+          <rect width="60" height="7.6" fill="#2E7D4F" />
+          <rect y="7.6" width="60" height="7.6" fill="#2A744A" />
+        </pattern>
+      </defs>
+      <rect width="60" height="76" rx="6" fill={`url(#${grass})`} />
+      {slots.map((s, i) => (
+        <circle
+          key={i}
+          cx={6 + (Math.min(92, Math.max(8, s.x)) / 100) * 48}
+          cy={s.pos === "GK" ? 69 : 8 + ((86 - s.y) / 68) * 50}
+          r="3.6"
+          fill="#fff"
+        />
+      ))}
+    </svg>
   );
 }
