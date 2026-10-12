@@ -18,8 +18,10 @@ import type { Timed } from "./playback";
 export type Side = 0 | 1;
 export type Pt = { x: number; y: number };
 
-/** How long a booking rings on the player (and a sent-off player stays on). */
+/** How long a booking rings on the player. */
 export const CARD_MS = 1800;
+/** A sent-off player's walk to the touchline. */
+export const RED_OFF_MS = 3200;
 /** The shoot-out spot and goal line (right-hand goal). */
 export const PEN_SPOT: Pt = { x: 88.5, y: 50 };
 
@@ -27,7 +29,15 @@ export type Beat =
   /** Everyone back to their kickoff places, the ball on the centre spot. */
   | { at: number; k: "reset" }
   /** The ball travels to a player, along the ground or in the air. */
-  | { at: number; k: "pass"; to: string; dur: number; loft: boolean }
+  | {
+      at: number;
+      k: "pass";
+      to: string;
+      dur: number;
+      loft: boolean;
+      /** Timed to land as the commentary names him: keep this duration. */
+      timed?: boolean;
+    }
   /** The ball is at this player's feet at once (a keeper's save, a free kick). */
   | { at: number; k: "hold"; player: string }
   /** Play stops for a moment (a foul, an offside flag). */
@@ -91,12 +101,12 @@ export function lineupAt(
   timed: readonly Timed[],
   current: readonly [TeamSheet, TeamSheet],
   at: number,
-  cardGrace = CARD_MS,
+  cardGrace = RED_OFF_MS,
 ): Lineup {
   const ids = current.map((s) => s.xi.map((x) => x.id as string | null)) as Lineup["ids"];
   for (let i = timed.length - 1; i >= 0; i--) {
     const t = timed[i] as Timed;
-    if (t.at <= at) break;
+    if (t.at <= at) continue;
     if (t.e.t === "sub") {
       const list = ids[t.e.team];
       const k = list.indexOf(t.e.on);
@@ -104,7 +114,7 @@ export function lineupAt(
     }
   }
   for (const t of timed) {
-    if (t.at > at) break;
+    if (t.at > at) continue;
     const e = t.e;
     if (
       e.t === "foul" &&
@@ -133,7 +143,7 @@ export function tacticsAt(
   return t;
 }
 
-/** The latest booking still ringing at `at`. */
+/** The latest booking still ringing at `at` (a red one rings all the way off the pitch). */
 export function cardAt(
   timed: readonly Timed[],
   at: number,
@@ -141,11 +151,28 @@ export function cardAt(
   for (let i = timed.length - 1; i >= 0; i--) {
     const t = timed[i] as Timed;
     if (t.at > at) continue;
-    if (at - t.at > CARD_MS) break;
-    if (t.e.t === "foul" && t.e.card)
-      return { id: t.e.player, colour: t.e.card === "yellow" ? "yellow" : "red" };
+    if (at - t.at > RED_OFF_MS) break;
+    if (t.e.t === "foul" && t.e.card) {
+      const red = t.e.card !== "yellow";
+      if (!red && at - t.at > CARD_MS) continue;
+      return { id: t.e.player, colour: red ? "red" : "yellow" };
+    }
   }
   return null;
+}
+
+/** Players sent off who are still walking to the touchline at `at`. */
+export function leavingAt(timed: readonly Timed[], at: number): Set<string> {
+  const out = new Set<string>();
+  for (const t of timed)
+    if (
+      t.e.t === "foul" &&
+      (t.e.card === "red" || t.e.card === "second_yellow") &&
+      t.at <= at &&
+      at - t.at <= RED_OFF_MS
+    )
+      out.add(t.e.player);
+  return out;
 }
 
 /** Bands of the pitch by a slot's depth: 0 at the back, 1 midfield, 2 up front, "box" for headers. */
@@ -205,15 +232,24 @@ export function planPlay(
     beats.push(b);
     lastBeat = b.at;
   };
-  /** Someone of `side` in `band` at time `at` (not `not`), chosen by `salt`. */
+  /**
+   * Someone of `side` in `band` at time `at` (not `not`), chosen by `salt`: one of the three
+   * nearest to the man on the ball (by their places in the formation), so passes are short and
+   * believable rather than 60-yard lasers to anyone.
+   */
   const pick = (side: Side, b: Band, at: number, salt: string, not: string | null) => {
     const line = lineupAt(timed, current, at, 0);
     const slots = formation(line.formation[side]).slots;
+    const from = not ? slots[line.ids[side].indexOf(not)] : undefined;
     const all = slots.flatMap((s, i) => {
       const id = line.ids[side][i];
-      return id && id !== not && s.pos !== "GK" ? [{ id, ok: inBand(s.pos, s.y, b) }] : [];
+      return id && id !== not && s.pos !== "GK"
+        ? [{ id, ok: inBand(s.pos, s.y, b), d: from ? Math.hypot(s.x - from.x, s.y - from.y) : 0 }]
+        : [];
     });
-    const pool = all.some((x) => x.ok) ? all.filter((x) => x.ok) : all;
+    const pool = (all.some((x) => x.ok) ? all.filter((x) => x.ok) : all)
+      .sort((x, y) => x.d - y.d)
+      .slice(0, from ? 3 : undefined);
     return pool.length ? (pool[hash(salt) % pool.length] as { id: string }).id : null;
   };
   const keeperOf = (side: Side, at: number) => {
@@ -224,7 +260,7 @@ export function planPlay(
   /** A pass that arrives at `by` (or as close after the last beat as it can). */
   const passTo = (to: string, by: number, loft: boolean, maxDur = 420) => {
     const start = Math.max(lastBeat + 60, by - maxDur);
-    push({ at: start, k: "pass", to, dur: Math.max(120, by - start), loft });
+    push({ at: start, k: "pass", to, dur: Math.max(120, by - start), loft, timed: true });
   };
 
   for (let i = 0; i < timed.length; i++) {
@@ -409,6 +445,17 @@ export function planPlay(
     }
   }
   beats.sort((a, b) => a.at - b.at);
+  // The ball uses all the time it has: a pass or a shot travels until the next moment, so it
+  // rolls and slows like a real one instead of firing across and waiting.
+  beats.forEach((b, i) => {
+    const next = beats[i + 1];
+    if ((b.k !== "pass" && b.k !== "shot") || (b.k === "pass" && b.timed)) return;
+    const window = next ? next.at - b.at - 30 : b.dur;
+    b.dur =
+      b.k === "shot"
+        ? Math.round(Math.min(900, Math.max(250, window)))
+        : Math.round(Math.min(b.loft ? 1500 : 1200, Math.max(200, window)));
+  });
   modes.sort((a, b) => a.at - b.at);
   return { beats, modes };
 }

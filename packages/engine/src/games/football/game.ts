@@ -664,10 +664,10 @@ export function createFootballGame(
     const t = m.teams[side];
     const minute = clockMinute(m);
     const diff = m.score[side] - m.score[side === 0 ? 1 : 0];
-    if (minute >= 60) {
+    if (minute >= 55) {
       const tired = t.xi
         .map((x, i) => ({ x, i }))
-        .filter(({ x }) => !x.off && x.fit < 72 && x.pos !== "GK");
+        .filter(({ x }) => !x.off && x.fit < 55 && x.pos !== "GK");
       const sub = tired.sort((p, q) => p.x.fit - q.x.fit)[0];
       if (sub && t.subsUsed < m.subsPerMatch && t.bench.length) {
         const pos = sub.x.pos;
@@ -930,6 +930,13 @@ export function createFootballGame(
           if (m && detailed)
             for (const t of m.teams)
               [...t.xi.map((x) => x.id), ...t.bench, ...t.gone].forEach(card);
+          // Your own side in this match (stamina and "tiring" lines are yours alone).
+          const own =
+            viewer !== "spectator" &&
+            f.b !== "bye" &&
+            teamsOf(f).some((t) => "seat" in t && t.seat === viewer)
+              ? sideOf(f, viewer)
+              : null;
           const name = (t: Team | "bye") =>
             t === "bye" ? "Bye" : "bot" in t ? (s.bots[t.bot]?.name ?? "") : "";
           return {
@@ -962,14 +969,23 @@ export function createFootballGame(
                       m.teams[0].xi.filter((x) => x.off).map((x) => x.id),
                       m.teams[1].xi.filter((x) => x.off).map((x) => x.id),
                     ],
+                    fit:
+                      own === null
+                        ? null
+                        : Object.fromEntries(
+                            m.teams[own].xi
+                              .filter((x) => !x.off)
+                              .map((x) => [x.id, Math.round(x.fit)]),
+                          ),
                   }
                 : null,
             log: detailed
               ? f.log.filter(
                   (e, i) =>
-                    i >= f.halfFrom ||
-                    BIG.has(e.t) ||
-                    (e.t === "foul" && !!e.card && e.card !== "yellow"),
+                    (e.t !== "tired" || e.team === own) &&
+                    (i >= f.halfFrom ||
+                      BIG.has(e.t) ||
+                      (e.t === "foul" && !!e.card && e.card !== "yellow")),
                 )
               : [],
             startedAt: f.startedAt,

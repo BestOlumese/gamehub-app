@@ -24,7 +24,10 @@ export function TeamEditor({
   subsLeft,
   off,
   live = false,
+  fit = null,
 }: {
+  /** Your players' stamina in a match (bars under each disc). */
+  fit?: Record<string, number> | null;
   /** In a match (not at a break): swaps wait out the server's change gap. */
   live?: boolean;
   sheet: TeamSheet;
@@ -69,6 +72,8 @@ export function TeamEditor({
         chem={chem}
         selected={first && "slot" in first ? first.slot : null}
         onSlot={(slot) => tap({ slot })}
+        fit={fit}
+        sentOff={off}
       />
       <ChemistryKey />
       <div className="flex gap-1.5 overflow-x-auto pb-1" aria-label="Bench">

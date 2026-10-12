@@ -46,7 +46,13 @@ export function Pitch({
   selected,
   onSlot,
   compact,
+  fit,
+  sentOff,
 }: {
+  /** Stamina per player id (a thin bar under the name), in a match. */
+  fit?: Record<string, number> | null;
+  /** Sent-off players: greyed with a red card. */
+  sentOff?: readonly string[];
   formationId: number | null;
   /** Player id in each slot (or missing). */
   xi: Record<number, string | undefined>;
@@ -77,6 +83,8 @@ export function Pitch({
         const lit = glow === i;
         const picked = selected === i;
         const pts = chem?.[i] ?? 0;
+        const red = !!id && !!sentOff?.includes(id);
+        const legs = id ? fit?.[id] : undefined;
         const ring =
           lit || picked ? "#E6A23C" : c && chem ? CHEM_RING[pts] : "rgb(255 255 255 / 0.8)";
         return (
@@ -85,7 +93,7 @@ export function Pitch({
             onClick={onSlot ? () => onSlot(i) : undefined}
             aria-label={
               c
-                ? `${c.short}, ${s.pos}, ${c.ovr}${pen ? `, out of position −${pen}` : ""}${chem ? `, chemistry ${pts} of 3` : ""}`
+                ? `${c.short}, ${s.pos}, ${c.ovr}${red ? ", sent off" : ""}${pen ? `, out of position −${pen}` : ""}${chem ? `, chemistry ${pts} of 3` : ""}${legs !== undefined ? `, stamina ${Math.round(legs)}%` : ""}`
                 : `Empty ${s.pos}`
             }
             className="absolute flex w-[22%] -translate-x-1/2 -translate-y-1/2 flex-col items-center"
@@ -97,7 +105,7 @@ export function Pitch({
             }}
           >
             <span
-              className={`relative flex ${compact ? "size-[min(7.5vw,2rem)] text-[min(3.2vw,0.85rem)]" : "size-[min(8.5vw,2.3rem)] text-[min(3.6vw,0.95rem)]"} items-center justify-center rounded-full font-extrabold tabular-nums transition-transform ${c ? "bg-surface text-ink shadow-sm" : "border-2 border-dashed bg-white/10 text-[min(2.8vw,0.75rem)] text-white"} ${lit ? "scale-110" : ""}`}
+              className={`relative flex ${compact ? "size-[min(7.5vw,2rem)] text-[min(3.2vw,0.85rem)]" : "size-[min(8.5vw,2.3rem)] text-[min(3.6vw,0.95rem)]"} items-center justify-center rounded-full font-extrabold tabular-nums transition-transform ${c ? (red ? "bg-surface-2 text-ink-3 shadow-sm" : "bg-surface text-ink shadow-sm") : "border-2 border-dashed bg-white/10 text-[min(2.8vw,0.75rem)] text-white"} ${lit ? "scale-110" : ""}`}
               style={
                 c
                   ? { boxShadow: `0 0 0 ${lit || picked ? 4 : 3}px ${ring}` }
@@ -105,6 +113,12 @@ export function Pitch({
               }
             >
               {c ? c.ovr : s.pos}
+              {red ? (
+                <span
+                  className="absolute -top-1.5 -left-1.5 h-3.5 w-2.5 rounded-[2px] border border-white bg-danger"
+                  aria-hidden="true"
+                />
+              ) : null}
               {c && pen ? (
                 <span className="absolute -top-1.5 -right-2 rounded-full bg-danger px-1 text-[9px] leading-4 font-bold text-white">
                   −{pen}
@@ -114,6 +128,17 @@ export function Pitch({
             {c ? (
               <span className="relative -mt-1.5 max-w-full truncate rounded-full bg-[rgb(0_0_0/0.55)] px-1.5 text-[min(2.6vw,0.7rem)] leading-4 font-semibold text-white">
                 {c.short}
+              </span>
+            ) : null}
+            {c && legs !== undefined && !red ? (
+              <span
+                className="mt-0.5 block h-1 w-[70%] overflow-hidden rounded-full bg-[rgb(0_0_0/0.35)]"
+                aria-hidden="true"
+              >
+                <span
+                  className={`block h-full ${legs < 40 ? "bg-danger" : legs < 55 ? "bg-accent" : "bg-[#8EE59B]"}`}
+                  style={{ width: `${Math.round(legs)}%` }}
+                />
               </span>
             ) : null}
           </Slot>

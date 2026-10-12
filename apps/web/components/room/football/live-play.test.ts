@@ -4,7 +4,9 @@ import {
   cardAt,
   celebrationMs,
   latest,
+  leavingAt,
   lineupAt,
+  RED_OFF_MS,
   planPlay,
   shapeSpot,
   type Beat,
@@ -148,6 +150,11 @@ describe("live viewer script", () => {
     expect(lineupAt(log, now, MIN + 400).ids[0]).toContain("h3");
     expect(cardAt(log, MIN + 400)).toEqual({ id: "h3", colour: "red" });
     expect(lineupAt(log, now, 9000).ids[0]).not.toContain("h3");
+    // He walks off with his red ring for a few seconds, then he's gone.
+    expect(leavingAt(log, MIN + 300 + 2500)).toEqual(new Set(["h3"]));
+    expect(cardAt(log, MIN + 300 + 2500)).toEqual({ id: "h3", colour: "red" });
+    expect(lineupAt(log, now, MIN + 300 + 2500).ids[0]).toContain("h3");
+    expect(leavingAt(log, MIN + 300 + RED_OFF_MS + 10).size).toBe(0);
     const plan = planPlay(log, now, MIN);
     for (const b of passes(plan.beats)) {
       if (b.at > MIN + 300) expect(b.to).not.toBe("h3");

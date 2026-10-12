@@ -152,6 +152,8 @@ export type FixtureView = {
     base: MatchStats;
     /** Each side's current team (after subs and changes), as a sheet. */
     now: [TeamSheet, TeamSheet];
+    /** Stamina (0–100) of your own players on the pitch; null when you're not in this match. */
+    fit: Record<string, number> | null;
   } | null;
   log: MatchEvent[];
   startedAt: number;

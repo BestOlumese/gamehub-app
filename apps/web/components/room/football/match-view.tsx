@@ -191,6 +191,8 @@ export function MatchView({
           now={now}
           offset={offset}
           perMinute={msPerMinute}
+          mySide={mySide}
+          fit={live.fit ?? null}
           kick={fixture.teams}
           current={live.now}
           cards={cards}
@@ -290,6 +292,7 @@ export function MatchView({
           act={act}
           subsLeft={subsLeft}
           off={live?.off[mySide as 0 | 1]}
+          fit={live?.fit ?? null}
           live={!atBreak}
         />
       ) : null}

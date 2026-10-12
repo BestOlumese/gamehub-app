@@ -190,5 +190,17 @@ With chemistry **off**, everyone counts as 1 (no effect), and the UI hides chemi
 - Timeout → no changes (keep the team). A disconnected manager gets the same default.
 - Bots: a simple rule set (bring on a fresher sub with higher effective OVR at a slot below 70 % fitness; switch to Counter + Deep block when leading by 2; to High press + Players in box 4 when trailing).
 
-## Fatigue (simple)
-Fitness starts at 100 for each match, drops per minute by `0.55 × (1 + press/role/tempo modifiers)`, floor 60. Effective OVR modifier: −1 per 8 points below 92. Subs come on fresh. No injuries in v1 (Proposal; see `match-engine.md`).
+## Stamina (decided with Best, Oct 2026: "a stamina system that affects the game", real effect)
+Stamina starts at 100 each match and drops every minute by `0.55 × tempo (1 + (t−50) × 0.3 %) × press (×1.2) × workload × POW × role`:
+
+| | |
+|---|---|
+| Workload | GK 0.3 · CB 0.8 · ST 0.95 · AM 1.0 · DM 1.05 · RW/LW 1.05 · RB/LB 1.1 · CM 1.1 · RM/LM 1.15 · RWB/LWB 1.2 |
+| POW (stamina lives in Power) | `1.3 − POW/200`, clamped 0.8–1.1 (a strong runner tires about a fifth slower) |
+| Role | complete wing-back, pressing forward ×1.1 |
+
+Floor 25. Back at the breaks: +8 at half time, +4 before extra time, +2 at its half time. Subs come on at 100.
+
+What tiredness costs: **effective OVR** 0 down to 85, then −1 per 7 points (−8 at most); **pace** −0.3 SPD per point below 75 (tired defenders can't track runs, tired forwards can't get in behind); **fouls**: a tired player is up to twice as likely to be the one who fouls, and a tired side fouls more often. At default tactics an average midfielder ends a match around 55; a pressing, high-tempo side is spent by about 70 minutes.
+
+Shown only to the player's own manager: stamina bars under each player in Manage, a commentary line when one drops below 55 ("Ndidi is out on his feet."), and an amber (below 55) or red (below 40) marker on his dot on the live pitch. Bots sub a player below 55 from the 55th minute. No injuries.

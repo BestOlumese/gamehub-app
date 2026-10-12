@@ -110,6 +110,8 @@ export type MatchEvent =
       card?: "yellow" | "red" | "second_yellow";
     }
   | { m: number; o: number; t: "sub"; team: Side; off: string; on: string }
+  /** A player running on empty (only his own manager sees this line). */
+  | { m: number; o: number; t: "tired"; team: Side; player: string }
   | { m: number; o: number; t: "tactics"; team: Side; tactics: Tactics }
   /** Where the ball spent the minute (for the mini-pitch): 0 own third, 1 middle, 2 final third. */
   | { m: number; o: number; t: "ball"; team: Side; zone: 0 | 1 | 2 }
@@ -217,7 +219,14 @@ export const C = {
   offsideBase: 0.08,
   freeKickShot: 0.06,
   postShare: 0.04,
+  /** Stamina lost per minute by an average outfielder at default tactics (before workload and POW). */
   fatiguePerMin: 0.55,
+  /** Nobody drops below this. */
+  staminaFloor: 25,
+  /** Got back at half time, at the start of extra time, and at its half time. */
+  recovery: [0, 0, 8, 4, 2] as readonly number[],
+  /** Below this, his manager hears he's tiring. */
+  tiredAt: 55,
   /**
    * How strongly a style matchup moves the duel and the chance quality (tactics.md → Matchups).
    * 1.5: the right answer to an extreme setup is worth about 5 rating points (Best, Oct 2026).
@@ -284,7 +293,36 @@ const CREATE: Partial<Record<Role, number>> = {
   complete_wing_back: 1.4,
 };
 
-const fatigueMod = (fit: number) => (fit >= 92 ? 0 : -Math.ceil((92 - fit) / 8));
+/** Rating lost to tiredness: nothing while fresh (85+), then a point per 7 down to 8 at most. */
+export const fatigueMod = (fit: number) =>
+  fit >= 85 ? 0 : -Math.min(8, Math.ceil((85 - fit) / 7));
+/** A side's average stamina, outfielders on the pitch. */
+const avgFit = (t: TeamState) => {
+  const on = t.xi.filter((x) => !x.off && x.pos !== "GK");
+  return on.length ? on.reduce((a, x) => a + x.fit, 0) / on.length : 100;
+};
+/** Pace lost to tiredness: legs go before the touch does. */
+const tiredSpd = (spd: number, fit: number) => spd - Math.max(0, 75 - fit) * 0.3;
+/** How hard a position works (stamina drain), keepers barely. */
+const WORKLOAD: Record<Position, number> = {
+  GK: 0.3,
+  CB: 0.8,
+  RB: 1.1,
+  LB: 1.1,
+  RWB: 1.2,
+  LWB: 1.2,
+  DM: 1.05,
+  CM: 1.1,
+  AM: 1.0,
+  RM: 1.15,
+  LM: 1.15,
+  RW: 1.05,
+  LW: 1.05,
+  ST: 0.95,
+};
+/** POW carries stamina (player-database.md): a strong runner tires about a fifth slower. */
+const staminaFactor = (p: FootballPlayer) =>
+  isKeeperStats(p.stats) ? 1 : clamp(1.3 - (p.stats as OutfieldStats).pow / 200, 0.8, 1.1);
 
 // ---- Team strength ----
 
@@ -360,9 +398,9 @@ function units(t: TeamState, chem: boolean, get: Lookup): Units {
     }
     if (x.off) return;
     add("midPas", stat(p, "pas"), w[1] as number);
-    add("attSpd", stat(p, "spd"), w[2] as number);
+    add("attSpd", tiredSpd(stat(p, "spd"), x.fit), w[2] as number);
     add("attPow", stat(p, "pow"), w[2] as number);
-    add("defSpd", stat(p, "spd"), w[0] as number);
+    add("defSpd", tiredSpd(stat(p, "spd"), x.fit), w[0] as number);
     add("defPow", stat(p, "pow"), w[0] as number);
   });
   // Normalised by the full XI's weight: a red card lowers the unit.
@@ -558,6 +596,9 @@ export function startHalf(prev: MatchState, streams: Streams): Out {
   const extra = m.half > 2;
   m.length = (extra ? 15 : 45) + 1 + streams(`h${m.half}:stoppage`).int(extra ? 2 : 4);
   m.lastFail = null;
+  // A breather at the break.
+  const back = C.recovery[m.half] ?? 0;
+  for (const t of m.teams) for (const x of t.xi) if (!x.off) x.fit = Math.min(100, x.fit + back);
   return {
     state: m,
     events: [{ m: HALF_START[m.half] ?? 0, o: 0, t: m.half === 3 ? "et_start" : "kickoff" }],
@@ -600,6 +641,7 @@ function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
   const at = ev.length;
   const zone = playMinuteInner(m, rng, get, ev);
   ev.splice(at, 0, { m: clockMinute(m), o: -1, t: "ball", team: m.lastBall, zone });
+  for (const t of fatigue(m, get)) ev.push({ m: clockMinute(m), o: 950, ...t, t: "tired" });
 }
 
 /** Plays the minute; returns where the ball mostly was (for the mini-pitch). */
@@ -625,10 +667,13 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   const dtac = D.tactics;
   const transition = m.lastFail === opp;
   m.lastFail = null;
-  // A foul by the side without the ball (pressing sides foul more).
-  if (u(rng) < C.foulPerMin * (dtac.defence === "high_press" ? 1.15 : 1)) {
+  // A foul by the side without the ball (pressing sides foul more, and so do tired legs).
+  const dFit = avgFit(D);
+  if (
+    u(rng) <
+    C.foulPerMin * (dtac.defence === "high_press" ? 1.15 : 1) * (1 + Math.max(0, 70 - dFit) / 60)
+  ) {
     foul(m, opp, side, rng, get, push, mm, next);
-    fatigue(m);
     return 1;
   }
   // 2. An attacking move?
@@ -637,7 +682,6 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   if (tac.defence === "deep_block") rate *= 0.9; // sitting deep, fewer bodies forward
   if (transition && tac.build === "counter") rate *= 1.4;
   if (u(rng) >= rate) {
-    fatigue(m);
     return tac.defence === "deep_block" ? 0 : 1;
   }
   // 3. Progress duel, with the style matchup.
@@ -647,7 +691,6 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   if (direct) edge += 0.05;
   if (u(rng) >= sigmoid(edge)) {
     m.lastFail = side;
-    fatigue(m);
     return 1;
   }
   // 4. Chance type.
@@ -663,28 +706,31 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
     const runner = shooter(T, rng, get);
     push({ m: mm, o: next(), t: "offside", team: side, player: runner.id });
     m.restart = opp;
-    fatigue(m);
     return 2;
   }
   // 5–7. Shooter, assister, xG and the outcome.
   shoot(m, side, kind, transition, U, style, rng, get, push, mm, next);
-  fatigue(m);
   return 2;
 }
 
-function fatigue(m: MatchState) {
-  for (const t of m.teams) {
+/** Every player tires a minute's worth; returns those who just started running on empty. */
+function fatigue(m: MatchState, get: Lookup): Array<{ team: Side; player: string }> {
+  const out: Array<{ team: Side; player: string }> = [];
+  m.teams.forEach((t, side) => {
     const tac = t.tactics;
     let rate = C.fatiguePerMin * (1 + (tac.tempo - 50) * 0.003);
     if (tac.defence === "high_press") rate *= 1.2;
-    for (const x of t.xi) {
-      if (x.off) continue;
-      let r = rate;
+    t.xi.forEach((x, i) => {
+      if (x.off) return;
+      let r = rate * (WORKLOAD[slotPos(t, i, x)] ?? 1) * staminaFactor(get(x.id));
       if (x.role === "complete_wing_back" || x.role === "pressing_forward") r *= 1.1;
-      if (x.pos === "GK") r *= 0.3;
-      x.fit = Math.max(60, x.fit - r);
-    }
-  }
+      const before = x.fit;
+      x.fit = Math.max(C.staminaFloor, x.fit - r);
+      if (before >= C.tiredAt && x.fit < C.tiredAt && slotPos(t, i, x) !== "GK")
+        out.push({ team: side as Side, player: x.id });
+    });
+  });
+  return out;
 }
 
 function chanceKind(T: TeamState, D: TeamState, direct: boolean, rng: Rng): ChanceKind {
@@ -758,7 +804,7 @@ function shoot(
   if (kind === "through_ball" || kind === "counter")
     q *=
       1 +
-      clamp((stat(sp, "spd") - U[opp].defSpd) / 40, -0.3, 0.4) *
+      clamp((tiredSpd(stat(sp, "spd"), shot.fit) - U[opp].defSpd) / 40, -0.3, 0.4) *
         clamp((D.tactics.line - 30) / 40, 0, 1.5);
   if (header) q *= 1 + clamp((stat(sp, "pow") - U[opp].defPow) / 60, -0.3, 0.4);
   if (transition && D.tactics.defence === "high_press") q *= 1.15;
@@ -850,7 +896,8 @@ function foul(
     const pos = slotPos(T, i, x);
     const w = (UNIT_WEIGHTS[pos][0] as number) + (UNIT_WEIGHTS[pos][1] as number) * 0.5 + 0.05;
     const rough = x.role === "ball_winner" || x.role === "stopper" ? 1.6 : 1;
-    return w * rough * (x.yellow ? 0.3 : 1); // on a yellow, they're careful
+    const tired = 1 + Math.max(0, 70 - x.fit) / 40;
+    return w * rough * tired * (x.yellow ? 0.3 : 1); // on a yellow, they're careful
   }).x;
   m.stats.fouls[side]++;
   const r = u(rng);

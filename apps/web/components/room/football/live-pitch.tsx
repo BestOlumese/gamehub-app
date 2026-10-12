@@ -7,6 +7,7 @@ import {
   celebrationMs,
   hash,
   latest,
+  leavingAt,
   lineupAt,
   PEN_SPOT,
   planPlay,
@@ -63,7 +64,32 @@ type Flight = {
   fast: boolean;
   /** Who has it when it lands. */
   then: string | null;
+  /** Sideways curve as a share of the distance (+ bends one way, − the other). */
+  bend?: number;
+  /** Peak height for a ball in the air (1 ≈ a normal lofted pass). */
+  lift?: number;
 };
+
+/** Where a flight is at progress `u`: a gently curved path, slowing on the grass, arcing in the air. */
+function along(f: Flight, u: number): { x: number; y: number; h: number } {
+  // Along the ground the ball slows as it rolls; in the air it keeps its pace; shots barely slow.
+  const e = f.loft ? u : f.fast ? 1 - Math.pow(1 - u, 1.4) : 1 - Math.pow(1 - u, 2.2);
+  const dx = f.to.x - f.from.x;
+  const dy = f.to.y - f.from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  // A quadratic curve through a control point pushed sideways from the middle.
+  const bend = (f.bend ?? 0) * len;
+  const cx = f.from.x + dx / 2 + (-dy / len) * bend;
+  const cy = f.from.y + dy / 2 + (dx / len) * bend;
+  const a = (1 - e) * (1 - e);
+  const b = 2 * (1 - e) * e;
+  const c = e * e;
+  return {
+    x: a * f.from.x + b * cx + c * f.to.x,
+    y: a * f.from.y + b * cy + c * f.to.y,
+    h: f.loft ? 4 * u * (1 - u) * (f.lift ?? 1) : 0,
+  };
+}
 type Ball = Pt & {
   h: number;
   hold: string | null;
@@ -91,7 +117,13 @@ export function LivePitch({
   cards,
   colours,
   perMinute,
+  mySide,
+  fit,
 }: {
+  /** Your side in this match (stamina markers go on your players only). */
+  mySide: Side | null;
+  /** Your players' stamina (0–100). */
+  fit: Record<string, number> | null;
   timed: readonly Timed[];
   now: number;
   offset: number;
@@ -105,6 +137,8 @@ export function LivePitch({
   const lineup = lineupAt(timed, current, now);
   const tactics = tacticsAt(timed, kick, now);
   const card = cardAt(timed, now);
+  const leaving = leavingAt(timed, now);
+  const sentOff = [...leaving].at(-1);
   const players = lineup.ids.flatMap((list, side) =>
     list.flatMap((id, slot) => (id ? [{ id, side: side as Side, slot }] : [])),
   );
@@ -130,9 +164,9 @@ export function LivePitch({
       : `Saved by ${name(pen.keeper)}`
     : null;
 
-  const input = useRef({ plan, lineup, tactics, offset, perMinute, cards });
+  const input = useRef({ plan, lineup, tactics, offset, perMinute, cards, leaving });
   useEffect(() => {
-    input.current = { plan, lineup, tactics, offset, perMinute, cards };
+    input.current = { plan, lineup, tactics, offset, perMinute, cards, leaving };
   });
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -156,6 +190,8 @@ export function LivePitch({
       dive: null,
     };
     let cornerTaker: string | null = null;
+    /** Who's pressing, kept from frame to frame so two defenders don't keep swapping. */
+    let pressing: string[] = [];
     let raf = 0;
     let last = performance.now();
 
@@ -202,6 +238,8 @@ export function LivePitch({
                 y: (p.y + p.ty) / 2,
               }
             : { x: ball.x, y: ball.y };
+          const dist = Math.hypot(to.x - from.x, to.y - from.y);
+          const way = hash(`${beat.at}`) % 2 ? 1 : -1;
           ball.flight = {
             from,
             to,
@@ -210,6 +248,9 @@ export function LivePitch({
             loft: beat.loft,
             fast: false,
             then: beat.to,
+            // Long balls and crosses bend and hang; a ground pass only curls a little.
+            bend: way * (beat.loft ? 0.1 : 0.03),
+            lift: beat.loft ? Math.min(1.5, Math.max(0.6, dist / 28)) : 0,
           };
           ball.hold = null;
           break;
@@ -249,11 +290,18 @@ export function LivePitch({
           break;
         }
         case "corner":
+          // Out of play, then placed at the flag (no teleport).
           cornerTaker = beat.taker;
-          ball.flight = null;
           ball.hold = null;
-          ball.x = beat.side === 0 ? 99.3 : 0.7;
-          ball.y = beat.y;
+          ball.flight = {
+            from,
+            to: { x: beat.side === 0 ? 99.3 : 0.7, y: beat.y },
+            t0: now,
+            t1: now + 450,
+            loft: false,
+            fast: false,
+            then: null,
+          };
           break;
         case "celebrate":
           break;
@@ -311,6 +359,9 @@ export function LivePitch({
           };
         }
       }
+      // Sent off: a slow walk to the nearest touchline.
+      if (input.current.leaving.has(p.id))
+        return { t: { x: p.x, y: p.y < 50 ? 1 : 99 }, pace: "walk" as Pace, job: true };
       const poss = possession();
       t = shapeSpot(p.side, slot, tactics[p.side], mode, ball, poss, boxSide);
       if (mode === "box" && p.id === cornerTaker && !ball.flight)
@@ -321,6 +372,11 @@ export function LivePitch({
         if (ball.hold === p.id && !ball.flight) {
           if (now < ball.still || gk)
             return { t: { x: p.x, y: p.y }, pace: "walk" as Pace, job: true };
+          // Someone tight on him: he shields it instead of running into him.
+          const tight = [...ps.values()].some(
+            (o) => o.side !== p.side && Math.hypot((o.x - p.x) * MX, (o.y - p.y) * MY) < 3,
+          );
+          if (tight) return { t: { x: p.x - dir * 0.6, y: p.y }, pace: "walk" as Pace, job: true };
           // Dribble on, drifting a little infield.
           return {
             t: { x: p.x + dir * 6, y: p.y + (50 - p.y) * 0.08 },
@@ -402,11 +458,10 @@ export function LivePitch({
       if (ball.flight) {
         const f = ball.flight;
         const u = reduce ? 1 : Math.min(1, Math.max(0, (now - f.t0) / Math.max(1, f.t1 - f.t0)));
-        // Along the ground the ball slows as it runs; in the air it travels evenly and rises.
-        const e = f.loft || f.fast ? u : 1 - (1 - u) * (1 - u);
-        ball.x = f.from.x + (f.to.x - f.from.x) * e;
-        ball.y = f.from.y + (f.to.y - f.from.y) * e;
-        ball.h = f.loft ? 4 * u * (1 - u) : 0;
+        const at = along(f, u);
+        ball.x = at.x;
+        ball.y = at.y;
+        ball.h = at.h;
         if (u >= 1) {
           ball.flight = null;
           ball.h = 0;
@@ -426,16 +481,22 @@ export function LivePitch({
       const poss = possession();
       const pressers: string[] = [];
       if (mode === "open" && poss !== null) {
+        const dist = (p: Player) => Math.hypot((p.x - ball.x) * MX, (p.y - ball.y) * MY);
         const near = [...ps.values()]
-          .filter((p) => p.side !== poss && slotOf(line, p).pos !== "GK")
-          .sort(
-            (a, b) =>
-              Math.hypot((a.x - ball.x) * MX, (a.y - ball.y) * MY) -
-              Math.hypot((b.x - ball.x) * MX, (b.y - ball.y) * MY),
-          );
-        if (near[0]) pressers.push(near[0].id);
-        if (near[1]) pressers.push(near[1].id);
+          .filter(
+            (p) =>
+              p.side !== poss && slotOf(line, p).pos !== "GK" && !input.current.leaving.has(p.id),
+          )
+          .sort((a, b) => dist(a) - dist(b));
+        // Keep the man already pressing unless someone is clearly closer (no swapping each frame).
+        const was = pressing[0] ? ps.get(pressing[0]) : undefined;
+        const first =
+          was && was.side !== poss && near[0] && dist(was) < dist(near[0]) * 1.25 ? was : near[0];
+        if (first) pressers.push(first.id);
+        const second = near.find((p) => p.id !== first?.id);
+        if (second) pressers.push(second.id);
       }
+      pressing = pressers;
 
       for (const p of ps.values()) {
         const r = target(p, now, line, mode, boxSide);
@@ -527,7 +588,7 @@ export function LivePitch({
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const off = "translate3d(-100px, -100px, 0)";
+  const hidden = "translate3d(-100px, -100px, 0)";
   return (
     <div
       ref={boxRef}
@@ -572,12 +633,17 @@ export function LivePitch({
 
       {players.map((p) => {
         const gk = p.slot === keeperSlot(p.side);
+        const off = leaving.has(p.id);
         const ring =
-          card?.id === p.id
-            ? card.colour === "yellow"
+          off || (card?.id === p.id && card.colour === "red")
+            ? "0 0 0 3px #D9473F"
+            : card?.id === p.id
               ? "0 0 0 3px #F2C14E"
-              : "0 0 0 3px #D9473F"
-            : "none";
+              : "none";
+        // Your own players' legs: amber when tiring, red when spent.
+        const legs = p.side === mySide && !gk ? fit?.[p.id] : undefined;
+        const tired =
+          legs === undefined ? null : legs < 40 ? "#D9473F" : legs < 55 ? "#F2C14E" : null;
         return (
           <span
             key={p.id}
@@ -588,13 +654,25 @@ export function LivePitch({
             }}
             className="absolute top-0 left-0 aspect-square w-[3.4%] min-w-2.5 rounded-full border border-white/90 will-change-transform"
             style={{
-              transform: off,
+              transform: hidden,
               background: colours[p.side],
               filter: gk ? "brightness(0.7)" : undefined,
               boxShadow: ring,
               outlineOffset: 1,
             }}
-          />
+          >
+            {off ? (
+              <span className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2 rounded-sm bg-danger px-1 text-[9px] leading-3.5 font-bold whitespace-nowrap text-white">
+                RED · {name(p.id)}
+              </span>
+            ) : null}
+            {tired ? (
+              <span
+                className="absolute -top-1 -right-1 size-[45%] min-w-1.5 rounded-full border border-white"
+                style={{ background: tired }}
+              />
+            ) : null}
+          </span>
         );
       })}
 
@@ -602,17 +680,17 @@ export function LivePitch({
       <span
         ref={shadowEl}
         className="absolute top-0 left-0 aspect-[2/1] w-[2.6%] min-w-2 rounded-full bg-[rgb(0_0_0/0.6)]"
-        style={{ transform: off }}
+        style={{ transform: hidden }}
       />
       <span
         ref={ballEl}
         className="absolute top-0 left-0 z-20 aspect-square w-[2.4%] min-w-2 rounded-full border border-ink bg-white"
-        style={{ transform: off }}
+        style={{ transform: hidden }}
       />
       <span
         ref={labelEl}
         className="absolute top-0 left-0 z-20 rounded-full bg-[rgb(0_0_0/0.6)] px-1.5 text-[10px] leading-4 font-semibold whitespace-nowrap text-white"
-        style={{ transform: off, opacity: 0 }}
+        style={{ transform: hidden, opacity: 0 }}
       />
 
       {/* Goal banner. */}
@@ -623,6 +701,14 @@ export function LivePitch({
           {banner ?? lastText}
         </span>
       </div>
+      {/* A sending-off. */}
+      {sentOff && !penText ? (
+        <div className="absolute inset-x-0 top-[6%] z-30 flex justify-center">
+          <span className="rounded-full bg-danger px-3 py-0.5 text-sm font-bold text-white shadow">
+            Red card · {name(sentOff)}
+          </span>
+        </div>
+      ) : null}
       {/* Shoot-out result. */}
       {penText ? (
         <div className="absolute inset-x-0 top-[6%] z-30 flex justify-center">

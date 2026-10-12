@@ -5,6 +5,7 @@ import { autoDraft, makePool, type Luck } from "./draft";
 import {
   applyChange,
   DEFAULT_TACTICS,
+  fatigueMod,
   playMatch as play,
   playMinutes,
   shootout,
@@ -110,6 +111,46 @@ describe("football match engine", () => {
       "No subs left",
     );
     expect(s.teams[0].xi[1]?.fit).toBe(100);
+  });
+
+  it("stamina: workload, POW and pressing decide who tires; a breather at half time; a warning once", () => {
+    const base = startMatch(sheet(7), sheet(8), opts);
+    const pressed = {
+      ...base,
+      teams: [
+        {
+          ...base.teams[0],
+          tactics: { ...base.teams[0].tactics, defence: "high_press" as const, tempo: 80 },
+        },
+        base.teams[1],
+      ] as typeof base.teams,
+    };
+    const h1 = playHalf(pressed, R("st"));
+    const avg = (side: 0 | 1, pos: string[]) => {
+      const xs = h1.state.teams[side].xi.filter((x) => pos.includes(x.pos) && !x.off);
+      return xs.reduce((a, x) => a + x.fit, 0) / Math.max(1, xs.length);
+    };
+    // A pressing, high-tempo side tires faster than one at default settings.
+    expect(avg(0, ["CB", "RB", "LB", "CM", "DM", "AM", "ST"])).toBeLessThan(
+      avg(1, ["CB", "RB", "LB", "CM", "DM", "AM", "ST"]),
+    );
+    // Keepers barely tire; outfielders do.
+    const gk = h1.state.teams[1].xi.find((x) => x.pos === "GK")!;
+    expect(gk.fit).toBeGreaterThan(90);
+    expect(avg(1, ["CM", "DM", "RB", "LB"])).toBeLessThan(85);
+    // A breather at the break.
+    const before = h1.state.teams[1].xi.map((x) => x.fit);
+    const h2 = startHalf(h1.state, streams("st"));
+    h2.state.teams[1].xi.forEach((x, i) => {
+      if (!x.off) expect(x.fit).toBeCloseTo(Math.min(100, (before[i] as number) + 8), 5);
+    });
+    // Over a whole match someone runs on empty, and is announced once.
+    const full = playMatch(pressed, R("st"));
+    const tired = full.events.filter((e) => e.t === "tired");
+    expect(tired.length).toBeGreaterThan(0);
+    expect(new Set(tired.map((e) => (e as { player: string }).player)).size).toBe(tired.length);
+    expect(fatigueMod(100)).toBe(0);
+    expect(fatigueMod(25)).toBe(-8);
   });
 
   it("tactics: long ball makes direct attacks; a high line against pace gives more through balls", () => {

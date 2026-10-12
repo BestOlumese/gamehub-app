@@ -58,6 +58,11 @@ const LINES = {
   red: ["RED CARD! {player} is off. {team} down to ten."],
   second_yellow: ["Second yellow for {player}! He's off, {team} down to ten."],
   sub: ["Change for {team}: {on} comes on for {off}."],
+  tired: [
+    "{player} is out on his feet.",
+    "{player} is running on empty. He needs fresh legs.",
+    "{player} has nothing left in the tank.",
+  ],
   tactics: ["{team} change their approach.", "New instructions from the {team} bench."],
   kickoff: ["We're under way."],
   half_time: ["Half time. {score}."],
@@ -139,6 +144,8 @@ export function commentary(
       return null;
     case "tactics":
       return line(LINES.tactics, { team: names.team(e.team) });
+    case "tired":
+      return line(LINES.tired, { player: names.player(e.player) });
     case "sub":
       return line(LINES.sub, {
         team: names.team(e.team),

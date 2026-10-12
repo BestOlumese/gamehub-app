@@ -112,7 +112,10 @@ export function ManageSheet({
   subsLeft,
   off,
   live,
+  fit = null,
 }: {
+  /** Your players' stamina in a match (null outside one). */
+  fit?: Record<string, number> | null;
   /** In a match (not at a break): changes wait out the server's change gap. */
   live: boolean;
   open: boolean;
@@ -246,6 +249,7 @@ export function ManageSheet({
           subsLeft={subsLeft}
           off={off}
           live={live}
+          fit={fit}
         />
       ) : (
         <ul className="divide-y divide-line">
@@ -256,7 +260,10 @@ export function ManageSheet({
             return (
               <li key={i} className="flex items-center gap-2 py-2 text-sm">
                 <span className="w-9 font-bold text-ink-2">{pos}</span>
-                <span className="min-w-0 flex-1 truncate">{c?.short}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate">{c?.short}</span>
+                  {fit?.[x.id] !== undefined ? <StaminaBar value={fit[x.id] as number} /> : null}
+                </span>
                 <select
                   value={x.role}
                   disabled={!ready}
@@ -280,5 +287,22 @@ export function ManageSheet({
         </ul>
       )}
     </Dialog>
+  );
+}
+
+/** A player's stamina: green while fresh, amber when tiring, red when spent. */
+export function StaminaBar({ value, className = "" }: { value: number; className?: string }) {
+  const colour = value < 40 ? "bg-danger" : value < 55 ? "bg-accent" : "bg-brand";
+  return (
+    <span
+      className={`block h-1 w-full max-w-24 overflow-hidden rounded-full bg-[rgb(0_0_0/0.12)] ${className}`}
+      role="meter"
+      aria-label="Stamina"
+      aria-valuenow={Math.round(value)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <span className={`block h-full ${colour}`} style={{ width: `${Math.round(value)}%` }} />
+    </span>
   );
 }

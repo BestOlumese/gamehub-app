@@ -176,6 +176,31 @@ describe("football room", () => {
     }
   });
 
+  it("stamina is private: you see your own players' legs and tiring lines, not theirs", () => {
+    let checked = false;
+    run(start(2, {}, "legs"), {
+      onStep: (sim) => {
+        const f = sim.s.rounds[0]?.[0];
+        if (!f?.match || checked) return;
+        const tired = f.log.filter((e) => e.t === "tired");
+        if (!tired.length) return;
+        for (const seat of [0, 1] as const) {
+          const v = game.view(sim.s, seat).rounds[0]?.[0];
+          const fit = v?.live?.fit ?? {};
+          const mine = new Set(f.match.teams[seat].xi.map((x) => x.id));
+          expect(Object.keys(fit).length).toBeGreaterThan(0);
+          for (const id of Object.keys(fit)) expect(mine.has(id)).toBe(true);
+          for (const e of v?.log ?? []) if (e.t === "tired") expect(e.team).toBe(seat);
+        }
+        const watching = game.view(sim.s, "spectator").rounds[0]?.[0];
+        expect(watching?.live?.fit ?? null).toBeNull();
+        expect(watching?.log.some((e) => e.t === "tired")).toBe(false);
+        checked = true;
+      },
+    });
+    expect(checked).toBe(true);
+  });
+
   it("league of 4 bots: everyone plays everyone once; the table adds up", () => {
     const sim = run(start(4, {}, "league"));
     expect(sim.s.mode).toBe("league");
