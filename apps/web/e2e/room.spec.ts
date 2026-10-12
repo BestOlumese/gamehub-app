@@ -666,7 +666,7 @@ test("chess: typed moves on a computer, and running out of time loses", async ({
 async function openDraft(page: Page) {
   await page
     .locator("li")
-    .filter({ hasText: "Draft" })
+    .filter({ has: page.getByRole("heading", { name: "Draft", exact: true }) })
     .getByRole("button", { name: "Play with friends" })
     .click();
   await expect(page.getByText("Naija draft 10×10", { exact: true }).first()).toBeVisible();

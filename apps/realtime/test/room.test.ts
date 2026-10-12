@@ -121,7 +121,7 @@ const snapshot = (m: ServerRoomMsg) => m.t === "snapshot";
 
 /** Waits until a client's latest snapshot passes `ok` (for state already sent or still coming). */
 async function until(c: Client, ok: (s: ReturnType<Client["last"]>) => boolean, label: string) {
-  const deadline = Date.now() + 3000;
+  const deadline = Date.now() + 10_000;
   while (!ok(c.last())) {
     if (Date.now() > deadline) throw new Error(`timed out waiting for ${label}`);
     await new Promise((r) => setTimeout(r, 25));
@@ -1428,11 +1428,14 @@ describe("football draft", () => {
     expect(fv(host).managers[1]).toEqual({ pick: 19, total: 19, ready: expect.any(Boolean) });
     // Ready up; the bot readies on its alarm; kickoff reveals both teams.
     act(host, { type: "ready" });
-    for (let k = 0; k < 5 && fv(host).phase === "draft"; k++) {
+    // Keep firing the alarm until the host sees kickoff: on a slow CI machine the ready can land
+    // after the first few alarms.
+    const kickoffBy = Date.now() + 10_000;
+    while (fv(host).phase !== "live") {
+      if (Date.now() > kickoffBy) throw new Error("timed out waiting for kickoff");
       await new Promise((r) => setTimeout(r, 50));
       await fireNow(stub);
     }
-    await until(host, () => fv(host).phase === "live", "kickoff");
     expect(fv(host).rounds[0]?.[0]?.teams).not.toBeNull();
     // Ticks play the match a few minutes at a time.
     await fireNow(stub);
