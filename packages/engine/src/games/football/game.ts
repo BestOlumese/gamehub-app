@@ -259,6 +259,7 @@ export function createFootballGame(
       match: null,
       log: [],
       halfFrom: 0,
+      base: null,
       startedAt: 0,
       result: null,
     });
@@ -331,6 +332,7 @@ export function createFootballGame(
       });
       const h = startHalf(m0, matchStreams(s, f));
       f.match = h.state;
+      f.base = JSON.parse(JSON.stringify(h.state.stats)) as MatchState["stats"];
       f.log = [...h.events];
       f.startedAt = now;
       ev.push({ type: "teams_revealed", fixture: f.id });
@@ -391,6 +393,7 @@ export function createFootballGame(
       if (next === "half") {
         const r = startHalf(m, matchStreams(s, f));
         f.match = r.state;
+        f.base = JSON.parse(JSON.stringify(m.stats)) as MatchState["stats"];
         f.halfFrom = f.log.length;
         f.log.push(...r.events);
         f.startedAt = now;
@@ -398,6 +401,7 @@ export function createFootballGame(
       } else if (next === "penalties") {
         const r = shootout(m, matchStreams(s, f), get);
         f.match = r.state;
+        f.base = JSON.parse(JSON.stringify(m.stats)) as MatchState["stats"];
         f.halfFrom = f.log.length;
         f.log.push(...r.events);
         f.startedAt = now;
@@ -871,6 +875,7 @@ export function createFootballGame(
           stats: p.stats,
           nation: p.nation,
           club: p.club,
+          league: p.league ?? null,
           era: p.era,
           potential: p.potential,
           roles: p.roles,
@@ -926,6 +931,13 @@ export function createFootballGame(
                     length: m.length,
                     halfDone: m.halfDone,
                     subsUsed: [m.teams[0].subsUsed, m.teams[1].subsUsed],
+                    base: f.base ?? m.stats,
+                    now: m.teams.map((t) => ({
+                      formation: t.formation,
+                      xi: t.xi.map((x) => ({ id: x.id, role: x.role, focus: x.focus })),
+                      bench: [...t.bench],
+                      tactics: t.tactics,
+                    })) as [TeamSheet, TeamSheet],
                     tactics: [m.teams[0].tactics, m.teams[1].tactics],
                     xi: [m.teams[0].xi.map((x) => x.id), m.teams[1].xi.map((x) => x.id)],
                     off: [

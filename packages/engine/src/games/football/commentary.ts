@@ -105,7 +105,9 @@ export function commentary(
     case "offside":
       return line(LINES.offside, { player: e.player ? names.player(e.player) : "the striker" });
     case "foul":
-      return line(LINES[e.card ?? "foul"], {
+      // Plain fouls would flood the feed; only bookings get a line (a dangerous free kick has its own).
+      if (!e.card) return null;
+      return line(LINES[e.card], {
         player: names.player(e.player),
         team: names.team(e.team),
       });

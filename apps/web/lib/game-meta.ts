@@ -7,6 +7,7 @@ import { ludoNaija, type LudoRules } from "@gamehub/engine/ludo";
 import { chessNaija, timeLabel, type ChessRules } from "@gamehub/engine/chess";
 import { draughtsNaija, effective, type DraughtsRules } from "@gamehub/engine/draughts";
 import { naira, plotsNaija, type PlotsRules } from "@gamehub/engine/plots";
+import { footballNaija, type FootballRules } from "@gamehub/engine/football";
 import { BOARDS, snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { whotNaija, type WhotRules } from "@gamehub/engine/whot";
 
@@ -36,7 +37,7 @@ export const PLAYER_RANGE: Record<GameSlug, readonly [number, number]> = {
 };
 
 /** RPS players throw together, so nobody "goes first". */
-export const hasFirstPlayer = (game: GameSlug) => game !== "rps";
+export const hasFirstPlayer = (game: GameSlug) => game !== "rps" && game !== "football";
 
 /** `whiteHint`: the same choice in chess, where going first means playing White. */
 export const FIRST_PLAYER: Record<
@@ -251,6 +252,26 @@ export const describePlotsRules = (r: PlotsRules) =>
     ...(plotsRuleChanges(r).length ? plotsRuleChanges(r) : ["Naija Standard"]),
   ].join(" · ");
 
+const MODE_NAME: Record<FootballRules["mode"], string> = {
+  auto: "Format by players",
+  h2h_single: "Single match",
+  h2h_bo3: "Best of 3",
+  league: "Mini league",
+  knockout: "Knockout",
+  solo: "Solo run",
+};
+
+/** Football Draft rules in plain words. */
+export const describeFootballRules = (r: FootballRules) =>
+  [
+    MODE_NAME[r.mode],
+    `${r.draftLuck[0]?.toUpperCase()}${r.draftLuck.slice(1)} draft`,
+    r.chemistry ? "Chemistry on" : "No chemistry",
+    `${r.turnSeconds} s picks`,
+    `${r.playbackSecondsPerHalf} s halves`,
+    ...(r.subsPerMatch !== footballNaija.subsPerMatch ? [`${r.subsPerMatch} subs`] : []),
+  ].join(" · ");
+
 export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "tictactoe") return describeTttRules(rules as TttRules);
   if (game === "rps") return describeRpsRules(rules as RpsRules);
@@ -260,5 +281,7 @@ export function describeRules(game: GameSlug, rules: unknown): string {
   if (game === "chess") return describeChessRules(rules as ChessRules);
   if (game === "draughts") return describeDraughtsRules(rules as DraughtsRules);
   if (game === "plots") return describePlotsRules(rules as PlotsRules);
+  if (game === "football")
+    return describeFootballRules({ ...footballNaija, ...(rules as FootballRules) });
   return "";
 }

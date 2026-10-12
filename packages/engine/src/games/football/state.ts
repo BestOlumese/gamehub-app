@@ -44,6 +44,8 @@ export type Fixture = {
   log: MatchEvent[];
   /** Where the current half starts in `log` (views send the current half + earlier big moments). */
   halfFrom: number;
+  /** The stats when the current half started (phones add what they've played back since). */
+  base: MatchStats | null;
   /** Server time the current half (or shoot-out) started playing back. */
   startedAt: number;
   result: { score: [number, number]; pens: [number, number] | null; winner: 0 | 1 | "draw" } | null;
@@ -114,6 +116,7 @@ export type Card = Pick<
   | "stats"
   | "nation"
   | "club"
+  | "league"
   | "era"
   | "potential"
   | "roles"
@@ -140,6 +143,10 @@ export type FixtureView = {
     tactics: [Tactics, Tactics];
     xi: [string[], string[]];
     off: [string[], string[]];
+    /** Stats when this half started; with the revealed events, the ticker without spoilers. */
+    base: MatchStats;
+    /** Each side's current team (after subs and changes), as a sheet. */
+    now: [TeamSheet, TeamSheet];
   } | null;
   log: MatchEvent[];
   startedAt: number;

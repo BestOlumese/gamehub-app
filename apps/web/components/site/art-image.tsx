@@ -8,7 +8,8 @@ type ArtName =
   | "game-rps"
   | "game-chess"
   | "game-draughts"
-  | "game-plots";
+  | "game-plots"
+  | "game-football";
 
 const SIZES: Record<ArtName, [number, number]> = {
   "hero-table": [520, 420],
@@ -21,6 +22,7 @@ const SIZES: Record<ArtName, [number, number]> = {
   "game-chess": [160, 110],
   "game-draughts": [160, 110],
   "game-plots": [160, 110],
+  "game-football": [160, 110],
 };
 
 /** Decorative SVG from public/art. Plain <img>: static vector art needs no optimizer or client JS. */

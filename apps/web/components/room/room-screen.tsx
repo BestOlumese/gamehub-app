@@ -22,6 +22,7 @@ const SnakesTable = dynamic(() => import("./snakes/snakes-table"));
 const ChessTable = dynamic(() => import("./chess/chess-table"));
 const DraughtsTable = dynamic(() => import("./draughts/draughts-table"));
 const PlotsTable = dynamic(() => import("./plots/plots-table"));
+const FootballTable = dynamic(() => import("./football/football-table"));
 
 export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }) {
   const router = useRouter();
@@ -93,6 +94,8 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         <DraughtsTable snap={snap} send={send} />
       ) : snap.room.game === "plots" ? (
         <PlotsTable snap={snap} send={send} />
+      ) : snap.room.game === "football" ? (
+        <FootballTable snap={snap} send={send} />
       ) : (
         <TttTable snap={snap} send={send} />
       )}

@@ -7,6 +7,7 @@ import { snakesNaija, type SnakesRules } from "@gamehub/engine/snakes";
 import { chessNaija, type ChessRules } from "@gamehub/engine/chess";
 import { draughtsNaija, type DraughtsRules } from "@gamehub/engine/draughts";
 import { plotsNaija, type PlotsRules } from "@gamehub/engine/plots";
+import { footballNaija, type FootballRules } from "@gamehub/engine/football";
 import { dealSize, whotNaija, type WhotRules } from "@gamehub/engine/whot";
 import type { BotLevel, FirstPlayer } from "@gamehub/protocol";
 import { Alert } from "@gamehub/ui/forms/alert";
@@ -32,13 +33,15 @@ import { SnakesRulesStep } from "./snakes-rules-step";
 import { ChessRulesStep } from "./chess-rules-step";
 import { DraughtsRulesStep } from "./draughts-rules-step";
 import { PlotsRulesStep } from "./plots-rules-step";
+import { FootballRulesStep } from "./football-rules-step";
 import { TttRulesStep } from "./ttt-rules-step";
 import { WhotRulesStep } from "./whot-rules-step";
 
 export type CreatableGame =
-  "tictactoe" | "rps" | "whot" | "ludo" | "snakes" | "chess" | "draughts" | "plots";
+  "tictactoe" | "rps" | "whot" | "ludo" | "snakes" | "chess" | "draughts" | "plots" | "football";
 const CREATABLE: readonly CreatableGame[] = [
   "whot",
+  "football",
   "ludo",
   "snakes",
   "chess",
@@ -113,6 +116,9 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
     rulesFor("draughts", draughtsNaija),
   );
   const [plotsRules, setPlotsRules] = useState<PlotsRules>(() => rulesFor("plots", plotsNaija));
+  const [footballRules, setFootballRules] = useState<FootballRules>(() =>
+    rulesFor("football", footballNaija),
+  );
   const [min, max] = PLAYER_RANGE[game];
   const [wanted, setPlayers] = useState(initial?.players ?? Math.min(4, max));
   // Switching game keeps the count where it fits, and never below the people already here.
@@ -132,7 +138,8 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
     ...(editing ? (["game"] as const) : []),
     ...(multi ? (["players"] as const) : []),
     "rules",
-    "seats",
+    // A solo run has no other seats.
+    ...(players > 1 ? (["seats"] as const) : []),
     "review",
   ];
   const step = steps[i] ?? "review";
@@ -151,7 +158,9 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
                 ? draughtsRules
                 : game === "plots"
                   ? plotsRules
-                  : tttRules;
+                  : game === "football"
+                    ? footballRules
+                    : tttRules;
   const counts = Array.from({ length: max - min + 1 }, (_, k) => min + k);
   const duel = players === 2;
   // In a 2-player room that already has both people, there's no other seat to fill.
@@ -287,9 +296,15 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
                   : `${players} players, 4 seeds each. First to get all 4 home wins.`
                 : game === "whot"
                   ? `${players} players, ${dealSize(players, whotRules.handSize)} cards each. First to empty their hand wins.`
-                  : duel
-                    ? "2 players: a one-on-one duel."
-                    : `${players} players: a knockout bracket. Win your match to go through.`}
+                  : game === "football"
+                    ? players === 1
+                      ? "Just you: a solo run against four bot teams, each stronger than the last."
+                      : duel
+                        ? "2 managers draft at the same time, then play each other."
+                        : `${players} managers draft at the same time, then play a ${players <= 5 ? "mini league" : "knockout"} (you can change it in Rules).`
+                    : duel
+                      ? "2 players: a one-on-one duel."
+                      : `${players} players: a knockout bracket. Win your match to go through.`}
           </p>
         </div>
       ) : null}
@@ -309,6 +324,8 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
           <DraughtsRulesStep rules={draughtsRules} onChange={setDraughtsRules} />
         ) : game === "plots" ? (
           <PlotsRulesStep rules={plotsRules} onChange={setPlotsRules} />
+        ) : game === "football" ? (
+          <FootballRulesStep rules={footballRules} players={players} onChange={setFootballRules} />
         ) : (
           <TttRulesStep rules={tttRules} onChange={setTttRules} />
         )
@@ -382,11 +399,11 @@ export function CreateRoomSheet({ open, onClose, ...props }: Props) {
             {[
               ["Game", GAME_NAMES[game]],
               ...(game === "rps" ? [["Players", duel ? "2 (duel)" : `${players} (knockout)`]] : []),
-              ...(game === "whot" || game === "ludo" || game === "snakes"
-                ? [["Players", String(players)]]
+              ...(game === "whot" || game === "ludo" || game === "snakes" || game === "football"
+                ? [["Players", players === 1 ? "1 (solo run)" : String(players)]]
                 : []),
               ["Rules", describeRules(game, rules)],
-              [duel ? "Other seat" : "Seats", otherSeats],
+              ...(players > 1 ? [[duel ? "Other seat" : "Seats", otherSeats]] : []),
               ...(hasFirstPlayer(game)
                 ? [
                     [

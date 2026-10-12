@@ -46,6 +46,7 @@ const gameMarkers = {
   Chess: "Promote to",
   Draft: "tap the red ring to huff",
   "Naija Plots": "sent you an offer",
+  "Football Draft": "Pick your formation",
 };
 
 function gameChunks() {

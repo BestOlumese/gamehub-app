@@ -38,6 +38,13 @@ function tones(list: Tone[]) {
 }
 
 export const sfx = {
+  /** Football: a short rising "goal" fanfare (no audio files). */
+  goal: () =>
+    tones([
+      { f: 392, dur: 0.14, type: "triangle", gain: 0.12 },
+      { f: 523, at: 0.12, dur: 0.14, type: "triangle", gain: 0.12 },
+      { f: 659, at: 0.24, dur: 0.3, type: "triangle", gain: 0.14 },
+    ]),
   play: () => tones([{ f: 320, dur: 0.07, type: "triangle", gain: 0.16, to: 180 }]),
   market: () => tones([{ f: 900, dur: 0.12, type: "sine", gain: 0.06, to: 400 }]),
   turn: () =>

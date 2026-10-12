@@ -934,3 +934,154 @@ test("naija plots: 8 players on a small phone, with an auction", async ({ browse
   expect(auctioned).toBe(true);
   for (const c of [host.ctx, guest.ctx]) await c.close();
 });
+
+/** Drafts a whole Football Draft team: the first formation, then the first option every pick. */
+async function draftFootball(p: Page) {
+  await p
+    .getByRole("button")
+    .filter({ hasText: /\d-\d-\d/ })
+    .first()
+    .click();
+  for (let k = 2; k <= 19; k++) {
+    await expect(p.getByText(`${k}/19`, { exact: true })).toBeVisible({ timeout: 20_000 });
+    await p.getByRole("listbox", { name: "Your options" }).getByRole("button").first().click();
+  }
+  await expect(p.getByText("Set up your team")).toBeVisible({ timeout: 20_000 });
+}
+
+test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manage, skip, half time)", async ({
+  browser,
+}) => {
+  test.setTimeout(300_000);
+  const shot = async (p: Page, name: string) => {
+    const path = test.info().outputPath(`${name}.png`);
+    await p.screenshot({ path });
+    await test.info().attach(name, { path, contentType: "image/png" });
+  };
+  const me = await player(browser, "fb_solo", { width: 360, height: 640 });
+  const p = me.page;
+  await p
+    .locator("li")
+    .filter({ hasText: "Football Draft" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await p.getByRole("button", { name: "1", exact: true }).click();
+  await p.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await expect(p.getByText(/Solo run: you against four bot teams/)).toBeVisible();
+  await shot(p, "football-rules-360");
+  await p.getByRole("button", { name: "Next", exact: true }).click(); // rules → review
+  await p.getByRole("button", { name: "Create room" }).click();
+  await expect(p.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  await p.getByRole("button", { name: /^Start game/ }).click();
+
+  await expect(p.getByText("Pick your formation")).toBeVisible({ timeout: 20_000 });
+  await shot(p, "football-formation-360");
+  await p
+    .getByRole("button")
+    .filter({ hasText: /\d-\d-\d/ })
+    .first()
+    .click();
+  await expect(p.getByText("Pick your captain")).toBeVisible({ timeout: 20_000 });
+  await shot(p, "football-captain-360");
+  await p.getByRole("listbox", { name: "Your options" }).getByRole("button").first().click();
+  for (let k = 3; k <= 19; k++) {
+    await expect(p.getByText(`${k}/19`, { exact: true })).toBeVisible({ timeout: 20_000 });
+    if (k === 6) await shot(p, "football-draft-360");
+    await p.getByRole("listbox", { name: "Your options" }).getByRole("button").first().click();
+  }
+  await expect(p.getByText("Set up your team")).toBeVisible({ timeout: 20_000 });
+  await shot(p, "football-arrange-360");
+  await p.getByRole("button", { name: "Ready", exact: true }).click();
+
+  // Live: a shout shows up in the commentary for both sides.
+  await expect(p.getByRole("toolbar", { name: "Shouts" })).toBeVisible({ timeout: 20_000 });
+  await p.getByRole("button", { name: "Press", exact: true }).click();
+  await expect(p.getByText(/change their approach|New instructions/)).toBeVisible({
+    timeout: 15_000,
+  });
+  await shot(p, "football-match-360");
+  await p.getByRole("button", { name: /^Manage/ }).click();
+  await expect(p.getByText("With the ball")).toBeVisible();
+  await shot(p, "football-manage-360");
+  await p.keyboard.press("Escape");
+
+  // Skip to half time, carry on, skip to the end.
+  await p.getByRole("button", { name: "Skip half" }).click();
+  await expect(p.getByText(/^Half time ·/)).toBeVisible({ timeout: 20_000 });
+  await shot(p, "football-halftime-360");
+  await p.getByRole("button", { name: "Ready", exact: true }).click();
+  await p.getByRole("button", { name: "Skip half" }).click({ timeout: 20_000 });
+  // Won: the next match is set up; lost (or level, then extra time): the run goes on or ends.
+  await expect(p.getByText(/Next match|Your run:|^Break ·/).first()).toBeVisible({
+    timeout: 40_000,
+  });
+  await shot(p, "football-after-360");
+  await me.ctx.close();
+});
+
+test("football draft: two phones draft and play a full match with a half-time sub", async ({
+  browser,
+}) => {
+  test.setTimeout(420_000);
+  const host = await player(browser, "fb_h", { width: 390, height: 844 });
+  const guest = await player(browser, "fb_g", { width: 360, height: 640 });
+  await host.page
+    .locator("li")
+    .filter({ hasText: "Football Draft" })
+    .getByRole("button", { name: "Play with friends" })
+    .click();
+  await host.page.getByRole("button", { name: "2", exact: true }).click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
+  await host.page
+    .getByRole("group", { name: "How long a half takes" })
+    .getByText("30 s", { exact: true })
+    .click();
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // rules → seats
+  await host.page.getByRole("button", { name: "Next", exact: true }).click(); // seats (a friend) → review
+  await host.page.getByRole("button", { name: "Create room" }).click();
+  await expect(host.page.getByText("Room code", { exact: true })).toBeVisible({ timeout: 20_000 });
+  const code = host.page.url().split("/r/")[1]!;
+  await guest.page.goto(`/r/${code}`);
+  await expect(guest.page.getByText(/Waiting for @/)).toBeVisible({ timeout: 20_000 });
+  await host.page.getByRole("button", { name: /^Start game/ }).click();
+
+  await Promise.all([draftFootball(host.page), draftFootball(guest.page)]);
+  for (const p of [host.page, guest.page])
+    await p.getByRole("button", { name: "Ready", exact: true }).click();
+  for (const p of [host.page, guest.page])
+    await expect(p.getByRole("toolbar", { name: "Shouts" })).toBeVisible({ timeout: 20_000 });
+
+  // Half time: the host brings a sub on, then both carry on.
+  for (const p of [host.page, guest.page])
+    await expect(p.getByText(/^Half time ·/)).toBeVisible({ timeout: 90_000 });
+  await host.page
+    .getByRole("button", { name: /^Manage/ })
+    .first()
+    .click();
+  await host.page.getByRole("tab", { name: "Subs" }).click();
+  const dialog = host.page.getByRole("dialog");
+  await dialog
+    .getByRole("button", { name: /, (ST|CB|CM|LB|RB)/ })
+    .first()
+    .click();
+  await dialog.getByLabel("Bench").getByRole("button").first().click();
+  await expect(dialog.getByText(/4 subs left/)).toBeVisible({ timeout: 10_000 });
+  await host.page.keyboard.press("Escape");
+  for (const p of [host.page, guest.page])
+    await p.getByRole("button", { name: "Ready", exact: true }).click();
+  await expect(host.page.getByText(/Change for/)).toBeVisible({ timeout: 30_000 });
+
+  // To the end (extra time and penalties if level): a winner and Play again.
+  for (const p of [host.page, guest.page]) {
+    for (let k = 0; k < 2; k++) {
+      const brk = p.getByText(/^Break ·/);
+      const done = p.getByRole("button", { name: "Play again" });
+      await expect(brk.or(done)).toBeVisible({ timeout: 120_000 });
+      if (await done.isVisible()) break;
+      await p.getByRole("button", { name: "Ready", exact: true }).click();
+    }
+    await expect(p.getByRole("button", { name: "Play again" })).toBeVisible({ timeout: 120_000 });
+  }
+  await expect(host.page.getByRole("heading", { name: /won/ })).toBeVisible();
+  for (const c of [host.ctx, guest.ctx]) await c.close();
+});

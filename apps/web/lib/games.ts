@@ -1,8 +1,7 @@
 import type { GameSlug } from "@gamehub/engine";
 
 export type GameInfo = {
-  /** Football Draft joins the list (and gets its art) once its table is built. */
-  slug: Exclude<GameSlug, "football">;
+  slug: GameSlug;
   name: string;
   players: string;
   blurb: string;
@@ -57,5 +56,12 @@ export const games: readonly GameInfo[] = [
     name: "Naija Plots",
     players: "2–8 players",
     blurb: "Buy plots from Ojo to Banana Island, build, collect rent, trade and outlast everybody.",
+  },
+  {
+    slug: "football",
+    name: "Football Draft",
+    players: "1–8 players",
+    blurb:
+      "Draft a team of real footballers, Naija legends included, then out-think your friends on the touchline, live.",
   },
 ];

@@ -120,12 +120,14 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 **Exit:** validator green on the full set; facts only from cited sources (no per-batch review: Best, Oct 2026; one optional look at the end); data version `YYYY.MM.1` tagged.
 
 ## Phase 11 — Football Draft
-- [ ] Engine `games/football`: draft (option-set sampler, guarantees, presets, auto-pick), tactics/roles/chemistry, match engine, extra time/penalties, commentary templates, bot managers; `createFootballGame(dataset)`.
-- [ ] Draft distribution test and match Monte Carlo bands passing; tuning logs filled in the docs.
-- [ ] Modes: 1v1 (single / best of 3), mini league, knockout, solo run (+ `football_solo_run` record); checkpointed picks; per-half persistence.
-- [ ] UI: option-set cards (no FC look-alike), pitch, tactics sheet, commentary feed + ticker, league table. **Design questions with mockups to Best first.**
+- [x] Engine `games/football`: draft (option-set sampler, guarantees, presets, auto-pick), tactics/roles/chemistry, match engine, extra time/penalties, commentary templates, bot managers; `createFootballGame(dataset)`.
+- [x] Draft distribution test and match Monte Carlo bands passing; tuning logs filled in the docs.
+- [x] **Live decisions** (Best, Oct 2026): shouts, tactics, roles, formation and subs at any minute; matches sent in 3-minute chunks; tactical matchups worth ≈ 5 rating points.
+- [x] Modes: 1v1 (single / best of 3), mini league, knockout, solo run. Not built: the `football_solo_run` record (needs result reporting, Phase 13) and checkpointed picks (every pick is a write; costs in `13-free-tier-budget.md`).
+- [x] UI: option-set cards (no FC look-alike), pitch, tactics sheet, commentary feed + ticker, mini-pitch, results. Designed with Best (mockups, Oct 2026).
 
 **Exit:** two phones draft and play a full match with half-time changes; an 8-manager league (bots) finishes; a solo run of 4 matches works; hidden-info test proves no option leaks; CPU benchmark p95 ≤ 5 ms.
+All met (Oct 2026): E2E "two phones … half-time sub" and "solo run on a 360 px phone"; engine tests for every mode (leagues and knockouts up to 8 bots in the fuzz), hidden-info tests in the engine and the Worker; a tick p95 2.5 ms with four matches at once. Still for Best on the live site: a match on a real phone, and rows per game against the estimate.
 
 ## Phase 12 — Tournament mode
 - [ ] `Tournament` DO (migration `v2`), 7-char codes, lobby socket, stage editor with validation and projected flow, capacity estimate warning.
