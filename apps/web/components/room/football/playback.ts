@@ -1,7 +1,12 @@
 // Football playback: when each event of the current half shows, and the score, clock and ticker
 // from what's been shown so far. The view runs up to 3 minutes ahead of the screen, so nothing
 // here may read the live score or stats directly (no spoilers).
-import { PEN_MS, type MatchEvent, type MatchStats } from "@gamehub/engine/football";
+import {
+  PEN_MS,
+  PLAYBACK_SLACK_MINUTES,
+  type MatchEvent,
+  type MatchStats,
+} from "@gamehub/engine/football";
 
 export type Timed = { e: MatchEvent; at: number };
 
@@ -18,10 +23,15 @@ export function segmentStart(log: readonly MatchEvent[]): number {
   return 0;
 }
 
+/** Moments worth reading: a minute with one of these plays slower on screen. */
+const BUSY = new Set(["chance", "shot", "goal", "save", "corner", "offside", "free_kick"]);
+
 /**
  * Times for every event: earlier segments are already shown (time 0); in this one, each "ball"
- * event opens a match minute (`perMinute` ms apart) and the minute's other events are spread
- * across it; penalties come one every PEN_MS.
+ * event opens a match minute and the minute's other events are spread across it; penalties come
+ * one every PEN_MS. A minute with an attack in it gets up to twice the time so the build-up can
+ * be read, as long as the screen stays within PLAYBACK_SLACK_MINUTES of the real clock; the
+ * quiet minutes after it run shorter until it has caught up.
  */
 export function schedule(
   log: readonly MatchEvent[],
@@ -35,25 +45,29 @@ export function schedule(
     seg.forEach((e, k) => out.push({ e, at: startedAt + (k + 1) * PEN_MS }));
     return out;
   }
-  let minute = -1;
+  const slack = PLAYBACK_SLACK_MINUTES * perMinute;
+  let minute = 0;
+  let t = startedAt;
   let i = 0;
   while (i < seg.length) {
     const e = seg[i] as MatchEvent;
     if (e.t !== "ball") {
       // Kickoff before the first minute; the half's end after the last.
-      out.push({ e, at: startedAt + Math.max(0, minute + 1) * perMinute });
+      out.push({ e, at: t });
       i++;
       continue;
     }
-    minute++;
-    const start = startedAt + minute * perMinute;
-    out.push({ e, at: start });
     let j = i + 1;
     while (j < seg.length && seg[j]?.t !== "ball" && !isEnd(seg[j] as MatchEvent)) j++;
     const inside = seg.slice(i + 1, j);
-    inside.forEach((x, k) =>
-      out.push({ e: x, at: start + ((k + 1) * perMinute) / (inside.length + 1) }),
-    );
+    const behind = t - (startedAt + minute * perMinute);
+    const dur = inside.some((x) => BUSY.has(x.t))
+      ? perMinute + Math.min(perMinute, Math.max(0, slack - behind))
+      : Math.max(perMinute * 0.55, perMinute - behind);
+    out.push({ e, at: t });
+    inside.forEach((x, k) => out.push({ e: x, at: t + ((k + 1) * dur) / (inside.length + 1) }));
+    t += dur;
+    minute++;
     i = j;
   }
   return out;

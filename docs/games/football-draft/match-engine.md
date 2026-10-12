@@ -107,7 +107,7 @@ Tuning knobs (in this order): attack rate (0.30), progress-duel scale (/6), xG b
 
 1. Proposed constants: 2.16 goals, 8.1 shots a team, 48 % on target, **0.3 yellows a match** (fouls came only from lost duels). A 3-point better team won 70 %.
 2. Fouls became a per-minute chance for the side without the ball (`foulPerMin` 0.22), booked players foul less and less harshly (second yellows were piling up: 0.47 reds a match). Attack rate 0.50, xG × 0.95, on-target base 0.25.
-3. Strength sensitivity softened a lot: **possession exponent 2** (not 6), **duel scale 20** (not 6), **quality scale 200** (not 60). Attack rate 0.52.
+3. Strength sensitivity softened a lot: **possession exponent 2** (not 6), **duel scale 20** (not 6; 16 since 2026-10-12, below), **quality scale 200** (not 60). Attack rate 0.52.
 
 | Metric | Result | Band |
 |---|---|---|
@@ -121,6 +121,8 @@ Tuning knobs (in this order): attack rate (0.30), progress-duel scale (/6), xG b
 | Possession: mean, 5th–95th percentile | 50.0 %, 41–59 % | 50 ± 1, 90 % within 36–64 |
 | Knockouts going to penalties | 11.6 % | 8–16 % |
 | Win at +3 / +5 / +10 / +15 rating | 53 / 58 / 76 / 87 % | 46–54 / 55–64 / 72–84 / 84–93 % |
+
+**2026-10-12, restarts and a lead-in for every attack** (after Best found goals "with no plot": a save, then a goal straight after, no build-up line). After a save or a shot wide the keeper's side has the next minute, after a goal the side that conceded kicks off, after offside the defending side (`restart`); a blocked shot or one off the post is a loose ball. Every attack now writes its `chance` line, build-ups included, naming who set it up (`assist`), and assisted goals name him too. Restarts hand the ball back to the side that was shot at, which softened strength (a 15-point better team fell to 82.7 %), so the **duel scale went from 20 to 16**: win at +3 / +5 / +10 / +15 = 48.5 / 60.9 / 76.9 / 86.0 %; every other band still passes.
 
 Team rating here is the card rating (`draft.md`); the match also counts familiarity, chemistry and fatigue, which is part of why the effective gap is larger than the rating gap and the engine needed softening.
 

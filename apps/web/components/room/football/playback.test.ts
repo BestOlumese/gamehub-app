@@ -27,23 +27,39 @@ describe("football playback", () => {
   const timed = schedule(log, 1000, 1000);
 
   it("events show on the match clock: one minute per ball event, spread inside it", () => {
-    const at = (t: string) => timed.find((x) => x.e.t === t)?.at;
+    const at = (t: string) => timed.find((x) => x.e.t === t)?.at as number;
     expect(at("kickoff")).toBe(1000);
     expect(at("shot")).toBeGreaterThan(1000);
-    expect(at("goal")).toBeLessThan(2000);
-    expect(timed.filter((x) => x.e.t === "ball").map((x) => x.at)).toEqual([1000, 2000, 3000]);
+    expect(at("goal")).toBeGreaterThan(at("shot") + 500);
+    // The goal's minute gets twice the time; the quiet minutes after it catch up.
+    expect(timed.filter((x) => x.e.t === "ball").map((x) => x.at)).toEqual([1000, 3000, 3550]);
+  });
+
+  it("busy minutes slow down, but never more than the slack behind the real clock", () => {
+    const busy: MatchEvent[] = [{ m: 0, o: 0, t: "kickoff" }];
+    for (let m = 1; m <= 40; m++) {
+      busy.push(ball(m));
+      if (m <= 10) busy.push({ m, o: 0, t: "chance", team: 0, kind: "cross", player: "a" });
+    }
+    const t = schedule(busy, 0, 1000).filter((x) => x.e.t === "ball");
+    t.forEach((x, k) => {
+      expect(x.at - k * 1000).toBeLessThanOrEqual(1500);
+      expect(x.at).toBeGreaterThanOrEqual(k * 1000);
+    });
+    // Ten quiet minutes later it's back on the real clock.
+    expect((t[39] as { at: number }).at).toBe(39_000);
   });
 
   it("no spoilers: the score and ticker count only what's shown", () => {
     expect(scoreOf(shown(timed, 1100)).score).toEqual([0, 0]);
-    expect(scoreOf(shown(timed, 1900)).score).toEqual([1, 0]);
+    expect(scoreOf(shown(timed, 2400)).score).toEqual([1, 0]);
     const st = statsOf(zero(), shown(timed, 9999), 1);
     expect([st.shots[0], st.onTarget[0], st.yellows[0], st.fouls[0]]).toEqual([1, 1, 1, 1]);
     expect(st.possession).toEqual([33, 67]);
   });
 
   it("the clock reads the last minute shown, with stoppage time", () => {
-    expect(clockOf(shown(timed, 2500), 1)).toBe("2'");
+    expect(clockOf(shown(timed, 3200), 1)).toBe("2'");
     const late: MatchEvent[] = [
       { m: 0, o: 0, t: "kickoff" },
       ball(45),

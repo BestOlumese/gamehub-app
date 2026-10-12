@@ -81,6 +81,11 @@ export type FootballState = {
   round: number;
   /** The window (half-time, between matches) ends: server time. */
   windowEndsAt: number | null;
+  /**
+   * The round's matches are over on the server but still playing on screens (the server runs
+   * up to 3 minutes ahead): the round ends at this time, so nobody misses the last goals.
+   */
+  roundEndsAt?: number | null;
   /** League table (league mode). */
   table: TableRow[];
   /** Solo run: opponents faced so far. */

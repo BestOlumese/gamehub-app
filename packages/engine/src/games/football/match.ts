@@ -68,7 +68,16 @@ export type MatchEvent =
       o: number;
       t: "kickoff" | "half_time" | "full_time" | "et_start" | "et_half" | "et_end";
     }
-  | { m: number; o: number; t: "chance"; team: Side; kind: ChanceKind; player: string }
+  | {
+      m: number;
+      o: number;
+      t: "chance";
+      team: Side;
+      kind: ChanceKind;
+      player: string;
+      /** Who set it up (the commentary names him). */
+      assist?: string;
+    }
   | {
       m: number;
       o: number;
@@ -168,17 +177,23 @@ export type MatchState = {
   lastFail: Side | null;
   /** Who had the ball last minute (for the mini-pitch). */
   lastBall: Side;
+  /**
+   * Who restarts play next minute: the keeper's side after a save or a goal kick, the side that
+   * conceded after a goal, the defending side after offside. Null: a loose ball, anyone's.
+   */
+  restart?: Side | null;
 };
 
 /**
  * Tuning constants (match-engine.md → tuning log). Tuned Oct 2026 on dataset 2026.10.1:
  * strength sensitivity much softer than first proposed (possession exponent 2, duel scale 20,
- * quality scale 200), or a 3-point better team won 70 % of the time.
+ * quality scale 200), or a 3-point better team won 70 % of the time. Duel scale 16 since restarts
+ * (Oct 12) handed the ball back to the side that was shot at.
  */
 export const C = {
   possessionExp: 2,
   attackRate: 0.52,
-  duelScale: 20,
+  duelScale: 16,
   /** Chance per minute that the side without the ball commits a foul. */
   foulPerMin: 0.22,
   yellowPerFoul: 0.14,
@@ -597,7 +612,10 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   // 1. Possession.
   const a = Math.pow(Math.max(1, U[0].mid), C.possessionExp) * possessionMult(m.teams[0].tactics);
   const b = Math.pow(Math.max(1, U[1].mid), C.possessionExp) * possessionMult(m.teams[1].tactics);
-  const side: Side = u(rng) < a / (a + b) ? 0 : 1;
+  const drawn: Side = u(rng) < a / (a + b) ? 0 : 1;
+  // A restart (goal kick, the keeper's ball, kickoff after a goal) decides who has it.
+  const side: Side = m.restart ?? drawn;
+  m.restart = null;
   const opp: Side = side === 0 ? 1 : 0;
   m.ballMinutes[side]++;
   m.lastBall = side;
@@ -644,6 +662,7 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   ) {
     const runner = shooter(T, rng, get);
     push({ m: mm, o: next(), t: "offside", team: side, player: runner.id });
+    m.restart = opp;
     fatigue(m);
     return 2;
   }
@@ -724,8 +743,16 @@ function shoot(
   const sp = get(shot.id);
   const assist =
     kind === "long_shot" || kind === "free_kick" ? undefined : assister(T, shot, rng, get);
-  if (kind !== "build_up")
-    push({ m: mm, o: next(), t: "chance", team: side, kind, player: shot.id });
+  // Every attack gets its lead-in, naming who set it up, so a goal never comes from nowhere.
+  push({
+    m: mm,
+    o: next(),
+    t: "chance",
+    team: side,
+    kind,
+    player: shot.id,
+    ...(assist ? { assist: assist.id } : {}),
+  });
   // xG: the chance's base × quality (ATT vs DEF, the style matchup, the stat that matters).
   let q = (1 + (U[side].att - U[opp].def) / C.qualityScale) * (1 + 0.4 * style);
   if (kind === "through_ball" || kind === "counter")
@@ -773,6 +800,8 @@ function shoot(
     ...(header ? { header: true } : {}),
   });
   if (result === "goal" || result === "saved") m.stats.onTarget[side]++;
+  // Who restarts: the side that conceded kicks off; a save or a miss is the keeper's ball.
+  m.restart = result === "goal" || result === "saved" || result === "missed" ? opp : null;
   if (result === "goal") {
     m.score[side]++;
     push({
@@ -798,6 +827,7 @@ function shoot(
   if (u(rng) < cornerOdds) {
     m.stats.corners[side]++;
     push({ m: mm, o: next(), t: "corner", team: side });
+    m.restart = null;
     if (kind !== "corner" && u(rng) < C.cornerShot * (1 + (T.tactics.width - 50) * 0.004))
       shoot(m, side, "corner", false, U, style, rng, get, push, mm, next);
   }

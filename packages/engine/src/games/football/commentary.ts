@@ -15,6 +15,11 @@ const LINES = {
     "{player} scores, and {team} celebrate. {score}.",
   ],
   goalHeader: ["Header in! {player} rises highest. {score}.", "{player} heads it home! {score}."],
+  goalAssisted: [
+    "GOAL! {assist} sets it up and {player} finishes. {score}.",
+    "{player} scores! Lovely work from {assist}. {score}.",
+    "Omo! {assist} to {player}, and it's in! {score}.",
+  ],
   saved: [
     "Big save from {keeper}!",
     "{keeper} says no to {player}.",
@@ -27,8 +32,19 @@ const LINES = {
   ],
   blocked: ["Blocked! {player}'s shot hits a defender.", "{player} shoots, but it's charged down."],
   post: ["Off the post! {player} so close.", "{player} hits the woodwork!"],
-  through_ball: ["Lovely ball in behind for {player}…", "{player} is through…"],
-  cross: ["{team} whip a cross in for {player}…", "Ball into the box, {player} attacking it…"],
+  build_up: [
+    "{team} work it patiently. {assist} finds {player} in space…",
+    "Neat passing from {team}, {assist} slips it to {player}…",
+    "{assist} picks out {player} on the edge of the box…",
+  ],
+  build_up_solo: ["{player} picks it up and drives at the defence…"],
+  through_ball: [
+    "{assist} threads it through. {player} is in behind…",
+    "Lovely ball from {assist}, {player} is through…",
+  ],
+  through_ball_solo: ["Ball in behind for {player}…", "{player} is through…"],
+  cross: ["{assist} whips a cross in for {player}…", "{assist} delivers, {player} attacking it…"],
+  cross_solo: ["{team} whip a cross in for {player}…", "Ball into the box, {player} attacking it…"],
   long_shot: ["{player} tries his luck from distance…"],
   free_kick_chance: ["{player} lines up the free kick…"],
   corner_chance: ["Corner swung in, {player} goes for it…"],
@@ -78,8 +94,9 @@ export function commentary(
     fill(lines[choose(e, lines.length)] as string, { score: s, ...vars });
   switch (e.t) {
     case "goal":
-      return line(e.header ? LINES.goalHeader : LINES.goal, {
+      return line(e.header ? LINES.goalHeader : e.assist ? LINES.goalAssisted : LINES.goal, {
         player: names.player(e.player),
+        assist: e.assist ? names.player(e.assist) : "",
         team: names.team(e.team),
         score: `${names.team(0)} ${e.score[0]}–${e.score[1]} ${names.team(1)}`,
       });
@@ -96,8 +113,15 @@ export function commentary(
           : e.kind === "corner"
             ? "corner_chance"
             : e.kind;
-      if (kind === "build_up") return null;
-      return line(LINES[kind], { player: names.player(e.player), team: names.team(e.team) });
+      const vars = {
+        player: names.player(e.player),
+        team: names.team(e.team),
+        assist: e.assist ? names.player(e.assist) : "",
+      };
+      // Build-ups, through balls and crosses name the man who set it up when there is one.
+      if (kind === "build_up" || kind === "through_ball" || kind === "cross")
+        return line(e.assist ? LINES[kind] : LINES[`${kind}_solo`], vars);
+      return line(LINES[kind], vars);
     }
     case "corner":
     case "free_kick":

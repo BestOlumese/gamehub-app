@@ -41,6 +41,7 @@ import { bestRole, formation, POSITION_ROLES } from "./pitch";
 import {
   footballNaija,
   LEAD_MINUTES,
+  PLAYBACK_SLACK_MINUTES,
   modeFor,
   msPerMinute,
   PEN_MS,
@@ -366,7 +367,7 @@ export function createFootballGame(
     // Every half in this round is over: a break, or the end of the round.
     if (live.length) {
       s.phase = "break";
-      const lag = LEAD_MINUTES * per;
+      const lag = (LEAD_MINUTES + PLAYBACK_SLACK_MINUTES) * per;
       s.windowEndsAt = now + lag + rules.halfTimeSeconds * 1000;
       const inPlay = new Set(
         live.flatMap((f) =>
@@ -377,7 +378,23 @@ export function createFootballGame(
       );
       s.managers.forEach((m, i) => (m.ready = !inPlay.has(i)));
       ev.push({ type: "half_time", round: s.round });
-    } else endRound(s, rules, now, ev);
+    } else {
+      // Over here, but still playing on screens: end the round once the last minute is shown.
+      s.roundEndsAt ??= Math.max(now, ...(s.rounds[s.round] ?? []).map((f) => playbackEnd(f, per)));
+      if (now < s.roundEndsAt) return;
+      s.roundEndsAt = null;
+      endRound(s, rules, now, ev);
+    }
+  }
+
+  /** When the screens finish showing a fixture's current half (or shoot-out). */
+  function playbackEnd(f: Fixture, per: number): number {
+    const seg = f.log.slice(f.halfFrom ?? 0);
+    const pens = seg.filter((e) => e.t === "pen").length;
+    if (pens) return f.startedAt + (pens + 1) * PEN_MS + 600;
+    const minutes = seg.filter((e) => e.t === "ball").length;
+    // Busy minutes play slower on screen and quiet ones catch up (`playback.ts`): allow the slack.
+    return f.startedAt + (minutes + 1) * per + PLAYBACK_SLACK_MINUTES * per + 600;
   }
 
   const teamsOf = (f: Fixture): Team[] => (f.b === "bye" ? [f.a] : [f.a, f.b]);
@@ -412,7 +429,8 @@ export function createFootballGame(
     s.windowEndsAt = null;
     for (const m of s.managers) m.ready = true;
     ev.push({ type: "half_started", round: s.round });
-    if (!anyHalf) endRound(s, rules, pensUntil, ev);
+    // Only shoot-outs left: the round ends once they've been shown (ticks carry on until then).
+    if (!anyHalf) s.roundEndsAt = pensUntil + 600;
   }
 
   function result(f: Fixture) {
@@ -441,11 +459,11 @@ export function createFootballGame(
       if (w === 0 || w === 1) s.series[w]++;
     }
     ev.push({ type: "round_done", round: s.round });
-    const lag = LEAD_MINUTES * msPerMinute(rules);
     const nextRound = () => {
       s.round++;
       s.phase = "between";
-      s.windowEndsAt = now + lag + rules.betweenMatchesSeconds * 1000;
+      // The last minutes have been shown by now (roundEndsAt), so no lag to allow for.
+      s.windowEndsAt = now + rules.betweenMatchesSeconds * 1000;
       s.managers.forEach((m) => (m.ready = false));
     };
     switch (s.mode) {

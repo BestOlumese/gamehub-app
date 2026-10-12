@@ -189,6 +189,8 @@ export function MatchView({
         <LivePitch
           timed={timed}
           now={now}
+          offset={offset}
+          perMinute={msPerMinute}
           kick={fixture.teams}
           current={live.now}
           cards={cards}

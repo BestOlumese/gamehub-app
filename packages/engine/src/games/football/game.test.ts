@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { seededRng } from "../../rng";
 import { createFootballGame, LEAD_MINUTES, msPerMinute, SOLO_BANDS } from "./game";
+import { PEN_MS } from "./rules";
 import { footballNaija, type FootballRules } from "./rules";
 import type { FootballAction, FootballState } from "./state";
 import { testDataset } from "./test-data";
@@ -158,6 +159,20 @@ describe("football room", () => {
       const f = sim.s.rounds[0]?.[0];
       const playedTo = Math.floor((sim.now - (f?.startedAt ?? 0)) / per);
       expect(f?.match?.minute).toBeLessThanOrEqual(playedTo + LEAD_MINUTES);
+    }
+  });
+
+  it("the result waits until the screens have shown the last minute (or the last penalty)", () => {
+    for (const seed of ["end1", "end2", "end3"]) {
+      const sim = run(start(2, {}, seed));
+      const f = sim.s.rounds[0]?.[0];
+      if (!f) throw new Error("no fixture");
+      const seg = f.log.slice(f.halfFrom);
+      const pens = seg.filter((e) => e.t === "pen").length;
+      const shownBy = pens
+        ? f.startedAt + pens * PEN_MS
+        : f.startedAt + seg.filter((e) => e.t === "ball").length * msPerMinute(sim.rules);
+      expect(sim.now).toBeGreaterThanOrEqual(shownBy);
     }
   });
 

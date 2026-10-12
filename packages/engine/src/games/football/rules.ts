@@ -55,6 +55,11 @@ export function modeFor(rules: FootballRules, n: number): Exclude<FootballMode, 
 
 /** Minutes sent ahead of the playback (a modified phone sees at most this far ahead). */
 export const LEAD_MINUTES = 3;
+/**
+ * How far behind the real minute clock a screen may fall: minutes with an attack in them play
+ * slower so the build-up can be read, and the quiet minutes after catch up (`playback.ts`).
+ */
+export const PLAYBACK_SLACK_MINUTES = 1.5;
 /** A penalty kick's playback time. */
 export const PEN_MS = 1500;
 /** Solo run: the bot XIs' team ratings, round by round (modes.md). */
