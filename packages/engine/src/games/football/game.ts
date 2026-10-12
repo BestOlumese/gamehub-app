@@ -24,6 +24,7 @@ import {
   clockMinute,
   DEFAULT_TACTICS,
   isFinished,
+  matchupNow,
   nextPhase,
   playMinutes,
   shootout,
@@ -969,6 +970,7 @@ export function createFootballGame(
                       m.teams[0].xi.filter((x) => x.off).map((x) => x.id),
                       m.teams[1].xi.filter((x) => x.off).map((x) => x.id),
                     ],
+                    matchup: matchupNow(m, get),
                     fit:
                       own === null
                         ? null

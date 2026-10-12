@@ -1,7 +1,7 @@
 // Football Draft room state, actions and views (docs/games/football-draft/modes.md, draft.md).
 import type { SeatIndex } from "../../types";
 import type { Group } from "./pitch";
-import type { MatchEvent, MatchState, MatchStats, TeamSheet, Tactics } from "./match";
+import type { MatchEvent, MatchState, MatchStats, MatchupPart, TeamSheet, Tactics } from "./match";
 import type { FootballMode } from "./rules";
 import type { Shout } from "./shouts";
 import type { FootballPlayer, Role } from "./types";
@@ -154,6 +154,8 @@ export type FixtureView = {
     now: [TeamSheet, TeamSheet];
     /** Stamina (0–100) of your own players on the pitch; null when you're not in this match. */
     fit: Record<string, number> | null;
+    /** The style matchup both ways (side 0 attacking, side 1 attacking), for the meter and tips. */
+    matchup: [MatchupPart[], MatchupPart[]];
   } | null;
   log: MatchEvent[];
   startedAt: number;

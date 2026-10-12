@@ -229,9 +229,11 @@ export const C = {
   tiredAt: 55,
   /**
    * How strongly a style matchup moves the duel and the chance quality (tactics.md → Matchups).
-   * 1.5: the right answer to an extreme setup is worth about 5 rating points (Best, Oct 2026).
+   * 3.0: the right answer to an extreme setup is worth about 8 rating points (Best, Oct 2026:
+   * "tactics feel useless"; it was 1.5, about 5 points): against a pressing, short-passing side,
+   * long balls win 68 % of matches where default tactics win 31 %.
    */
-  matchup: 1.5,
+  matchup: 3,
 };
 
 const clamp = (x: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, x));
@@ -443,32 +445,72 @@ function possessionMult(t: Tactics) {
  * pressing beats short passing with weak passers; long balls and counters beat the press;
  * a deep block stops long balls and counters but gives way to patient passing.
  */
-export function matchup(a: Tactics, d: Tactics, A: Units, D: Units): number {
-  let e = 0;
+/** The named pieces of a style matchup (the meter and the assistant explain them). */
+export type MatchupKey =
+  | "short_vs_press"
+  | "short_vs_deep"
+  | "short_open"
+  | "long_vs_press"
+  | "long_vs_deep"
+  | "long_open"
+  | "counter_vs_deep"
+  | "counter_space"
+  | "balanced_vs_shape"
+  | "pace_vs_line";
+export type MatchupPart = { key: MatchupKey; v: number };
+
+/** The matchup for side `a` attacking side `d`, piece by piece (before the C.matchup weight). */
+export function matchupParts(a: Tactics, d: Tactics, A: Units, D: Units): MatchupPart[] {
+  const out: MatchupPart[] = [];
   const press = d.defence === "high_press";
   const deep = d.defence === "deep_block";
   const highLine = clamp((d.line - 50) / 35, -1, 1);
   switch (a.build) {
     case "short":
-      if (press) e += -0.3 + 0.02 * (A.midPas - 75);
-      else if (deep) e += 0.25;
-      else e += 0.05;
+      if (press) out.push({ key: "short_vs_press", v: -0.3 + 0.02 * (A.midPas - 75) });
+      else if (deep) out.push({ key: "short_vs_deep", v: 0.25 });
+      else out.push({ key: "short_open", v: 0.05 });
       break;
     case "long":
-      if (press) e += 0.3;
-      else if (deep) e += -0.3 + 0.02 * (A.attPow - D.defPow);
-      else e += -0.05 + 0.01 * (A.attPow - D.defPow);
+      if (press) out.push({ key: "long_vs_press", v: 0.3 });
+      else if (deep) out.push({ key: "long_vs_deep", v: -0.3 + 0.02 * (A.attPow - D.defPow) });
+      else out.push({ key: "long_open", v: -0.05 + 0.01 * (A.attPow - D.defPow) });
       break;
     case "counter":
-      if (deep) e -= 0.3;
-      else e += (press ? 0.2 : 0) + 0.15 * Math.max(0, highLine) + 0.01 * (A.attSpd - D.defSpd);
+      if (deep) out.push({ key: "counter_vs_deep", v: -0.3 });
+      else
+        out.push({
+          key: "counter_space",
+          v: (press ? 0.2 : 0) + 0.15 * Math.max(0, highLine) + 0.01 * (A.attSpd - D.defSpd),
+        });
       break;
     default:
-      if (press || deep) e -= 0.05;
+      if (press || deep) out.push({ key: "balanced_vs_shape", v: -0.05 });
   }
   // Pace in behind a high line, whatever the style.
-  if (highLine > 0) e += 0.1 * highLine * clamp((A.attSpd - D.defSpd) / 10, -1, 1.5);
-  return e * C.matchup;
+  if (highLine > 0)
+    out.push({
+      key: "pace_vs_line",
+      v: 0.1 * highLine * clamp((A.attSpd - D.defSpd) / 10, -1, 1.5),
+    });
+  return out;
+}
+
+export function matchup(a: Tactics, d: Tactics, A: Units, D: Units): number {
+  return matchupParts(a, d, A, D).reduce((sum, p) => sum + p.v, 0) * C.matchup;
+}
+
+/**
+ * The matchup right now, both ways, weighted: [side 0 attacking side 1, side 1 attacking side 0].
+ * Tactics are public (both managers see "They play"), so this spoils nothing.
+ */
+export function matchupNow(m: MatchState, get: Lookup): [MatchupPart[], MatchupPart[]] {
+  const U = [units(m.teams[0], m.chemistry, get), units(m.teams[1], m.chemistry, get)] as const;
+  const w = (ps: MatchupPart[]) => ps.map((p) => ({ key: p.key, v: p.v * C.matchup }));
+  return [
+    w(matchupParts(m.teams[0].tactics, m.teams[1].tactics, U[0], U[1])),
+    w(matchupParts(m.teams[1].tactics, m.teams[0].tactics, U[1], U[0])),
+  ];
 }
 
 // ---- Setup ----

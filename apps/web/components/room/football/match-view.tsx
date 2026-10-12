@@ -14,6 +14,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRoom } from "@/lib/room/store";
 import { sfx } from "../sounds";
 import { mmss } from "../use-now";
+import { meterOf, tipFor, type Meter } from "./assistant";
 import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
 import { LivePitch } from "./live-pitch";
@@ -133,6 +134,25 @@ export function MatchView({
       ? Math.max(0, subsPerMatch + (half >= 3 ? 1 : 0) - (live.subsUsed[mySide] ?? 0))
       : null;
 
+  // The matchup meter and your assistant (only the score and minute already shown).
+  const meter = mySide !== null && live?.matchup ? meterOf(live.matchup, mySide) : null;
+  const minuteShown = events.findLast((e) => e.t === "ball")?.m ?? 0;
+  const [dismissed, setDismissed] = useState<ReadonlySet<string>>(new Set());
+  const tip =
+    mySide !== null && live?.matchup && mine && !ended
+      ? tipFor({
+          matchup: live.matchup,
+          mySide,
+          sheet: mine,
+          fit: live.fit ?? null,
+          cards,
+          subsLeft: subsLeft ?? 0,
+          score,
+          minute: minuteShown,
+        })
+      : null;
+  const showTip = tip && !dismissed.has(tip.key) ? tip : null;
+
   return (
     <div className="flex flex-1 flex-col gap-2">
       {/* Scoreboard: managers' names, score, minute. */}
@@ -202,6 +222,12 @@ export function MatchView({
           colours={COLOURS}
         />
       ) : null}
+      {meter ? (
+        <MatchupMeter
+          // The tip already says it: don't say it twice.
+          meter={meter.why && showTip?.text.startsWith(meter.why) ? { ...meter, why: null } : meter}
+        />
+      ) : null}
 
       {atBreak && breakFor && mySide !== null ? (
         <div className="rounded-card border border-accent bg-accent-soft p-3">
@@ -216,6 +242,42 @@ export function MatchView({
             <Button disabled={!ready || breakFor.ready} onClick={() => act({ type: "ready" })}>
               {breakFor.ready ? "Waiting…" : "Ready"}
             </Button>
+          </div>
+        </div>
+      ) : null}
+
+      {showTip ? (
+        <div
+          className="rounded-card border border-brand bg-brand-soft px-3 py-2 shadow-sm"
+          role="status"
+        >
+          <p className="text-xs font-semibold text-brand-strong">Assistant</p>
+          <p className="text-sm font-semibold">{showTip.text}</p>
+          <div className="mt-1.5 flex justify-end gap-2">
+            <Button
+              size="md"
+              variant="ghost"
+              onClick={() => setDismissed((d) => new Set([...d, showTip.key]))}
+            >
+              Not now
+            </Button>
+            {showTip.action ? (
+              <Button
+                size="md"
+                disabled={!ready}
+                onClick={() => {
+                  const a = showTip.action as FootballAction;
+                  sendChange(
+                    a.type === "swap" ? `swap:${JSON.stringify([a.a, a.b])}` : "tactics",
+                    () => act(a),
+                    !atBreak,
+                  );
+                  setDismissed((d) => new Set([...d, showTip.key]));
+                }}
+              >
+                Do it
+              </Button>
+            ) : null}
           </div>
         </div>
       ) : null}
@@ -311,5 +373,34 @@ function TeamDot({ colour }: { colour: string }) {
       style={{ background: colour }}
       aria-hidden="true"
     />
+  );
+}
+
+/** Who has the tactical edge, as a bar from the middle, and the biggest reason why. */
+function MatchupMeter({ meter }: { meter: Meter }) {
+  const pct = Math.round(Math.abs(meter.value) * 50);
+  const good = meter.value >= 0;
+  return (
+    <div
+      className="px-1"
+      aria-label={`Tactics: ${meter.label}${meter.why ? `. ${meter.why}` : ""}`}
+    >
+      <div className="flex items-center gap-2 text-xs">
+        <span className="w-12 shrink-0 font-semibold text-ink-2">Tactics</span>
+        <span className="relative h-2 flex-1 overflow-hidden rounded-full bg-surface-2">
+          <span className="absolute inset-y-0 left-1/2 w-px bg-ink-3" />
+          <span
+            className={`absolute inset-y-0 rounded-full motion-safe:transition-all motion-safe:duration-500 ${good ? "bg-brand" : "bg-danger"}`}
+            style={good ? { left: "50%", width: `${pct}%` } : { right: "50%", width: `${pct}%` }}
+          />
+        </span>
+        <span
+          className={`w-28 shrink-0 text-right font-semibold ${good ? "text-brand-strong" : "text-danger-strong"}`}
+        >
+          {meter.label}
+        </span>
+      </div>
+      {meter.why ? <p className="mt-0.5 text-xs text-ink-2">{meter.why}</p> : null}
+    </div>
   );
 }

@@ -104,7 +104,7 @@ Set before kickoff and at half-time. Every effect is a **multiplier or additive 
 
 ## Matchups (Best, Oct 2026: tactics and decisions must matter, not just ratings)
 
-Each minute the attacking side's **build-up** meets the defending side's **defensive approach**; the result is an edge on the progress duel and a factor on chance quality (`matchup()` in `match.ts`, strength `C.matchup` = 1.5):
+Each minute the attacking side's **build-up** meets the defending side's **defensive approach**; the result is an edge on the progress duel and a factor on chance quality (`matchup()` in `match.ts`, strength `C.matchup` = 3; it was 1.5 until Oct 12, 2026):
 
 | Build-up \ their defence | Balanced / mid block | High press | Deep block |
 |---|---|---|---|
@@ -115,7 +115,9 @@ Each minute the attacking side's **build-up** meets the defending side's **defen
 
 Plus, whatever the style: pace against a high line (line > 50) adds up to +0.15 when our attackers are quicker than their defenders. Counters also attack 40 % more often right after winning the ball and make "counter" chances (base xG 0.20). A deep block attacks 10 % less and concedes more long shots and crosses; a press tires the team 20 % faster and fouls more.
 
-Measured (1,200 equal-strength matches per cell, Oct 2026): the right answer to an extreme setup turns about 33 % wins into about 53 % (≈ 5 rating points); the wrong one drops to 14–20 %. Against a balanced side no setup gains more than ~6 points, so balanced is safe but never the best answer. Tests: `match.test.ts` → "tactics matter".
+Measured (600 equal-strength matches per cell, Oct 12 2026, weight 3): the right answer to an extreme setup turns about 31 % wins (default tactics) into about 68 % (≈ 8 rating points; at weight 1.5 it was 53 %, ≈ 5). Raised after Best reported players saying tactics felt useless. Against a balanced side no setup gains more than ~6 points, so balanced is safe but never the best answer. Tests: `match.test.ts` → "tactics matter".
+
+**Matchup meter and assistant (decided with Best, Oct 2026):** the server sends each match's matchup piece by piece both ways (`matchupNow`; tactics are public). The match screen shows a meter under the live pitch (who has the edge: Even, Edge, Big edge, and the biggest reason in words, e.g. "Their press is winning the ball off our short passing"), and your assistant's most urgent tip at the top of the commentary with **Do it** (applies the change) and **Not now**. Tips, in order: a matchup hurting you and its counter (go long against a press, pass patiently against a deep block, mid block against long balls over your press, press a side picking your deep block apart, drop deeper against counters or pace behind a high line); a player of yours below 45 stamina and the best sub for his position; from 70 minutes behind, attack; from 80 ahead, hold. Built on your phone from the score and minute already shown, so a tip never gives the score away (`assistant.ts`).
 
 ## Player roles (ours)
 

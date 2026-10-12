@@ -16,6 +16,8 @@ export type {
   BuildUp,
   Defence,
   Side,
+  MatchupKey,
+  MatchupPart,
 } from "./match";
 export { tierOf, LUCK, type DraftLuck } from "./draft";
 export type * from "./state";
