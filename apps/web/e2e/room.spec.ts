@@ -1003,6 +1003,21 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
   await p.getByRole("button", { name: /^Manage/ }).click();
   await expect(p.getByText("With the ball")).toBeVisible();
   await shot(p, "football-manage-360");
+  // Sliders keep their value through a drag and a chip tap right after (they used to snap back
+  // when the server refused changes inside its 2 s gap).
+  await p.getByRole("button", { name: "More", exact: true }).click();
+  const line = p.getByRole("slider", { name: /^Line height/ });
+  const before = Number(await line.inputValue());
+  await line.focus();
+  for (let i = 0; i < 8; i++) await p.keyboard.press("ArrowLeft");
+  await p.getByRole("button", { name: "Deep", exact: true }).click();
+  await shot(p, "football-sliders-360");
+  await expect(p.getByText("Sending your change…").first()).toBeHidden({ timeout: 10_000 });
+  await expect(line).toHaveValue(String(before - 8));
+  await expect(p.getByRole("button", { name: "Deep", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
   await p.keyboard.press("Escape");
 
   // Skip to half time, carry on, skip to the end.

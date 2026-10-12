@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { FootballRules } from "./rules";
 import type { FootballAction } from "./state";
 import { ROLES } from "./types";
+import { FORMATIONS } from "./pitch";
 
 // Server-side validation, kept apart so client bundles don't pull in zod.
 
@@ -36,7 +37,7 @@ const ref = z.union([
 export const footballActionSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("pick"),
-    choice: z.union([z.string().max(64), z.number().int().min(1).max(18)]),
+    choice: z.union([z.string().max(64), z.number().int().min(1).max(FORMATIONS.length)]),
     slot: z.number().int().min(0).max(10).optional(),
   }),
   z.object({ type: z.literal("swap"), a: ref, b: ref }),
@@ -48,7 +49,7 @@ export const footballActionSchema = z.discriminatedUnion("type", [
   }),
   z.object({ type: z.literal("tactics"), tactics }),
   z.object({ type: z.literal("shout"), shout: z.enum(["attack", "hold", "press", "counter"]) }),
-  z.object({ type: z.literal("formation"), id: z.number().int().min(1).max(18) }),
+  z.object({ type: z.literal("formation"), id: z.number().int().min(1).max(FORMATIONS.length) }),
   z.object({ type: z.literal("ready") }),
   z.object({ type: z.literal("skip") }),
 ]) as unknown as z.ZodType<FootballAction>;

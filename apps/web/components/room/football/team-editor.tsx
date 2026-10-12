@@ -9,6 +9,7 @@ import {
 } from "@gamehub/engine/football";
 import { useState } from "react";
 import { teamNumbers } from "./draft-view";
+import { sendChange } from "./live-changes";
 import { Pitch } from "./pitch";
 
 /**
@@ -22,7 +23,10 @@ export function TeamEditor({
   act,
   subsLeft,
   off,
+  live = false,
 }: {
+  /** In a match (not at a break): swaps wait out the server's change gap. */
+  live?: boolean;
   sheet: TeamSheet;
   cards: Record<string, Card>;
   ready: boolean;
@@ -44,7 +48,8 @@ export function TeamEditor({
     if (same) return;
     if ("bench" in first && "bench" in r) return; // two subs: nothing to do
     if (subsLeft !== null && ("bench" in first || "bench" in r) && subsLeft <= 0) return;
-    act({ type: "swap", a: first, b: r });
+    const a = first;
+    sendChange(`swap:${JSON.stringify([a, r])}`, () => act({ type: "swap", a, b: r }), live);
   }
   const who = first
     ? "slot" in first

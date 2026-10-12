@@ -237,6 +237,7 @@ function ArrangePanel({
         ready={ready}
         act={act}
         subsLeft={null}
+        live={false}
       />
     </div>
   );

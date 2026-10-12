@@ -53,7 +53,7 @@ flowchart TD
 |---|---|
 | [draft.md](draft.md) | Pick flow, timers, auto-pick, probability tiers, guarantees, Draft luck presets, hidden info, simulation targets |
 | [player-database.md](player-database.md) | Schema, rating methodology, face stats, quotas, validation, batches, updates, sources policy |
-| [tactics.md](tactics.md) | Positions, 18 formations with coordinates, team tactics and their effects, roles and focuses, familiarity, chemistry, half-time |
+| [tactics.md](tactics.md) | Positions, 30 formations with coordinates, team tactics and their effects, roles and focuses, familiarity, chemistry, half-time |
 | [match-engine.md](match-engine.md) | Simulation model, events, calibration targets, extra time and penalties, CPU and persistence, commentary, Monte Carlo tests |
 | [modes.md](modes.md) | Head-to-head, league, knockout, solo run, tournament integration, state and actions, reconnection, costs |
 | [../../../packages/football-data/README.md](../../../packages/football-data/README.md) | The data package and the 60-player sample file |

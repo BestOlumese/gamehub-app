@@ -18,12 +18,19 @@ const pool = makePool(testDataset);
 const TEAMS = Number(process.env.DRAFT_TEAMS ?? 400);
 
 describe("football draft building blocks", () => {
-  it("18 formations of 11 slots, one keeper each", () => {
-    expect(FORMATIONS).toHaveLength(18);
+  it("30 formations of 11 slots, one keeper each, ids 1–30, names unique", () => {
+    expect(FORMATIONS).toHaveLength(30);
+    expect(FORMATIONS.map((f) => f.id)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1));
+    expect(new Set(FORMATIONS.map((f) => f.name)).size).toBe(30);
     for (const f of FORMATIONS) {
       expect(f.slots).toHaveLength(11);
       expect(f.slots.filter((s) => s.pos === "GK")).toHaveLength(1);
       expect(f.slots[0]?.pos).toBe("GK");
+      // Outfield slots sit inside the band the pitch drawing maps (back line 18 → strikers 86).
+      for (const s of f.slots.slice(1)) {
+        expect(s.y).toBeGreaterThanOrEqual(18);
+        expect(s.y).toBeLessThanOrEqual(86);
+      }
     }
   });
 

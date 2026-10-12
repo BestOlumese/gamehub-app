@@ -29,7 +29,7 @@ A player card has a primary position and up to two alternates (`player-database.
 | Different group (e.g. ST placed at CB) | −15 |
 | Outfield player in goal / keeper outfield | −40 |
 
-## Formations (18)
+## Formations (30)
 
 Pitch coordinates: `x` 0 (left touchline) → 100 (right), `y` 0 (own goal line) → 100 (opponent's). Slots are listed GK first, then back to front, right to left.
 
@@ -53,8 +53,22 @@ Pitch coordinates: `x` 0 (left touchline) → 100 (right), `y` 0 (own goal line)
 | 16 | 5-3-2 | GK(50,5) RWB(90,30) CB(70,20) CB(50,18) CB(30,20) LWB(10,30) CM(68,48) DM(50,40) CM(32,48) ST(62,82) ST(38,82) |
 | 17 | 5-2-3 | GK(50,5) RWB(90,32) CB(70,20) CB(50,18) CB(30,20) LWB(10,32) CM(62,46) CM(38,46) RW(80,74) ST(50,84) LW(20,74) |
 | 18 | 5-4-1 | GK(50,5) RWB(90,30) CB(70,20) CB(50,18) CB(30,20) LWB(10,30) RM(84,54) CM(62,48) CM(38,48) LM(16,54) ST(50,84) |
+| 19 | 4-3-3 Defend | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) DM(62,38) DM(38,38) CM(50,52) RW(84,76) ST(50,86) LW(16,76) |
+| 20 | 4-2-3-1 Narrow | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) DM(62,38) DM(38,38) AM(72,62) AM(50,64) AM(28,62) ST(50,86) |
+| 21 | 4-5-1 | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) RM(88,58) CM(70,48) CM(50,44) CM(30,48) LM(12,58) ST(50,86) |
+| 22 | 4-1-2-1-2 Wide | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) DM(50,36) RM(85,54) LM(15,54) AM(50,64) ST(62,85) ST(38,85) |
+| 23 | 4-2-4 | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) CM(62,44) CM(38,44) RW(84,74) ST(62,85) ST(38,85) LW(16,74) |
+| 24 | 4-2-1-3 | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) DM(62,38) DM(38,38) AM(50,60) RW(84,76) ST(50,86) LW(16,76) |
+| 25 | 4-1-3-2 | GK(50,5) RB(85,24) CB(62,20) CB(38,20) LB(15,24) DM(50,36) RM(84,54) CM(50,52) LM(16,54) ST(62,84) ST(38,84) |
+| 26 | 3-4-1-2 | GK(50,5) CB(72,20) CB(50,18) CB(28,20) RWB(90,46) CM(62,46) CM(38,46) LWB(10,46) AM(50,64) ST(62,85) ST(38,85) |
+| 27 | 3-5-2 Flat | GK(50,5) CB(72,20) CB(50,18) CB(28,20) RWB(90,46) CM(69,50) CM(50,44) CM(31,50) LWB(10,46) ST(62,84) ST(38,84) |
+| 28 | 3-2-4-1 | GK(50,5) CB(72,20) CB(50,18) CB(28,20) DM(62,36) DM(38,36) RW(84,66) AM(62,64) AM(38,64) LW(16,66) ST(50,86) |
+| 29 | 5-2-1-2 | GK(50,5) RWB(90,32) CB(70,20) CB(50,18) CB(30,20) LWB(10,32) CM(62,46) CM(38,46) AM(50,62) ST(62,84) ST(38,84) |
+| 30 | 5-3-2 Holding | GK(50,5) RWB(90,30) CB(70,20) CB(50,18) CB(30,20) LWB(10,30) DM(64,38) DM(36,38) CM(50,50) ST(62,82) ST(38,82) |
 
-Every formation has exactly 1 GK and 11 slots. The draft offers 5 of these 18 at random (`draft.md`).
+Every formation has exactly 1 GK and 11 slots. The draft offers 5 of these 30 at random (`draft.md`).
+
+Balance check (Oct 2026, when 19–30 were added): 300 matches per formation, teams drafted in that formation against ordinary drafted teams of the same strength. Points per game ranged 1.17–1.53 across all 30, within the noise of 300 matches (about ±0.15); the new 12 fall inside the range of the first 18.
 
 ## Unit strengths (how players feed the match engine)
 

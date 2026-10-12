@@ -11,7 +11,8 @@ import {
   type TeamSheet,
 } from "@gamehub/engine/football";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { sendChange, useChangeWaiting } from "./live-changes";
 import { roleName } from "./look";
 import { TeamEditor } from "./team-editor";
 
@@ -79,14 +80,12 @@ function Slider({
   min,
   max,
   onChange,
-  disabled,
 }: {
   label: string;
   value: number;
   min: number;
   max: number;
   onChange: (v: number) => void;
-  disabled: boolean;
 }) {
   return (
     <label className="flex items-center gap-3 text-sm">
@@ -96,7 +95,6 @@ function Slider({
         min={min}
         max={max}
         value={value}
-        disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
         className="flex-1 accent-(--color-brand)"
       />
@@ -116,7 +114,10 @@ export function ManageSheet({
   act,
   subsLeft,
   off,
+  live,
 }: {
+  /** In a match (not at a break): changes wait out the server's change gap. */
+  live: boolean;
   open: boolean;
   onClose: () => void;
   sheet: TeamSheet;
@@ -130,8 +131,30 @@ export function ManageSheet({
 }) {
   const [tab, setTab] = useState<"tactics" | "team" | "roles">("tactics");
   const [more, setMore] = useState(false);
-  const t = sheet.tactics;
-  const set = (patch: Partial<Tactics>) => act({ type: "tactics", tactics: { ...t, ...patch } });
+  const waiting = useChangeWaiting();
+  // Your edits, kept here until the server's tactics match them. Sliders used to send every step
+  // of a drag, and the refused ones snapped them back. `base` is the server's tactics when you
+  // started: if the server moves somewhere else (a shout), its tactics win.
+  const server = sheet.tactics;
+  const key = JSON.stringify(server);
+  const [edit, setEdit] = useState<{ base: string; t: Tactics } | null>(null);
+  const t = edit && (edit.base === key || JSON.stringify(edit.t) === key) ? edit.t : server;
+  const settle = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (settle.current) clearTimeout(settle.current);
+    },
+    [],
+  );
+  /** Chips send at once; sliders once you stop dragging. */
+  function set(patch: Partial<Tactics>, slide = false) {
+    const next = { ...t, ...patch };
+    setEdit({ base: key, t: next });
+    if (settle.current) clearTimeout(settle.current);
+    const send = () => sendChange("tactics", () => act({ type: "tactics", tactics: next }), live);
+    if (slide) settle.current = setTimeout(send, 300);
+    else send();
+  }
   const slots = formation(sheet.formation).slots;
   return (
     <Dialog
@@ -183,6 +206,9 @@ export function ManageSheet({
           >
             {more ? "Less" : "More"}
           </button>
+          <p className="min-h-4 text-xs text-ink-2" aria-live="polite">
+            {waiting ? "Sending your change…" : ""}
+          </p>
           {more ? (
             <div className="space-y-2">
               <Slider
@@ -190,32 +216,28 @@ export function ManageSheet({
                 value={t.line}
                 min={0}
                 max={100}
-                onChange={(line) => set({ line })}
-                disabled={!ready}
+                onChange={(line) => set({ line }, true)}
               />
               <Slider
                 label="Width"
                 value={t.width}
                 min={0}
                 max={100}
-                onChange={(width) => set({ width })}
-                disabled={!ready}
+                onChange={(width) => set({ width }, true)}
               />
               <Slider
                 label="Tempo"
                 value={t.tempo}
                 min={0}
                 max={100}
-                onChange={(tempo) => set({ tempo })}
-                disabled={!ready}
+                onChange={(tempo) => set({ tempo }, true)}
               />
               <Slider
                 label="In the box"
                 value={t.inBox}
                 min={1}
                 max={5}
-                onChange={(inBox) => set({ inBox })}
-                disabled={!ready}
+                onChange={(inBox) => set({ inBox }, true)}
               />
             </div>
           ) : null}
@@ -228,6 +250,7 @@ export function ManageSheet({
           act={act}
           subsLeft={subsLeft}
           off={off}
+          live={live}
         />
       ) : (
         <ul className="divide-y divide-line">
@@ -242,13 +265,10 @@ export function ManageSheet({
                 <select
                   value={x.role}
                   disabled={!ready}
-                  onChange={(e) =>
-                    act({
-                      type: "role",
-                      slot: i,
-                      role: e.target.value as (typeof POSITION_ROLES)[typeof pos][number],
-                    })
-                  }
+                  onChange={(e) => {
+                    const role = e.target.value as (typeof POSITION_ROLES)[typeof pos][number];
+                    sendChange(`role:${i}`, () => act({ type: "role", slot: i, role }), live);
+                  }}
                   className="h-9 rounded-control border border-line bg-surface px-2"
                   aria-label={`Role for ${c?.short ?? pos}`}
                 >

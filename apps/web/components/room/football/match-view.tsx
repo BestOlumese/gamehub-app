@@ -14,6 +14,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRoom } from "@/lib/room/store";
 import { sfx } from "../sounds";
 import { mmss } from "../use-now";
+import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
 import { BallStrip } from "./pitch";
 import { clockOf, schedule, scoreOf, shown, statsOf } from "./playback";
@@ -86,6 +87,7 @@ export function MatchView({
 }) {
   const soundOn = useRoom((s) => s.soundOn);
   const [manage, setManage] = useState(false);
+  const waiting = useChangeWaiting();
   // Playback ticks every 200 ms.
   const [now, setNow] = useState(() => Date.now() + offset);
   useEffect(() => {
@@ -233,7 +235,9 @@ export function MatchView({
                   className="px-1"
                   aria-pressed={on}
                   disabled={!ready}
-                  onClick={() => act({ type: "shout", shout: s })}
+                  onClick={() =>
+                    sendChange("tactics", () => act({ type: "shout", shout: s }), true)
+                  }
                 >
                   {SHOUT_LABEL[s]}
                 </Button>
@@ -255,7 +259,11 @@ export function MatchView({
               </Button>
             ) : null}
           </div>
-          {theirs ? (
+          {waiting ? (
+            <p className="text-center text-xs text-ink-2" aria-live="polite">
+              Sending your change…
+            </p>
+          ) : theirs ? (
             <p className="text-center text-xs text-ink-2">They play: {styleName(theirs)}</p>
           ) : null}
         </div>
@@ -272,6 +280,7 @@ export function MatchView({
           act={act}
           subsLeft={subsLeft}
           off={live?.off[mySide as 0 | 1]}
+          live={!atBreak}
         />
       ) : null}
     </div>
