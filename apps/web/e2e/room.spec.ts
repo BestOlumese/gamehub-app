@@ -1023,6 +1023,12 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
   );
   await p.keyboard.press("Escape");
 
+  // Solo: pause at will; the match waits until you resume.
+  await p.getByRole("button", { name: "Pause", exact: true }).click();
+  await expect(p.getByText("Paused", { exact: true })).toBeVisible({ timeout: 10_000 });
+  await p.getByRole("button", { name: "Resume", exact: true }).click();
+  await expect(p.getByText("Paused", { exact: true })).toBeHidden({ timeout: 10_000 });
+
   // Skip to half time, carry on, skip to the end.
   await p.getByRole("button", { name: "Skip half" }).click();
   await expect(p.getByText(/^Half time ·/)).toBeVisible({ timeout: 20_000 });

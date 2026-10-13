@@ -19,7 +19,7 @@ import {
   type Pt,
   type Side,
 } from "./live-play";
-import type { Timed } from "./playback";
+import { matchNow, type Timed } from "./playback";
 
 /** Stripes across the pitch's length (it lies sideways here). */
 const GRASS_SIDEWAYS =
@@ -119,7 +119,10 @@ export function LivePitch({
   perMinute,
   mySide,
   fit,
+  pause = null,
 }: {
+  /** A timeout in progress: the pitch freezes. */
+  pause?: { at: number; until: number } | null;
   /** Your side in this match (stamina markers go on your players only). */
   mySide: Side | null;
   /** Your players' stamina (0–100). */
@@ -164,9 +167,9 @@ export function LivePitch({
       : `Saved by ${name(pen.keeper)}`
     : null;
 
-  const input = useRef({ plan, lineup, tactics, offset, perMinute, cards, leaving });
+  const input = useRef({ plan, lineup, tactics, offset, perMinute, cards, leaving, pause });
   useEffect(() => {
-    input.current = { plan, lineup, tactics, offset, perMinute, cards, leaving };
+    input.current = { plan, lineup, tactics, offset, perMinute, cards, leaving, pause };
   });
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -389,8 +392,8 @@ export function LivePitch({
     }
 
     function step(dt: number) {
-      const { plan, lineup: line, offset, perMinute } = input.current;
-      const now = Date.now() + offset;
+      const { plan, lineup: line, offset, perMinute, pause } = input.current;
+      const now = matchNow(Date.now() + offset, pause);
       // Longer matches move a little calmer, but players never crawl or race.
       const scale = Math.min(1.3, Math.max(0.75, Math.sqrt(DEFAULT_MINUTE / perMinute)));
       const m = latest(plan.modes, now);

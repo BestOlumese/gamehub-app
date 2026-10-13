@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { seededRng } from "../../rng";
 import { createFootballGame, LEAD_MINUTES, msPerMinute, SOLO_BANDS } from "./game";
-import { PEN_MS } from "./rules";
+import { PEN_MS, TIMEOUT_MS } from "./rules";
 import { footballNaija, type FootballRules } from "./rules";
 import type { FootballAction, FootballState } from "./state";
 import { testDataset } from "./test-data";
@@ -199,6 +199,57 @@ describe("football room", () => {
       },
     });
     expect(checked).toBe(true);
+  });
+
+  it("timeouts: the match freezes, changes skip the gap, two each, only the caller resumes", () => {
+    const sim = start(2, {}, "pause");
+    while (sim.s.phase === "draft")
+      for (const seat of game.currentSeats(sim.s))
+        act(sim, seat, game.timeoutAction(sim.s, seat, sim.rules, seededRng("t")));
+    const per = msPerMinute(sim.rules);
+    sim.now += 10 * per;
+    act(sim, 0, { type: "tick" });
+    const f = () => sim.s.rounds[0]?.[0] as NonNullable<FootballState["rounds"][0][0]>;
+    const minute = f().match?.minute;
+    const started = f().startedAt;
+    act(sim, 0, { type: "timeout" });
+    expect(f().pause).toMatchObject({ by: 0, until: sim.now + TIMEOUT_MS });
+    // Frozen: ticks during the timeout play nothing.
+    sim.now += 10_000;
+    act(sim, 0, { type: "tick" });
+    expect(f().match?.minute).toBe(minute);
+    // No rush during a timeout: two changes in a row are fine.
+    act(sim, 0, { type: "shout", shout: "press" });
+    act(sim, 0, { type: "shout", shout: "hold" });
+    // Only the caller ends it early.
+    expect(
+      game.apply(
+        sim.s,
+        { seat: 1, action: { type: "resume" } },
+        { rng: seededRng("r"), rules: sim.rules, now: sim.now },
+      ).ok,
+    ).toBe(false);
+    act(sim, 0, { type: "resume" });
+    expect(f().pause).toBeNull();
+    expect(f().startedAt).toBe(started + 10_000);
+    // A second one runs its full 20 s, then the clock moves on by exactly that.
+    act(sim, 0, { type: "timeout" });
+    const at = sim.now;
+    sim.now += TIMEOUT_MS + 5_000;
+    act(sim, 0, { type: "tick" });
+    expect(f().pause).toBeNull();
+    expect(f().startedAt).toBe(started + 10_000 + TIMEOUT_MS);
+    expect(at).toBeGreaterThan(0);
+    // Two a match.
+    expect(
+      game.apply(
+        sim.s,
+        { seat: 0, action: { type: "timeout" } },
+        { rng: seededRng("r"), rules: sim.rules, now: sim.now },
+      ).ok,
+    ).toBe(false);
+    act(sim, 1, { type: "timeout" });
+    expect(game.view(sim.s, 1).rounds[0]?.[0]?.timeouts).toEqual([2, 1]);
   });
 
   it("league of 4 bots: everyone plays everyone once; the table adds up", () => {

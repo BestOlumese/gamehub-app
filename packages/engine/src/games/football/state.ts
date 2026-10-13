@@ -49,6 +49,13 @@ export type Fixture = {
   /** Server time the current half (or shoot-out) started playing back. */
   startedAt: number;
   result: { score: [number, number]; pens: [number, number] | null; winner: 0 | 1 | "draw" } | null;
+  /**
+   * A tactical timeout in progress: the match is frozen from `at` until `until` (or until the
+   * caller resumes); when it ends, `startedAt` moves on by the time paused.
+   */
+  pause?: { at: number; until: number; by: 0 | 1 } | null;
+  /** Timeouts each side has called this match. */
+  timeouts?: [number, number];
 };
 
 /** A solo-run opponent: a drafted bot XI with a fictional name. */
@@ -106,6 +113,9 @@ export type FootballAction =
   | { type: "formation"; id: number }
   | { type: "ready" }
   | { type: "skip" }
+  /** A tactical timeout (2 a match; a solo run pauses at will), and ending your own early. */
+  | { type: "timeout" }
+  | { type: "resume" }
   /** Server only: play the next chunk of the live matches. */
   | { type: "tick" };
 
@@ -158,6 +168,10 @@ export type FixtureView = {
     matchup: [MatchupPart[], MatchupPart[]];
   } | null;
   log: MatchEvent[];
+  /** A timeout in progress (the screen freezes at `at`). */
+  pause: { at: number; until: number; by: 0 | 1 } | null;
+  /** Timeouts each side has used this match. */
+  timeouts: [number, number];
   startedAt: number;
   result: Fixture["result"];
 };

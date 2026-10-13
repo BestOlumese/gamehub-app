@@ -3,6 +3,7 @@
 import {
   commentary,
   SHOUTS,
+  TIMEOUTS_PER_MATCH,
   type Card,
   type FixtureView,
   type FootballAction,
@@ -18,7 +19,7 @@ import { meterOf, tipFor, type Meter } from "./assistant";
 import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
 import { LivePitch } from "./live-pitch";
-import { clockOf, schedule, scoreOf, shown, statsOf } from "./playback";
+import { clockOf, matchNow, schedule, scoreOf, shown, statsOf } from "./playback";
 
 const COLOURS: [string, string] = ["#2F6FD6", "#E07A2E"];
 const SHOUT_LABEL: Record<Shout, string> = {
@@ -103,7 +104,10 @@ export function MatchView({
     () => schedule(fixture.log, fixture.startedAt, msPerMinute, highlights),
     [fixture.log, fixture.startedAt, msPerMinute, highlights],
   );
-  const events = shown(timed, now);
+  // A timeout freezes the match clock (and everything shown).
+  const paused = fixture.pause && now < fixture.pause.until ? fixture.pause : null;
+  const clockNow = matchNow(now, fixture.pause);
+  const events = shown(timed, clockNow);
   const { score, pens } = scoreOf(events);
   const half = live?.half ?? 1;
   const clock = clockOf(events, half);
@@ -152,6 +156,7 @@ export function MatchView({
         })
       : null;
   const showTip = tip && !dismissed.has(tip.key) ? tip : null;
+  const timeoutsLeft = mySide !== null ? TIMEOUTS_PER_MATCH - (fixture.timeouts?.[mySide] ?? 0) : 0;
 
   return (
     <div className="flex flex-1 flex-col gap-2">
@@ -211,7 +216,8 @@ export function MatchView({
       {fixture.teams && live ? (
         <LivePitch
           timed={timed}
-          now={now}
+          now={clockNow}
+          pause={fixture.pause}
           offset={offset}
           perMinute={msPerMinute}
           mySide={mySide}
@@ -246,6 +252,31 @@ export function MatchView({
         </div>
       ) : null}
 
+      {paused ? (
+        <div className="rounded-card border border-accent bg-accent-soft p-3" role="status">
+          <p className="font-bold">
+            {canSkip ? "Paused" : `Timeout · ${mmss(paused.until - now)}`}
+          </p>
+          <p className="text-sm text-ink-2">
+            {paused.by === mySide
+              ? "Change tactics or make subs; the match waits."
+              : `${names[paused.by]} called a timeout. You can make changes too.`}
+          </p>
+          {mySide !== null ? (
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <Button variant="secondary" onClick={() => setManage(true)}>
+                Manage
+              </Button>
+              {paused.by === mySide ? (
+                <Button disabled={!ready} onClick={() => act({ type: "resume" })}>
+                  Resume
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
       {showTip ? (
         <div
           className="rounded-card border border-brand bg-brand-soft px-3 py-2 shadow-sm"
@@ -270,7 +301,7 @@ export function MatchView({
                   sendChange(
                     a.type === "swap" ? `swap:${JSON.stringify([a.a, a.b])}` : "tactics",
                     () => act(a),
-                    !atBreak,
+                    !atBreak && !paused,
                   );
                   setDismissed((d) => new Set([...d, showTip.key]));
                 }}
@@ -313,7 +344,7 @@ export function MatchView({
                   className="px-1"
                   aria-pressed={on}
                   onClick={() =>
-                    sendChange("tactics", () => act({ type: "shout", shout: s }), true)
+                    sendChange("tactics", () => act({ type: "shout", shout: s }), !paused)
                   }
                 >
                   {SHOUT_LABEL[s]}
@@ -321,9 +352,17 @@ export function MatchView({
               );
             })}
           </div>
-          <div className={`grid gap-1.5 ${canSkip ? "grid-cols-2" : "grid-cols-1"}`}>
+          <div className={`grid gap-1.5 ${canSkip ? "grid-cols-3" : "grid-cols-2"}`}>
             <Button size="md" variant="secondary" onClick={() => setManage(true)}>
               Manage{subsLeft !== null ? ` · ${subsLeft} subs` : ""}
+            </Button>
+            <Button
+              size="md"
+              variant="secondary"
+              disabled={!ready || !!paused || (!canSkip && timeoutsLeft <= 0)}
+              onClick={() => act({ type: "timeout" })}
+            >
+              {canSkip ? "Pause" : `Timeout · ${timeoutsLeft}`}
             </Button>
             {canSkip ? (
               <Button
@@ -358,7 +397,7 @@ export function MatchView({
           subsLeft={subsLeft}
           off={live?.off[mySide as 0 | 1]}
           fit={live?.fit ?? null}
-          live={!atBreak}
+          live={!atBreak && !paused}
         />
       ) : null}
     </div>

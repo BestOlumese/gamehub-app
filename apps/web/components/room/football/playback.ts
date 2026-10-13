@@ -153,3 +153,15 @@ export function statsOf(base: MatchStats, events: readonly MatchEvent[], half: n
   s.possession[1] = 100 - s.possession[0];
   return s;
 }
+
+/**
+ * The match clock: real time, frozen during a timeout. When it ends the server moves the
+ * match's start on by the time paused; until it has, this does the same sum on the phone.
+ */
+export function matchNow(
+  now: number,
+  pause: { at: number; until: number } | null | undefined,
+): number {
+  if (!pause) return now;
+  return now < pause.until ? Math.min(now, pause.at) : now - (pause.until - pause.at);
+}

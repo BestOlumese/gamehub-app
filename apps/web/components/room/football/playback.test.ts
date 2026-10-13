@@ -1,6 +1,6 @@
 import type { MatchEvent, MatchStats } from "@gamehub/engine/football";
 import { describe, expect, it } from "vitest";
-import { clockOf, schedule, scoreOf, shown, statsOf } from "./playback";
+import { clockOf, matchNow, schedule, scoreOf, shown, statsOf } from "./playback";
 
 const ball = (m: number, team: 0 | 1 = 0): MatchEvent => ({ m, o: -1, t: "ball", team, zone: 1 });
 const zero = (): MatchStats => ({
@@ -87,6 +87,14 @@ describe("football playback", () => {
     // Quiet minutes are short; the attack in minute 10 takes far longer than a normal minute.
     expect(len[0]).toBeLessThan(0.5);
     expect(len[9]).toBeGreaterThan(2);
+  });
+
+  it("a timeout freezes the match clock, then it carries on from where it stopped", () => {
+    const pause = { at: 10_000, until: 30_000 };
+    expect(matchNow(9_000, pause)).toBe(9_000);
+    expect(matchNow(20_000, pause)).toBe(10_000);
+    expect(matchNow(35_000, pause)).toBe(15_000);
+    expect(matchNow(35_000, null)).toBe(35_000);
   });
 
   it("earlier halves are already shown; a shoot-out shows kick by kick", () => {

@@ -42,6 +42,9 @@ import { bestRole, formation, POSITION_ROLES } from "./pitch";
 import {
   footballNaija,
   LEAD_MINUTES,
+  SOLO_PAUSE_MS,
+  TIMEOUT_MS,
+  TIMEOUTS_PER_MATCH,
   PLAYBACK_SLACK_MINUTES,
   modeFor,
   msPerMinute,
@@ -264,6 +267,8 @@ export function createFootballGame(
       base: null,
       startedAt: 0,
       result: null,
+      pause: null,
+      timeouts: [0, 0],
     });
     switch (s.mode) {
       case "solo": {
@@ -356,6 +361,11 @@ export function createFootballGame(
         const c = botChange(m, 1, null);
         if (c && !whyNotChange(m, 1, c)) f.match = applyChange(m, 1, c).state;
       }
+      // A timeout freezes the match; when it's over, the clock moves on by the time paused.
+      if (f.pause) {
+        if (now < f.pause.until) continue;
+        endPause(f, f.pause.until);
+      }
       const target = Math.floor((now - f.startedAt) / per) + LEAD_MINUTES;
       const r = playMinutes(f.match as MatchState, target, matchStreams(s, f), get);
       f.match = r.state;
@@ -386,6 +396,12 @@ export function createFootballGame(
       s.roundEndsAt = null;
       endRound(s, rules, now, ev);
     }
+  }
+
+  function endPause(f: Fixture, at: number) {
+    if (!f.pause) return;
+    f.startedAt += Math.max(0, at - f.pause.at);
+    f.pause = null;
   }
 
   /** When the screens finish showing a fixture's current half (or shoot-out). */
@@ -637,7 +653,9 @@ export function createFootballGame(
     const m = f?.match;
     if (!f || !m || isFinished(m)) return "NOT_ALLOWED";
     const mgr = s.managers[seat] as Manager;
-    if (s.phase === "live" && now - mgr.lastChange < CHANGE_GAP_MS) return "NOT_ALLOWED";
+    // During a timeout there's no rush: changes don't wait out the gap.
+    if (s.phase === "live" && !f.pause && now - mgr.lastChange < CHANGE_GAP_MS)
+      return "NOT_ALLOWED";
     const side = sideOf(f, seat);
     let c: Change | null = null;
     if (a.type === "tactics") c = { type: "tactics", tactics: a.tactics };
@@ -806,8 +824,32 @@ export function createFootballGame(
           }
           return ok(s, ev);
         }
+        case "timeout": {
+          const f = fixtureOf(s, seat);
+          if (s.phase !== "live" || !f?.match || isFinished(f.match) || f.match.halfDone || f.pause)
+            return err("NOT_ALLOWED");
+          const side = sideOf(f, seat);
+          const used = (f.timeouts ??= [0, 0]);
+          if (s.mode !== "solo" && (used[side] ?? 0) >= TIMEOUTS_PER_MATCH)
+            return err("NOT_ALLOWED");
+          used[side] = (used[side] ?? 0) + 1;
+          f.pause = {
+            at: now,
+            until: now + (s.mode === "solo" ? SOLO_PAUSE_MS : TIMEOUT_MS),
+            by: side,
+          };
+          ev.push({ type: "timeout", fixture: f.id, team: side });
+          return ok(s, ev);
+        }
+        case "resume": {
+          const f = fixtureOf(s, seat);
+          if (!f?.pause || f.pause.by !== sideOf(f, seat)) return err("NOT_ALLOWED");
+          endPause(f, now);
+          return ok(s, ev);
+        }
         case "skip": {
           if (s.mode !== "solo" || s.phase !== "live") return err("NOT_ALLOWED");
+          for (const f of s.rounds[s.round] ?? []) endPause(f, now);
           // Solo: no one else to wait for, so the half plays out at once.
           for (const f of s.rounds[s.round] ?? []) f.startedAt = now - 200 * msPerMinute(rules);
           tick(s, rules, now, ev);
@@ -991,6 +1033,8 @@ export function createFootballGame(
                 )
               : [],
             startedAt: f.startedAt,
+            pause: f.pause ?? null,
+            timeouts: f.timeouts ?? [0, 0],
             result: f.result,
           };
         }),
