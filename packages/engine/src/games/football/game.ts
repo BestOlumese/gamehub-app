@@ -23,6 +23,7 @@ import {
   applyChange,
   clockMinute,
   DEFAULT_TACTICS,
+  HALF_START,
   isFinished,
   matchupNow,
   nextPhase,
@@ -53,6 +54,7 @@ import {
   type FootballRules,
 } from "./rules";
 import { footballActionSchema, footballRulesSchema } from "./schemas";
+import { reactionLine, TALK_BOOST, TALK_MINUTES, talkReaction } from "./talk";
 import { lookupOf } from "./sheets";
 import { SHOUTS } from "./shouts";
 import type {
@@ -346,7 +348,10 @@ export function createFootballGame(
     }
     s.phase = "live";
     s.windowEndsAt = null;
-    for (const m of s.managers) m.ready = true;
+    for (const m of s.managers) {
+      m.ready = true;
+      m.talk = null;
+    }
     ev.push({ type: "half_started", round: s.round, half: 1 });
   }
 
@@ -444,7 +449,10 @@ export function createFootballGame(
     }
     s.phase = "live";
     s.windowEndsAt = null;
-    for (const m of s.managers) m.ready = true;
+    for (const m of s.managers) {
+      m.ready = true;
+      m.talk = null;
+    }
     ev.push({ type: "half_started", round: s.round });
     // Only shoot-outs left: the round ends once they've been shown (ticks carry on until then).
     if (!anyHalf) s.roundEndsAt = pensUntil + 600;
@@ -846,6 +854,24 @@ export function createFootballGame(
             by: side,
           };
           ev.push({ type: "timeout", fixture: f.id, team: side });
+          return ok(s, ev);
+        }
+        case "talk": {
+          // Once per break: the squad reacts to the score and how they really played.
+          const f = fixtureOf(s, seat);
+          const mt = f?.match;
+          if (s.phase !== "break" || !f || !mt || isFinished(mt) || m.talk)
+            return err("NOT_ALLOWED");
+          const side = sideOf(f, seat);
+          const opp = side === 0 ? 1 : 0;
+          const reaction = talkReaction(
+            action.talk,
+            mt.score[side] - mt.score[opp],
+            mt.stats.xg[side] - mt.stats.xg[opp],
+          );
+          const next = HALF_START[mt.half + 1] ?? 90;
+          mt.teams[side].talk = { boost: TALK_BOOST[reaction], until: next + TALK_MINUTES };
+          m.talk = { pick: action.talk, reaction, text: reactionLine(action.talk, reaction) };
           return ok(s, ev);
         }
         case "resume": {

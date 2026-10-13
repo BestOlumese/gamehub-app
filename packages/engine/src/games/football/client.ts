@@ -21,4 +21,5 @@ export type {
   Instructions,
 } from "./match";
 export { tierOf, LUCK, type DraftLuck } from "./draft";
+export { TALKS, type Talk, type Reaction } from "./talk";
 export type * from "./state";

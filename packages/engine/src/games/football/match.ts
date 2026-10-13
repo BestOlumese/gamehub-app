@@ -170,6 +170,8 @@ export type TeamState = {
   bench: string[];
   tactics: Tactics;
   instructions?: Instructions;
+  /** A half-time talk's effect: rating points until match minute `until`. */
+  talk?: { boost: number; until: number } | null;
   subsUsed: number;
   /** Players who have left the pitch (subbed off); they can't come back. */
   gone: string[];
@@ -380,7 +382,9 @@ function chemFor(t: TeamState, players: FootballPlayer[]): number[] {
   return pts;
 }
 
-function units(t: TeamState, chem: boolean, get: Lookup): Units {
+function units(t: TeamState, chem: boolean, get: Lookup, minute?: number): Units {
+  // A half-time talk's lift (or dip) for the 15 minutes after the break.
+  const talk = t.talk && minute !== undefined && minute <= t.talk.until ? t.talk.boost : 0;
   const players = t.xi.map((x) => get(x.id));
   const pts = chem ? chemFor(t, players) : null;
   const eff = t.xi.map(
@@ -389,7 +393,8 @@ function units(t: TeamState, chem: boolean, get: Lookup): Units {
       positionPenalty(players[i] as FootballPlayer, x.pos) +
       familiarity(players[i] as FootballPlayer, x.role) +
       (pts ? CHEM_MOD[pts[i] as 0 | 1 | 2 | 3] : 0) +
-      fatigueMod(x.fit),
+      fatigueMod(x.fit) +
+      talk,
   );
   const sum = [0, 0, 0];
   const full = [0, 0, 0];
@@ -605,7 +610,7 @@ const clone = (m: MatchState): MatchState => ({
 
 // ---- Where the match is ----
 
-const HALF_START = [0, 0, 45, 90, 105] as const;
+export const HALF_START = [0, 0, 45, 90, 105] as const;
 /** The match clock for the current minute (stoppage shows as 45, 90…: the client adds "+n"). */
 export const clockMinute = (m: MatchState) => {
   const len = m.half > 2 ? 15 : 45;
@@ -712,7 +717,10 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   let o = 0;
   const push = (e: MatchEvent) => ev.push(e);
   const next = () => o++;
-  const U = [units(m.teams[0], m.chemistry, get), units(m.teams[1], m.chemistry, get)] as const;
+  const U = [
+    units(m.teams[0], m.chemistry, get, clockMinute(m)),
+    units(m.teams[1], m.chemistry, get, clockMinute(m)),
+  ] as const;
   // 1. Possession.
   const a = Math.pow(Math.max(1, U[0].mid), C.possessionExp) * possessionMult(m.teams[0].tactics);
   const b = Math.pow(Math.max(1, U[1].mid), C.possessionExp) * possessionMult(m.teams[1].tactics);
@@ -1059,7 +1067,10 @@ function foul(
   // A foul in the final third: a free kick, sometimes a direct shot.
   if (u(rng) < C.freeKickShot) {
     push({ m: mm, o: next(), t: "free_kick", team: victim });
-    const U = [units(m.teams[0], m.chemistry, get), units(m.teams[1], m.chemistry, get)] as const;
+    const U = [
+      units(m.teams[0], m.chemistry, get, clockMinute(m)),
+      units(m.teams[1], m.chemistry, get, clockMinute(m)),
+    ] as const;
     shoot(m, victim, "free_kick", false, U, 0, rng, get, push, mm, next);
   }
 }

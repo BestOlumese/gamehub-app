@@ -281,6 +281,34 @@ describe("football room", () => {
     expect(bad.ok).toBe(false);
   });
 
+  it("team talk: once per break, a lift for 15 minutes, and only you hear how it went", () => {
+    let done = false;
+    run(start(2, {}, "talk"), {
+      onStep: (sim) => {
+        if (done || sim.s.phase !== "break") return;
+        const f = sim.s.rounds[0]?.[0];
+        const m = f?.match;
+        if (!f || !m) return;
+        const before = m.half;
+        act(sim, 0, { type: "talk", talk: "fire" });
+        const r = game.apply(
+          sim.s,
+          { seat: 0, action: { type: "talk", talk: "calm" } },
+          { rng: seededRng("r"), rules: sim.rules, now: sim.now },
+        );
+        expect(r.ok).toBe(false);
+        const me = game.view(sim.s, 0).me?.talk;
+        expect(me?.pick).toBe("fire");
+        expect(me?.text.length).toBeGreaterThan(5);
+        expect(JSON.stringify(game.view(sim.s, 1))).not.toContain(me?.text as string);
+        const t = sim.s.rounds[0]?.[0]?.match?.teams[0].talk;
+        expect(t?.until).toBe((before === 1 ? 45 : 90) + 15);
+        done = true;
+      },
+    });
+    expect(done).toBe(true);
+  });
+
   it("league of 4 bots: everyone plays everyone once; the table adds up", () => {
     const sim = run(start(4, {}, "league"));
     expect(sim.s.mode).toBe("league");

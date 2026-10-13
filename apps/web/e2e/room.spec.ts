@@ -1032,6 +1032,9 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
   // Skip to half time, carry on, skip to the end.
   await p.getByRole("button", { name: "Skip half" }).click();
   await expect(p.getByText(/^Half time ·/)).toBeVisible({ timeout: 20_000 });
+  // A team talk: the squad's reaction replaces the four talks.
+  await p.getByRole("button", { name: "Fire up", exact: true }).click();
+  await expect(p.getByRole("button", { name: "Fire up", exact: true })).toBeHidden();
   await shot(p, "football-halftime-360");
   await p.getByRole("button", { name: "Ready", exact: true }).click();
   await p.getByRole("button", { name: "Skip half" }).click({ timeout: 20_000 });

@@ -3,7 +3,9 @@
 import {
   commentary,
   SHOUTS,
+  TALKS,
   TIMEOUTS_PER_MATCH,
+  type Talk,
   type Card,
   type FixtureView,
   type FootballAction,
@@ -22,6 +24,12 @@ import { LivePitch } from "./live-pitch";
 import { clockOf, matchNow, schedule, scoreOf, shown, statsOf } from "./playback";
 
 const COLOURS: [string, string] = ["#2F6FD6", "#E07A2E"];
+const TALK_LABEL: Record<Talk, string> = {
+  fire: "Fire up",
+  calm: "Calm down",
+  praise: "Praise",
+  demand: "Demand more",
+};
 const SHOUT_LABEL: Record<Shout, string> = {
   attack: "Attack",
   hold: "Hold",
@@ -72,7 +80,10 @@ export function MatchView({
   subsPerMatch,
   canSkip,
   highlights,
+  talk = null,
 }: {
+  /** This break's team talk and how the squad took it (yours alone). */
+  talk?: { pick: Talk; reaction: "good" | "neutral" | "bad"; text: string } | null;
   /** Room rule: quiet minutes fly by, attacks play out slower. */
   highlights: boolean;
   subsPerMatch: number;
@@ -241,6 +252,31 @@ export function MatchView({
             {clock === "HT" ? "Half time" : "Break"} · {mmss(breakFor.endsAt - now)}
           </p>
           <p className="text-sm text-ink-2">Change tactics or make subs, then tap Ready.</p>
+          <div className="mt-2">
+            <p className="text-xs font-semibold text-ink-2">Team talk</p>
+            {talk ? (
+              <p
+                className={`mt-1 text-sm font-semibold ${talk.reaction === "good" ? "text-brand-strong" : talk.reaction === "bad" ? "text-danger-strong" : ""}`}
+                aria-live="polite"
+              >
+                {talk.text}
+              </p>
+            ) : (
+              <div className="mt-1 grid grid-cols-2 gap-1.5">
+                {TALKS.map((k) => (
+                  <Button
+                    key={k}
+                    size="md"
+                    variant="secondary"
+                    disabled={!ready}
+                    onClick={() => act({ type: "talk", talk: k })}
+                  >
+                    {TALK_LABEL[k]}
+                  </Button>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <Button variant="secondary" onClick={() => setManage(true)}>
               Manage

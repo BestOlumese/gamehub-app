@@ -12,6 +12,7 @@ import type {
 } from "./match";
 import type { FootballMode } from "./rules";
 import type { Shout } from "./shouts";
+import type { Reaction, Talk } from "./talk";
 import type { FootballPlayer, Role } from "./types";
 
 /** The options of one pick (hidden: only that manager's view, only while it's open). */
@@ -36,6 +37,8 @@ export type Manager = {
   ready: boolean;
   /** Server time of the last live change (one every 2 s at most). */
   lastChange: number;
+  /** This break's team talk and how it went (yours alone; cleared at the restart). */
+  talk?: { pick: Talk; reaction: Reaction; text: string } | null;
 };
 
 export type Side = "home" | "away";
@@ -121,6 +124,7 @@ export type FootballAction =
   | { type: "formation"; id: number }
   | { type: "ready" }
   | { type: "skip" }
+  | { type: "talk"; talk: Talk }
   | { type: "instructions"; instructions: Instructions }
   /** A tactical timeout (2 a match; a solo run pauses at will), and ending your own early. */
   | { type: "timeout" }

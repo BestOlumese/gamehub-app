@@ -194,6 +194,10 @@ A player's chemistry = min(3, nation pts + club pts + league pts). **Out-of-posi
 
 With chemistry **off**, everyone counts as 1 (no effect), and the UI hides chemistry.
 
+## Team talk (decided with Best, Oct 2026)
+
+At each break you may give one talk: **Fire up**, **Calm down**, **Praise** or **Demand more** (`talk.ts`). How the squad takes it depends on the score and on how the half really went (xG difference, ±0.3): two up, praise or calm works and demanding more feels unfair; level, fire them up; one down after playing well, praise works and demanding doesn't, one down after playing badly, demand more and praise makes them complacent; two or more down, demand or fire, never praise. A good reaction is +2 effective rating for the 15 minutes after the restart, a bad one −1.5. Only you see the reaction line ("They're buzzing. Fired up for this half."); the meter never includes it.
+
 ## Half-time
 
 - **Window: 40 s** (Proposal) after the first half's playback ends. Both managers act at the same time; the countdown is server time.

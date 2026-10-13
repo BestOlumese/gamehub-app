@@ -155,6 +155,7 @@ export default function FootballTable({ snap, send }: Props) {
         cards={view.cards}
         msPerMinute={view.msPerMinute}
         highlights={rules.highlights}
+        talk={me?.talk ?? null}
         offset={offset}
         mySide={mySide}
         breakFor={
