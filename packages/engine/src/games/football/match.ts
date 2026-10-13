@@ -48,7 +48,23 @@ export type TeamSheet = {
   xi: SheetSlot[];
   bench: string[];
   tactics: Tactics;
+  /** Targeted instructions (hidden from the opponent); none = all defaults. */
+  instructions?: Instructions;
 };
+
+/**
+ * Targeted instructions (Best, Oct 2026): where to attack, who to man-mark, whose passing to
+ * press. Each pays off against a real weakness and costs something elsewhere.
+ */
+export type Instructions = {
+  /** Where attacks go: down your left, the middle, your right, or mixed (no preference). */
+  flank: "left" | "centre" | "right" | "mixed";
+  /** An opponent to man-mark (he gets far fewer shots and passes; your defence stretches). */
+  mark: string | null;
+  /** An opponent to press when he has it (works the worse a passer he is; you foul and tire more). */
+  press: string | null;
+};
+export const DEFAULT_INSTRUCTIONS: Instructions = { flank: "mixed", mark: null, press: null };
 
 export type ChanceKind =
   | "build_up"
@@ -153,6 +169,7 @@ export type TeamState = {
   xi: Live[];
   bench: string[];
   tactics: Tactics;
+  instructions?: Instructions;
   subsUsed: number;
   /** Players who have left the pitch (subbed off); they can't come back. */
   gone: string[];
@@ -234,6 +251,8 @@ export const C = {
    * long balls win 68 % of matches where default tactics win 31 %.
    */
   matchup: 3,
+  /** How much attacking the right (or wrong) flank moves the duel. */
+  flank: 2,
 };
 
 const clamp = (x: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, x));
@@ -530,6 +549,7 @@ const teamFrom = (s: TeamSheet): TeamState => {
     })),
     bench: [...s.bench],
     tactics: { ...s.tactics },
+    instructions: { ...DEFAULT_INSTRUCTIONS, ...s.instructions, mark: null, press: null },
     subsUsed: 0,
     gone: [],
   };
@@ -713,7 +733,10 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   const dFit = avgFit(D);
   if (
     u(rng) <
-    C.foulPerMin * (dtac.defence === "high_press" ? 1.15 : 1) * (1 + Math.max(0, 70 - dFit) / 60)
+    C.foulPerMin *
+      (dtac.defence === "high_press" ? 1.15 : 1) *
+      (D.instructions?.press ? 1.06 : 1) *
+      (1 + Math.max(0, 70 - dFit) / 60)
   ) {
     foul(m, opp, side, rng, get, push, mm, next);
     return 1;
@@ -723,6 +746,8 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   if (dtac.defence === "high_press") rate *= 0.92;
   if (tac.defence === "deep_block") rate *= 0.9; // sitting deep, fewer bodies forward
   if (transition && tac.build === "counter") rate *= 1.4;
+  // Pressed on their weakest passer: the worse he passes, the more often it breaks down.
+  rate *= 1 - 0.22 * pressBite(T, D.instructions, get);
   if (u(rng) >= rate) {
     return tac.defence === "deep_block" ? 0 : 1;
   }
@@ -731,6 +756,10 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   const style = matchup(tac, dtac, U[side], U[opp]);
   let edge = (U[side].att - U[opp].def) / C.duelScale + style;
   if (direct) edge += 0.05;
+  // Where you attack: your men on that side against theirs facing them; a man-marker leaves gaps.
+  edge += flankEdge(T, D, get);
+  if (D.instructions?.mark && onPitch(T).some(({ x }) => x.id === D.instructions?.mark))
+    edge += 0.04;
   if (u(rng) >= sigmoid(edge)) {
     m.lastFail = side;
     return 1;
@@ -739,7 +768,7 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   const kind: ChanceKind =
     transition && tac.build === "counter" && u(rng) < 0.6
       ? "counter"
-      : chanceKind(T, D, direct, rng);
+      : chanceKind(T, D, direct, rng, T.instructions?.flank ?? "mixed");
   // Offside on balls in behind (their line).
   if (
     (kind === "through_ball" || kind === "counter") &&
@@ -762,6 +791,7 @@ function fatigue(m: MatchState, get: Lookup): Array<{ team: Side; player: string
     const tac = t.tactics;
     let rate = C.fatiguePerMin * (1 + (tac.tempo - 50) * 0.003);
     if (tac.defence === "high_press") rate *= 1.2;
+    if (t.instructions?.press) rate *= 1.05; // hunting one man down costs legs
     t.xi.forEach((x, i) => {
       if (x.off) return;
       let r = rate * (WORKLOAD[slotPos(t, i, x)] ?? 1) * staminaFactor(get(x.id));
@@ -775,11 +805,19 @@ function fatigue(m: MatchState, get: Lookup): Array<{ team: Side; player: string
   return out;
 }
 
-function chanceKind(T: TeamState, D: TeamState, direct: boolean, rng: Rng): ChanceKind {
+function chanceKind(
+  T: TeamState,
+  D: TeamState,
+  direct: boolean,
+  rng: Rng,
+  flank: Instructions["flank"],
+): ChanceKind {
   if (direct) return "direct";
   const tac = T.tactics;
-  const cross = clamp(0.3 + (tac.width - 50) * 0.006, 0.1, 0.6);
-  const through = clamp(0.2 + (D.tactics.line - 50) * 0.004, 0.08, 0.4);
+  // Down a flank: more crosses; through the middle: more balls in behind.
+  const lean = flank === "mixed" ? 0 : flank === "centre" ? -0.06 : 0.06;
+  const cross = clamp(0.3 + (tac.width - 50) * 0.006 + lean, 0.08, 0.65);
+  const through = clamp(0.2 + (D.tactics.line - 50) * 0.004 - lean * 0.6, 0.06, 0.45);
   const r = u(rng);
   if (r < cross) return "cross";
   if (r < cross + through) return "through_ball";
@@ -791,23 +829,81 @@ function onPitch(t: TeamState) {
   return t.xi.map((x, i) => ({ x, i })).filter(({ x, i }) => !x.off && slotPos(t, i, x) !== "GK");
 }
 
-function shooter(t: TeamState, rng: Rng, get: Lookup, header = false): Live {
+/** A man-marked player is far less often the one who gets the shot or the pass in. */
+const MARKED = 0.35;
+
+function shooter(
+  t: TeamState,
+  rng: Rng,
+  get: Lookup,
+  header = false,
+  marked: string | null = null,
+): Live {
   return pick(rng, onPitch(t), ({ x, i }) => {
     const p = get(x.id);
     const w = (UNIT_WEIGHTS[slotPos(t, i, x)][2] as number) + 0.05;
     const bias = header ? stat(p, "pow") / 70 : stat(p, "fin") / 70;
-    return w * (SHOOT[x.role] ?? 1) * bias * bias;
+    return w * (SHOOT[x.role] ?? 1) * bias * bias * (x.id === marked ? MARKED : 1);
   }).x;
 }
 
-function assister(t: TeamState, not: Live, rng: Rng, get: Lookup): Live | undefined {
+function assister(
+  t: TeamState,
+  not: Live,
+  rng: Rng,
+  get: Lookup,
+  marked: string | null = null,
+): Live | undefined {
   const pool = onPitch(t).filter(({ x }) => x !== not);
   if (!pool.length) return undefined;
   return pick(rng, pool, ({ x, i }) => {
     const pos = slotPos(t, i, x);
     const w = (UNIT_WEIGHTS[pos][1] as number) * 0.6 + (UNIT_WEIGHTS[pos][2] as number);
-    return w * (CREATE[x.role] ?? 1) * (stat(get(x.id), "pas") / 70);
+    return (
+      w * (CREATE[x.role] ?? 1) * (stat(get(x.id), "pas") / 70) * (x.id === marked ? MARKED : 1)
+    );
   }).x;
+}
+
+/** A player's effective rating right now (position, role, tiredness; chemistry left out). */
+function effOf(x: Live, get: Lookup): number {
+  const p = get(x.id);
+  return p.ovr - positionPenalty(p, x.pos) + familiarity(p, x.role) + fatigueMod(x.fit);
+}
+
+/** Which slots work a flank, in a side's own frame (x from its left touchline). */
+const onFlank = (x: number, flank: Instructions["flank"]) =>
+  flank === "left" ? x < 40 : flank === "right" ? x > 60 : x >= 30 && x <= 70;
+
+/**
+ * Attacking down a flank: your attackers there against their defenders facing them (your left
+ * faces their right). Running at a weak or spent full-back pays; at their best side it costs.
+ */
+function flankEdge(T: TeamState, D: TeamState, get: Lookup): number {
+  const flank = T.instructions?.flank ?? "mixed";
+  if (flank === "mixed") return 0;
+  const facing = flank === "left" ? "right" : flank === "right" ? "left" : "centre";
+  const mean = (t: TeamState, f: Instructions["flank"], unit: 0 | 2) => {
+    const xs = t.xi
+      .map((x, i) => ({ x, s: formation(t.formation).slots[i] }))
+      .filter(
+        ({ x, s }) =>
+          !x.off &&
+          s &&
+          s.pos !== "GK" &&
+          onFlank(s.x, f) &&
+          (UNIT_WEIGHTS[s.pos][unit] as number) >= (unit === 0 ? 0.4 : 0.2),
+      );
+    return xs.length ? xs.reduce((a, { x }) => a + effOf(x, get), 0) / xs.length : 70;
+  };
+  return clamp((mean(T, flank, 2) - mean(D, facing, 0)) / 25, -0.35, 0.35) * C.flank;
+}
+
+/** How hard pressing their chosen passer bites: 0 for a good passer, up to 1 for a poor one. */
+function pressBite(T: TeamState, ins: Instructions | undefined, get: Lookup): number {
+  const id = ins?.press;
+  if (!id || !onPitch(T).some(({ x }) => x.id === id)) return 0;
+  return clamp((78 - stat(get(id), "pas")) / 20, 0, 1);
 }
 
 function shoot(
@@ -827,10 +923,11 @@ function shoot(
   const T = m.teams[side];
   const D = m.teams[opp];
   const header = kind === "cross" || kind === "corner" ? u(rng) < 0.6 : false;
-  const shot = shooter(T, rng, get, header);
+  const marked = D.instructions?.mark ?? null;
+  const shot = shooter(T, rng, get, header, marked);
   const sp = get(shot.id);
   const assist =
-    kind === "long_shot" || kind === "free_kick" ? undefined : assister(T, shot, rng, get);
+    kind === "long_shot" || kind === "free_kick" ? undefined : assister(T, shot, rng, get, marked);
   // Every attack gets its lead-in, naming who set it up, so a goal never comes from nowhere.
   push({
     m: mm,
@@ -851,6 +948,8 @@ function shoot(
   if (header) q *= 1 + clamp((stat(sp, "pow") - U[opp].defPow) / 60, -0.3, 0.4);
   if (transition && D.tactics.defence === "high_press") q *= 1.15;
   if (T.tactics.build === "short") q *= 0.97;
+  // Running at a weak or spent defender makes better chances too (and a strong one, worse).
+  q *= 1 + 0.5 * flankEdge(T, D, get);
   if (D.tactics.defence === "deep_block" && kind !== "cross" && kind !== "long_shot") q *= 0.85;
   q *= 1 - (T.tactics.tempo - 50) * 0.002;
   q *= 1 + (T.tactics.inBox - 3) * 0.04;
@@ -972,7 +1071,8 @@ export type Change =
   | { type: "tactics"; tactics: Tactics }
   | { type: "role"; slot: number; role: Role; focus?: string }
   | { type: "formation"; formation: number }
-  | { type: "swap"; a: number; b: number };
+  | { type: "swap"; a: number; b: number }
+  | { type: "instructions"; instructions: Instructions };
 
 /** Subs allowed: the room's number, and one more once extra time starts. */
 export const subsAllowed = (m: MatchState) => m.subsPerMatch + (m.half >= 3 ? 1 : 0);
@@ -996,6 +1096,12 @@ export function whyNotChange(m: MatchState, side: Side, c: Change): string | nul
     if (!a || !b || c.a === c.b) return "No such slots";
     if (a.off || b.off) return "A sent-off player can't move";
     return null;
+  }
+  if (c.type === "instructions") {
+    // Marks and presses name someone on the other side's pitch.
+    const them = m.teams[side === 0 ? 1 : 0].xi;
+    const ok = (id: string | null) => !id || them.some((x) => x.id === id && !x.off);
+    return ok(c.instructions.mark) && ok(c.instructions.press) ? null : "He isn't on their pitch";
   }
   if (c.type === "formation") {
     try {
@@ -1023,6 +1129,8 @@ export function applyChange(prev: MatchState, side: Side, c: Change): Out {
     t.gone.push(c.off);
     t.subsUsed++;
     ev.push({ m: mm, o: 900, t: "sub", team: side, off: c.off, on: c.on });
+  } else if (c.type === "instructions") {
+    t.instructions = { ...c.instructions };
   } else if (c.type === "tactics") {
     t.tactics = { ...c.tactics };
     if (m.half > 0 && !m.halfDone)

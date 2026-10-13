@@ -598,6 +598,10 @@ export function createFootballGame(
       case "shout":
         sheet.tactics = { ...SHOUTS[a.shout] };
         return null;
+      case "instructions":
+        // Before kickoff only the flank: there's nobody of theirs to mark or press yet.
+        sheet.instructions = { ...a.instructions, mark: null, press: null };
+        return null;
       case "role": {
         const x = sheet.xi[a.slot];
         const pos = formation(sheet.formation).slots[a.slot]?.pos;
@@ -666,6 +670,7 @@ export function createFootballGame(
       c = { type: "role", slot: a.slot, role: a.role, ...(a.focus ? { focus: a.focus } : {}) };
     } else if (a.type === "formation") c = { type: "formation", formation: a.id };
     else if (a.type === "swap") c = swapChange(m, side, a.a, a.b);
+    else if (a.type === "instructions") c = { type: "instructions", instructions: a.instructions };
     if (!c || whyNotChange(m, side, c)) return "NOT_ALLOWED";
     const r = applyChange(m, side, c);
     f.match = r.state;
@@ -673,6 +678,8 @@ export function createFootballGame(
     mgr.lastChange = now;
     if (a.type === "tactics" || a.type === "shout")
       (mgr.sheet as TeamSheet).tactics = { ...r.state.teams[side].tactics };
+    if (a.type === "instructions")
+      (mgr.sheet as TeamSheet).instructions = { ...a.instructions, mark: null, press: null };
     ev.push({ type: "change", fixture: f.id, team: side });
     return null;
   }
@@ -987,7 +994,14 @@ export function createFootballGame(
             a: f.a,
             b: f.b,
             names: [name(f.a), name(f.b)],
-            teams: sheets,
+            // Instructions are private: only your own sheet keeps them (copies, never the state).
+            teams: sheets
+              ? (sheets.map((sh, k) => {
+                  if (k === own) return sh;
+                  const { instructions: _hidden, ...rest } = sh;
+                  return rest;
+                }) as [TeamSheet, TeamSheet])
+              : null,
             score: m ? [m.score[0], m.score[1]] : (f.result?.score ?? null),
             live:
               m && detailed
@@ -1000,11 +1014,13 @@ export function createFootballGame(
                     halfDone: m.halfDone,
                     subsUsed: [m.teams[0].subsUsed, m.teams[1].subsUsed],
                     base: f.base ?? m.stats,
-                    now: m.teams.map((t) => ({
+                    now: m.teams.map((t, k) => ({
                       formation: t.formation,
                       xi: t.xi.map((x) => ({ id: x.id, role: x.role, focus: x.focus })),
                       bench: [...t.bench],
                       tactics: t.tactics,
+                      // Your own instructions only: theirs stay hidden from you.
+                      ...(k === own && t.instructions ? { instructions: t.instructions } : {}),
                     })) as [TeamSheet, TeamSheet],
                     tactics: [m.teams[0].tactics, m.teams[1].tactics],
                     xi: [m.teams[0].xi.map((x) => x.id), m.teams[1].xi.map((x) => x.id)],

@@ -1,8 +1,12 @@
 "use client";
 
 import {
+  DEFAULT_INSTRUCTIONS,
   formation,
+  GROUP,
+  isKeeperStats,
   POSITION_ROLES,
+  type Instructions,
   type BuildUp,
   type Card,
   type Defence,
@@ -106,6 +110,7 @@ export function ManageSheet({
   onClose,
   sheet,
   theirs,
+  opponent = null,
   cards,
   ready,
   act,
@@ -123,13 +128,15 @@ export function ManageSheet({
   sheet: TeamSheet;
   /** The opponent's current tactics (shown as "They play"), when in a match. */
   theirs: Tactics | null;
+  /** Their current team in a match (for marking and pressing); null outside one. */
+  opponent?: TeamSheet | null;
   cards: Record<string, Card>;
   ready: boolean;
   act: (a: FootballAction) => void;
   subsLeft: number | null;
   off?: readonly string[];
 }) {
-  const [tab, setTab] = useState<"tactics" | "team" | "roles">("tactics");
+  const [tab, setTab] = useState<"tactics" | "team" | "roles" | "orders">("tactics");
   const [more, setMore] = useState(false);
   const waiting = useChangeWaiting();
   // Your edits, kept here until the server's tactics match them. Sliders used to send every step
@@ -163,15 +170,15 @@ export function ManageSheet({
       title="Manage"
       description={theirs ? `They play: ${styleName(theirs)}` : undefined}
     >
-      <div className="mb-3 grid grid-cols-3 gap-1" role="tablist">
-        {(["tactics", "team", "roles"] as const).map((k) => (
+      <div className="mb-3 grid grid-cols-4 gap-1" role="tablist">
+        {(["tactics", "team", "roles", "orders"] as const).map((k) => (
           <button
             key={k}
             type="button"
             role="tab"
             aria-selected={tab === k}
             onClick={() => setTab(k)}
-            className={`h-9 rounded-control text-sm font-semibold ${tab === k ? "bg-ink text-surface" : "bg-surface-2"}`}
+            className={`h-9 rounded-control px-0.5 text-xs font-semibold ${tab === k ? "bg-ink text-surface" : "bg-surface-2"}`}
           >
             {k === "tactics"
               ? "Tactics"
@@ -179,7 +186,9 @@ export function ManageSheet({
                 ? subsLeft !== null
                   ? "Subs"
                   : "Team"
-                : "Roles"}
+                : k === "roles"
+                  ? "Roles"
+                  : "Instructions"}
           </button>
         ))}
       </div>
@@ -240,6 +249,15 @@ export function ManageSheet({
             </div>
           ) : null}
         </div>
+      ) : tab === "orders" ? (
+        <InstructionsTab
+          sheet={sheet}
+          opponent={opponent}
+          cards={cards}
+          send={(instructions) =>
+            sendChange("instructions", () => act({ type: "instructions", instructions }), live)
+          }
+        />
       ) : tab === "team" ? (
         <TeamEditor
           sheet={sheet}
@@ -304,5 +322,146 @@ export function StaminaBar({ value, className = "" }: { value: number; className
     >
       <span className={`block h-full ${colour}`} style={{ width: `${Math.round(value)}%` }} />
     </span>
+  );
+}
+
+/**
+ * Targeted instructions (design decision, Oct 2026: a Manage tab of its own; hidden from the
+ * opponent): where to attack (and who you'd be running at), who to man-mark, whose passing to
+ * press. Marking and pressing need their team, so only in a match.
+ */
+function InstructionsTab({
+  sheet,
+  opponent,
+  cards,
+  send,
+}: {
+  sheet: TeamSheet;
+  opponent: TeamSheet | null;
+  cards: Record<string, Card>;
+  send: (i: Instructions) => void;
+}) {
+  const ins = sheet.instructions ?? DEFAULT_INSTRUCTIONS;
+  const set = (patch: Partial<Instructions>) => send({ ...ins, ...patch });
+  const theirs = opponent
+    ? formation(opponent.formation).slots.flatMap((sl, i) => {
+        const id = opponent.xi[i]?.id;
+        const c = id ? cards[id] : undefined;
+        return c && sl.pos !== "GK" ? [{ id: id as string, c, sl }] : [];
+      })
+    : [];
+  // Who you'd run at: your left faces their right (their x > 60), and so on.
+  const facing = (flank: Instructions["flank"]) => {
+    const side = theirs.filter(({ sl }) =>
+      flank === "left" ? sl.x > 60 : flank === "right" ? sl.x < 40 : sl.x >= 35 && sl.x <= 65,
+    );
+    const defenders = side.filter(({ sl }) => GROUP[sl.pos] === "DEF");
+    return (defenders.length ? defenders : side)
+      .sort((a, b) => (flank === "centre" ? 0 : Math.abs(b.sl.x - 50) - Math.abs(a.sl.x - 50)))
+      .map(({ c, sl }) => `${c.short} ${c.ovr} ${sl.pos}`)
+      .slice(0, 2)
+      .join(", ");
+  };
+  const best = [...theirs].sort((a, b) => b.c.ovr - a.c.ovr).slice(0, 3);
+  const passes = (c: Card) => (isKeeperStats(c.stats) ? 99 : c.stats.pas);
+  const poorPassers = [...theirs].sort((a, b) => passes(a.c) - passes(b.c)).slice(0, 3);
+  const FLANKS = [
+    { value: "left", label: "Left" },
+    { value: "centre", label: "Centre" },
+    { value: "right", label: "Right" },
+    { value: "mixed", label: "Mixed" },
+  ] as const;
+  return (
+    <div className="space-y-4">
+      <fieldset className="space-y-1.5">
+        <legend className="text-sm font-semibold">Attack through</legend>
+        <div className="grid grid-cols-4 gap-1">
+          {FLANKS.map((f) => (
+            <button
+              key={f.value}
+              type="button"
+              aria-pressed={ins.flank === f.value}
+              onClick={() => set({ flank: f.value })}
+              className={`h-10 rounded-control border text-sm font-semibold ${ins.flank === f.value ? "border-brand bg-brand-soft text-brand-strong" : "border-line bg-surface"}`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-ink-2">
+          {ins.flank === "mixed"
+            ? "No favourite side."
+            : opponent
+              ? `You'd run at: ${facing(ins.flank) || "nobody in particular"}.`
+              : "Pick a side that suits your wingers."}
+        </p>
+      </fieldset>
+      {opponent ? (
+        <>
+          <Pick
+            label="Man-mark their best"
+            hint="He'll see far less of the ball; your defence is stretched a little elsewhere."
+            value={ins.mark}
+            options={best.map(({ id, c, sl }) => ({
+              id,
+              text: `${c.short} · ${sl.pos} · ${c.ovr}`,
+            }))}
+            onChange={(mark) => set({ mark })}
+          />
+          <Pick
+            label="Press when he has it"
+            hint="Works the worse a passer he is. Costs some fouls and legs."
+            value={ins.press}
+            options={poorPassers.map(({ id, c, sl }) => ({
+              id,
+              text: `${c.short} · ${sl.pos} · PAS ${passes(c)}`,
+            }))}
+            onChange={(press) => set({ press })}
+          />
+        </>
+      ) : (
+        <p className="text-sm text-ink-2">Marking and pressing open once you know their team.</p>
+      )}
+    </div>
+  );
+}
+
+function Pick({
+  label,
+  hint,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  hint: string;
+  value: string | null;
+  options: Array<{ id: string; text: string }>;
+  onChange: (v: string | null) => void;
+}) {
+  const row = (id: string | null, text: string) => (
+    <button
+      key={id ?? "none"}
+      type="button"
+      role="radio"
+      aria-checked={value === id}
+      onClick={() => onChange(id)}
+      className={`flex h-10 items-center gap-2 rounded-control border px-3 text-left text-sm ${value === id ? "border-brand bg-brand-soft font-semibold text-brand-strong" : "border-line bg-surface"}`}
+    >
+      <span
+        className={`size-3 shrink-0 rounded-full border-2 ${value === id ? "border-brand bg-brand" : "border-line"}`}
+      />
+      {text}
+    </button>
+  );
+  return (
+    <div className="space-y-1.5" role="radiogroup" aria-label={label}>
+      <p className="text-sm font-semibold">{label}</p>
+      <div className="grid gap-1">
+        {options.map((o) => row(o.id, o.text))}
+        {row(null, "Nobody")}
+      </div>
+      <p className="text-xs text-ink-2">{hint}</p>
+    </div>
   );
 }

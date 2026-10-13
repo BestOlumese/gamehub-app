@@ -1,7 +1,15 @@
 // Football Draft room state, actions and views (docs/games/football-draft/modes.md, draft.md).
 import type { SeatIndex } from "../../types";
 import type { Group } from "./pitch";
-import type { MatchEvent, MatchState, MatchStats, MatchupPart, TeamSheet, Tactics } from "./match";
+import type {
+  Instructions,
+  MatchEvent,
+  MatchState,
+  MatchStats,
+  MatchupPart,
+  TeamSheet,
+  Tactics,
+} from "./match";
 import type { FootballMode } from "./rules";
 import type { Shout } from "./shouts";
 import type { FootballPlayer, Role } from "./types";
@@ -113,6 +121,7 @@ export type FootballAction =
   | { type: "formation"; id: number }
   | { type: "ready" }
   | { type: "skip" }
+  | { type: "instructions"; instructions: Instructions }
   /** A tactical timeout (2 a match; a solo run pauses at will), and ending your own early. */
   | { type: "timeout" }
   | { type: "resume" }

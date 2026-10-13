@@ -119,6 +119,16 @@ Measured (600 equal-strength matches per cell, Oct 12 2026, weight 3): the right
 
 **Matchup meter and assistant (decided with Best, Oct 2026):** the server sends each match's matchup piece by piece both ways (`matchupNow`; tactics are public). The match screen shows a meter under the live pitch (who has the edge: Even, Edge, Big edge, and the biggest reason in words, e.g. "Their press is winning the ball off our short passing"), and your assistant's most urgent tip at the top of the commentary with **Do it** (applies the change) and **Not now**. Tips, in order: a matchup hurting you and its counter (go long against a press, pass patiently against a deep block, mid block against long balls over your press, press a side picking your deep block apart, drop deeper against counters or pace behind a high line); a player of yours below 45 stamina and the best sub for his position; from 70 minutes behind, attack; from 80 ahead, hold. Built on your phone from the score and minute already shown, so a tip never gives the score away (`assistant.ts`).
 
+## Targeted instructions (decided with Best, Oct 2026)
+
+Set in Manage → Instructions; hidden from the opponent (their view never carries them). Each pays off against a real weakness and costs something elsewhere:
+
+- **Attack through** Left / Centre / Right / Mixed (default). Your attackers on that side (attack weight ≥ 0.2) against their defenders facing them (your left faces their right), effective ratings with tiredness: the difference / 25, capped ±0.35, × `C.flank` 2 on the duel, and half of it on chance quality. A side also shifts the chance types a little (flanks +6 % crosses, the centre more balls in behind). The tab names who you'd run at.
+- **Man-mark** one of their outfielders: he's 65 % less likely to be the one who shoots or makes the pass; their attacks get +0.04 on the duel (your defence is stretched).
+- **Press when he has it**: their attacks start less often by up to 22 %, scaled by how poor a passer he is (`(78 − PAS) / 20`, 0 to 1); you foul 6 % more and tire 5 % faster.
+
+Measured (500 matches each, Oct 13 2026): attacking an exhausted full-back lifts wins from 40 % to 52 % (≈ 5 rating points), his fresh side gives nothing; no flank is a free win against a normal side (each within ±3 %). Man-marking their best player takes 53 % of his goals; pressing their worst passer cuts their shots by 10 %. Marks and presses must name a player on their pitch (`whyNotChange`); before kickoff only the flank can be set.
+
 ## Player roles (ours)
 
 Each slot gets a role (from its position's list) and a **focus** (1–3 options per role). Role + focus shift which face stats count most for that slot and which events the player is picked for (shooter, crosser, tackler…).

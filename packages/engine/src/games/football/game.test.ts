@@ -252,6 +252,35 @@ describe("football room", () => {
     expect(game.view(sim.s, 1).rounds[0]?.[0]?.timeouts).toEqual([2, 1]);
   });
 
+  it("instructions: yours stay hidden from them; marks must name one of theirs on the pitch", () => {
+    const sim = start(2, {}, "orders");
+    while (sim.s.phase === "draft")
+      for (const seat of game.currentSeats(sim.s))
+        act(sim, seat, game.timeoutAction(sim.s, seat, sim.rules, seededRng("t")));
+    const m = sim.s.rounds[0]?.[0]?.match;
+    const target = m?.teams[1].xi.find((x) => x.pos !== "GK")?.id as string;
+    act(sim, 0, {
+      type: "instructions",
+      instructions: { flank: "right", mark: target, press: null },
+    });
+    const mine = game.view(sim.s, 0).rounds[0]?.[0]?.live?.now[0];
+    expect(mine?.instructions).toEqual({ flank: "right", mark: target, press: null });
+    expect(JSON.stringify(game.view(sim.s, 1))).not.toMatch(/"flank":"right"/);
+    sim.now += 3000;
+    const bad = game.apply(
+      sim.s,
+      {
+        seat: 0,
+        action: {
+          type: "instructions",
+          instructions: { flank: "left", mark: "nobody", press: null },
+        },
+      },
+      { rng: seededRng("r"), rules: sim.rules, now: sim.now },
+    );
+    expect(bad.ok).toBe(false);
+  });
+
   it("league of 4 bots: everyone plays everyone once; the table adds up", () => {
     const sim = run(start(4, {}, "league"));
     expect(sim.s.mode).toBe("league");

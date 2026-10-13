@@ -4,6 +4,7 @@ import { ALL_LINES, commentary } from "./commentary";
 import { autoDraft, makePool, type Luck } from "./draft";
 import {
   applyChange,
+  DEFAULT_INSTRUCTIONS,
   DEFAULT_TACTICS,
   fatigueMod,
   playMatch as play,
@@ -13,10 +14,12 @@ import {
   startMatch,
   whyNotChange,
   winner,
+  type Instructions,
   type MatchEvent,
   type MatchState,
   type TeamSheet,
 } from "./match";
+import { formation } from "./pitch";
 import { lookupOf, sheetOf } from "./sheets";
 import { testDataset } from "./test-data";
 
@@ -193,6 +196,69 @@ describe("football match engine", () => {
     const s = shootout(r.state, streams("p"), get).events[0];
     if (s) expect(commentary(s, names, [1, 1])).toMatch(/scores|wrong way|saved|misses/);
   });
+});
+
+describe("targeted instructions (Best, Oct 2026): each pays off against a real weakness", () => {
+  const n = 500;
+  const run = (ins: Partial<Instructions>, tweak: (m: MatchState) => unknown = () => null) => {
+    let w = 0;
+    let shotsB = 0;
+    let starGoals = 0;
+    for (let i = 0; i < n; i++) {
+      const m = startMatch(sheet(i), sheet(i * 7 + 3), { ...opts, subsPerMatch: 0 as 3 });
+      m.teams[0].instructions = { ...DEFAULT_INSTRUCTIONS, ...ins };
+      const out = tweak(m);
+      const star = typeof out === "string" ? out : null;
+      const r = playMatch(m, R(`ins:${i}`));
+      if (r.state.score[0] > r.state.score[1]) w++;
+      shotsB += r.state.stats.shots[1];
+      starGoals += r.events.filter(
+        (e) => e.t === "goal" && e.team === 1 && e.player === star,
+      ).length;
+    }
+    return { win: w / n, shotsB: shotsB / n, starGoals: starGoals / n };
+  };
+  // Their left side (our right) is exhausted.
+  const tiredLeft = (m: MatchState) => {
+    const t = m.teams[1];
+    formation(t.formation).slots.forEach((sl, i) => {
+      if (sl.x < 35 && ["LB", "LWB", "CB"].includes(sl.pos)) (t.xi[i] as { fit: number }).fit = 30;
+    });
+  };
+  const best = (m: MatchState) =>
+    [...m.teams[1].xi]
+      .filter((x) => x.pos !== "GK")
+      .sort((a, b) => get(b.id).ovr - get(a.id).ovr)[0]!.id;
+  const worstPasser = (m: MatchState) =>
+    [...m.teams[1].xi]
+      .filter((x) => x.pos !== "GK")
+      .sort(
+        (a, b) =>
+          (get(a.id).stats as { pas: number }).pas - (get(b.id).stats as { pas: number }).pas,
+      )[0]!.id;
+
+  it("attacking a spent full-back pays; his fresh side doesn't; no flank is a free win", () => {
+    const mixed = run({}, tiredLeft).win;
+    expect(run({ flank: "right" }, tiredLeft).win).toBeGreaterThan(mixed + 0.06);
+    expect(run({ flank: "left" }, tiredLeft).win).toBeLessThan(mixed + 0.02);
+    const plain = run({}).win;
+    for (const flank of ["left", "right", "centre"] as const)
+      expect(run({ flank }).win).toBeLessThan(plain + 0.07);
+  }, 900_000);
+
+  it("man-marking their best player takes most of his goals; pressing a poor passer cuts their shots", () => {
+    const free = run({}, best);
+    const marked = run({}, (m) => {
+      const id = best(m);
+      m.teams[0].instructions = { ...DEFAULT_INSTRUCTIONS, mark: id };
+      return id;
+    });
+    expect(marked.starGoals).toBeLessThan(free.starGoals * 0.65);
+    const pressed = run({}, (m) => {
+      m.teams[0].instructions = { ...DEFAULT_INSTRUCTIONS, press: worstPasser(m) };
+    });
+    expect(pressed.shotsB).toBeLessThan(free.shotsB * 0.95);
+  }, 900_000);
 });
 
 describe("tactics matter (Best, Oct 2026: the right answer is worth about 5 rating points)", () => {

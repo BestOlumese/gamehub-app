@@ -54,6 +54,14 @@ export const footballActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("formation"), id: z.number().int().min(1).max(FORMATIONS.length) }),
   z.object({ type: z.literal("ready") }),
   z.object({ type: z.literal("skip") }),
+  z.object({
+    type: z.literal("instructions"),
+    instructions: z.object({
+      flank: z.enum(["left", "centre", "right", "mixed"]),
+      mark: z.string().max(64).nullable(),
+      press: z.string().max(64).nullable(),
+    }),
+  }),
   z.object({ type: z.literal("timeout") }),
   z.object({ type: z.literal("resume") }),
 ]) as unknown as z.ZodType<FootballAction>;

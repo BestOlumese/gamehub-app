@@ -6,7 +6,7 @@ export * from "./team";
 export * from "./rules";
 export * from "./shouts";
 export { commentary } from "./commentary";
-export { DEFAULT_TACTICS, clockMinute } from "./match";
+export { DEFAULT_INSTRUCTIONS, DEFAULT_TACTICS, clockMinute } from "./match";
 export type {
   ChanceKind,
   MatchEvent,
@@ -18,6 +18,7 @@ export type {
   Side,
   MatchupKey,
   MatchupPart,
+  Instructions,
 } from "./match";
 export { tierOf, LUCK, type DraftLuck } from "./draft";
 export type * from "./state";

@@ -391,6 +391,7 @@ export function MatchView({
           onClose={() => setManage(false)}
           sheet={mine}
           theirs={theirs}
+          opponent={mySide !== null && live ? live.now[mySide === 0 ? 1 : 0] : null}
           cards={cards}
           ready={ready}
           act={act}
