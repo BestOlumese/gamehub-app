@@ -1,9 +1,11 @@
 "use client";
 
-import type { FootballView, Team } from "@gamehub/engine/football";
+import type { FixtureView, FootballView, Team } from "@gamehub/engine/football";
 import type { SeatPublic } from "@gamehub/protocol";
 import { Button } from "@gamehub/ui/forms/button";
 import { seatName } from "../rps/names";
+import { TEAM_COLOURS } from "./look";
+import { MatchReport } from "./match-report";
 
 export const teamName = (seats: SeatPublic[], t: Team | "bye", botNames: string) =>
   t === "bye" ? "Bye" : "seat" in t ? seatName(seats, t.seat) : botNames;
@@ -103,9 +105,46 @@ export function ResultsView({
           </li>
         ))}
       </ol>
+      <LastReport view={view} seats={seats} me={me} />
       <Button block onClick={onRematch}>
         Play again
       </Button>
     </div>
+  );
+}
+
+/** Your side in a fixture, or null. */
+export const sideIn = (f: FixtureView, me: number | null): 0 | 1 | null =>
+  me === null
+    ? null
+    : "seat" in f.a && f.a.seat === me
+      ? 0
+      : f.b !== "bye" && "seat" in f.b && f.b.seat === me
+        ? 1
+        : null;
+
+/** The report of your most recent finished match (sent in full once it's over). */
+export function LastReport({
+  view,
+  seats,
+  me,
+}: {
+  view: FootballView;
+  seats: SeatPublic[];
+  me: number | null;
+}) {
+  const f = view.rounds
+    .flat()
+    .filter((x) => x.result && x.teams && x.log.length && sideIn(x, me) !== null)
+    .at(-1);
+  if (!f) return null;
+  return (
+    <MatchReport
+      fixture={f}
+      side={sideIn(f, me) ?? 0}
+      names={[teamName(seats, f.a, f.names[0]), teamName(seats, f.b, f.names[1])]}
+      cards={view.cards}
+      colours={TEAM_COLOURS}
+    />
   );
 }

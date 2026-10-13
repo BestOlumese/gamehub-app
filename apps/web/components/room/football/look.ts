@@ -89,3 +89,6 @@ export function formationLean(id: number): string {
       : "a flat midfield";
   return `${lean} · ${width}, ${centre}`;
 }
+
+/** The two sides' colours on the live pitch, the scoreboard and the report (home, away). */
+export const TEAM_COLOURS: readonly [string, string] = ["#2F6FD6", "#E07A2E"];

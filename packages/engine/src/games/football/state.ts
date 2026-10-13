@@ -181,6 +181,8 @@ export type FixtureView = {
     matchup: [MatchupPart[], MatchupPart[]];
   } | null;
   log: MatchEvent[];
+  /** Rating changes from earlier halves (the phone adds what it has shown of this one). */
+  ratingBase: Record<string, number> | null;
   /** A timeout in progress (the screen freezes at `at`). */
   pause: { at: number; until: number; by: 0 | 1 } | null;
   /** Timeouts each side has used this match. */

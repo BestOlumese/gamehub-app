@@ -16,7 +16,7 @@ import { mmss, useNow } from "../use-now";
 import { DraftView } from "./draft-view";
 import { ManageSheet } from "./manage-sheet";
 import { MatchView } from "./match-view";
-import { ResultsView, teamName } from "./results-view";
+import { LastReport, ResultsView, teamName } from "./results-view";
 import { TeamEditor } from "./team-editor";
 
 type Props = { snap: Snapshot; send: (m: ClientRoomMsg) => void };
@@ -111,6 +111,12 @@ export default function FootballTable({ snap, send }: Props) {
     return wrap(
       <>
         <LastRound view={view} snap={snap} />
+        <details className="rounded-card border border-line bg-surface px-3 py-2">
+          <summary className="cursor-pointer text-sm font-semibold">Match report</summary>
+          <div className="mt-2">
+            <LastReport view={view} seats={snap.seats} me={you} />
+          </div>
+        </details>
         <ArrangePanel
           title="Next match"
           sheet={me.sheet}

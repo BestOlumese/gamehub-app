@@ -1049,7 +1049,7 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
 test("football draft: two phones draft and play a full match with a half-time sub", async ({
   browser,
 }) => {
-  test.setTimeout(420_000);
+  test.setTimeout(600_000);
   const host = await player(browser, "fb_h", { width: 390, height: 844 });
   const guest = await player(browser, "fb_g", { width: 360, height: 640 });
   await host.page
@@ -1088,7 +1088,8 @@ test("football draft: two phones draft and play a full match with a half-time su
   await host.page.getByRole("tab", { name: "Subs" }).click();
   const dialog = host.page.getByRole("dialog");
   await dialog
-    .getByRole("button", { name: /, (ST|CB|CM|LB|RB)/ })
+    // Anyone but a sent-off player (they can't move).
+    .getByRole("button", { name: /^(?!.*sent off).*, (ST|CB|CM|LB|RB),/ })
     .first()
     .click();
   await dialog.getByLabel("Bench").getByRole("button").first().click();
@@ -1098,17 +1099,32 @@ test("football draft: two phones draft and play a full match with a half-time su
     await p.getByRole("button", { name: "Ready", exact: true }).click();
   await expect(host.page.getByText(/Change for/)).toBeVisible({ timeout: 30_000 });
 
-  // To the end (extra time and penalties if level): a winner and Play again.
-  for (const p of [host.page, guest.page]) {
-    for (let k = 0; k < 2; k++) {
-      const brk = p.getByText(/^Break ·/);
-      const done = p.getByRole("button", { name: "Play again" });
-      await expect(brk.or(done)).toBeVisible({ timeout: 120_000 });
-      if (await done.isVisible()) break;
-      await p.getByRole("button", { name: "Ready", exact: true }).click();
-    }
-    await expect(p.getByRole("button", { name: "Play again" })).toBeVisible({ timeout: 120_000 });
-  }
+  // To the end (extra time and penalties if level): a winner and Play again. Both phones at
+  // once, so neither waits out a break window for the other.
+  await Promise.all(
+    [host.page, guest.page].map(async (p) => {
+      for (let k = 0; k < 2; k++) {
+        const brk = p.getByText(/^Break ·/);
+        const done = p.getByRole("button", { name: "Play again" });
+        await expect(brk.or(done)).toBeVisible({ timeout: 120_000 });
+        if (await done.isVisible()) break;
+        await p.getByRole("button", { name: "Ready", exact: true }).click();
+      }
+      await expect(p.getByRole("button", { name: "Play again" })).toBeVisible({
+        timeout: 120_000,
+      });
+    }),
+  );
   await expect(host.page.getByRole("heading", { name: /won/ })).toBeVisible();
+  // The full-time report: reasons, stats, momentum and every rating with a player of the match.
+  for (const p of [host.page, guest.page]) {
+    const report = p.getByRole("region", { name: "Match report" });
+    await expect(report).toBeVisible();
+    await expect(report.getByText("POTM", { exact: true })).toBeVisible();
+    await expect(report.getByRole("img", { name: /Momentum/ })).toBeVisible();
+  }
+  await host.page
+    .getByRole("region", { name: "Match report" })
+    .screenshot({ path: test.info().outputPath("football-report.png") });
   for (const c of [host.ctx, guest.ctx]) await c.close();
 });

@@ -54,6 +54,7 @@ import {
   type FootballRules,
 } from "./rules";
 import { footballActionSchema, footballRulesSchema } from "./schemas";
+import { ratingDeltas } from "./report";
 import { reactionLine, TALK_BOOST, TALK_MINUTES, talkReaction } from "./talk";
 import { lookupOf } from "./sheets";
 import { SHOUTS } from "./shouts";
@@ -992,9 +993,19 @@ export function createFootballGame(
         (mine && mine.b !== "bye" ? mine : undefined) ??
         current.find((f) => f.match && !isFinished(f.match)) ??
         current.find((f) => f.match);
-      const rounds = s.rounds.map((round) =>
+      const rounds = s.rounds.map((round, ri) =>
         round.map((f): FixtureView => {
-          const detailed = f === focus;
+          // Your own side in this match (stamina and "tiring" lines are yours alone).
+          const own =
+            viewer !== "spectator" &&
+            f.b !== "bye" &&
+            teamsOf(f).some((t) => "seat" in t && t.seat === viewer)
+              ? sideOf(f, viewer)
+              : null;
+          // Your finished matches come in full for the report: the one just played while you
+          // set up the next, and all of them at the end.
+          const report = own !== null && !!f.result && (s.phase === "over" || ri === s.round - 1);
+          const detailed = f === focus || report;
           const shown = detailed && (!!f.match || !!f.result);
           const sheets =
             shown && f.b !== "bye"
@@ -1006,13 +1017,7 @@ export function createFootballGame(
           if (m && detailed)
             for (const t of m.teams)
               [...t.xi.map((x) => x.id), ...t.bench, ...t.gone].forEach(card);
-          // Your own side in this match (stamina and "tiring" lines are yours alone).
-          const own =
-            viewer !== "spectator" &&
-            f.b !== "bye" &&
-            teamsOf(f).some((t) => "seat" in t && t.seat === viewer)
-              ? sideOf(f, viewer)
-              : null;
+
           const name = (t: Team | "bye") =>
             t === "bye" ? "Bye" : "bot" in t ? (s.bots[t.bot]?.name ?? "") : "";
           return {
@@ -1069,11 +1074,14 @@ export function createFootballGame(
               ? f.log.filter(
                   (e, i) =>
                     (e.t !== "tired" || e.team === own) &&
-                    (i >= f.halfFrom ||
+                    (!!f.result ||
+                      i >= f.halfFrom ||
                       BIG.has(e.t) ||
                       (e.t === "foul" && !!e.card && e.card !== "yellow")),
                 )
               : [],
+            // Rating changes from earlier halves (all shown already); phones add this half's.
+            ratingBase: detailed ? ratingDeltas(f.log.slice(0, f.halfFrom)) : null,
             startedAt: f.startedAt,
             pause: f.pause ?? null,
             timeouts: f.timeouts ?? [0, 0],

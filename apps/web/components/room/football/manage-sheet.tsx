@@ -118,7 +118,10 @@ export function ManageSheet({
   off,
   live,
   fit = null,
+  ratings,
 }: {
+  /** Live ratings of your players (in a match). */
+  ratings?: Record<string, number>;
   /** Your players' stamina in a match (null outside one). */
   fit?: Record<string, number> | null;
   /** In a match (not at a break): changes wait out the server's change gap. */
@@ -282,6 +285,14 @@ export function ManageSheet({
                   <span className="block truncate">{c?.short}</span>
                   {fit?.[x.id] !== undefined ? <StaminaBar value={fit[x.id] as number} /> : null}
                 </span>
+                {ratings?.[x.id] !== undefined ? (
+                  <span
+                    className={`w-9 shrink-0 rounded px-1 text-center text-xs font-bold tabular-nums ${(ratings[x.id] as number) >= 7.5 ? "bg-brand text-white" : (ratings[x.id] as number) < 6 ? "bg-danger-soft text-danger-strong" : "bg-surface-2"}`}
+                    aria-label={`Rating ${(ratings[x.id] as number).toFixed(1)}`}
+                  >
+                    {(ratings[x.id] as number).toFixed(1)}
+                  </span>
+                ) : null}
                 <select
                   value={x.role}
                   disabled={!ready}

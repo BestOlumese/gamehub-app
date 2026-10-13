@@ -2,6 +2,7 @@
 
 import {
   commentary,
+  ratingDeltas,
   SHOUTS,
   TALKS,
   TIMEOUTS_PER_MATCH,
@@ -18,12 +19,13 @@ import { useRoom } from "@/lib/room/store";
 import { sfx } from "../sounds";
 import { mmss } from "../use-now";
 import { meterOf, tipFor, type Meter } from "./assistant";
+import { TEAM_COLOURS } from "./look";
 import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
 import { LivePitch } from "./live-pitch";
-import { clockOf, matchNow, schedule, scoreOf, shown, statsOf } from "./playback";
+import { clockOf, matchNow, schedule, scoreOf, segmentStart, shown, statsOf } from "./playback";
 
-const COLOURS: [string, string] = ["#2F6FD6", "#E07A2E"];
+const COLOURS = TEAM_COLOURS;
 const TALK_LABEL: Record<Talk, string> = {
   fire: "Fire up",
   calm: "Calm down",
@@ -167,6 +169,19 @@ export function MatchView({
         })
       : null;
   const showTip = tip && !dismissed.has(tip.key) ? tip : null;
+  // Live ratings: earlier halves from the server, this half from what's been shown.
+  const ratings = (() => {
+    if (mySide === null || !fixture.teams) return undefined;
+    const now_ = ratingDeltas(events.slice(segmentStart(events)));
+    const base = fixture.ratingBase ?? {};
+    const starters = new Set(fixture.teams[mySide].xi.map((x) => x.id));
+    const out: Record<string, number> = {};
+    for (const x of mine?.xi ?? []) {
+      const r = (starters.has(x.id) ? 6.4 : 6.2) + (base[x.id] ?? 0) + (now_[x.id] ?? 0);
+      out[x.id] = Math.round(Math.min(10, Math.max(3, r)) * 10) / 10;
+    }
+    return out;
+  })();
   const timeoutsLeft = mySide !== null ? TIMEOUTS_PER_MATCH - (fixture.timeouts?.[mySide] ?? 0) : 0;
 
   return (
@@ -434,6 +449,7 @@ export function MatchView({
           subsLeft={subsLeft}
           off={live?.off[mySide as 0 | 1]}
           fit={live?.fit ?? null}
+          ratings={ratings}
           live={!atBreak && !paused}
         />
       ) : null}
