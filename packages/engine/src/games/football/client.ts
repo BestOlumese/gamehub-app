@@ -23,4 +23,15 @@ export type {
 export { tierOf, LUCK, type DraftLuck } from "./draft";
 export { TALKS, type Talk, type Reaction } from "./talk";
 export { momentum, playerRatings, ratingDeltas, whyLines, type PlayerRating } from "./report";
+export {
+  minuteAt,
+  segmentStart,
+  simAt,
+  timeline,
+  TRAVEL,
+  type Minute,
+  type Timeline,
+  type TimedTouch,
+} from "./timeline";
+export type { Touch, TouchKind } from "./paths";
 export type * from "./state";

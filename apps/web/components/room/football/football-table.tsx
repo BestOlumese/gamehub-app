@@ -159,8 +159,7 @@ export default function FootballTable({ snap, send }: Props) {
         fixture={fixture}
         names={names}
         cards={view.cards}
-        msPerMinute={view.msPerMinute}
-        highlights={rules.highlights}
+        timing={view.timing ?? { halfMs: view.msPerMinute * 45, highlights: false }}
         talk={me?.talk ?? null}
         offset={offset}
         mySide={mySide}

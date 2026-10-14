@@ -43,10 +43,10 @@ import { bestRole, formation, POSITION_ROLES } from "./pitch";
 import {
   footballNaija,
   LEAD_MINUTES,
+  LEAD_MS,
   SOLO_PAUSE_MS,
   TIMEOUT_MS,
   TIMEOUTS_PER_MATCH,
-  PLAYBACK_SLACK_MINUTES,
   modeFor,
   msPerMinute,
   PEN_MS,
@@ -55,6 +55,7 @@ import {
 } from "./rules";
 import { footballActionSchema, footballRulesSchema } from "./schemas";
 import { ratingDeltas } from "./report";
+import { segmentStart, timeline } from "./timeline";
 import { reactionLine, TALK_BOOST, TALK_MINUTES, talkReaction } from "./talk";
 import { lookupOf } from "./sheets";
 import { SHOUTS } from "./shouts";
@@ -358,7 +359,6 @@ export function createFootballGame(
 
   /** Plays every live match up to the playback clock + the lead. */
   function tick(s: FootballState, rules: FootballRules, now: number, ev: GameEvent[]) {
-    const per = msPerMinute(rules);
     for (const f of s.rounds[s.round] ?? []) {
       const m = f.match;
       if (!m || m.halfDone || isFinished(m)) continue;
@@ -372,20 +372,27 @@ export function createFootballGame(
         if (now < f.pause.until) continue;
         endPause(f, f.pause.until);
       }
-      const target = Math.floor((now - f.startedAt) / per) + LEAD_MINUTES;
-      const r = playMinutes(f.match as MatchState, target, matchStreams(s, f), get);
-      f.match = r.state;
-      f.log.push(...r.events);
-      for (const e of r.events)
-        if (e.t === "goal") ev.push({ type: "goal", fixture: f.id, team: e.team });
+      // Play on until the screens' timeline is LEAD_MS ahead of now (one minute at a time: a
+      // minute's screen time depends on what happens in it).
+      let tl = segTimeline(f, s, rules);
+      while (!(f.match as MatchState).halfDone && tl.end <= now + LEAD_MS) {
+        const mt = f.match as MatchState;
+        const r = playMinutes(mt, mt.minute + 1, matchStreams(s, f), get);
+        f.match = r.state;
+        f.log.push(...r.events);
+        for (const e of r.events)
+          if (e.t === "goal") ev.push({ type: "goal", fixture: f.id, team: e.team });
+        tl = segTimeline(f, s, rules);
+      }
     }
     const live = (s.rounds[s.round] ?? []).filter((f) => f.match && !isFinished(f.match));
     if (live.some((f) => !(f.match as MatchState).halfDone)) return;
     // Every half in this round is over: a break, or the end of the round.
     if (live.length) {
       s.phase = "break";
-      const lag = (LEAD_MINUTES + PLAYBACK_SLACK_MINUTES) * per;
-      s.windowEndsAt = now + lag + rules.halfTimeSeconds * 1000;
+      // The break starts when the screens reach half time (the timeline says exactly when).
+      const shownBy = Math.max(now, ...live.map((f) => segTimeline(f, s, rules).end));
+      s.windowEndsAt = shownBy + rules.halfTimeSeconds * 1000;
       const inPlay = new Set(
         live.flatMap((f) =>
           teamsOf(f)
@@ -397,7 +404,10 @@ export function createFootballGame(
       ev.push({ type: "half_time", round: s.round });
     } else {
       // Over here, but still playing on screens: end the round once the last minute is shown.
-      s.roundEndsAt ??= Math.max(now, ...(s.rounds[s.round] ?? []).map((f) => playbackEnd(f, per)));
+      s.roundEndsAt ??= Math.max(
+        now,
+        ...(s.rounds[s.round] ?? []).map((f) => playbackEnd(f, s, rules)),
+      );
       if (now < s.roundEndsAt) return;
       s.roundEndsAt = null;
       endRound(s, rules, now, ev);
@@ -411,13 +421,14 @@ export function createFootballGame(
   }
 
   /** When the screens finish showing a fixture's current half (or shoot-out). */
-  function playbackEnd(f: Fixture, per: number): number {
+  function playbackEnd(f: Fixture, s: FootballState, rules: FootballRules): number {
+    return segTimeline(f, s, rules).end + 600;
+  }
+
+  /** The screens' timeline for a fixture's current half (or shoot-out). */
+  function segTimeline(f: Fixture, s: FootballState, rules: FootballRules) {
     const seg = f.log.slice(f.halfFrom ?? 0);
-    const pens = seg.filter((e) => e.t === "pen").length;
-    if (pens) return f.startedAt + (pens + 1) * PEN_MS + 600;
-    const minutes = seg.filter((e) => e.t === "ball").length;
-    // Busy minutes play slower on screen and quiet ones catch up (`playback.ts`): allow the slack.
-    return f.startedAt + (minutes + 1) * per + PLAYBACK_SLACK_MINUTES * per + 600;
+    return timeline(seg.slice(segmentStart(seg)), f.startedAt, timingOf(s, rules));
   }
 
   const teamsOf = (f: Fixture): Team[] => (f.b === "bye" ? [f.a] : [f.a, f.b]);
@@ -740,6 +751,10 @@ export function createFootballGame(
         seed,
         dataVersion: dataset.version,
         msPerMinute: msPerMinute(ctx.rules),
+        timing: {
+          halfMs: ctx.rules.playbackSecondsPerHalf * 1000,
+          highlights: !!ctx.rules.highlights,
+        },
         mode: modeFor(ctx.rules, players),
         phase: "draft",
         managers: Array.from({ length: players }, () => ({
@@ -920,12 +935,13 @@ export function createFootballGame(
       return s.phase === "draft" && !!s.managers[seat]?.offer;
     },
 
-    autoAdvance(s, rules) {
+    autoAdvance(s) {
       if (s.phase !== "live") return null;
       return {
         seat: 0,
         action: { type: "tick" },
-        afterMs: Math.round(LEAD_MINUTES * msPerMinute(rules)),
+        // Often enough that the screens never run out of minutes (the lead is LEAD_MS).
+        afterMs: 2500,
       };
     },
 
@@ -1103,6 +1119,7 @@ export function createFootballGame(
         series: s.series,
         places: s.places,
         msPerMinute: s.msPerMinute,
+        timing: s.timing ?? { halfMs: s.msPerMinute * 45, highlights: false },
         focus: focus?.id ?? null,
         cards,
       };
@@ -1136,3 +1153,16 @@ export function createFootballGame(
 
 // Local copies to keep the factory readable.
 import { bracket as bracketImpl, roundRobin as roundRobinImpl } from "./schedule";
+
+/** The screens' timing: the host's half length and highlights (older rooms: even minutes). */
+export function timingOf(
+  s: Pick<FootballState, "timing" | "msPerMinute">,
+  rules?: FootballRules,
+): { halfMs: number; highlights: boolean } {
+  return (
+    s.timing ??
+    (rules
+      ? { halfMs: rules.playbackSecondsPerHalf * 1000, highlights: !!rules.highlights }
+      : { halfMs: s.msPerMinute * 45, highlights: false })
+  );
+}

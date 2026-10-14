@@ -1,95 +1,36 @@
-// Football playback: when each event of the current half shows, and the score, clock and ticker
-// from what's been shown so far. The view runs up to 3 minutes ahead of the screen, so nothing
-// here may read the live score or stats directly (no spoilers).
+// Football playback: when each event shows, and the score, clock and ticker from what's been
+// shown so far. Times come from the shared timeline (`timeline.ts` in the engine), the same one
+// the server plays by, so the phone never drifts. The view runs a few seconds ahead of the
+// screen, so nothing here may read the live score or stats directly (no spoilers).
 import {
-  PEN_MS,
-  PLAYBACK_SLACK_MINUTES,
+  segmentStart,
+  timeline,
   type MatchEvent,
   type MatchStats,
+  type Timeline,
 } from "@gamehub/engine/football";
 
 export type Timed = { e: MatchEvent; at: number };
+export type Timing = { halfMs: number; highlights: boolean };
 
-const SEGMENT_START = new Set(["kickoff", "et_start"]);
 const HALF_START = [0, 0, 45, 90, 105];
 
-/** Where the current segment (half or shoot-out) starts in the log. */
-export function segmentStart(log: readonly MatchEvent[]): number {
-  for (let i = log.length - 1; i >= 0; i--) {
-    const e = log[i] as MatchEvent;
-    if (SEGMENT_START.has(e.t)) return i;
-    if (e.t === "pen" && (i === 0 || (log[i - 1] as MatchEvent).t !== "pen")) return i;
-  }
-  return 0;
-}
-
-/** Highlights: how far ahead of the real clock quiet minutes may run (the server sends 3). */
-const AHEAD_MINUTES = 1.5;
-
-/** Moments worth reading: a minute with one of these plays slower on screen. */
-const BUSY = new Set(["chance", "shot", "goal", "save", "corner", "offside", "free_kick"]);
-
-/**
- * Times for every event: earlier segments are already shown (time 0); in this one, each "ball"
- * event opens a match minute and the minute's other events are spread across it; penalties come
- * one every PEN_MS. A minute with an attack in it gets up to twice the time so the build-up can
- * be read, as long as the screen stays within PLAYBACK_SLACK_MINUTES of the real clock; the
- * quiet minutes after it run shorter until it has caught up.
- *
- * Highlights (a room rule, on by default): quiet minutes run at under half time, banking up to
- * AHEAD_MINUTES ahead of the real clock (the server is always 3 minutes ahead, so those minutes
- * are here), and a minute with an attack spends the bank: up to three times as long.
- */
+/** Times for every event: earlier segments are already shown (time 0); this one by the timeline. */
 export function schedule(
   log: readonly MatchEvent[],
   startedAt: number,
-  perMinute: number,
-  highlights = false,
-): Timed[] {
+  timing: Timing,
+): { timed: Timed[]; tl: Timeline } {
   const from = segmentStart(log);
-  const out: Timed[] = log.slice(0, from).map((e) => ({ e, at: 0 }));
-  const seg = log.slice(from);
-  if (seg[0]?.t === "pen") {
-    seg.forEach((e, k) => out.push({ e, at: startedAt + (k + 1) * PEN_MS }));
-    return out;
-  }
-  const slack = PLAYBACK_SLACK_MINUTES * perMinute;
-  let minute = 0;
-  let t = startedAt;
-  let i = 0;
-  while (i < seg.length) {
-    const e = seg[i] as MatchEvent;
-    if (e.t !== "ball") {
-      // Kickoff before the first minute; the half's end after the last.
-      out.push({ e, at: t });
-      i++;
-      continue;
-    }
-    let j = i + 1;
-    while (j < seg.length && seg[j]?.t !== "ball" && !isEnd(seg[j] as MatchEvent)) j++;
-    const inside = seg.slice(i + 1, j);
-    // How far behind the real clock the screen is (negative: ahead).
-    const behind = t - (startedAt + minute * perMinute);
-    const busy = inside.some((x) => BUSY.has(x.t));
-    const dur = highlights
-      ? busy
-        ? perMinute + Math.min(perMinute * 2, Math.max(0, slack - behind))
-        : // Gain time, but never past AHEAD_MINUTES ahead.
-          Math.max(perMinute * 0.45, perMinute - Math.max(0, AHEAD_MINUTES * perMinute + behind))
-      : busy
-        ? perMinute + Math.min(perMinute, Math.max(0, slack - behind))
-        : Math.max(perMinute * 0.55, perMinute - behind);
-    out.push({ e, at: t });
-    inside.forEach((x, k) => out.push({ e: x, at: t + ((k + 1) * dur) / (inside.length + 1) }));
-    t += dur;
-    minute++;
-    i = j;
-  }
-  return out;
+  const tl = timeline(log.slice(from), startedAt, timing);
+  return {
+    timed: [
+      ...log.slice(0, from).map((e) => ({ e, at: 0 })),
+      ...tl.events.map((x) => ({ e: x.e, at: x.at })),
+    ],
+    tl,
+  };
 }
-
-const isEnd = (e: MatchEvent) =>
-  e.t === "half_time" || e.t === "full_time" || e.t === "et_half" || e.t === "et_end";
 
 export const shown = (timed: readonly Timed[], now: number) =>
   timed.filter((t) => t.at <= now).map((t) => t.e);

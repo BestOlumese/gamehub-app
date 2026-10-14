@@ -3,6 +3,7 @@
 import {
   commentary,
   ratingDeltas,
+  segmentStart,
   SHOUTS,
   TALKS,
   TIMEOUTS_PER_MATCH,
@@ -23,7 +24,7 @@ import { TEAM_COLOURS } from "./look";
 import { sendChange, useChangeWaiting } from "./live-changes";
 import { ManageSheet, styleName } from "./manage-sheet";
 import { LivePitch } from "./live-pitch";
-import { clockOf, matchNow, schedule, scoreOf, segmentStart, shown, statsOf } from "./playback";
+import { clockOf, matchNow, schedule, scoreOf, shown, statsOf, type Timing } from "./playback";
 
 const COLOURS = TEAM_COLOURS;
 const TALK_LABEL: Record<Talk, string> = {
@@ -73,7 +74,6 @@ export function MatchView({
   fixture,
   names,
   cards,
-  msPerMinute,
   offset,
   mySide,
   breakFor,
@@ -81,20 +81,19 @@ export function MatchView({
   act,
   subsPerMatch,
   canSkip,
-  highlights,
+  timing,
   talk = null,
 }: {
   /** This break's team talk and how the squad took it (yours alone). */
   talk?: { pick: Talk; reaction: "good" | "neutral" | "bad"; text: string } | null;
-  /** Room rule: quiet minutes fly by, attacks play out slower. */
-  highlights: boolean;
+  /** The screens' timing as the server plays it (shared timeline). */
+  timing: Timing;
   subsPerMatch: number;
   /** Solo run: skip the rest of the half (no one else to wait for). */
   canSkip: boolean;
   fixture: FixtureView;
   names: [string, string];
   cards: Record<string, Card>;
-  msPerMinute: number;
   offset: number;
   /** Your side in this match, or null (watching). */
   mySide: 0 | 1 | null;
@@ -113,9 +112,9 @@ export function MatchView({
     return () => clearInterval(t);
   }, [offset]);
   const live = fixture.live;
-  const timed = useMemo(
-    () => schedule(fixture.log, fixture.startedAt, msPerMinute, highlights),
-    [fixture.log, fixture.startedAt, msPerMinute, highlights],
+  const { timed, tl } = useMemo(
+    () => schedule(fixture.log, fixture.startedAt, timing),
+    [fixture.log, fixture.startedAt, timing],
   );
   // A timeout freezes the match clock (and everything shown).
   const paused = fixture.pause && now < fixture.pause.until ? fixture.pause : null;
@@ -241,11 +240,11 @@ export function MatchView({
       ) : null}
       {fixture.teams && live ? (
         <LivePitch
+          tl={tl}
           timed={timed}
           now={clockNow}
           pause={fixture.pause}
           offset={offset}
-          perMinute={msPerMinute}
           mySide={mySide}
           fit={live.fit ?? null}
           kick={fixture.teams}

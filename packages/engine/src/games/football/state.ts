@@ -90,6 +90,8 @@ export type FootballState = {
   seed: string;
   dataVersion: string;
   /** Real-time ms per match minute (from the rules, for views). */
+  /** The screens' timing (shared timeline): the host's half length and highlights. */
+  timing?: { halfMs: number; highlights: boolean };
   msPerMinute: number;
   mode: Exclude<FootballMode, "auto">;
   phase: FootballPhase;
@@ -206,6 +208,8 @@ export type FootballView = {
   series: [number, number];
   places: SeatIndex[][] | null;
   /** Ms of real time per match minute (for the playback). */
+  /** The screens' timing, as the server plays it (the client never guesses it from rules). */
+  timing: { halfMs: number; highlights: boolean };
   msPerMinute: number;
   /** The fixture shown in full (yours, or the first still playing). */
   focus: string | null;

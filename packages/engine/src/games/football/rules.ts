@@ -61,16 +61,13 @@ export function modeFor(rules: FootballRules, n: number): Exclude<FootballMode, 
 
 /** Minutes sent ahead of the playback (a modified phone sees at most this far ahead). */
 export const LEAD_MINUTES = 3;
+/** How far ahead of the screens the server plays, in real time (on the shared timeline). */
+export const LEAD_MS = 5000;
 /** Tactical timeouts: how many a manager may call each match, and how long one lasts. */
 export const TIMEOUTS_PER_MATCH = 2;
 export const TIMEOUT_MS = 20_000;
 /** A solo run pauses until you resume (capped, so an abandoned pause still ends). */
 export const SOLO_PAUSE_MS = 10 * 60_000;
-/**
- * How far behind the real minute clock a screen may fall: minutes with an attack in them play
- * slower so the build-up can be read, and the quiet minutes after catch up (`playback.ts`).
- */
-export const PLAYBACK_SLACK_MINUTES = 1.5;
 /** A penalty kick's playback time. */
 export const PEN_MS = 1500;
 /** Solo run: the bot XIs' team ratings, round by round (modes.md). */

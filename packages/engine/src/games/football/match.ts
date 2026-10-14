@@ -7,6 +7,7 @@
 // Players are referred to by id; `get` looks the cards up (the state stays small to store).
 import type { Rng } from "../../types";
 import { familiarity, formation, positionPenalty, ROLE_FOCUS, UNIT_WEIGHTS } from "./pitch";
+import { buildPath, type Restart, type Touch } from "./paths";
 import { chemistry, CHEM_MOD } from "./team";
 import {
   isKeeperStats,
@@ -130,7 +131,15 @@ export type MatchEvent =
   | { m: number; o: number; t: "tired"; team: Side; player: string }
   | { m: number; o: number; t: "tactics"; team: Side; tactics: Tactics }
   /** Where the ball spent the minute (for the mini-pitch): 0 own third, 1 middle, 2 final third. */
-  | { m: number; o: number; t: "ball"; team: Side; zone: 0 | 1 | 2 }
+  | {
+      m: number;
+      o: number;
+      t: "ball";
+      team: Side;
+      zone: 0 | 1 | 2;
+      /** The minute's build-up: who had the ball and how it reached them (`paths.ts`). */
+      path?: Touch[];
+    }
   | {
       m: number;
       o: number;
@@ -203,6 +212,10 @@ export type MatchState = {
    * conceded after a goal, the defending side after offside. Null: a loose ball, anyone's.
    */
   restart?: Side | null;
+  /** How that restart happens (kickoff, the keeper's ball, a free kick), for the build-up. */
+  restartWhy?: Restart | null;
+  /** Where the ball was last minute (0 own third … 2 final third, for whoever had it). */
+  lastZone?: 0 | 1 | 2;
 };
 
 /**
@@ -679,7 +692,13 @@ export function playMinutes(prev: MatchState, until: number, streams: Streams, g
   const end = Math.min(until, m.length);
   while (m.minute < end) {
     m.minute++;
-    playMinute(m, streams(`h${m.half}:m${m.minute}`), get, ev);
+    playMinute(
+      m,
+      streams(`h${m.half}:m${m.minute}`),
+      streams(`h${m.half}:m${m.minute}:path`),
+      get,
+      ev,
+    );
   }
   if (m.minute >= m.length && !m.halfDone) {
     m.halfDone = true;
@@ -704,10 +723,26 @@ export function playMinutes(prev: MatchState, until: number, streams: Streams, g
   return { state: m, events: ev };
 }
 
-function playMinute(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[]) {
+function playMinute(m: MatchState, rng: Rng, pathRng: Rng, get: Lookup, ev: MatchEvent[]) {
   const at = ev.length;
+  const prevSide = m.lastBall;
+  const prevZone = m.lastZone ?? 1;
+  const restart = m.restartWhy ?? null;
+  m.restartWhy = null;
   const zone = playMinuteInner(m, rng, get, ev);
-  ev.splice(at, 0, { m: clockMinute(m), o: -1, t: "ball", team: m.lastBall, zone });
+  // The build-up comes after the minute is decided, from its own stream: it never changes a result.
+  const path = buildPath({
+    m,
+    side: m.lastBall,
+    prevSide,
+    prevZone,
+    restart,
+    zone,
+    events: ev.slice(at),
+    rng: pathRng,
+  });
+  ev.splice(at, 0, { m: clockMinute(m), o: -1, t: "ball", team: m.lastBall, zone, path });
+  m.lastZone = zone;
   for (const t of fatigue(m, get)) ev.push({ m: clockMinute(m), o: 950, ...t, t: "tired" });
 }
 
@@ -785,6 +820,7 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
     const runner = shooter(T, rng, get);
     push({ m: mm, o: next(), t: "offside", team: side, player: runner.id });
     m.restart = opp;
+    m.restartWhy = "free_kick";
     return 2;
   }
   // 5–7. Shooter, assister, xG and the outcome.
@@ -997,6 +1033,8 @@ function shoot(
   if (result === "goal" || result === "saved") m.stats.onTarget[side]++;
   // Who restarts: the side that conceded kicks off; a save or a miss is the keeper's ball.
   m.restart = result === "goal" || result === "saved" || result === "missed" ? opp : null;
+  m.restartWhy =
+    result === "goal" ? "kickoff" : result === "saved" || result === "missed" ? "keeper" : null;
   if (result === "goal") {
     m.score[side]++;
     push({
@@ -1023,6 +1061,7 @@ function shoot(
     m.stats.corners[side]++;
     push({ m: mm, o: next(), t: "corner", team: side });
     m.restart = null;
+    m.restartWhy = null;
     if (kind !== "corner" && u(rng) < C.cornerShot * (1 + (T.tactics.width - 50) * 0.004))
       shoot(m, side, "corner", false, U, style, rng, get, push, mm, next);
   }
