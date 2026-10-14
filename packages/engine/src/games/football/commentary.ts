@@ -63,7 +63,7 @@ const LINES = {
     "{player} is running on empty. He needs fresh legs.",
     "{player} has nothing left in the tank.",
   ],
-  tactics: ["{team} change their approach.", "New instructions from the {team} bench."],
+  tactics: ["{team} have changed their approach.", "{team} look set up differently now."],
   kickoff: ["We're under way."],
   half_time: ["Half time. {score}."],
   full_time: ["Full time! {score}.", "That's it! {score}."],

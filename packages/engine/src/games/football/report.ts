@@ -162,12 +162,14 @@ export function whyLines(
   // 3. Turning points: your change followed by goals, a red card.
   const changes = events.filter((e) => (e.t === "tactics" || e.t === "sub") && e.team === side);
   for (const c of changes) {
+    // A change of approach is logged once it shows; it was made at `since`.
+    const at = c.t === "tactics" ? (c.since ?? c.m) : c.m;
     const after = events.filter(
-      (e) => e.t === "goal" && e.team === side && e.m > c.m && e.m <= c.m + 15,
+      (e) => e.t === "goal" && e.team === side && e.m > at && e.m <= at + 15,
     ).length;
     if (after >= 1) {
       lines.push(
-        `Your change at ${c.m}' turned it: ${after} goal${after > 1 ? "s" : ""} in the next 15 minutes.`,
+        `Your change at ${at}' turned it: ${after} goal${after > 1 ? "s" : ""} in the next 15 minutes.`,
       );
       break;
     }

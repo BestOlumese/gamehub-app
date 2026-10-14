@@ -28,6 +28,7 @@ import {
   matchupNow,
   nextPhase,
   playMinutes,
+  shownTactics,
   shootout,
   startHalf,
   startMatch,
@@ -38,6 +39,7 @@ import {
   type Side,
   type Streams,
   type TeamSheet,
+  type Tactics,
 } from "./match";
 import { bestRole, formation, POSITION_ROLES } from "./pitch";
 import {
@@ -1042,11 +1044,13 @@ export function createFootballGame(
             b: f.b,
             names: [name(f.a), name(f.b)],
             // Instructions are private: only your own sheet keeps them (copies, never the state).
+            // A fresh change of approach shows to the other side only once it's been in place
+            // a few minutes (`shownTactics`).
             teams: sheets
               ? (sheets.map((sh, k) => {
                   if (k === own) return sh;
                   const { instructions: _hidden, ...rest } = sh;
-                  return rest;
+                  return m ? { ...rest, tactics: shownTactics(m.teams[k as 0 | 1], m) } : rest;
                 }) as [TeamSheet, TeamSheet])
               : null,
             score: m ? [m.score[0], m.score[1]] : (f.result?.score ?? null),
@@ -1065,11 +1069,13 @@ export function createFootballGame(
                       formation: t.formation,
                       xi: t.xi.map((x) => ({ id: x.id, role: x.role, focus: x.focus })),
                       bench: [...t.bench],
-                      tactics: t.tactics,
+                      tactics: k === own ? t.tactics : shownTactics(t, m),
                       // Your own instructions only: theirs stay hidden from you.
                       ...(k === own && t.instructions ? { instructions: t.instructions } : {}),
                     })) as [TeamSheet, TeamSheet],
-                    tactics: [m.teams[0].tactics, m.teams[1].tactics],
+                    tactics: m.teams.map((t, k) =>
+                      k === own ? t.tactics : shownTactics(t, m),
+                    ) as [Tactics, Tactics],
                     xi: [m.teams[0].xi.map((x) => x.id), m.teams[1].xi.map((x) => x.id)],
                     off: [
                       m.teams[0].xi.filter((x) => x.off).map((x) => x.id),

@@ -3,6 +3,7 @@ import { seededRng } from "../../rng";
 import { createFootballGame, LEAD_MINUTES, msPerMinute, SOLO_BANDS } from "./game";
 import { PEN_MS, TIMEOUT_MS } from "./rules";
 import { footballNaija, type FootballRules } from "./rules";
+import { REVEAL_MINUTES } from "./match";
 import type { FootballAction, FootballState } from "./state";
 import { testDataset } from "./test-data";
 
@@ -134,7 +135,12 @@ describe("football room", () => {
     act(sim, 0, { type: "shout", shout: "press" });
     const f = sim.s.rounds[0]?.[0];
     expect(f?.match?.teams[0].tactics.defence).toBe("high_press");
-    expect(f?.log.some((e) => e.t === "tactics")).toBe(true);
+    // It beds in: the other side sees it, and the commentary names it, a few minutes later.
+    const madeAt = f?.match?.minute ?? 0;
+    const theirView = () => game.view(sim.s, 1).rounds[0]?.[0]?.live;
+    expect(f?.log.some((e) => e.t === "tactics")).toBe(false);
+    expect(theirView()?.tactics[0].defence).not.toBe("high_press");
+    expect(game.view(sim.s, 0).rounds[0]?.[0]?.live?.tactics[0].defence).toBe("high_press");
     const again = game.apply(
       sim.s,
       { seat: 0, action: { type: "shout", shout: "hold" } },
@@ -145,6 +151,13 @@ describe("football room", () => {
     sim.now += 2500;
     act(sim, 0, { type: "swap", a: { slot: 5 }, b: { bench: 2 } });
     expect(sim.s.rounds[0]?.[0]?.match?.teams[0].subsUsed).toBe(1);
+    while ((sim.s.rounds[0]?.[0]?.match?.minute ?? 0) < madeAt + REVEAL_MINUTES) {
+      sim.now += 2500;
+      act(sim, 0, { type: "tick" });
+    }
+    const shown = sim.s.rounds[0]?.[0]?.log.find((e) => e.t === "tactics");
+    expect(shown?.t === "tactics" && shown.since).toBe(madeAt);
+    expect(theirView()?.tactics[0].defence).toBe("high_press");
   });
 
   it("ticks send at most a few minutes ahead of the playback", () => {

@@ -4,13 +4,17 @@ import { ALL_LINES, commentary } from "./commentary";
 import { autoDraft, makePool, type Luck } from "./draft";
 import {
   applyChange,
+  BED_MINUTES,
+  bedIn,
   DEFAULT_INSTRUCTIONS,
   DEFAULT_TACTICS,
   fatigueMod,
+  matchupNow,
   playMatch as play,
   playMinutes,
   shootout,
   startHalf,
+  shownTactics,
   startMatch,
   whyNotChange,
   winner,
@@ -97,6 +101,39 @@ describe("football match engine", () => {
       expect(last?.t === "pen" && last.tally[0] !== last.tally[1]).toBe(true);
     }
     expect(found).toBeGreaterThan(0);
+  });
+
+  it("a change mid-half beds in over a few minutes; flip-flopping buys nothing", () => {
+    const long = { ...DEFAULT_TACTICS, build: "long" as const };
+    let s = startHalf(
+      applyChange(startMatch(sheet(4), sheet(5), opts), 0, { type: "tactics", tactics: long })
+        .state,
+      streams("bed"),
+    ).state;
+    expect(s.teams[0].bed ?? null).toBeNull(); // before kickoff: counts at once
+    s = playMinutes(s, 10, streams("bed"), get).state;
+    const part = (m: MatchState) =>
+      matchupNow(m, get)[0].find((p) => p.key === "long_vs_deep")?.v ?? 0;
+    // They drop into a deep block against our long balls: it hurts us bit by bit, not at once.
+    const deep = { ...DEFAULT_TACTICS, defence: "deep_block" as const };
+    s = applyChange(s, 1, { type: "tactics", tactics: deep }).state;
+    expect(part(s)).toBe(0);
+    expect(shownTactics(s.teams[1], s).defence).not.toBe("deep_block");
+    const steps: number[] = [];
+    for (let k = 1; k <= BED_MINUTES; k++) {
+      s = playMinutes(s, 10 + k, streams("bed"), get).state;
+      steps.push(part(s));
+    }
+    for (let k = 1; k < steps.length; k++)
+      expect(Math.abs(steps[k] as number)).toBeGreaterThan(Math.abs(steps[k - 1] as number));
+    expect(bedIn(s.teams[1], s)).toBe(1);
+    expect(shownTactics(s.teams[1], s).defence).toBe("deep_block");
+    // Switching away and straight back starts the clock again from the old base.
+    s = applyChange(s, 1, { type: "tactics", tactics: DEFAULT_TACTICS }).state;
+    s = playMinutes(s, 18, streams("bed"), get).state;
+    s = applyChange(s, 1, { type: "tactics", tactics: deep }).state;
+    expect(s.teams[1].bed?.from.defence).toBe("deep_block");
+    expect(s.teams[1].bed?.settle).toBe(false);
   });
 
   it("half-time changes: subs come on fresh, and run out at the limit", () => {

@@ -993,11 +993,11 @@ test("football draft: a solo run on a 360 px phone (draft, arrange, shout, manag
   await shot(p, "football-arrange-360");
   await p.getByRole("button", { name: "Ready", exact: true }).click();
 
-  // Live: a shout shows up in the commentary for both sides.
+  // Live: a shout shows up in the commentary once it has bedded in (3 match minutes).
   await expect(p.getByRole("toolbar", { name: "Shouts" })).toBeVisible({ timeout: 20_000 });
   await p.getByRole("button", { name: "Press", exact: true }).click();
-  await expect(p.getByText(/change their approach|New instructions/)).toBeVisible({
-    timeout: 15_000,
+  await expect(p.getByText(/have changed their approach|look set up differently/)).toBeVisible({
+    timeout: 40_000,
   });
   await shot(p, "football-match-360");
   // A few minutes in: the live pitch with the ball on someone.

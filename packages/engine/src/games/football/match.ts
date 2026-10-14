@@ -129,7 +129,11 @@ export type MatchEvent =
   | { m: number; o: number; t: "sub"; team: Side; off: string; on: string }
   /** A player running on empty (only his own manager sees this line). */
   | { m: number; o: number; t: "tired"; team: Side; player: string }
-  | { m: number; o: number; t: "tactics"; team: Side; tactics: Tactics }
+  /**
+   * A side's new approach, announced once the other side can see it (`REVEAL_MINUTES` after the
+   * change, made at clock minute `since`).
+   */
+  | { m: number; o: number; t: "tactics"; team: Side; tactics: Tactics; since?: number }
   /** Where the ball spent the minute (for the mini-pitch): 0 own third, 1 middle, 2 final third. */
   | {
       m: number;
@@ -179,6 +183,12 @@ export type TeamState = {
   bench: string[];
   tactics: Tactics;
   instructions?: Instructions;
+  /**
+   * A change of approach made mid-half (`half`, after minute `at` of it) still bedding in: the
+   * matchup blends from `from` to the new tactics over `BED_MINUTES`; `settle`: the build-up or
+   * defence changed, so the side is a little disorganised meanwhile.
+   */
+  bed?: { from: Tactics; half: number; at: number; settle: boolean } | null;
   /** A half-time talk's effect: rating points until match minute `until`. */
   talk?: { boost: number; until: number } | null;
   subsUsed: number;
@@ -395,9 +405,11 @@ function chemFor(t: TeamState, players: FootballPlayer[]): number[] {
   return pts;
 }
 
-function units(t: TeamState, chem: boolean, get: Lookup, minute?: number): Units {
-  // A half-time talk's lift (or dip) for the 15 minutes after the break.
-  const talk = t.talk && minute !== undefined && minute <= t.talk.until ? t.talk.boost : 0;
+function units(t: TeamState, chem: boolean, get: Lookup, minute?: number, settle = 0): Units {
+  // A half-time talk's lift (or dip) for the 15 minutes after the break; less while a new
+  // approach settles.
+  const talk =
+    (t.talk && minute !== undefined && minute <= t.talk.until ? t.talk.boost : 0) - settle;
   const players = t.xi.map((x) => get(x.id));
   const pts = chem ? chemFor(t, players) : null;
   const eff = t.xi.map(
@@ -462,6 +474,13 @@ function units(t: TeamState, chem: boolean, get: Lookup, minute?: number): Units
     defSpd: mean("defSpd"),
     defPow: mean("defPow"),
   };
+}
+
+/** A side's units this minute: the talk's effect and any change still settling included. */
+function unitsNow(m: MatchState, side: Side, get: Lookup): Units {
+  const t = m.teams[side];
+  const settle = t.bed?.settle ? SETTLE_POINTS * (1 - bedIn(t, m)) : 0;
+  return units(t, m.chemistry, get, clockMinute(m), settle);
 }
 
 /** Possession multiplier from tactics (tactics.md → Team tactics). */
@@ -533,21 +552,15 @@ export function matchupParts(a: Tactics, d: Tactics, A: Units, D: Units): Matchu
   return out;
 }
 
-export function matchup(a: Tactics, d: Tactics, A: Units, D: Units): number {
-  return matchupParts(a, d, A, D).reduce((sum, p) => sum + p.v, 0) * C.matchup;
-}
-
 /**
  * The matchup right now, both ways, weighted: [side 0 attacking side 1, side 1 attacking side 0].
- * Tactics are public (both managers see "They play"), so this spoils nothing.
+ * Changes count as far as they've bedded in, so a new approach shows on the meter as it does on
+ * the pitch: a little at a time.
  */
 export function matchupNow(m: MatchState, get: Lookup): [MatchupPart[], MatchupPart[]] {
   const U = [units(m.teams[0], m.chemistry, get), units(m.teams[1], m.chemistry, get)] as const;
   const w = (ps: MatchupPart[]) => ps.map((p) => ({ key: p.key, v: p.v * C.matchup }));
-  return [
-    w(matchupParts(m.teams[0].tactics, m.teams[1].tactics, U[0], U[1])),
-    w(matchupParts(m.teams[1].tactics, m.teams[0].tactics, U[1], U[0])),
-  ];
+  return [w(styleParts(m, 0, U)), w(styleParts(m, 1, U))];
 }
 
 // ---- Setup ----
@@ -624,6 +637,49 @@ const clone = (m: MatchState): MatchState => ({
 // ---- Where the match is ----
 
 export const HALF_START = [0, 0, 45, 90, 105] as const;
+
+/**
+ * Changes take time (Best, Oct 2026: "who can press faster to make it green makes no sense").
+ * A new approach made mid-half reaches full effect over `BED_MINUTES` match minutes; a new
+ * build-up or defence costs up to `SETTLE_POINTS` rating points while it settles; the other side
+ * sees it (their "They play", the commentary) after `REVEAL_MINUTES`. Changes at the break are
+ * worked on in the dressing room and count at once.
+ */
+export const BED_MINUTES = 6;
+export const SETTLE_POINTS = 2;
+export const REVEAL_MINUTES = 3;
+
+/** How far a side's latest change has bedded in (0 just made, 1 in full). */
+export function bedIn(t: TeamState, m: Pick<MatchState, "half" | "minute">): number {
+  if (!t.bed || t.bed.half !== m.half) return 1;
+  return clamp((m.minute - t.bed.at) / BED_MINUTES, 0, 1);
+}
+
+/** The tactics the other side can see: a change shows once it's been in place a while. */
+export function shownTactics(t: TeamState, m: Pick<MatchState, "half" | "minute">): Tactics {
+  if (!t.bed || t.bed.half !== m.half || m.minute - t.bed.at >= REVEAL_MINUTES) return t.tactics;
+  return t.bed.from;
+}
+
+/** The style matchup for `side` attacking, with both sides' changes blended in as they bed in. */
+function styleParts(m: MatchState, side: Side, U: readonly [Units, Units]): MatchupPart[] {
+  const opp: Side = side === 0 ? 1 : 0;
+  const ways = (t: TeamState): Array<[Tactics, number]> => {
+    const w = bedIn(t, m);
+    return w >= 1 || !t.bed
+      ? [[t.tactics, 1]]
+      : [
+          [t.tactics, w],
+          [t.bed.from, 1 - w],
+        ];
+  };
+  const sum = new Map<MatchupKey, number>();
+  for (const [a, wa] of ways(m.teams[side]))
+    for (const [d, wd] of ways(m.teams[opp]))
+      for (const p of matchupParts(a, d, U[side], U[opp]))
+        sum.set(p.key, (sum.get(p.key) ?? 0) + p.v * wa * wd);
+  return [...sum].map(([key, v]) => ({ key, v }));
+}
 /** The match clock for the current minute (stoppage shows as 45, 90…: the client adds "+n"). */
 export const clockMinute = (m: MatchState) => {
   const len = m.half > 2 ? 15 : 45;
@@ -743,6 +799,18 @@ function playMinute(m: MatchState, rng: Rng, pathRng: Rng, get: Lookup, ev: Matc
   });
   ev.splice(at, 0, { m: clockMinute(m), o: -1, t: "ball", team: m.lastBall, zone, path });
   m.lastZone = zone;
+  // A change shows once it's been in place a while (the other side spots it).
+  m.teams.forEach((t, k) => {
+    if (t.bed && t.bed.half === m.half && m.minute - t.bed.at === REVEAL_MINUTES)
+      ev.push({
+        m: clockMinute(m),
+        o: 900,
+        t: "tactics",
+        team: k as Side,
+        tactics: { ...t.tactics },
+        since: clockMinute({ ...m, minute: t.bed.at }),
+      });
+  });
   for (const t of fatigue(m, get)) ev.push({ m: clockMinute(m), o: 950, ...t, t: "tired" });
 }
 
@@ -752,10 +820,7 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   let o = 0;
   const push = (e: MatchEvent) => ev.push(e);
   const next = () => o++;
-  const U = [
-    units(m.teams[0], m.chemistry, get, clockMinute(m)),
-    units(m.teams[1], m.chemistry, get, clockMinute(m)),
-  ] as const;
+  const U = [unitsNow(m, 0, get), unitsNow(m, 1, get)] as const;
   // 1. Possession.
   const a = Math.pow(Math.max(1, U[0].mid), C.possessionExp) * possessionMult(m.teams[0].tactics);
   const b = Math.pow(Math.max(1, U[1].mid), C.possessionExp) * possessionMult(m.teams[1].tactics);
@@ -796,7 +861,7 @@ function playMinuteInner(m: MatchState, rng: Rng, get: Lookup, ev: MatchEvent[])
   }
   // 3. Progress duel, with the style matchup.
   const direct = tac.build === "long" && u(rng) < 0.25;
-  const style = matchup(tac, dtac, U[side], U[opp]);
+  const style = styleParts(m, side, U).reduce((sum, p) => sum + p.v, 0) * C.matchup;
   let edge = (U[side].att - U[opp].def) / C.duelScale + style;
   if (direct) edge += 0.05;
   // Where you attack: your men on that side against theirs facing them; a man-marker leaves gaps.
@@ -1106,10 +1171,7 @@ function foul(
   // A foul in the final third: a free kick, sometimes a direct shot.
   if (u(rng) < C.freeKickShot) {
     push({ m: mm, o: next(), t: "free_kick", team: victim });
-    const U = [
-      units(m.teams[0], m.chemistry, get, clockMinute(m)),
-      units(m.teams[1], m.chemistry, get, clockMinute(m)),
-    ] as const;
+    const U = [unitsNow(m, 0, get), unitsNow(m, 1, get)] as const;
     shoot(m, victim, "free_kick", false, U, 0, rng, get, push, mm, next);
   }
 }
@@ -1182,9 +1244,19 @@ export function applyChange(prev: MatchState, side: Side, c: Change): Out {
   } else if (c.type === "instructions") {
     t.instructions = { ...c.instructions };
   } else if (c.type === "tactics") {
+    if (m.half > 0 && !m.halfDone) {
+      // Mid-half it beds in. Changing again before the last change has half taken keeps the
+      // old base (no shortcut by flip-flopping), and the clock starts again.
+      const mid = t.bed && bedIn(t, m) < 0.5 ? t.bed.from : t.tactics;
+      const style = (x: Tactics) => `${x.build}/${x.defence}`;
+      t.bed = {
+        from: { ...mid },
+        half: m.half,
+        at: m.minute,
+        settle: style(mid) !== style(c.tactics),
+      };
+    } else t.bed = null;
     t.tactics = { ...c.tactics };
-    if (m.half > 0 && !m.halfDone)
-      ev.push({ m: mm, o: 900, t: "tactics", team: side, tactics: { ...c.tactics } });
   } else if (c.type === "role") {
     const x = t.xi[c.slot];
     if (x) {
