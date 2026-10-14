@@ -1,15 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const manrope = Manrope({ subsets: ["latin"], display: "swap", variable: "--font-manrope" });
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
+// Self-hosted (SIL OFL, licences beside the files): builds never fetch Google Fonts, which once
+// failed a CI build when the download came back in a form Turbopack couldn't read.
+const manrope = localFont({
+  src: "./fonts/manrope-latin.woff2",
+  weight: "200 800",
+  display: "swap",
+  variable: "--font-manrope",
+});
+const bricolage = localFont({
+  src: "./fonts/bricolage-grotesque-latin.woff2",
+  weight: "600 800",
   display: "swap",
   variable: "--font-bricolage",
-  weight: ["600", "700", "800"],
 });
 
 export const metadata: Metadata = {

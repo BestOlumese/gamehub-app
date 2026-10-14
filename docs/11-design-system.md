@@ -47,7 +47,7 @@ Colour is never the only signal: Ludo yards are labelled, tokens carry initials,
 
 - UI/body: **Manrope** (variable, 400–800).
 - Display (logo, big numbers, game titles): **Bricolage Grotesque** (variable, 600–800).
-- Both via `next/font/google`, Latin subset.
+- Both self-hosted via `next/font/local` (`apps/web/app/fonts/`, Latin subset, variable woff2, SIL OFL licences beside them), so a build never downloads from Google Fonts (a CI build failed on that download in Oct 2026).
 - Scale (px): 12 · 14 · 16 (body) · 18 · 22 · 28 · 36 · 48. Line height 1.5 body, 1.15 display.
 - Numbers in timers/scores: `font-variant-numeric: tabular-nums`.
 
