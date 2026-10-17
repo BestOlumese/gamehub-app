@@ -2,3 +2,5 @@
 REALTIME_TICKET_SECRET=
 INTERNAL_HMAC_SECRET=
 CHAT_SIGN_SECRET=
+# Where tournament results are posted (local web, never production):
+WEB_ORIGIN=http://localhost:3000

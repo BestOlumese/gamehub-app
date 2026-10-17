@@ -130,12 +130,13 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 All met (Oct 2026): E2E "two phones … half-time sub" and "solo run on a 360 px phone"; engine tests for every mode (leagues and knockouts up to 8 bots in the fuzz), hidden-info tests in the engine and the Worker; a tick p95 2.5 ms with four matches at once. Still for Best on the live site: a match on a real phone, and rows per game against the estimate.
 
 ## Phase 12 — Tournament mode
-- [ ] `Tournament` DO (migration `v2`), 7-char codes, lobby socket, stage editor with validation and projected flow, capacity estimate warning.
-- [ ] Seeding, table spreading, byes (fewest-byes first), tie-breaks, RPC `initTable` / `reportTable`, auto-navigation, bots that can advance, football squads kept across stages.
-- [ ] First result-ingest endpoint in `web` (`/api/internal/tournament-result`, HMAC) + `match`, `match_player`, `tournament`, `tournament_stage`, `tournament_entry` tables; profile shows tournament wins and podiums.
-- [ ] Bracket UI. **Design questions with mockups to Best first.**
+- [x] `Tournament` DO (migration `v3`; `v2` went to `Quota`), 7-char codes, lobby socket, stage editor with validation and projected flow, capacity estimate warning (static estimate; the "today's usage" part waits for a Quota read endpoint).
+- [x] Seeding, table spreading, byes (fewest-byes first), tie-breaks (coin toss, logged), `initTable` / `reportTable` as internal fetches on the DO stubs (partyserver only initialises on fetch, not raw RPC), auto-navigation, bots that can advance, football squads kept across stages (with player aliases so two squads can share a player).
+- [x] First result-ingest endpoint in `web` (`/api/internal/tournament-result`, HMAC) + `match`, `match_player`, `tournament`, `tournament_stage`, `tournament_entry` tables (migration `0002_tournaments`); tournament wins and podiums show on Home (the profile page arrives in Phase 13).
+- [x] Bracket UI, designed with Best (Oct 17 2026, mockups): Home card, stage cards + sheet, stage tabs + table cards, "Your table is ready" sheet.
 
 **Exit:** a 16-entrant tournament (6 humans across phones + 10 bots) with three stages of different games finishes with correct placements stored in Neon; a player who drops mid-stage is advanced by their bot and gets their seat back; bracket property tests green.
+As built (Oct 2026): bracket property tests (1,000 random plans played out with random results and ties), DO tests (lobby, start, whole bot tournaments of 4 and 8, a repeated report ignored, results posted once and signed), E2E "4 people and 4 bots, tables of 4 then a knockout" (setup, join by code, sent to tables and back, final places stored in Postgres). Still for Best on the live site: the 16-entrant, 6-phone, three-game run.
 
 ## Phase 13 — Quick-match, ratings, history (was Phase 7)
 - [ ] `Matchmaker` DO with FIFO, 20 s bot-fill (unranked) + "keep waiting" option; queues for every game incl. `chess-<preset>`, `draughts-<variant>-5+3`, `property-<size>`, `football-2`.

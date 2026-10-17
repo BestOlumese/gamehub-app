@@ -130,7 +130,7 @@ Well within 0.5 GB for a long time. Prune `email_log` > 30 days on each sign-up 
 
 ## New games and modes (Phase 7 onward)
 
-> As built today (Phase 5) only the Better Auth tables, `email_log` and the `game_slug` enum exist. `match`, `rating` etc. above arrive with the first ingest phase. The **Tournament** phase now comes before quick-match (`phases.md`), so it creates the first result tables (`match`, `match_player`, `tournament*`) and the quick-match phase adds `rating` and leaderboards.
+> As built (Phase 12, Oct 2026): migration `0002_tournaments` adds `match`, `match_player` (no `score` yet), `tournament`, `tournament_stage` (`advance_per_table` holds a knockout's players-left), `tournament_entry`, and the enum values `chess`, `draughts`, `plots`, `football`. Before that, only the Better Auth tables, `email_log` and the `game_slug` enum existed. `match`, `rating` etc. above arrive with the first ingest phase. The **Tournament** phase now comes before quick-match (`phases.md`), so it creates the first result tables (`match`, `match_player`, `tournament*`) and the quick-match phase adds `rating` and leaderboards.
 
 ### Enum change
 `game_slug` gains `chess`, `draughts`, `property`, `football`. Postgres enums need `ALTER TYPE game_slug ADD VALUE 'chess';` etc. — drizzle-kit generates these; values can't be removed later, so add them only when each game ships. `match.kind` gains `"tournament"`.

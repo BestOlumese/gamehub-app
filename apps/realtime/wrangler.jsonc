@@ -11,12 +11,14 @@
       { "name": "Presence", "class_name": "Presence" },
       // One global instance: the daily CPU budget for strong bots (docs/15-bot-service.md).
       { "name": "Quota", "class_name": "Quota" },
+      { "name": "Tournament", "class_name": "Tournament" },
     ],
   },
   // SQLite must be on in the FIRST migration; it can't be enabled later.
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["GameRoom", "Matchmaker", "Presence"] },
     { "tag": "v2", "new_sqlite_classes": ["Quota"] },
+    { "tag": "v3", "new_sqlite_classes": ["Tournament"] },
   ],
   "vars": {
     "ALLOWED_ORIGINS": "https://gamehub-apps.vercel.app,http://localhost:3000",

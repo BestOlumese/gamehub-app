@@ -1,16 +1,23 @@
 "use client";
 
-import { ROOM_CODE_ALPHABET, ROOM_CODE_LENGTH } from "@gamehub/protocol/constants";
+import {
+  ROOM_CODE_ALPHABET,
+  ROOM_CODE_LENGTH,
+  TOURNAMENT_CODE_LENGTH,
+} from "@gamehub/protocol/constants";
 import { Button } from "@gamehub/ui/forms/button";
 import { RoomCodeInput } from "@gamehub/ui/forms/room-code-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+/** One box for both: rooms have 6 letters, tournaments 7. */
 export function JoinRoomForm({ autoFocus }: { autoFocus?: boolean }) {
   const router = useRouter();
   const [code, setCode] = useState("");
-  const complete = code.length === ROOM_CODE_LENGTH;
-  const go = (c: string) => router.push(`/r/${c}`);
+  const tournament = code.length === TOURNAMENT_CODE_LENGTH;
+  const complete = code.length === ROOM_CODE_LENGTH || tournament;
+  const go = (c: string) =>
+    router.push(c.length === TOURNAMENT_CODE_LENGTH ? `/t/${c}` : `/r/${c}`);
   return (
     <form
       onSubmit={(e) => {
@@ -23,11 +30,11 @@ export function JoinRoomForm({ autoFocus }: { autoFocus?: boolean }) {
         value={code}
         onChange={setCode}
         alphabet={ROOM_CODE_ALPHABET}
-        length={ROOM_CODE_LENGTH}
+        length={TOURNAMENT_CODE_LENGTH}
         autoFocus={autoFocus}
       />
       <Button type="submit" block disabled={!complete}>
-        Join room
+        {tournament ? "Join tournament" : "Join room"}
       </Button>
     </form>
   );

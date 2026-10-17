@@ -11,6 +11,7 @@ import { Lobby } from "./lobby";
 import { RoomClosed } from "./room-closed";
 import { RoomMenu } from "./room-menu";
 import { RoomTopBar } from "./room-top-bar";
+import { TableDone, TableStrip, TableWaiting } from "./tournament-table";
 import dynamic from "next/dynamic";
 
 // Each game's table is its own chunk (docs/10-performance.md: ≤ 60 KB per game).
@@ -58,10 +59,12 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
   if (closedCode !== null) return <RoomClosed code={closedCode} />;
 
   const playing = snap?.room.phase === "playing";
+  const tour = snap?.room.tournament;
   return (
     <div className="flex min-h-dvh flex-col">
       <RoomTopBar
         code={code}
+        {...(tour ? { back: { href: `/t/${tour.code}`, label: "Tournament" } } : {})}
         menu={
           <RoomMenu
             code={code}
@@ -74,12 +77,18 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
         }
       />
       <ConnectionBanner />
+      {snap && tour ? <TableStrip tour={tour} snap={snap} /> : null}
+      {snap && tour && snap.room.phase === "ended" ? <TableDone tour={tour} snap={snap} /> : null}
       {!snap ? (
         <div className="flex flex-1 items-center justify-center gap-3 text-ink-2" role="status">
           <Spinner /> Joining room {code}…
         </div>
       ) : snap.room.phase === "lobby" ? (
-        <Lobby snap={snap} send={send} notice={notice} />
+        tour ? (
+          <TableWaiting tour={tour} snap={snap} />
+        ) : (
+          <Lobby snap={snap} send={send} notice={notice} />
+        )
       ) : snap.room.game === "rps" ? (
         <RpsTable snap={snap} send={send} />
       ) : snap.room.game === "whot" ? (

@@ -70,7 +70,12 @@ export interface GameDefinition<S, A, V, R extends RuleConfigBase> {
    * A new game. `first` is the seat that moves first (the room's "Who goes first" setting;
    * 0 when not given). Simultaneous games (RPS) ignore it.
    */
-  setup(players: number, ctx: Ctx<R>, first?: SeatIndex): S;
+  setup(players: number, ctx: Ctx<R>, first?: SeatIndex, carry?: ReadonlyArray<unknown>): S;
+  /**
+   * What each seat takes from a finished game into its next one in a tournament (a Football
+   * Draft squad), handed back to `setup` as `carry` for that seat. Null: nothing to carry.
+   */
+  carryOut?(s: S): Array<unknown | null>;
   currentSeats(s: S): SeatIndex[];
   legalActions(s: S, seat: SeatIndex, rules: R): A[];
   apply(s: S, input: { seat: SeatIndex; action: A }, ctx: Ctx<R>): Result<S, RuleErrorCode>;

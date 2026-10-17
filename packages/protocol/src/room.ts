@@ -14,7 +14,8 @@ export type FirstPlayer = z.infer<typeof firstPlayerSchema>;
 export const seatStatusSchema = z.enum(["empty", "connected", "away", "bot", "left"]);
 export type SeatStatus = z.infer<typeof seatStatusSchema>;
 
-export type TicketScope = "presence" | `match:${string}` | `room:${string}`;
+export type TicketScope =
+  "presence" | `match:${string}` | `room:${string}` | `tournament:${string}`;
 
 export type TicketClaims = {
   sub: string;
@@ -42,7 +43,7 @@ export type RoomPhase = "lobby" | "playing" | "ended";
 export type RoomMeta = {
   roomId: string;
   code: string | null;
-  kind: "private" | "quick";
+  kind: "private" | "quick" | "tournament";
   game: GameSlug;
   phase: RoomPhase;
   ranked: boolean;
@@ -54,6 +55,25 @@ export type RoomMeta = {
   /** Bots that take any empty seats when the host starts, or null. */
   botFill: BotLevel | null;
   firstPlayer: FirstPlayer;
+  /** A tournament table: where it sits in the tournament, and its best-of series so far. */
+  tournament?: {
+    code: string;
+    name: string;
+    stage: number;
+    table: string;
+    /** "Stage 2 · Ludo · Table 3". */
+    label: string;
+    bestOf: 1 | 3 | 5;
+    /** Games won per seat, and games played (with draws). */
+    wins: number[];
+    games: number;
+    /** When the table starts by itself if someone hasn't arrived (server time), in the lobby. */
+    startsAt: number | null;
+    /** The series is over (the result is on its way to the tournament, or there). */
+    done: boolean;
+    /** The result has reached the tournament. */
+    reported: boolean;
+  };
 };
 
 // ── Client → server ──────────────────────────────────────────────────────────

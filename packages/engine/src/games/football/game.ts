@@ -59,7 +59,7 @@ import { footballActionSchema, footballRulesSchema } from "./schemas";
 import { ratingDeltas } from "./report";
 import { segmentStart, timeline } from "./timeline";
 import { reactionLine, TALK_BOOST, TALK_MINUTES, talkReaction } from "./talk";
-import { lookupOf } from "./sheets";
+import { aliasClashes, baseId, lookupOf, playerIn } from "./sheets";
 import { SHOUTS } from "./shouts";
 import type {
   BotTeam,
@@ -113,6 +113,14 @@ const err = (error: RuleErrorCode) => ({ ok: false as const, error });
 const cloneState = (s: FootballState): FootballState =>
   JSON.parse(JSON.stringify(s)) as FootballState;
 
+/** A drafted squad, as carried between a tournament's football stages. */
+export type Squad = {
+  formation: number;
+  xi: Record<number, string>;
+  subs: string[];
+  sheet: TeamSheet | null;
+};
+
 export function createFootballGame(
   dataset: FootballDataset,
 ): GameDefinition<FootballState, FootballAction, FootballView, FootballRules> {
@@ -154,6 +162,33 @@ export function createFootballGame(
   }
 
   /** The default team after the draft: best known roles, default tactics. */
+  /** A carried squad, checked against the data (anything off: they draft as normal). */
+  function squadOf(c: unknown): Squad | null {
+    if (!c || typeof c !== "object") return null;
+    const q = c as Partial<Squad>;
+    if (typeof q.formation !== "number" || !q.xi || !Array.isArray(q.subs)) return null;
+    let slots: number;
+    try {
+      slots = formation(q.formation).slots.length;
+    } catch {
+      return null;
+    }
+    const xi = Object.fromEntries(Object.entries(q.xi).map(([k, id]) => [k, baseId(String(id))]));
+    const subs = q.subs.map((id) => baseId(String(id)));
+    const ids = [...Object.values(xi), ...subs];
+    if (Object.keys(xi).length !== slots || !ids.every((id) => pool.byId.has(id))) return null;
+    const sheet = q.sheet ?? null;
+    const sheetIds = sheet ? [...sheet.xi.map((x) => x.id), ...sheet.bench] : [];
+    const same =
+      sheet !== null && sheetIds.length === ids.length && ids.every((id) => sheetIds.includes(id));
+    return {
+      formation: q.formation,
+      xi,
+      subs,
+      sheet: same ? (JSON.parse(JSON.stringify(sheet)) as TeamSheet) : null,
+    };
+  }
+
   function sheetFrom(m: Manager): TeamSheet {
     const slots = formation(m.formation as number).slots;
     return {
@@ -338,7 +373,8 @@ export function createFootballGame(
         f.result = { score: [0, 0], pens: null, winner: 0 };
         continue;
       }
-      const m0 = startMatch(sheetOfTeam(s, f.a), sheetOfTeam(s, f.b), {
+      const home = sheetOfTeam(s, f.a);
+      const m0 = startMatch(home, aliasClashes(home, sheetOfTeam(s, f.b)), {
         knockout: f.knockout,
         chemistry: rules.chemistry,
         subsPerMatch: rules.subsPerMatch,
@@ -745,7 +781,7 @@ export function createFootballGame(
     ruleSchema: footballRulesSchema,
     actionSchema: footballActionSchema,
 
-    setup(players, ctx) {
+    setup(players, ctx, _first, carry) {
       const r = ctx.rng;
       const seed = Array.from({ length: 4 }, () => r.int(2 ** 31).toString(36)).join("");
       const total = 2 + 10 + ctx.rules.subs;
@@ -788,8 +824,28 @@ export function createFootballGame(
         series: [0, 0],
         places: null,
       };
+      // A tournament squad drafted at an earlier stage: no draft, straight to arranging it.
+      carry?.forEach((c, seat) => {
+        const sq = squadOf(c);
+        const m = s.managers[seat];
+        if (!sq || !m) return;
+        m.formation = sq.formation;
+        m.xi = { ...sq.xi };
+        m.subs = [...sq.subs];
+        m.total = m.pick = 2 + Object.keys(sq.xi).length - 1 + sq.subs.length;
+        m.sheet = sq.sheet ?? sheetFrom(m);
+        m.deadline = ctx.now + ctx.rules.arrangeSeconds * 1000;
+      });
       s.managers.forEach((m, seat) => (m.offer = offerFor(s, seat, ctx.rules)));
       return s;
+    },
+
+    carryOut(s) {
+      return s.managers.map((m) =>
+        m.pick >= m.total && m.formation !== null
+          ? ({ formation: m.formation, xi: m.xi, subs: m.subs, sheet: m.sheet } satisfies Squad)
+          : null,
+      );
     },
 
     currentSeats(s) {
@@ -976,10 +1032,10 @@ export function createFootballGame(
       const cards: Record<string, Card> = {};
       const card = (id: string) => {
         if (cards[id]) return;
-        const p = pool.byId.get(id);
+        const p = playerIn(pool, id);
         if (!p) return;
         cards[id] = {
-          id: p.id,
+          id,
           name: p.name,
           short: p.short,
           group: p.group,

@@ -172,7 +172,7 @@ The room copies `m.mt` into chess/draughts move actions before `apply` (clients 
 
 ### Snapshot additions
 - `snapshot.view` is per seat as before. New per-game view content: chess/draughts `clock` (server time) and `legal`; property `netWorth`, `decksLeft`, the viewer's own offers; football the viewer's `DraftSeat` (others reduced to `{ pick, ready }`) and the current half's events with `startedAt`.
-- `snapshot.room.tournament?: { code, stage, table }` for tournament tables.
+- `snapshot.room.tournament?: { code, name, stage, table, label, bestOf, wins, games, startsAt, done, reported }` for tournament tables (`room.kind` is `"tournament"`; lobby edits and rematch answer `WRONG_PHASE`). `t_go` carries the table's room `code`.
 - `snapshot.deadlines.turns` continues to carry per-seat deadlines (draft picks, half-time windows, auctions use per-room `windowEndsAt` inside the view).
 
 ### Tournament lobby channel

@@ -17,3 +17,5 @@ export type CloseCode = (typeof CloseCode)[keyof typeof CloseCode];
 /** No I, O, 0 or 1, so codes read clearly when shared aloud or on WhatsApp. */
 export const ROOM_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 export const ROOM_CODE_LENGTH = 6;
+/** Tournaments have 7, so one join box can tell them apart. */
+export const TOURNAMENT_CODE_LENGTH = 7;

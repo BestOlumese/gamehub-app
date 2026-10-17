@@ -1,4 +1,4 @@
-import { roomCodeSchema } from "@gamehub/protocol";
+import { roomCodeSchema, tournamentCodeSchema } from "@gamehub/protocol";
 import { SignJWT } from "jose";
 import { realtimeEnv } from "@/server/env";
 import { getSession, isBanned, needsOnboarding } from "@/server/session";
@@ -19,14 +19,15 @@ export async function GET(req: Request) {
 
   const scope = new URL(req.url).searchParams.get("scope") ?? "";
   const [kind, name] = scope.split(":");
-  if (kind !== "room" || !roomCodeSchema.safeParse(name).success) {
-    return Response.json({ error: "BAD_SCOPE" }, { status: 400, headers: noStore });
-  }
+  const valid =
+    (kind === "room" && roomCodeSchema.safeParse(name).success) ||
+    (kind === "tournament" && tournamentCodeSchema.safeParse(name).success);
+  if (!valid) return Response.json({ error: "BAD_SCOPE" }, { status: 400, headers: noStore });
 
   const ticket = await new SignJWT({
     name: user.username,
     avatar: user.image ?? null,
-    scope: `room:${name}`,
+    scope: `${kind}:${name}`,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setSubject(user.id)

@@ -71,7 +71,7 @@ jobs:
       - run: pnpm --filter db migrate
       - name: Worker dev secrets
         run: |
-          printf 'REALTIME_TICKET_SECRET=%s\nINTERNAL_HMAC_SECRET=%s\nCHAT_SIGN_SECRET=ci-chat\nBOT_HMAC_SECRET=%s\nBOT_SERVICE_URL=http://localhost:3000/api/bots/chess/move\n' \
+          printf 'REALTIME_TICKET_SECRET=%s\nINTERNAL_HMAC_SECRET=%s\nCHAT_SIGN_SECRET=ci-chat\nBOT_HMAC_SECRET=%s\nBOT_SERVICE_URL=http://localhost:3000/api/bots/chess/move\nWEB_ORIGIN=http://localhost:3000\n' \
             "$REALTIME_TICKET_SECRET" "$INTERNAL_HMAC_SECRET" "$BOT_HMAC_SECRET" > apps/realtime/.dev.vars
       - run: pnpm --filter web build
       - run: pnpm --filter web exec playwright install --with-deps chromium

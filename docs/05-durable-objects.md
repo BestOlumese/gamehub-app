@@ -258,5 +258,5 @@ Target ≤ 5 ms typical per invocation; anything heavier goes to the bot service
 - **Tournament:** one row per state change (join, seeding, table report, stage change); bracket updates are broadcast, not stored separately.
 
 ### DO-to-DO calls
-- `Tournament → GameRoom.initTable(...)` and `GameRoom → Tournament.reportTable(...)` are RPC calls on DO stubs (`env.Room.getByName(code)`, `env.Tournament.getByName(code)`), retried from alarms until acknowledged. Each call is a DO request (counts toward the 100k/day).
+- `Tournament → GameRoom` (create a table, a seat's owner left) and `GameRoom → Tournament` (the table's result) are internal `fetch` calls on the DO stubs (`env.Room.getByName(code)`, `env.Tournament.getByName(code)`) with an `x-gh-internal` header (as built: partyserver only initialises a server on fetch, alarm or socket, not on raw RPC). The Worker routes no plain HTTP to either class, so only our own code can make them. Reports are retried from the room's alarm until acknowledged. Each call is a DO request (counts toward the 100k/day).
 - `GameRoom → Quota.allowBot() / addBot(cpuMs)` before/after bot-service calls.

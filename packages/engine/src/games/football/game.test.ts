@@ -69,6 +69,34 @@ function run(
 }
 
 describe("football room", () => {
+  it("tournament: a squad drafted earlier skips the draft; a shared player is aliased in the match", () => {
+    const first = run(start(2, {}, "carry"));
+    const squads = game.carryOut?.(first.s) ?? [];
+    expect(squads.every((q) => q !== null)).toBe(true);
+    // Both seats bring the same squad: every player clashes.
+    const same = squads[0];
+    const r = { ...footballNaija };
+    const s = game.setup(2, { rng: seededRng("c2"), rules: r, now: T0 }, 0, [same, same]);
+    expect(s.managers.every((m) => m.pick === m.total && m.offer === null)).toBe(true);
+    const sim: Sim = { s, now: T0, rules: r, events: [] };
+    act(sim, 0, { type: "ready" });
+    act(sim, 1, { type: "ready" });
+    const m = sim.s.rounds[0]?.[0]?.match;
+    if (!m) throw new Error("no match");
+    const home = m.teams[0].xi.map((x) => x.id);
+    const away = m.teams[1].xi.map((x) => x.id);
+    expect(away.every((id) => id.endsWith("~1"))).toBe(true);
+    expect(home.some((id) => away.includes(id))).toBe(false);
+    // Each copy has its own card, under its own id, for the phones.
+    const v = game.view(sim.s, 0);
+    expect(v.cards[away[0] as string]?.id).toBe(away[0]);
+    expect(v.cards[away[0] as string]?.name).toBe(v.cards[home[0] as string]?.name);
+    run(sim);
+    // A squad that doesn't match the data is ignored: that seat drafts as normal.
+    const bad = game.setup(2, { rng: seededRng("c3"), rules: r, now: T0 }, 0, [{ formation: 99 }]);
+    expect(bad.managers[0]?.offer?.kind).toBe("formation");
+  });
+
   it("1v1: draft 19 picks each, arrange, play a knockout match to a winner", () => {
     const sim = start(2);
     expect(sim.s.mode).toBe("h2h_single");

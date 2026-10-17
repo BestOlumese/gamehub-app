@@ -15,7 +15,8 @@
     "./draughts": "./src/games/draughts/core.ts",
     "./draughts/service": "./src/games/draughts/service.ts",
     "./plots": "./src/games/plots/client.ts",
-    "./football": "./src/games/football/client.ts"
+    "./football": "./src/games/football/client.ts",
+    "./tournament": "./src/tournament/bracket.ts"
   },
   "scripts": {
     "lint": "eslint .",

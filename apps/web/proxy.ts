@@ -40,5 +40,6 @@ export const config = {
     "/settings/:path*",
     "/r/:path*",
     "/play/:path*",
+    "/t/:path*",
   ],
 };

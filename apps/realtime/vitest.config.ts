@@ -14,6 +14,7 @@ export default defineConfig({
           GRACE_MS: "150",
           BOT_HMAC_SECRET: "test-bot-secret",
           BOT_SERVICE_URL: "http://bots.test/move",
+          WEB_ORIGIN: "http://web.test",
         },
       },
     }),

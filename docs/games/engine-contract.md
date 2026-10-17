@@ -93,3 +93,6 @@ Zod schemas live in each game's `schemas.ts` and are only imported by the full `
 - `GAME_SLUGS` gains `chess`, `draughts`, `plots` (the property game), `football` (engine, protocol `game-slug.ts` and the Postgres enum together, one game at a time).
 - New `RuleErrorCode`s are listed in `03-realtime-protocol.md`.
 - Per-game termination bounds for property tests: chess ≤ 600 plies (with automatic fivefold/75-move); draughts ≤ 600 plies; property timed by its clock, classic ≤ 600 turns (3-hour cap); football: fixed length (≤ 120 minutes + penalties).
+
+### Carrying between games (tournaments)
+`setup(players, ctx, first?, carry?)` takes one value per seat from that seat's previous game in the tournament, produced by the optional `carryOut(state)` (null: nothing). Only Football Draft uses it (the drafted squad). A game must check what it's given and ignore anything that doesn't fit.

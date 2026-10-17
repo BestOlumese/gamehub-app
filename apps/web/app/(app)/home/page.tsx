@@ -1,14 +1,20 @@
+import { buttonClasses } from "@gamehub/ui/forms/button";
+import { Trophy } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
 import { GameGrid } from "@/components/home/game-grid";
 import { JoinRoomForm } from "@/components/join/join-room-form";
 import { requirePlayer } from "@/server/session";
+import { tournamentRecord } from "@/server/tournaments";
 
 export const metadata: Metadata = { title: "Home", robots: { index: false } };
 
 async function Greeting() {
   const user = await requirePlayer();
+  // Results are a bonus line: a database hiccup mustn't take Home down.
+  const record = await tournamentRecord(user.id).catch(() => ({ wins: 0, podiums: 0 }));
   return (
     <>
       <AppHeader user={user} />
@@ -17,6 +23,13 @@ async function Greeting() {
           Hi, <span className="text-brand">@{user.username}</span>
         </h1>
         <p className="mt-1 text-ink-2">What are we playing?</p>
+        {record.podiums ? (
+          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold">
+            <Trophy size={15} aria-hidden="true" className="text-accent" />
+            {record.wins === 1 ? "1 tournament win" : `${record.wins} tournament wins`} ·{" "}
+            {record.podiums === 1 ? "1 podium" : `${record.podiums} podiums`}
+          </p>
+        ) : null}
       </section>
     </>
   );
@@ -36,9 +49,9 @@ export default function HomePage() {
         >
           <div>
             <h2 id="join-h" className="font-bold">
-              Got a room code?
+              Got a code?
             </h2>
-            <p className="text-sm text-ink-2">Type the 6 letters your friend sent you.</p>
+            <p className="text-sm text-ink-2">Rooms have 6 letters, tournaments 7.</p>
           </div>
           <div className="w-full sm:max-w-sm">
             <JoinRoomForm />
@@ -50,6 +63,28 @@ export default function HomePage() {
             Pick a game
           </h2>
           <GameGrid />
+        </section>
+
+        <section
+          aria-labelledby="tour-h"
+          className="flex flex-col gap-4 rounded-card border border-line bg-surface p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex gap-3">
+            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+              <Trophy size={22} aria-hidden="true" />
+            </span>
+            <div>
+              <h2 id="tour-h" className="font-bold">
+                Run a tournament
+              </h2>
+              <p className="text-sm text-ink-2">
+                4 to 32 players, any games in stages. Bots can fill in.
+              </p>
+            </div>
+          </div>
+          <Link href="/t/new" className={buttonClasses("primary", "md", "sm:w-auto")}>
+            Set one up
+          </Link>
         </section>
       </main>
     </div>

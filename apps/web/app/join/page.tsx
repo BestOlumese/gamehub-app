@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site/site-header";
 
 export const metadata: Metadata = {
   title: "Join a room",
-  description: "Enter the 6-letter room code your friend sent you.",
+  description: "Enter the code your friend sent you: 6 letters for a room, 7 for a tournament.",
 };
 
 export default function JoinPage() {
@@ -18,8 +18,8 @@ export default function JoinPage() {
             Join a room
           </h1>
           <p className="mt-2 mb-6 text-ink-2">
-            Type the 6-letter code your friend sent you. You&apos;ll log in or sign up next if you
-            haven&apos;t.
+            Type the code your friend sent you: 6 letters for a room, 7 for a tournament.
+            You&apos;ll log in or sign up next if you haven&apos;t.
           </p>
           <JoinRoomForm autoFocus />
         </div>

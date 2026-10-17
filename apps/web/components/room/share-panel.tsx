@@ -4,11 +4,25 @@ import { Button, buttonClasses } from "@gamehub/ui/forms/button";
 import { Check, Copy, Share2 } from "lucide-react";
 import { useState } from "react";
 
-/** Room code + WhatsApp / copy / native share. */
-export function SharePanel({ code, gameName }: { code: string; gameName: string }) {
+/** Room (or tournament) code + WhatsApp / copy / native share. */
+export function SharePanel({
+  code,
+  gameName,
+  kind = "room",
+}: {
+  code: string;
+  /** Rooms: the game. Tournaments: the tournament's name. */
+  gameName: string;
+  kind?: "room" | "tournament";
+}) {
   const [copied, setCopied] = useState<"link" | "code" | null>(null);
-  const url = typeof window === "undefined" ? `/r/${code}` : `${window.location.origin}/r/${code}`;
-  const text = `Join my ${gameName} game on GameHub. Room code ${code}: ${url}`;
+  const path = `/${kind === "room" ? "r" : "t"}/${code}`;
+  const url = typeof window === "undefined" ? path : `${window.location.origin}${path}`;
+  const text =
+    kind === "room"
+      ? `Join my ${gameName} game on GameHub. Room code ${code}: ${url}`
+      : `Join my tournament "${gameName}" on GameHub. Code ${code}: ${url}`;
+  const label = kind === "room" ? "Room code" : "Tournament code";
 
   async function copy(what: "link" | "code") {
     try {
@@ -22,12 +36,12 @@ export function SharePanel({ code, gameName }: { code: string; gameName: string 
 
   return (
     <div className="rounded-card border border-line bg-surface p-5 text-center shadow-sm sm:p-6">
-      <p className="text-sm font-semibold text-ink-2">Room code</p>
+      <p className="text-sm font-semibold text-ink-2">{label}</p>
       <button
         type="button"
         onClick={() => copy("code")}
-        className="mt-1 rounded-control px-2 font-display text-4xl font-extrabold tracking-[0.25em] tabular-nums hover:bg-surface-2 sm:text-5xl"
-        aria-label={`Room code ${code.split("").join(" ")}. Tap to copy.`}
+        className={`mt-1 rounded-control px-2 font-display font-extrabold tabular-nums hover:bg-surface-2 ${kind === "room" ? "text-4xl tracking-[0.25em] sm:text-5xl" : "text-3xl tracking-[0.15em] sm:text-5xl sm:tracking-[0.2em]"}`}
+        aria-label={`${label} ${code.split("").join(" ")}. Tap to copy.`}
       >
         {code}
       </button>
