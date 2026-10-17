@@ -49,9 +49,9 @@ export default function HomePage() {
         >
           <div>
             <h2 id="join-h" className="font-bold">
-              Got a code?
+              Got a room code?
             </h2>
-            <p className="text-sm text-ink-2">Rooms have 6 letters, tournaments 7.</p>
+            <p className="text-sm text-ink-2">Type the 6 letters your friend sent you.</p>
           </div>
           <div className="w-full sm:max-w-sm">
             <JoinRoomForm />

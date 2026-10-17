@@ -69,38 +69,46 @@ describe("live 2D simulation", () => {
     "physical: no NaN, everyone on (or just off) the pitch, nobody faster than his top speed",
     { timeout: 120_000 },
     () => {
+      // Plain checks per frame (expect() per player per frame made this the slowest test).
+      const bad: string[] = [];
       for (const seed of [1, 2, 3]) {
-        runHalf(seed, ({ f }) => {
+        runHalf(seed, ({ f, at }) => {
           for (const p of f.players) {
-            expect(Number.isFinite(p.x) && Number.isFinite(p.y)).toBe(true);
-            expect(p.x).toBeGreaterThan(-4);
-            expect(p.x).toBeLessThan(W + 4);
-            expect(p.y).toBeGreaterThan(-4);
-            expect(p.y).toBeLessThan(H + 4);
-            expect(Math.hypot(p.vx, p.vy)).toBeLessThanOrEqual(p.vmax + 1e-6);
+            const ok =
+              Number.isFinite(p.x) &&
+              Number.isFinite(p.y) &&
+              p.x > -4 &&
+              p.x < W + 4 &&
+              p.y > -4 &&
+              p.y < H + 4 &&
+              Math.hypot(p.vx, p.vy) <= p.vmax + 1e-6;
+            if (!ok && bad.length < 5)
+              bad.push(`seed ${seed} at ${at}: ${p.id} ${JSON.stringify(p)}`);
           }
-          expect(Number.isFinite(f.ball.x) && Number.isFinite(f.ball.y)).toBe(true);
+          if (!(Number.isFinite(f.ball.x) && Number.isFinite(f.ball.y)) && bad.length < 5)
+            bad.push(`seed ${seed} at ${at}: ball ${JSON.stringify(f.ball)}`);
         });
       }
+      expect(bad).toEqual([]);
     },
   );
 
   it("goals: when the commentary says GOAL the ball is in that net", () => {
     let goals = 0;
     for (const seed of [4, 5, 6, 7, 8, 9]) {
-      const { tl } = runHalf(seed, () => {});
-      // Re-run, stopping just after each goal.
+      // One pass: where the ball is 60 ms after each goal.
+      const seen = new Map<number, number>();
+      const { tl } = runHalf(seed, ({ f, at, tl }) => {
+        for (const x of tl.events)
+          if (x.e.t === "goal" && at >= x.at + 60 && !seen.has(x.at)) seen.set(x.at, f.ball.x);
+      });
       for (const x of tl.events) {
         if (x.e.t !== "goal") continue;
-        const team_ = x.e.team;
-        let ballX: number | null = null;
-        runHalf(seed, ({ f, at }) => {
-          if (at >= x.at + 60 && ballX === null) ballX = f.ball.x;
-        });
+        const ballX = seen.get(x.at) ?? null;
         goals++;
-        if (team_ === 0) expect(ballX).toBeGreaterThan(W - 1);
-        else expect(ballX).toBeLessThan(1);
         expect(ballX).not.toBeNull();
+        if (x.e.team === 0) expect(ballX).toBeGreaterThan(W - 1);
+        else expect(ballX).toBeLessThan(1);
       }
     }
     expect(goals).toBeGreaterThan(0);

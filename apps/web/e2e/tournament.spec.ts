@@ -62,6 +62,7 @@ test("tournament: 4 people and 4 bots, tables of 4 then a knockout; everyone is 
   // The others join with the code from Home's join box.
   for (const g of people.slice(1)) {
     await g.page.goto("/home");
+    await g.page.getByRole("button", { name: "Got a tournament code?" }).click();
     await g.page.getByRole("textbox", { name: "Character 1" }).fill(code[0]!);
     await g.page.keyboard.type(code.slice(1));
     await g.page.getByRole("button", { name: "Join tournament" }).click();
