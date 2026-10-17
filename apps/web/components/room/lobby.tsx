@@ -11,6 +11,7 @@ import type { CreatableGame } from "@/components/create-room/create-room-sheet";
 import { describeRules, FIRST_PLAYER, GAME_NAMES, hasFirstPlayer } from "@/lib/game-meta";
 import type { Snapshot } from "@/lib/room/store";
 import { TOKEN_NAMES, TokenArt, tokensFor } from "./plots/tokens";
+import { InviteFriendsButton } from "@/components/presence/invite-sheet";
 import { SharePanel } from "./share-panel";
 
 const LEVELS: BotLevel[] = ["easy", "medium", "hard"];
@@ -49,6 +50,13 @@ export function Lobby({ snap, send, notice }: Props) {
   return (
     <div className="mx-auto w-full max-w-lg space-y-6 px-4 py-6">
       <SharePanel code={snap.room.code ?? ""} gameName={GAME_NAMES[snap.room.game]} />
+      <InviteFriendsButton
+        kind="room"
+        code={snap.room.code ?? ""}
+        game={snap.room.game}
+        name={null}
+        exclude={snap.seats.flatMap((s) => (s.userId ? [s.userId] : []))}
+      />
 
       <section aria-labelledby="players-h">
         <div className="mb-2 flex items-baseline justify-between px-1">

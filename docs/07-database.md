@@ -130,6 +130,7 @@ Well within 0.5 GB for a long time. Prune `email_log` > 30 days on each sign-up 
 
 ## New games and modes (Phase 7 onward)
 
+> As built (Phase 14, Oct 2026): `0005_friends` adds `friendship` (one row per pair, `user_a < user_b`), `friend_request` and `block` (with `created_at` and an index on `blocked_id`). Blocking removes the friendship and any requests.
 > As built (Phase 13, Oct 2026): `0003_ratings` adds `rating` (with a `display` column: the friendly number) and `user_stats`, both keyed by user, game and variant; `0004_solo_runs` adds `football_solo_run` (with `played`). `match.kind` includes `quick`.
 > As built (Phase 12, Oct 2026): migration `0002_tournaments` adds `match`, `match_player` (no `score` yet), `tournament`, `tournament_stage` (`advance_per_table` holds a knockout's players-left), `tournament_entry`, and the enum values `chess`, `draughts`, `plots`, `football`. Before that, only the Better Auth tables, `email_log` and the `game_slug` enum existed. `match`, `rating` etc. above arrive with the first ingest phase. The **Tournament** phase now comes before quick-match (`phases.md`), so it creates the first result tables (`match`, `match_player`, `tournament*`) and the quick-match phase adds `rating` and leaderboards.
 

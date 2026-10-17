@@ -16,6 +16,10 @@ const copy: Record<number, { title: string; body: string }> = {
     body: "The game finished or everyone left a while ago. Start a new one from home.",
   },
   4008: { title: "You were removed", body: "The host removed you from this room." },
+  4009: {
+    title: "Too many watching",
+    body: "20 people are already watching this game. Try again in a bit.",
+  },
   1000: { title: "You left the game", body: "See you at the next table." },
 };
 

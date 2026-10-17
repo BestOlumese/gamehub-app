@@ -405,7 +405,22 @@ export class Tournament extends Server<Env> {
     await this.commit();
     this.broadcastEvents(r.step.events);
     this.sendGo(r.step.created);
+    await this.tellPresence(true);
     return null;
+  }
+
+  /** Friends see "In a tournament" from the start to the end (best effort: never blocks play). */
+  private async tellPresence(on: boolean) {
+    const t = this.t;
+    const userIds = (t?.bracket?.entrants ?? []).flatMap((e) => (e.userId ? [e.userId] : []));
+    if (!t || !userIds.length) return;
+    await this.env.Presence.getByName("global")
+      .fetch("https://presence/tour", {
+        method: "POST",
+        headers: { "x-gh-internal": "tour" },
+        body: JSON.stringify({ userIds, tour: on ? { code: t.code, name: t.config.name } : null }),
+      })
+      .catch(() => null);
   }
 
   /** The new tables' rooms. Any that fail are retried from the alarm. */
@@ -513,6 +528,7 @@ export class Tournament extends Server<Env> {
     await this.commit();
     this.broadcastEvents(step.events);
     this.sendGo(step.created);
+    if (t.phase === "finished") await this.tellPresence(false);
     return new Response(null, { status: 200 });
   }
 

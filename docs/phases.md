@@ -150,10 +150,12 @@ As built (Oct 2026): bracket property tests (1,000 random plans played out with 
 Met (Oct 2026): E2E "quick match: ranked chess blitz and draughts" (the tile's sheet, the queue, both into one ranked room, profiles with the rating change, both leaderboards); DO tests for matching, bot fill, keep waiting / giving up, one queue at a time, and the ranked claim.
 
 ## Phase 14 — Friends, presence, invites, spectating (was Phase 8)
-- [ ] `Presence` DO (socket tags), friend requests/accept/block, online + in-game status (incl. "in a tournament").
-- [ ] Invites to rooms and tournaments (toast), watch a friend's game, spectator mode with limits — chess/draughts spectators see the clocks; property spectators see public state only; football spectators never see option sets or unrevealed teams.
+- [x] `Presence` DO (one global; online from its sockets, in-game and in-a-tournament reported by rooms and tournaments), friend requests/accept/decline/cancel, remove, block (migration `0005_friends`).
+- [x] Invites to rooms and tournaments (toast on any signed-in page, 2 min), watch a friend's game (Home strip, Friends page), spectator mode: "Watching @name · Game" bar, players see an eye with the count, at most 20 watchers. Views were already per seat (chess/draughts public with clocks, property public state, football never sends option sets or unrevealed teams to spectators; tested since Phases 7–11).
+- Designed with Best (Oct 17 2026, mockups): /friends + a Home strip, Invite friends in lobbies + toasts, the Watching bar, Add friend and ⋯ (Remove, Block) on profiles.
 
 **Exit:** friend A invites B from the friends list; B joins in two taps; C spectates without seeing hands or draft options.
+Met (Oct 2026): E2E "friends: A invites B from the lobby, B joins from the toast; C watches without seeing hands" (B: Join, and they're seated); DO tests for presence (online/offline, a real room's game start, invites signed and delivered, the watcher count). Draft options for spectators: the football hidden-info tests.
 
 ## Phase 15 — Chat & moderation (was Phase 9)
 - [ ] Emote bar + voice lines (record your clips).

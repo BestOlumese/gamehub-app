@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Eye } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useRoom } from "@/lib/room/store";
@@ -16,6 +16,7 @@ export function RoomTopBar({
   back?: { href: string; label: string };
 }) {
   const connection = useRoom((s) => s.connection);
+  const watching = useRoom((s) => s.snap?.room.spectators ?? 0);
   const live = connection === "open";
   return (
     <header className="flex h-14 items-center justify-between gap-2 border-b border-line bg-surface px-2 sm:px-4">
@@ -32,6 +33,15 @@ export function RoomTopBar({
           aria-label={live ? "Connected" : "Reconnecting"}
         />
         {code}
+        {watching ? (
+          <span
+            className="ml-1 inline-flex items-center gap-1 text-xs font-semibold tracking-normal text-ink-2"
+            aria-label={`${watching} watching`}
+          >
+            <Eye size={14} aria-hidden="true" />
+            {watching}
+          </span>
+        ) : null}
       </div>
       {menu}
     </header>

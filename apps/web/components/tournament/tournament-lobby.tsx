@@ -7,6 +7,7 @@ import { Button } from "@gamehub/ui/forms/button";
 import { Dialog } from "@gamehub/ui/overlays/dialog";
 import { Bot, Crown, Pencil, X } from "lucide-react";
 import { useState } from "react";
+import { InviteFriendsButton } from "@/components/presence/invite-sheet";
 import { SharePanel } from "@/components/room/share-panel";
 import type { TSnapshot } from "@/lib/tournament/store";
 import { stageFlow, stageSummary, STAGE_GAMES, type StageSpec } from "@/lib/tournament/plan";
@@ -51,6 +52,13 @@ export function TournamentLobby({
       </div>
 
       <SharePanel code={t.code} gameName={c.name} kind="tournament" />
+      <InviteFriendsButton
+        kind="tournament"
+        code={t.code}
+        game={null}
+        name={c.name}
+        exclude={t.entrants.flatMap((e) => (e.userId ? [e.userId] : []))}
+      />
 
       {notice ? (
         <Alert

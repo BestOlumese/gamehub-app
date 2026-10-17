@@ -263,3 +263,6 @@ Target ≤ 5 ms typical per invocation; anything heavier goes to the bot service
 
 ### Matchmaker (as built, Phase 13)
 One global instance (`env.Match.getByName("global")`, socket `/parties/match/global`, ticket scope `match:global`) rather than one per queue: it can then keep a person to one queue or one game. One row (queues and who is in a game); one write per join, leave or match. It creates quick-match rooms with the same internal `table` fetch tournaments use (`quick` in the init), and rooms post `x-gh-internal: free` back when their game ends.
+
+### Presence (as built, Phase 14)
+One global instance, `/parties/presence/global`, ticket scope `presence`. Online = it has a socket for you (zero writes). Each tab says which ids it watches (`p_watch`, its friends) and hears `p_update` when they come, go or start playing. Rooms report people in a game at its start and end through their outbox (`x-gh-internal: status`); tournaments report "in a tournament" at the start and the end (`tour`). Both are kept in one row and expire after 6 h. Invites: web checks the session and the friendship, then POSTs `/presence/invite` (HMAC) to the Worker, which hands it to this object; it says whether the friend was online.

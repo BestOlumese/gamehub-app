@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
 import { GameGrid } from "@/components/home/game-grid";
+import { FriendsStrip } from "@/components/presence/friends-strip";
 import { JoinRoomForm } from "@/components/join/join-room-form";
 import { requirePlayer } from "@/server/session";
 import { tournamentRecord } from "@/server/tournaments";
@@ -57,6 +58,8 @@ export default function HomePage() {
             <JoinRoomForm />
           </div>
         </section>
+
+        <FriendsStrip />
 
         <section aria-labelledby="games-h">
           <h2 id="games-h" className="mb-4 text-lg font-bold">

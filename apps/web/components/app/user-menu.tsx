@@ -1,10 +1,11 @@
 "use client";
 
 import { Avatar } from "@gamehub/ui/data-display/avatar";
-import { ChevronDown, FileText, LogOut, Settings, Trophy, UserRound } from "lucide-react";
+import { ChevronDown, FileText, LogOut, Settings, Trophy, UserRound, Users } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { authClient } from "@/lib/auth-client";
+import { usePresence } from "@/lib/presence/store";
 
 type UserMenuProps = { username: string; email: string; image: string | null };
 
@@ -17,6 +18,7 @@ export function UserMenu({ username, email, image }: UserMenuProps) {
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const menuId = useId();
+  const requests = usePresence((s) => s.requests);
 
   // Close on outside click.
   useEffect(() => {
@@ -105,6 +107,20 @@ export function UserMenu({ username, email, image }: UserMenuProps) {
           >
             <UserRound size={18} aria-hidden="true" className="text-ink-2" />
             Your profile
+          </Link>
+          <Link
+            href="/friends"
+            role="menuitem"
+            className={itemClass}
+            onClick={() => setOpen(false)}
+          >
+            <Users size={18} aria-hidden="true" className="text-ink-2" />
+            Friends
+            {requests ? (
+              <span className="ml-auto rounded-full bg-accent px-2 text-xs font-bold text-white">
+                {requests}
+              </span>
+            ) : null}
           </Link>
           <Link
             href="/leaderboards"

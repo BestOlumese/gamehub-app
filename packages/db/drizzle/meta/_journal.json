@@ -36,6 +36,13 @@
       "when": 1792231746794,
       "tag": "0004_solo_runs",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792242603056,
+      "tag": "0005_friends",
+      "breakpoints": true
     }
   ]
 }

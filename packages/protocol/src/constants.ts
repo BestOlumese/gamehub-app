@@ -10,6 +10,8 @@ export const CloseCode = {
   Unauthorized: 4003,
   RoomGone: 4004,
   Kicked: 4008,
+  /** 20 people are already watching. */
+  Full: 4009,
   RateLimited: 4029,
 } as const;
 export type CloseCode = (typeof CloseCode)[keyof typeof CloseCode];

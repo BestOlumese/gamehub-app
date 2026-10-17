@@ -194,3 +194,6 @@ The room copies `m.mt` into chess/draughts move actions before `apply` (clients 
 
 ### Quick-match channel (as built, Phase 13)
 `/parties/match/global`, ticket scope `match:global`. Client: `mm_hello`, `mm_join { queue: { game, players, timeControl?, variant? } }`, `mm_wait { keep }`, `mm_leave`, `ping`. Server: `mm_state` (idle, queued with who's found and when bots come, busy with the room code, or timed_out), `mm_go { code, ranked }`, `error` (`BAD_QUEUE`, `RATE_LIMIT`…). Quick-match rooms' snapshots carry `room.kind: "quick"` and `room.quick { ranked, variant, timeControl, startsAt }`. Rooms post each finished game to web as a `MatchResult` (`packages/protocol/src/matchmaking.ts`).
+
+### Presence channel (as built, Phase 14)
+Messages are `p_hello`, `p_watch { userIds ≤ 200 }`, `ping` (client) and `p_status { statuses }`, `p_update { userId, status }`, `p_invite { invite }`, `pong` (server); a status is `{ online, inGame: { game, code, kind } | null, inTournament: { code, name } | null }`. Invites go web → Worker (`POST /presence/invite`, HMAC) after web checks the friendship, rather than the Worker asking web (one less round trip, and the sender's session is right there). Rooms close a 21st watcher with 4009 and send `room.spectators` (the count) in snapshots.

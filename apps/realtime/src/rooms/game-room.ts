@@ -42,6 +42,7 @@ const MAX_ALARM_STEPS = 50;
 /** Safety cap on actions chained into one turn (see GameDefinition.chainTurns). */
 const MAX_CHAIN = 40;
 const RECENT_IDS = 64;
+const MAX_SPECTATORS = 20;
 const TAKEOVER_BOT: BotLevel = "medium";
 /** The DO waits this long for a bot-service move before using the built-in engine. */
 const BOT_SERVICE_TIMEOUT_MS = 1500;
@@ -93,7 +94,11 @@ type QuickRec = {
 };
 
 /** Things to tell others, sent from the alarm and retried until they're taken. */
-type OutboxItem = { kind: "result"; result: MatchResult } | { kind: "free"; userIds: string[] };
+type OutboxItem =
+  | { kind: "result"; result: MatchResult }
+  | { kind: "free"; userIds: string[] }
+  /** Presence: these people are in this game now (or not any more). */
+  | { kind: "presence"; userIds: string[]; playing: boolean };
 
 /** A tournament table's own record: its place in the tournament and its series so far. */
 type TableRec = {
@@ -232,6 +237,8 @@ export class GameRoom extends Server<Env> {
     return s;
   }
   private lastAlarm: number | null = null;
+  /** A spectator socket that's closing (not counted while we tell the others). */
+  private closing: string | null = null;
   /** Bot service health, in memory (losing it on hibernation just means trying again). */
   private serviceFailures = 0;
   private serviceRestUntil = 0;
@@ -482,6 +489,7 @@ export class GameRoom extends Server<Env> {
     if (tour && seat === -1 && !tour.spectators && !tour.entrantUserIds.includes(claims.sub))
       return conn.close(CloseCode.Unauthorized, "not allowed");
     let changed = false;
+    let watcherJoined = false;
     if (seat === -1) {
       const free = room.phase === "lobby" ? room.seats.findIndex((s) => s.status === "empty") : -1;
       if (free >= 0) {
@@ -495,7 +503,15 @@ export class GameRoom extends Server<Env> {
         };
         seat = free;
         changed = true;
-      } else seat = "spectator";
+      } else {
+        // Up to 20 watch a game (docs/03-realtime-protocol.md → Limits).
+        const watching = [...this.getConnections<ConnState>()].filter(
+          (c) => c.id !== conn.id && c.state?.seat === "spectator",
+        ).length;
+        if (watching >= MAX_SPECTATORS) return conn.close(CloseCode.Full, "full");
+        seat = "spectator";
+        watcherJoined = true;
+      }
     } else {
       const s = this.seatAt(seat);
       if (s.status !== "connected") {
@@ -524,12 +540,16 @@ export class GameRoom extends Server<Env> {
       room.v++;
       await this.persist();
       this.broadcastSnapshots();
-    }
+    } else if (watcherJoined) this.broadcastSnapshots(); // the players' "N watching" (no write)
     // The client asks for its snapshot with "hello".
   }
 
   override async onClose(conn: Connection<ConnState>) {
     this.buckets.delete(conn.id);
+    if (conn.state?.seat === "spectator" && this.room) {
+      this.broadcastSnapshots(conn.id);
+      return;
+    }
     const st = conn.state;
     const room = this.room;
     if (!st || st.seat === "spectator" || !room) return;
@@ -840,6 +860,9 @@ export class GameRoom extends Server<Env> {
     });
     this.reseatConnections();
     this.schedule();
+    // Friends see "In Whot" (and can watch).
+    if (this.people().length)
+      this.send2({ kind: "presence", userIds: this.people(), playing: true });
     room.v++;
     await this.persist();
     this.broadcastSnapshots();
@@ -1105,6 +1128,7 @@ export class GameRoom extends Server<Env> {
         room.endedAt = Date.now();
         room.deadlines = { grace: {}, idle: Date.now() + ENDED_IDLE_MS };
         this.send2({ kind: "free", userIds: this.people() });
+        this.send2({ kind: "presence", userIds: this.people(), playing: false });
         return;
       }
       // No result (chess: nobody moved in time): straight back to the lobby, as after a rematch.
@@ -1121,6 +1145,8 @@ export class GameRoom extends Server<Env> {
       this.send2({ kind: "result", result: this.matchResult(ranking) });
       if (room.quick) this.send2({ kind: "free", userIds: this.people() });
     }
+    if (this.people().length)
+      this.send2({ kind: "presence", userIds: this.people(), playing: false });
     const winner = ranking[0]?.[0];
     room.lastWinnerKey = winner === undefined ? undefined : room.seats[winner]?.key;
     this.broadcast(
@@ -1231,6 +1257,16 @@ export class GameRoom extends Server<Env> {
           });
           // A refusal (bad data) won't get better by retrying; network trouble might.
           if (!res.ok && res.status >= 500) throw new Error(String(res.status));
+        } else if (item.kind === "presence") {
+          const res = await this.env.Presence.getByName("global").fetch("https://presence/status", {
+            method: "POST",
+            headers: { "x-gh-internal": "status" },
+            body: JSON.stringify({
+              userIds: item.userIds,
+              inGame: item.playing ? { game: room.game, code: room.code, kind: room.kind } : null,
+            }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
         } else {
           const res = await this.env.Match.getByName("global").fetch("https://match/free", {
             method: "POST",
@@ -1569,6 +1605,9 @@ export class GameRoom extends Server<Env> {
       minPlayers: this.def().minPlayers,
       botFill: room.botLevel,
       firstPlayer: room.firstPlayer ?? "random",
+      spectators: [...this.getConnections<ConnState>()].filter(
+        (c) => c.id !== this.closing && c.state?.seat === "spectator",
+      ).length,
       ...(room.quick
         ? {
             quick: {
@@ -1621,10 +1660,12 @@ export class GameRoom extends Server<Env> {
     this.send(conn, this.snapshotFor(conn.state.seat));
   }
 
-  private broadcastSnapshots() {
+  private broadcastSnapshots(except?: string) {
     if (!this.room) return;
+    this.closing = except ?? null;
     const cache = new Map<string, string>();
     for (const c of this.getConnections<ConnState>()) {
+      if (c.id === except) continue;
       const key = String(c.state?.seat ?? "spectator");
       let payload = cache.get(key);
       if (payload === undefined) {

@@ -9,6 +9,7 @@ const FINAL = new Set<number>([
   CloseCode.Replaced,
   CloseCode.RoomGone,
   CloseCode.Kicked,
+  CloseCode.Full,
 ]);
 
 async function fetchTicket(code: string): Promise<string> {

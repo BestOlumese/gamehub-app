@@ -16,7 +16,15 @@ declare global {
 }
 
 // Cloudflare's always-pass test key, used when no real key is configured (dev, E2E).
-const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
+const TEST_KEY = "1x00000000000000000000AA";
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? TEST_KEY;
+/**
+ * With the test key only (dev, E2E): Cloudflare's test widget sometimes never answers in a
+ * headless browser, so after a few seconds we use the dummy token its test secret accepts.
+ * Real keys never do this.
+ */
+const TEST_FALLBACK_MS = 4000;
+const DUMMY_TOKEN = "XXXX.DUMMY.TOKEN.XXXX";
 const SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
 function loadTurnstile(): Promise<void> {
@@ -46,10 +54,21 @@ export function Turnstile({ action, onToken, resetKey = 0 }: TurnstileProps) {
   const box = useRef<HTMLDivElement>(null);
   const widget = useRef<string | null>(null);
   const tokenCb = useRef(onToken);
+  const got = useRef(false);
 
   useEffect(() => {
     tokenCb.current = onToken;
   });
+
+  // The test key's fallback (see TEST_FALLBACK_MS); restarts with every fresh token asked for.
+  useEffect(() => {
+    if (SITE_KEY !== TEST_KEY) return;
+    got.current = false;
+    const id = setTimeout(() => {
+      if (!got.current) tokenCb.current(DUMMY_TOKEN);
+    }, TEST_FALLBACK_MS);
+    return () => clearTimeout(id);
+  }, [resetKey]);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,7 +81,10 @@ export function Turnstile({ action, onToken, resetKey = 0 }: TurnstileProps) {
           theme: "light",
           size: "flexible",
           appearance: "interaction-only",
-          callback: (t: string) => tokenCb.current(t),
+          callback: (t: string) => {
+            got.current = true;
+            tokenCb.current(t);
+          },
           "expired-callback": () => tokenCb.current(null),
           "error-callback": () => tokenCb.current(null),
         });

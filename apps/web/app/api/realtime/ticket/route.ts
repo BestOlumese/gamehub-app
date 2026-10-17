@@ -22,13 +22,14 @@ export async function GET(req: Request) {
   const valid =
     (kind === "room" && roomCodeSchema.safeParse(name).success) ||
     (kind === "tournament" && tournamentCodeSchema.safeParse(name).success) ||
-    (kind === "match" && name === "global");
+    (kind === "match" && name === "global") ||
+    scope === "presence";
   if (!valid) return Response.json({ error: "BAD_SCOPE" }, { status: 400, headers: noStore });
 
   const ticket = await new SignJWT({
     name: user.username,
     avatar: user.image ?? null,
-    scope: `${kind}:${name}`,
+    scope: scope === "presence" ? "presence" : `${kind}:${name}`,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setSubject(user.id)

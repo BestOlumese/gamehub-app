@@ -560,8 +560,22 @@ describe("free-tier budget", () => {
     host.send({ t: "start" });
     await host.next((m) => m.t === "snapshot" && m.room.phase === "playing");
 
-    // Count writes inside the object: each INSERT…room upsert and each setAlarm is one row.
+    // The start's one-off reports (presence: "in a game") go first; then count one move.
     const stub = env.Room.getByName(code);
+    for (let i = 0; i < 40; i++) {
+      const pending = await runInDurableObject(
+        stub,
+        (_i, state) =>
+          (
+            JSON.parse(
+              state.storage.sql.exec<{ json: string }>("SELECT json FROM room").one().json,
+            ) as { outbox?: unknown[] }
+          ).outbox?.length ?? 0,
+      );
+      if (!pending) break;
+      await new Promise((r) => setTimeout(r, 50));
+    }
+    // Count writes inside the object: each INSERT…room upsert and each setAlarm is one row.
     const counts = { upserts: 0, alarms: 0 };
     await runInDurableObject(stub, (_instance, state) => {
       const sql = state.storage.sql;

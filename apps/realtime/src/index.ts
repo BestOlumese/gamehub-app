@@ -98,12 +98,35 @@ async function createTournament(req: Request, env: Env): Promise<Response> {
   return json({ error: "NO_CODE" }, 503);
 }
 
+/** POST /presence/invite, from `web` (HMAC; web checked the session and the friendship). */
+async function deliverInvite(req: Request, env: Env): Promise<Response> {
+  const body = await req.text();
+  if (
+    !(await verifyBody(
+      env.INTERNAL_HMAC_SECRET,
+      body,
+      req.headers.get("x-gh-ts"),
+      req.headers.get("x-gh-sig"),
+    ))
+  ) {
+    return json({ error: "UNAUTHORIZED" }, 401);
+  }
+  const res = await env.Presence.getByName("global").fetch("https://presence/invite", {
+    method: "POST",
+    headers: { "x-gh-internal": "invite" },
+    body,
+  });
+  return new Response(res.body, { status: res.status, headers: res.headers });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (url.pathname === "/health" && req.method === "GET") return json({ ok: true });
     if (url.pathname === "/rooms" && req.method === "POST") return createPrivateRoom(req, env);
     if (url.pathname === "/tournaments" && req.method === "POST") return createTournament(req, env);
+    if (url.pathname === "/presence/invite" && req.method === "POST")
+      return deliverInvite(req, env);
 
     const routed = await routePartykitRequest(req, env, {
       locationHint: "weur",
@@ -117,7 +140,9 @@ export default {
               ? `tournament:${lobby.name}`
               : lobby.className === "Match" && lobby.name === "global"
                 ? "match:global"
-                : null;
+                : lobby.className === "Presence" && lobby.name === "global"
+                  ? "presence"
+                  : null;
         if (!scope) return new Response("Not found", { status: 404 });
         if (!originAllowed(r, env)) return new Response("Forbidden", { status: 403 });
         const claims = await verifyTicket(r, env, scope);

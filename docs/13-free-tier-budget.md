@@ -105,3 +105,5 @@ Any new realtime feature states its added rows-written and requests per game in 
 - Football playback costs no requests (client-side timing); half starts are alarms.
 
 **Phase 13 (as built):** every finished game in a private or quick room makes one signed call to web (a Vercel function: a handful of small inserts, ratings for ranked games). The matchmaker writes one row per join, leave or match. A quick-match room costs what its game costs.
+
+**Phase 14 (as built):** presence costs no writes for being online (its sockets), two small writes per game (in a game at the start, out at the end) and two per tournament. Invites are one web function call and one Worker request each.

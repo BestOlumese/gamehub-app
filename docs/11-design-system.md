@@ -248,3 +248,10 @@ Decided with Best (Oct 17 2026, mockups):
 - **In the room:** a green strip "Quick match · 3+2" with "Ranked" (or "Not ranked (bots)"); the waiting list before the start; each result card's Rematch reads **Play again** (same queue). Ranked chess/draughts: "@ada left. Claim the win?" with Claim win / Wait.
 - **Profile** (`/u/<username>`, "Your profile" in the account menu): avatar, @name, playing since, tournament wins and podiums, football solo-run best; a 2-column grid of game cards (pool name, rating or "Placement n/10", played · win % · streak); Recent: game and clock, Won/Lost/Draw or place, the rating change in green or red, how long ago.
 - **Leaderboards** (`/leaderboards`, in the account menu): game chips, variant chips where there are pools, This week | All time, the top 100 (your row highlighted as "You").
+
+### Friends, invites, watching (decided with Best, Oct 17 2026, mockups)
+- **Friends page** (`/friends`, "Friends" in the account menu with a count of requests): add by @username, Requests (Accept / Decline), Online (green dot, "In Ludo" / "In a tournament" / "Online", **Watch** when they're playing), Offline, Requests you sent (Cancel).
+- **Home strip:** "Friends online · N" with avatars, dots and what they're doing; tapping one in a game watches it, otherwise opens their profile. Hidden when nobody's on.
+- **Invites:** "Invite friends" under the share panel in room and tournament lobbies opens a sheet of friends (online first) with Invite (then "Invite sent." or "They're not online right now."). The friend sees a card at the top of any page: avatar, "@ada invites you to Whot", a countdown from 2:00, **Join** and Not now.
+- **Watching:** a grey bar under the top bar, "Watching @kemi · Ludo" with an eye icon and Leave; players see an eye and the number watching next to the room code.
+- **Profiles:** Add friend / Request sent · Cancel / Accept friend request / Friends ✓, and a ⋯ menu with Remove friend and Block (Unblock once blocked).

@@ -55,6 +55,8 @@ export type RoomMeta = {
   /** Bots that take any empty seats when the host starts, or null. */
   botFill: BotLevel | null;
   firstPlayer: FirstPlayer;
+  /** People watching (not playing). */
+  spectators?: number;
   /** A quick-match room: its rating pool, and whether this game counts. */
   quick?: {
     ranked: boolean;

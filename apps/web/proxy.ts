@@ -43,5 +43,6 @@ export const config = {
     "/t/:path*",
     "/u/:path*",
     "/leaderboards",
+    "/friends",
   ],
 };

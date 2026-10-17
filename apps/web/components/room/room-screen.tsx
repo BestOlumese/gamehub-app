@@ -11,6 +11,7 @@ import { Lobby } from "./lobby";
 import { RoomClosed } from "./room-closed";
 import { RoomMenu } from "./room-menu";
 import { RoomTopBar } from "./room-top-bar";
+import { WatchingBar } from "./watching-bar";
 import { playAgainHref, QuickStrip, TableDone, TableStrip, TableWaiting } from "./tournament-table";
 import dynamic from "next/dynamic";
 
@@ -90,6 +91,7 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
       <ConnectionBanner />
       {snap && tour ? <TableStrip tour={tour} snap={snap} /> : null}
       {snap?.room.quick ? <QuickStrip snap={snap} /> : null}
+      {snap && snap.you === "spectator" ? <WatchingBar snap={snap} /> : null}
       {snap && tour && snap.room.phase === "ended" ? <TableDone tour={tour} snap={snap} /> : null}
       {!snap ? (
         <div className="flex flex-1 items-center justify-center gap-3 text-ink-2" role="status">

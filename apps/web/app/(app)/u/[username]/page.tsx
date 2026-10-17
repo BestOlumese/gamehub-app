@@ -9,6 +9,8 @@ import { GAME_NAMES } from "@/lib/game-meta";
 import { ago, poolName } from "@/lib/ratings/pools";
 import { profileOf, type RecentMatch } from "@/server/profile";
 import { requirePlayer } from "@/server/session";
+import { FriendButton } from "@/components/presence/friend-button";
+import { relationOf } from "@/server/friends";
 
 export const metadata: Metadata = { title: "Profile", robots: { index: false } };
 
@@ -37,13 +39,14 @@ async function ProfilePage({ params }: { params: Promise<{ username: string }> }
   const p = await profileOf((await params).username);
   if (!p) notFound();
   const mine = p.id === me.id;
+  const relation = mine ? null : await relationOf(me.id, p.id);
   return (
     <>
       <AppHeader user={me} />
       <main className="mx-auto w-full max-w-2xl space-y-6 px-4 py-8 sm:px-8">
         <section className="flex items-center gap-4">
           <Avatar username={p.username} image={p.image} size={64} />
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-2xl font-extrabold tracking-tight">
               @{p.username}
             </h1>
@@ -66,6 +69,9 @@ async function ProfilePage({ params }: { params: Promise<{ username: string }> }
             ) : null}
           </div>
         </section>
+        {relation && relation !== "self" ? (
+          <FriendButton userId={p.id} relation={relation} />
+        ) : null}
 
         <section aria-labelledby="games-h">
           <h2 id="games-h" className="mb-3 font-bold">
