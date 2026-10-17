@@ -19,6 +19,9 @@ export type DraughtsEndReason =
   /** naija10: a lone king each. */
   | "kings"
   | "agreement"
+  /** Ranked: the opponent left and their grace ran out; the one still here claimed. */
+  | "claim_win"
+  | "claim_draw"
   | "aborted";
 
 /** A move as played, 1-based squares: `path` lists every landing square, `captured` the seeds taken. */
@@ -49,6 +52,8 @@ export type DraughtsState = {
     takeback: { light: number; dark: number };
   };
   result: { winner: Colour | null; reason: DraughtsEndReason } | null;
+  /** Ranked games: a side whose player left and whose grace ran out (no bot takes over). */
+  gone?: Colour | null;
 };
 
 export type DraughtsAction =
@@ -63,8 +68,13 @@ export type DraughtsAction =
   | { type: "accept_takeback" }
   | { type: "decline_takeback" }
   | { type: "abort" }
+  /** Ranked, the opponent gone: win, or settle for a draw. */
+  | { type: "claim_victory" }
+  | { type: "claim_absent_draw" }
   /** Server only (timeouts): flag fall, or the abort window running out. */
-  | { type: "flag" };
+  | { type: "flag" }
+  /** Server only (ranked): this seat's player is gone past the grace, or back. */
+  | { type: "gone"; gone: boolean };
 
 /** No hidden information: everyone sees the whole state, plus which colour they play. */
 export type DraughtsView = DraughtsState & { you: Colour | null };

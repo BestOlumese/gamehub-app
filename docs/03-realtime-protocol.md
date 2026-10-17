@@ -191,3 +191,6 @@ The room copies `m.mt` into chess/draughts move actions before `apply` (clients 
 
 ### New error codes
 `TOURNAMENT_FULL`, `BAD_STAGES`, `NOT_IN_TOURNAMENT`, `TABLE_NOT_READY`. Rule errors added to `RuleErrorCode`: `NOT_ENOUGH_CASH`, `MUST_RAISE_CASH`, `UNEVEN_BUILDING`, `NO_SUCH_OFFER`, `OFFER_EXPIRED`, `PICK_NOT_ACTIVE`, `BAD_FORMATION`, `ILLEGAL_CAPTURE`, `MUST_CAPTURE`, `TAKEBACK_DENIED`, `CLOCK_FLAGGED`.
+
+### Quick-match channel (as built, Phase 13)
+`/parties/match/global`, ticket scope `match:global`. Client: `mm_hello`, `mm_join { queue: { game, players, timeControl?, variant? } }`, `mm_wait { keep }`, `mm_leave`, `ping`. Server: `mm_state` (idle, queued with who's found and when bots come, busy with the room code, or timed_out), `mm_go { code, ranked }`, `error` (`BAD_QUEUE`, `RATE_LIMIT`…). Quick-match rooms' snapshots carry `room.kind: "quick"` and `room.quick { ranked, variant, timeControl, startsAt }`. Rooms post each finished game to web as a `MatchResult` (`packages/protocol/src/matchmaking.ts`).

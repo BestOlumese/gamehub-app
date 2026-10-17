@@ -6,6 +6,7 @@ import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Button } from "@gamehub/ui/forms/button";
 import Link from "next/link";
 import { buttonClasses } from "@gamehub/ui/forms/button";
+import { RematchLabel } from "./rematch-label";
 
 type Props = {
   state: TttState;
@@ -52,7 +53,7 @@ export function ResultCard({ state, seats, you, onRematch }: Props) {
         <div className="mt-6 grid gap-2">
           {you !== "spectator" ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Link href="/home" className={buttonClasses("secondary", "lg", "w-full")}>

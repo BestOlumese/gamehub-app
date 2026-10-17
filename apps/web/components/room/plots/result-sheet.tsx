@@ -7,6 +7,7 @@ import Link from "next/link";
 import { placeLabels } from "../places";
 import { seatName } from "../rps/names";
 import { Token } from "./tokens";
+import { RematchLabel } from "../rematch-label";
 
 /** Places by net worth (timed) or survival (classic), with each player's worth. */
 export function PlotsResult({
@@ -62,7 +63,7 @@ export function PlotsResult({
         <div className="mt-5 grid gap-2">
           {me !== null ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Link href="/home" className={buttonClasses("ghost", "lg", "w-full")}>

@@ -260,3 +260,6 @@ Target ≤ 5 ms typical per invocation; anything heavier goes to the bot service
 ### DO-to-DO calls
 - `Tournament → GameRoom` (create a table, a seat's owner left) and `GameRoom → Tournament` (the table's result) are internal `fetch` calls on the DO stubs (`env.Room.getByName(code)`, `env.Tournament.getByName(code)`) with an `x-gh-internal` header (as built: partyserver only initialises a server on fetch, alarm or socket, not on raw RPC). The Worker routes no plain HTTP to either class, so only our own code can make them. Reports are retried from the room's alarm until acknowledged. Each call is a DO request (counts toward the 100k/day).
 - `GameRoom → Quota.allowBot() / addBot(cpuMs)` before/after bot-service calls.
+
+### Matchmaker (as built, Phase 13)
+One global instance (`env.Match.getByName("global")`, socket `/parties/match/global`, ticket scope `match:global`) rather than one per queue: it can then keep a person to one queue or one game. One row (queues and who is in a game); one write per join, leave or match. It creates quick-match rooms with the same internal `table` fetch tournaments use (`quick` in the init), and rooms post `x-gh-internal: free` back when their game ends.

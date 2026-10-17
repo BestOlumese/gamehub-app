@@ -55,6 +55,14 @@ export type RoomMeta = {
   /** Bots that take any empty seats when the host starts, or null. */
   botFill: BotLevel | null;
   firstPlayer: FirstPlayer;
+  /** A quick-match room: its rating pool, and whether this game counts. */
+  quick?: {
+    ranked: boolean;
+    variant: string;
+    timeControl: string | null;
+    /** When the room starts by itself if someone hasn't arrived (server time), in the lobby. */
+    startsAt: number | null;
+  };
   /** A tournament table: where it sits in the tournament, and its best-of series so far. */
   tournament?: {
     code: string;

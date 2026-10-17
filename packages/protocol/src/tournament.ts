@@ -210,7 +210,8 @@ export type TableInit = {
     /** A bot entrant, or a person who left the tournament (a bot plays for them). */
     bot: BotLevel | null;
   }>;
-  tournament: {
+  /** A tournament table (one of these two is set). */
+  tournament?: {
     code: string;
     name: string;
     stage: number;
@@ -219,6 +220,14 @@ export type TableInit = {
     /** "Stage 2 · Ludo · Table 3" style label, ready to show. */
     label: string;
     bestOf: 1 | 3 | 5;
+  };
+  /** A quick-match room from the matchmaker. */
+  quick?: {
+    queue: string;
+    /** Every seat a person at the start (no bots filled in). */
+    ranked: boolean;
+    variant: string;
+    timeControl: string | null;
   };
   /** Who may watch: everyone, or only this tournament's entrants. */
   spectators: boolean;

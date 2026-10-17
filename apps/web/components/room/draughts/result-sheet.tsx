@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { DRAUGHTS_COLOUR, draughtsVariantName } from "@/lib/game-meta";
 import { seatName } from "../rps/names";
+import { RematchLabel } from "../rematch-label";
 
 const REASON: Record<DraughtsEndReason, string> = {
   no_pieces: "by taking every seed",
@@ -26,9 +27,16 @@ const REASON: Record<DraughtsEndReason, string> = {
   endgame: "A lone king held out long enough",
   kings: "One king each: nobody can win",
   agreement: "Draw agreed",
+  claim_win: "after the opponent left",
+  claim_draw: "Drawn after the opponent left",
   aborted: "Game aborted",
 };
-const WIN_REASONS: ReadonlySet<DraughtsEndReason> = new Set(["no_pieces", "resign", "timeout"]);
+const WIN_REASONS: ReadonlySet<DraughtsEndReason> = new Set([
+  "no_pieces",
+  "resign",
+  "timeout",
+  "claim_win",
+]);
 
 /** PDN with our tags, for copying into a draughts program. Light (red) plays the White side. */
 export function pdnOf(view: DraughtsView, seats: SeatPublic[], light: number, dark: number) {
@@ -113,13 +121,14 @@ export function DraughtsResult({ view, seats, rules, light, dark, onRematch }: P
         </h2>
         <p className="mt-1 text-center text-ink-2">{how}</p>
         <p className="mt-1 text-center text-sm text-ink-3">
-          {Math.ceil(view.moves.length / 2)} moves · {draughtsVariantName(view)} ·{" "}
-          {timeLabel(rules.timeControl)}
+          {Math.ceil(view.moves.length / 2)}{" "}
+          {Math.ceil(view.moves.length / 2) === 1 ? "move" : "moves"} · {draughtsVariantName(view)}{" "}
+          · {timeLabel(rules.timeControl)}
         </p>
         <div className="mt-6 grid gap-2">
           {view.you ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Button variant="secondary" block onClick={copy}>

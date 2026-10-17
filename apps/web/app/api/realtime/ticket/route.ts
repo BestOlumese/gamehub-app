@@ -21,7 +21,8 @@ export async function GET(req: Request) {
   const [kind, name] = scope.split(":");
   const valid =
     (kind === "room" && roomCodeSchema.safeParse(name).success) ||
-    (kind === "tournament" && tournamentCodeSchema.safeParse(name).success);
+    (kind === "tournament" && tournamentCodeSchema.safeParse(name).success) ||
+    (kind === "match" && name === "global");
   if (!valid) return Response.json({ error: "BAD_SCOPE" }, { status: 400, headers: noStore });
 
   const ticket = await new SignJWT({

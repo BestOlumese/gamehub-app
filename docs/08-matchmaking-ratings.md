@@ -80,3 +80,12 @@ Verify the exact `openskill` JS API at install time.
 - Bot fill after 20 s still applies to every game (Medium bot) and makes the game unranked. For chess the bot is the bot service's Medium level (falls back to the built-in engine).
 - openskill for two-player games is equivalent to a Bayesian Elo; one rating per `(game, variant)`. Display rating formula unchanged.
 - Pair-farming cap counts per game (not per variant).
+
+## As built (Phase 13, Oct 2026)
+
+- **Queues** (`packages/engine/src/matchmaking/queues.ts`): which games, sizes and pools; fixed rules (Naija Standard, 30 s turns; chess any offered clock, takebacks off; draughts 5+3, decided with Best). `displayRating` = 1000 + 40 × (mu − 3σ).
+- **One global `Matchmaker`** holds every queue (so one queue or one game per person). A full queue of people makes a ranked room; after 20 s bots take the empty seats (unranked) unless you chose Keep waiting (then up to 3 min, then "Nobody came"). Rooms are ordinary GameRooms with fixed seats (the tournament-table path, `quick` instead of `tournament`); they tell the matchmaker when their people are free. Leaving the queue page leaves the queue (it re-joins on reconnect).
+- **Results:** every private and quick room posts each finished game to web (`/api/internal/match-result`, HMAC; retried from the room's alarm). Web stores the match, players, `user_stats` for everyone, and for ranked games new ratings for the people (openskill Plackett-Luce, rank = place; bots and leavers are placed but only people are rated; a leaver is placed after everyone still playing). The pair cap makes a game unranked when the same two people already met 5 times in 24 h in that game. Tournament tables count in stats too.
+- **Ranked chess/draughts disconnects:** no bot; after the grace the seat is marked gone and the opponent sees "@ada left. Claim the win?" (Claim win, or Claim draw without mating material; Wait). Their clock keeps running, so not claiming ends in a flag. Leaving is resigning.
+- **Placement:** fewer than 10 ranked games shows "Placement n/10" on profiles and leaderboards (people still in placement are listed after rated players on all-time boards).
+- **Football solo runs** post a record (wins, matches, team rating, luck): the profile shows the best run.

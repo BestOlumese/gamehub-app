@@ -11,7 +11,7 @@ import { Lobby } from "./lobby";
 import { RoomClosed } from "./room-closed";
 import { RoomMenu } from "./room-menu";
 import { RoomTopBar } from "./room-top-bar";
-import { TableDone, TableStrip, TableWaiting } from "./tournament-table";
+import { playAgainHref, QuickStrip, TableDone, TableStrip, TableWaiting } from "./tournament-table";
 import dynamic from "next/dynamic";
 
 // Each game's table is its own chunk (docs/10-performance.md: ≤ 60 KB per game).
@@ -50,7 +50,18 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
     return () => clearTimeout(t);
   }, [notice]);
 
-  const send = useCallback((m: ClientRoomMsg) => conn.current?.send(m), []);
+  const send = useCallback(
+    (m: ClientRoomMsg) => {
+      // Quick match has no rematch: the button finds new players in the same queue.
+      const snapNow = useRoom.getState().snap;
+      if (m.t === "rematch" && snapNow?.room.quick) {
+        router.push(playAgainHref(snapNow));
+        return;
+      }
+      conn.current?.send(m);
+    },
+    [router],
+  );
   const leave = useCallback(() => {
     send({ t: "leave" });
     router.push("/home");
@@ -78,14 +89,18 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
       />
       <ConnectionBanner />
       {snap && tour ? <TableStrip tour={tour} snap={snap} /> : null}
+      {snap?.room.quick ? <QuickStrip snap={snap} /> : null}
       {snap && tour && snap.room.phase === "ended" ? <TableDone tour={tour} snap={snap} /> : null}
       {!snap ? (
         <div className="flex flex-1 items-center justify-center gap-3 text-ink-2" role="status">
           <Spinner /> Joining room {code}…
         </div>
       ) : snap.room.phase === "lobby" ? (
-        tour ? (
-          <TableWaiting tour={tour} snap={snap} />
+        tour || snap.room.quick ? (
+          <TableWaiting
+            tour={tour ?? { startsAt: snap.room.quick?.startsAt ?? null }}
+            snap={snap}
+          />
         ) : (
           <Lobby snap={snap} send={send} notice={notice} />
         )

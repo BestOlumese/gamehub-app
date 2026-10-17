@@ -262,3 +262,5 @@ As built: `history` replaces the repetition map (repetitions = occurrences of th
 
 ## Free-tier cost per game
 ≈ 80 plies per game → ~80 state writes + up to ~80 alarm writes (flag time moves earlier on many moves) → **≈ 120–160 rows**, ≈ 80 requests (incoming WS messages ÷ 20 is tiny; alarms for bots and flags dominate). Bot games add ≤ 1 bot-service call per bot move (Vercel, not Cloudflare). See `13-free-tier-budget.md`.
+
+**As built (Phase 13, Oct 2026):** the ranked disconnect flow above: after the grace the room applies the server-only `{ type: "gone", gone: true }` for the absent seat (and `gone: false` if they come back); `claim_victory` / `claim_absent_draw` (reasons `claim_win` / `claim_draw`); in ranked rooms leaving is resigning. Draughts has the same three actions.

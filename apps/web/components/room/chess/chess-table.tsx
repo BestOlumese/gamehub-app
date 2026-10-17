@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  canMate,
   Chess,
   clockShows,
   halfmoveClock,
@@ -295,6 +296,9 @@ export default function ChessTable({ snap, send }: Props) {
 
   const opp = you ? other(you) : null;
   const offerFromThem = !ended && opp && view.drawOffer?.by === opp;
+  // Ranked: they left and their grace is over (no bot plays for them). Claim, or wait for them.
+  const [waitForThem, setWaitForThem] = useState(false);
+  const goneThem = !ended && !!opp && view.gone === opp && !waitForThem;
   const takebackFromThem = !ended && opp && view.takeback?.by === opp;
   const canOfferDraw =
     !!you &&
@@ -407,7 +411,26 @@ export default function ChessTable({ snap, send }: Props) {
       {/* Says when time is added per move (Best, Oct 2026: a 5+3 clock looked like it reset). */}
       <p className="-mt-1 text-center text-xs text-ink-3">{timeControlText(rules)}</p>
 
-      {offerFromThem ? (
+      {goneThem && you ? (
+        <div className="flex items-center gap-2 rounded-control bg-accent-soft px-3 py-2 text-sm font-semibold">
+          <span className="flex-1">
+            {seatName(snap.seats, seatOf(view, opp as Side))} left. Claim the{" "}
+            {canMate(view.fen, you) ? "win" : "draw"}?
+          </span>
+          <Button
+            size="md"
+            onClick={() =>
+              act({ type: canMate(view.fen, you) ? "claim_victory" : "claim_absent_draw" })
+            }
+            disabled={!ready}
+          >
+            {canMate(view.fen, you) ? "Claim win" : "Claim draw"}
+          </Button>
+          <Button size="md" variant="secondary" onClick={() => setWaitForThem(true)}>
+            Wait
+          </Button>
+        </div>
+      ) : offerFromThem ? (
         <div className="flex items-center gap-2 rounded-control bg-accent-soft px-3 py-2 text-sm font-semibold">
           <span className="flex-1">
             {seatName(snap.seats, seatOf(view, opp as Side))} offers a draw

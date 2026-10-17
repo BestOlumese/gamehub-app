@@ -123,7 +123,7 @@ Build in this order. Each phase ends with its exit criteria met and deployed to 
 - [x] Engine `games/football`: draft (option-set sampler, guarantees, presets, auto-pick), tactics/roles/chemistry, match engine, extra time/penalties, commentary templates, bot managers; `createFootballGame(dataset)`.
 - [x] Draft distribution test and match Monte Carlo bands passing; tuning logs filled in the docs.
 - [x] **Live decisions** (Best, Oct 2026): shouts, tactics, roles, formation and subs at any minute; matches sent in 3-minute chunks; tactical matchups worth ≈ 5 rating points.
-- [x] Modes: 1v1 (single / best of 3), mini league, knockout, solo run. Not built: the `football_solo_run` record (needs result reporting, Phase 13) and checkpointed picks (every pick is a write; costs in `13-free-tier-budget.md`).
+- [x] Modes: 1v1 (single / best of 3), mini league, knockout, solo run. The `football_solo_run` record came with Phase 13. Not built: checkpointed picks (every pick is a write; costs in `13-free-tier-budget.md`).
 - [x] UI: option-set cards (no FC look-alike), pitch, tactics sheet, commentary feed + ticker, mini-pitch, results. Designed with Best (mockups, Oct 2026).
 
 **Exit:** two phones draft and play a full match with half-time changes; an 8-manager league (bots) finishes; a solo run of 4 matches works; hidden-info test proves no option leaks; CPU benchmark p95 ≤ 5 ms.
@@ -139,13 +139,15 @@ All met (Oct 2026): E2E "two phones … half-time sub" and "solo run on a 360 px
 As built (Oct 2026): bracket property tests (1,000 random plans played out with random results and ties), DO tests (lobby, start, whole bot tournaments of 4 and 8, a repeated report ignored, results posted once and signed), E2E "4 people and 4 bots, tables of 4 then a knockout" (setup, join by code, sent to tables and back, final places stored in Postgres). Still for Best on the live site: the 16-entrant, 6-phone, three-game run.
 
 ## Phase 13 — Quick-match, ratings, history (was Phase 7)
-- [ ] `Matchmaker` DO with FIFO, 20 s bot-fill (unranked) + "keep waiting" option; queues for every game incl. `chess-<preset>`, `draughts-<variant>-5+3`, `property-<size>`, `football-2`.
-- [ ] Signed match-result ingest (extends Phase 12's), `match`/`match_player`/`user_stats`/`rating` keyed by **game and variant**, openskill updates, pair-farming cap.
-- [ ] Ranked chess (bullet/blitz/rapid) and draughts (naija10/english8) incl. the ranked disconnect claim-win flow; property and football stay unranked.
-- [ ] Profile page: stats, ratings per variant, last 20 matches (incl. tournament tables), football solo-run record, tournament wins/podiums.
-- [ ] Leaderboards: weekly + all-time per game **and variant**, cached + tag revalidation.
+- [x] `Matchmaker` DO with FIFO, 20 s bot-fill (unranked) + "keep waiting" option (3 min); queues for every game incl. `chess-<preset>`, `draughts-<variant>-5+3`, `plots-<size>`, `football-2`. As built: one global instance (so one queue or one game per person; rooms tell it when players are free).
+- [x] Signed match-result ingest (`/api/internal/match-result`; every private and quick room reports each game), `match`/`match_player`/`user_stats`/`rating` keyed by **game and variant**, openskill updates, pair-farming cap (5 a day per pair and game).
+- [x] Ranked chess (bullet/blitz/rapid) and draughts (naija10/english8, 5+3: Best, Oct 2026) incl. the ranked disconnect claim-win flow (`gone` / `claim_victory` / `claim_absent_draw`; leaving is resigning); property and football stay unranked.
+- [x] Profile page (`/u/<username>`): stats and ratings per pool, last 20 matches (incl. tournament tables), football solo-run record, tournament wins/podiums.
+- [x] Leaderboards (`/leaderboards`): weekly + all-time per game **and variant**, cached (`use cache` + tag), expired on ingest.
+- Designed with Best (Oct 17 2026, mockups): Quick match on each tile, full-page queue, profile with game cards, leaderboards with game/variant chips.
 
 **Exit:** two accounts quick-match chess blitz, finish a ranked game, both see rating changes in the blitz pool; a draughts ranked game updates the naija10 pool; leaderboards show both.
+Met (Oct 2026): E2E "quick match: ranked chess blitz and draughts" (the tile's sheet, the queue, both into one ranked room, profiles with the rating change, both leaderboards); DO tests for matching, bot fill, keep waiting / giving up, one queue at a time, and the ranked claim.
 
 ## Phase 14 — Friends, presence, invites, spectating (was Phase 8)
 - [ ] `Presence` DO (socket tags), friend requests/accept/block, online + in-game status (incl. "in a tournament").

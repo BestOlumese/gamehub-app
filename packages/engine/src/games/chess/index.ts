@@ -199,6 +199,10 @@ export const chess: GameDefinition<ChessState, ChessAction, ChessView, ChessRule
       out.push({ type: "accept_takeback" }, { type: "decline_takeback" });
     else if (canRequestTakeback(s, side, rules)) out.push({ type: "request_takeback" });
     if (rules.drawClaims === "claim" && claimable(s)) out.push({ type: "claim_draw" });
+    if (s.gone === other(side)) {
+      if (canMate(s.fen, side)) out.push({ type: "claim_victory" });
+      out.push({ type: "claim_absent_draw" });
+    }
     // Our generator (perft-checked against chess.js) is much faster than chess.js's verbose list.
     if (sideToMove(s.fen) === side)
       for (const m of Board.fromFen(s.fen).moves()) out.push({ type: "move", uci: toUci(m) });
@@ -233,6 +237,19 @@ export const chess: GameDefinition<ChessState, ChessAction, ChessView, ChessRule
       }
       case "resign":
         end(d, other(side), "resign", events);
+        return ok(d, events);
+      case "gone":
+        // Applied by a ranked room as the absent player's seat (docs/games/chess.md → Disconnects).
+        d.gone = action.gone ? side : s.gone === side ? null : (s.gone ?? null);
+        events.push({ type: action.gone ? "opponent_gone" : "opponent_back", side });
+        return ok(d, events);
+      case "claim_victory":
+        if (s.gone !== other(side) || !canMate(s.fen, side)) return err("NOT_ALLOWED");
+        end(d, side, "claim_win", events);
+        return ok(d, events);
+      case "claim_absent_draw":
+        if (s.gone !== other(side)) return err("NOT_ALLOWED");
+        end(d, null, "claim_draw", events);
         return ok(d, events);
       case "abort":
         if (ply(s) >= 2) return err("NOT_ALLOWED");

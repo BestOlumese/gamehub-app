@@ -8,6 +8,7 @@ import { Bot, Crown } from "lucide-react";
 import Link from "next/link";
 import { placeLabels } from "../places";
 import { seatName } from "../rps/names";
+import { RematchLabel } from "../rematch-label";
 
 type Props = {
   view: WhotView;
@@ -84,7 +85,7 @@ export function ResultSheet({ view, seats, you, byCount, onRematch }: Props) {
         <div className="mt-6 grid gap-2">
           {you !== "spectator" ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Link href="/home" className={buttonClasses("secondary", "lg", "w-full")}>

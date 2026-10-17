@@ -28,8 +28,8 @@ export function TableStrip({ tour, snap }: { tour: Tour; snap: Snapshot }) {
   );
 }
 
-/** Before a tournament table starts: who's here, and when it starts anyway. */
-export function TableWaiting({ tour, snap }: { tour: Tour; snap: Snapshot }) {
+/** Before a tournament table or quick-match room starts: who's here, and when it starts anyway. */
+export function TableWaiting({ tour, snap }: { tour: Pick<Tour, "startsAt">; snap: Snapshot }) {
   const offset = useRoom((s) => s.offset);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -124,4 +124,30 @@ export function TableDone({ tour, snap }: { tour: Tour; snap: Snapshot }) {
       </div>
     </div>
   );
+}
+
+/** Under the top bar in a quick-match room: ranked or not, and the pool. */
+export function QuickStrip({ snap }: { snap: Snapshot }) {
+  const q = snap.room.quick;
+  if (!q) return null;
+  return (
+    <div className="flex items-center justify-between gap-3 border-b border-line bg-brand-soft px-4 py-2 text-sm font-semibold">
+      <span>Quick match{q.timeControl ? ` · ${q.timeControl}` : ""}</span>
+      <span className={q.ranked ? "text-brand-strong" : "text-ink-2"}>
+        {q.ranked ? "Ranked" : "Not ranked (bots)"}
+      </span>
+    </div>
+  );
+}
+
+/** The queue page for another game like this one (quick match's "Play again"). */
+export function playAgainHref(snap: Snapshot): string {
+  const q = snap.room.quick;
+  const params = new URLSearchParams({ g: snap.room.game, n: String(snap.seats.length) });
+  if (q?.timeControl && snap.room.game === "chess") {
+    const [m, inc] = q.timeControl.split("+").map(Number);
+    params.set("tc", `${(m ?? 3) * 60}+${inc ?? 0}`);
+  }
+  if (snap.room.game === "draughts" && q) params.set("v", q.variant);
+  return `/play/quick?${params}`;
 }

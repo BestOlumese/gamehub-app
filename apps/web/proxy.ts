@@ -41,5 +41,7 @@ export const config = {
     "/r/:path*",
     "/play/:path*",
     "/t/:path*",
+    "/u/:path*",
+    "/leaderboards",
   ],
 };

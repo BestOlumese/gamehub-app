@@ -115,7 +115,9 @@ export default {
             ? `room:${lobby.name}`
             : lobby.className === "Tournament"
               ? `tournament:${lobby.name}`
-              : null;
+              : lobby.className === "Match" && lobby.name === "global"
+                ? "match:global"
+                : null;
         if (!scope) return new Response("Not found", { status: 404 });
         if (!originAllowed(r, env)) return new Response("Forbidden", { status: 403 });
         const claims = await verifyTicket(r, env, scope);

@@ -222,6 +222,8 @@ export const draughts: GameDefinition<DraughtsState, DraughtsAction, DraughtsVie
       if (s.result) return [];
       const side = colourOf(s, seat);
       const out: DraughtsAction[] = [{ type: "resign" }];
+      if (s.gone === other(colourOf(s, seat)))
+        out.push({ type: "claim_victory" }, { type: "claim_absent_draw" });
       if (ply(s) < 2) out.push({ type: "abort" });
       if (s.drawOffer?.by === other(side))
         out.push({ type: "accept_draw" }, { type: "decline_draw" });
@@ -286,6 +288,18 @@ export const draughts: GameDefinition<DraughtsState, DraughtsAction, DraughtsVie
         }
         case "resign":
           end(d, other(side), "resign", events);
+          return ok(d, events);
+        case "gone":
+          d.gone = action.gone ? side : s.gone === side ? null : (s.gone ?? null);
+          events.push({ type: action.gone ? "opponent_gone" : "opponent_back", side });
+          return ok(d, events);
+        case "claim_victory":
+          if (s.gone !== other(side)) return err("NOT_ALLOWED");
+          end(d, side, "claim_win", events);
+          return ok(d, events);
+        case "claim_absent_draw":
+          if (s.gone !== other(side)) return err("NOT_ALLOWED");
+          end(d, null, "claim_draw", events);
           return ok(d, events);
         case "abort":
           if (ply(s) >= 2) return err("NOT_ALLOWED");

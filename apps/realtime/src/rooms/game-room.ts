@@ -22,6 +22,7 @@ import {
   type SeatStatus,
   type ServerRoomMsg,
   type TableInit,
+  type MatchResult,
   type TableReport,
   type TicketClaims,
   type TournamentMatch,
@@ -79,7 +80,20 @@ type Deadlines = {
   start?: number | undefined;
   next?: number | undefined;
   report?: number | undefined;
+  /** Results for web and "they're free" for the matchmaker, retried until sent. */
+  post?: number | undefined;
 };
+
+/** A quick-match room's record: its pool, and whether this game counts. */
+type QuickRec = {
+  queue: string;
+  ranked: boolean;
+  variant: string;
+  timeControl: string | null;
+};
+
+/** Things to tell others, sent from the alarm and retried until they're taken. */
+type OutboxItem = { kind: "result"; result: MatchResult } | { kind: "free"; userIds: string[] };
 
 /** A tournament table's own record: its place in the tournament and its series so far. */
 type TableRec = {
@@ -111,7 +125,7 @@ type TableRec = {
 type PersistedRoom = {
   roomId: string;
   code: string;
-  kind: "private" | "tournament";
+  kind: "private" | "quick" | "tournament";
   game: GameSlug;
   hostUserId: string;
   phase: RoomPhase;
@@ -132,6 +146,9 @@ type PersistedRoom = {
   startedAt?: number | undefined;
   endedAt?: number | undefined;
   tour?: TableRec;
+  quick?: QuickRec;
+  outbox?: OutboxItem[];
+  outboxTries?: number;
 };
 
 type ConnState = {
@@ -259,6 +276,7 @@ export class GameRoom extends Server<Env> {
       d.start,
       d.next,
       d.report,
+      d.post,
       ...Object.values(d.grace),
       ...Object.values(d.turns ?? {}),
     ].filter((t): t is number => typeof t === "number");
@@ -337,8 +355,19 @@ export class GameRoom extends Server<Env> {
     return new Response(null, { status: 201 });
   }
 
+  /** Seats set by a tournament or the matchmaker: no lobby edits, starts by itself. */
+  private get fixed(): boolean {
+    return !!this.room?.tour || !!this.room?.quick;
+  }
+
+  /** Ranked chess and draughts: nobody's seat goes to a bot; the opponent may claim instead. */
+  private get claimsOnly(): boolean {
+    const r = this.room;
+    return !!r?.quick?.ranked && (r.game === "chess" || r.game === "draughts");
+  }
+
   /**
-   * A tournament table (docs/16-tournaments.md): seats fixed by the tournament, no lobby edits.
+   * A tournament table (docs/16-tournaments.md), or a quick-match room (docs/08): seats fixed, no lobby edits.
    * It starts when everyone is here or after `TABLE_START_MS` (anyone missing starts away, so
    * the grace and then a bot follow), plays its best-of series, and reports to the tournament.
    */
@@ -359,10 +388,11 @@ export class GameRoom extends Server<Env> {
       timeouts: 0,
     }));
     const now = Date.now();
+    const t = o.tournament;
     this.room = {
       roomId: o.code,
       code: o.code,
-      kind: "tournament",
+      kind: t ? "tournament" : "quick",
       game: o.game,
       hostUserId: "",
       phase: "lobby",
@@ -380,21 +410,26 @@ export class GameRoom extends Server<Env> {
       },
       recentActionIds: {},
       // Game 1 random, then the first move passes along (a series alternates colours).
-      firstPlayer: "rotate",
-      tour: {
-        ...o.tournament,
-        wins: seats.map(() => 0),
-        games: 0,
-        matches: [],
-        botPlayed: seats.filter((x) => x.botLevel && x.userId).map((x) => x.key as string),
-        ...(o.squads ? { squads: o.squads } : {}),
-        spectators: o.spectators,
-        entrantUserIds: o.entrantUserIds,
-        report: null,
-        reported: false,
-        tries: 0,
-        quit: [],
-      },
+      firstPlayer: t ? "rotate" : "random",
+      ...(t
+        ? {
+            tour: {
+              ...t,
+              wins: seats.map(() => 0),
+              games: 0,
+              matches: [],
+              botPlayed: seats.filter((x) => x.botLevel && x.userId).map((x) => x.key as string),
+              ...(o.squads ? { squads: o.squads } : {}),
+              spectators: o.spectators,
+              entrantUserIds: o.entrantUserIds,
+              report: null,
+              reported: false,
+              tries: 0,
+              quit: [],
+            },
+          }
+        : {}),
+      ...(o.quick ? { quick: { ...o.quick } } : {}),
     };
     await this.persist();
     return new Response(null, { status: 201 });
@@ -476,10 +511,15 @@ export class GameRoom extends Server<Env> {
 
     conn.setState({ userId: claims.sub, name: claims.name, avatar: claims.avatar, seat });
     if (changed) {
-      // A tournament table starts as soon as everyone has arrived.
-      if (tour && room.phase === "lobby" && !room.seats.some((x) => x.status === "away"))
+      // A fixed table starts as soon as everyone has arrived.
+      if (this.fixed && room.phase === "lobby" && !room.seats.some((x) => x.status === "away"))
         room.deadlines.start = Date.now();
-      if (room.phase === "lobby" && !tour) room.deadlines.idle = Date.now() + LOBBY_IDLE_MS;
+      if (room.phase === "lobby" && !this.fixed) room.deadlines.idle = Date.now() + LOBBY_IDLE_MS;
+      // Ranked: back before anyone claimed, so play just goes on.
+      if (this.claimsOnly && room.phase === "playing" && typeof seat === "number") {
+        const st = room.state as { gone?: string | null } | null;
+        if (st?.gone) this.applyAction(seat, { type: "gone", gone: false });
+      }
       if (room.phase === "playing") this.schedule();
       room.v++;
       await this.persist();
@@ -568,7 +608,7 @@ export class GameRoom extends Server<Env> {
     const isHost = room.hostUserId === userId;
     // Tournament tables are set by the tournament: no lobby edits, no rematch.
     if (
-      room.tour &&
+      this.fixed &&
       (msg.t === "config" ||
         msg.t === "shuffle" ||
         msg.t === "seat_bot" ||
@@ -700,7 +740,7 @@ export class GameRoom extends Server<Env> {
     room.phase = "lobby";
     room.state = null;
     room.recentActionIds = {};
-    room.deadlines = { grace: {}, idle: Date.now() + LOBBY_IDLE_MS };
+    room.deadlines = { grace: {}, idle: Date.now() + LOBBY_IDLE_MS, ...this.pendingPost() };
     if (!room.seats.some((s) => s.userId === room.hostUserId)) {
       const next = room.seats.find((s) => s.userId);
       if (next?.userId) room.hostUserId = next.userId;
@@ -743,7 +783,7 @@ export class GameRoom extends Server<Env> {
   private async commit(): Promise<null> {
     const room = this.r;
     room.v++;
-    if (room.phase === "lobby" && !room.tour) room.deadlines.idle = Date.now() + LOBBY_IDLE_MS;
+    if (room.phase === "lobby" && !this.fixed) room.deadlines.idle = Date.now() + LOBBY_IDLE_MS;
     await this.persist();
     this.broadcastSnapshots();
     return null;
@@ -793,7 +833,7 @@ export class GameRoom extends Server<Env> {
     room.startedAt = Date.now();
     room.endedAt = undefined;
     room.recentActionIds = {};
-    room.deadlines = { grace: {} };
+    room.deadlines = { grace: {}, ...this.pendingPost() };
     room.seats.forEach((s, i) => {
       s.timeouts = 0;
       if (s.status === "away") room.deadlines.grace[i] = Date.now() + this.graceMs;
@@ -809,8 +849,15 @@ export class GameRoom extends Server<Env> {
   private async leave(seat: SeatIndex, conn: Connection<ConnState>): Promise<RoomErrorCode | null> {
     const room = this.r;
     const s = this.seatAt(seat);
-    if (room.tour && room.phase !== "ended") {
-      // A tournament seat is never given up: a bot plays it (they can come back).
+    if (this.claimsOnly && room.phase === "playing") {
+      // Ranked chess and draughts: leaving is resigning (no bot plays on).
+      this.applyAction(seat, { type: "resign" });
+      s.status = "left";
+      conn.close(CloseCode.Normal, "left");
+      return this.commit();
+    }
+    if (this.fixed && room.phase !== "ended") {
+      // A fixed seat is never given up: a bot plays it (they can come back).
       s.status = "left";
       s.botLevel = TAKEOVER_BOT;
       room.deadlines.grace[seat] = undefined;
@@ -1052,6 +1099,14 @@ export class GameRoom extends Server<Env> {
         room.deadlines = { grace: {}, next: Date.now() + 2000 };
         return;
       }
+      if (room.quick) {
+        // Quick match: nobody moved in time, so no game and no rating. Everyone is free again.
+        room.phase = "ended";
+        room.endedAt = Date.now();
+        room.deadlines = { grace: {}, idle: Date.now() + ENDED_IDLE_MS };
+        this.send2({ kind: "free", userIds: this.people() });
+        return;
+      }
       // No result (chess: nobody moved in time): straight back to the lobby, as after a rematch.
       this.toLobby();
       return;
@@ -1061,12 +1116,141 @@ export class GameRoom extends Server<Env> {
     room.deadlines = { grace: {}, idle: Date.now() + ENDED_IDLE_MS };
     const ranking = def.ranking(room.state);
     if (room.tour) this.finishTableGame(ranking);
+    else {
+      // Results go to web: every game counts in stats; quick-match ones with only people rate.
+      this.send2({ kind: "result", result: this.matchResult(ranking) });
+      if (room.quick) this.send2({ kind: "free", userIds: this.people() });
+    }
     const winner = ranking[0]?.[0];
     room.lastWinnerKey = winner === undefined ? undefined : room.seats[winner]?.key;
     this.broadcast(
-      JSON.stringify({ t: "ended", v: room.v, ranking, ranked: false } satisfies ServerRoomMsg),
+      JSON.stringify({
+        t: "ended",
+        v: room.v,
+        ranking,
+        ranked: !!room.quick?.ranked,
+      } satisfies ServerRoomMsg),
     );
-    // Private rooms are never ranked; match reporting to web arrives with Phase 13.
+  }
+
+  /** Keeps a waiting outbox scheduled when deadlines are reset. */
+  private pendingPost(): { post?: number } {
+    return this.room?.outbox?.length ? { post: Date.now() } : {};
+  }
+
+  /** People at the table (bots have no account). */
+  private people(): string[] {
+    return this.r.seats.flatMap((x) => (x.userId ? [x.userId] : []));
+  }
+
+  /** Queues something for the alarm to send (and retry). */
+  private send2(item: OutboxItem) {
+    const room = this.r;
+    (room.outbox ??= []).push(item);
+    room.outboxTries = 0;
+    room.deadlines.post = Date.now();
+  }
+
+  /**
+   * The game as a match record. Quick match: a person who left is placed after everyone still
+   * playing (their seat's bot result doesn't count for them); ranked games rate people only.
+   */
+  private matchResult(ranking: SeatIndex[][]): MatchResult {
+    const room = this.r;
+    const now = Date.now();
+    let order = ranking;
+    if (room.quick) {
+      const left = (i: number) => room.seats[i]?.status === "left" && !!room.seats[i]?.userId;
+      const stayed = ranking.map((g) => g.filter((i) => !left(i))).filter((g) => g.length);
+      const gone = ranking.flat().filter(left);
+      order = gone.length ? [...stayed, gone] : stayed;
+    }
+    const placeOf = (i: number) => {
+      let place = 1;
+      for (const g of order) {
+        if (g.includes(i)) return place;
+        place += g.length;
+      }
+      return place;
+    };
+    // Football's solo run: one person, a record of how far it went.
+    const st = room.state as {
+      soloRun?: { wins: number; played: number; teamRating: number };
+      dataVersion?: string;
+    } | null;
+    const solo =
+      room.game === "football" && room.seats.length === 1 && st?.soloRun
+        ? {
+            ...st.soloRun,
+            luck: String((room.rules as { draftLuck?: string }).draftLuck ?? "balanced"),
+            dataVersion: st.dataVersion ?? "",
+          }
+        : undefined;
+    return {
+      id: `${room.code}-${room.startedAt ?? now}`,
+      roomId: room.code,
+      game: room.game,
+      rules: room.rules,
+      playerCount: room.seats.length,
+      startedAt: room.startedAt ?? now,
+      endedAt: now,
+      kind: room.quick ? "quick" : "private",
+      ranked: !!room.quick?.ranked,
+      ...(solo ? { solo } : {}),
+      variant: solo ? "solo" : (room.quick?.variant ?? "standard"),
+      timeControl: room.quick?.timeControl ?? null,
+      players: room.seats.map((x, i) => ({
+        seat: i,
+        userId: x.userId,
+        isBot: !x.userId,
+        botLevel: x.userId ? null : x.botLevel,
+        displayName: x.name.slice(0, 40) || "Player",
+        place: Math.min(8, placeOf(i)),
+        leftEarly: x.status === "left",
+      })),
+    };
+  }
+
+  /** Sends the outbox: results to web (signed), free players to the matchmaker. */
+  private async sendOutbox() {
+    const room = this.r;
+    room.deadlines.post = undefined;
+    const items = room.outbox ?? [];
+    const rest: OutboxItem[] = [];
+    for (const item of items) {
+      try {
+        if (item.kind === "result") {
+          const secret = this.env.INTERNAL_HMAC_SECRET;
+          const body = JSON.stringify(item.result);
+          const { ts, sig } = await signBody(secret, body);
+          const res = await fetch(`${this.env.WEB_ORIGIN}/api/internal/match-result`, {
+            method: "POST",
+            body,
+            headers: { "content-type": "application/json", "x-gh-ts": ts, "x-gh-sig": sig },
+            signal: AbortSignal.timeout(8000),
+          });
+          // A refusal (bad data) won't get better by retrying; network trouble might.
+          if (!res.ok && res.status >= 500) throw new Error(String(res.status));
+        } else {
+          const res = await this.env.Match.getByName("global").fetch("https://match/free", {
+            method: "POST",
+            headers: { "x-gh-internal": "free" },
+            body: JSON.stringify({ userIds: item.userIds, code: room.code }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+        }
+      } catch {
+        rest.push(item);
+      }
+    }
+    room.outbox = rest;
+    if (rest.length) {
+      room.outboxTries = (room.outboxTries ?? 0) + 1;
+      // Give up after about an hour of trying.
+      if (room.outboxTries < 12)
+        room.deadlines.post = Date.now() + Math.min(10 * 60_000, 2000 * 2 ** room.outboxTries);
+      else room.outbox = [];
+    }
   }
 
   /**
@@ -1236,7 +1420,11 @@ export class GameRoom extends Server<Env> {
     if (!def) return;
 
     let changed = false;
-    if (room.tour) changed = await this.tableAlarm();
+    if (room.tour || room.quick) changed = await this.tableAlarm();
+    if (room.deadlines.post !== undefined && room.deadlines.post <= Date.now()) {
+      await this.sendOutbox();
+      changed = true;
+    }
     for (let step = 0; step < MAX_ALARM_STEPS; step++) {
       const now = Date.now();
       const d = room.deadlines;
@@ -1250,7 +1438,10 @@ export class GameRoom extends Server<Env> {
       for (const [k, t] of Object.entries(d.grace)) {
         if (t !== undefined && t <= now) {
           const seat = room.seats[Number(k)];
-          if (seat?.status === "away") {
+          if (seat?.status === "away" && this.claimsOnly && room.phase === "playing") {
+            // Ranked chess/draughts: no bot. The opponent may claim; their clock keeps running.
+            this.applyAction(Number(k), { type: "gone", gone: true });
+          } else if (seat?.status === "away") {
             seat.status = "bot";
             seat.botLevel = TAKEOVER_BOT;
             this.botTookOver(seat);
@@ -1378,6 +1569,16 @@ export class GameRoom extends Server<Env> {
       minPlayers: this.def().minPlayers,
       botFill: room.botLevel,
       firstPlayer: room.firstPlayer ?? "random",
+      ...(room.quick
+        ? {
+            quick: {
+              ranked: room.quick.ranked,
+              variant: room.quick.variant,
+              timeControl: room.quick.timeControl,
+              startsAt: room.phase === "lobby" ? (room.deadlines.start ?? null) : null,
+            },
+          }
+        : {}),
       ...(room.tour
         ? {
             tournament: {

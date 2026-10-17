@@ -452,3 +452,26 @@ describe("chess properties", () => {
     },
   );
 });
+
+describe("ranked disconnects (no bot takes over)", () => {
+  it("the opponent gone: claim the win, or a draw without mating material; back again: no claim", () => {
+    const r = rules({ timeControl: { baseSeconds: 180, incrementSeconds: 2 } });
+    const { s } = play(start(r), ["e2e4", "e7e5"], r);
+    expect(reject(s, 0, { type: "claim_victory" }, r)).toBe("NOT_ALLOWED");
+    // Black's grace runs out: the room marks the seat gone.
+    const gone = act(s, 1, { type: "gone", gone: true }, r).state;
+    expect(chess.legalActions(gone, 0, r)).toContainEqual({ type: "claim_victory" });
+    expect(reject(gone, 1, { type: "claim_victory" }, r)).toBe("NOT_ALLOWED");
+    const back = act(gone, 1, { type: "gone", gone: false }, r).state;
+    expect(reject(back, 0, { type: "claim_victory" }, r)).toBe("NOT_ALLOWED");
+    const won = act(gone, 0, { type: "claim_victory" }, r).state;
+    expect(won.result).toEqual({ winner: "w", reason: "claim_win" });
+    // A lone king can't claim the win, only a draw.
+    const bare = { ...at("4k3/8/8/8/8/8/8/R3K3 b - - 0 1", r), gone: "w" as const };
+    expect(reject(bare, 1, { type: "claim_victory" }, r)).toBe("NOT_ALLOWED");
+    expect(act(bare, 1, { type: "claim_absent_draw" }, r).state.result).toEqual({
+      winner: null,
+      reason: "claim_draw",
+    });
+  });
+});

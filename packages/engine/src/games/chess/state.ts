@@ -18,6 +18,9 @@ export type ChessEndReason =
   | "fifty"
   | "seventyfive"
   | "agreement"
+  /** Ranked: the opponent left and their grace ran out; the one still here claimed. */
+  | "claim_win"
+  | "claim_draw"
   | "aborted";
 
 export type ChessState = {
@@ -40,6 +43,8 @@ export type ChessState = {
   takeback: { by: Side; atPly: number; expiresAt: number } | null;
   offersUsed: { draw: { w: number; b: number }; takeback: { w: number; b: number } };
   result: { winner: Side | null; reason: ChessEndReason } | null;
+  /** Ranked games: a side whose player left and whose grace ran out (no bot takes over). */
+  gone?: Side | null;
 };
 
 export type ChessAction =
@@ -54,8 +59,13 @@ export type ChessAction =
   | { type: "accept_takeback" }
   | { type: "decline_takeback" }
   | { type: "abort" }
+  /** Ranked, the opponent gone: win (or a draw, without mating material). */
+  | { type: "claim_victory" }
+  | { type: "claim_absent_draw" }
   /** Server only (timeouts): flag fall, or the abort window running out. Never accepted from clients. */
-  | { type: "flag" };
+  | { type: "flag" }
+  /** Server only (ranked): this seat's player is gone past the grace, or back. */
+  | { type: "gone"; gone: boolean };
 
 /** Chess has no hidden information: everyone sees the whole state, plus which side they play. */
 export type ChessView = ChessState & { you: Side | null };

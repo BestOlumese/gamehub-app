@@ -49,6 +49,8 @@ export const draughtsActionSchema = z.discriminatedUnion("type", [
   }),
   z.object({ type: z.literal("huff"), square }),
   simple("resign"),
+  simple("claim_victory"),
+  simple("claim_absent_draw"),
   simple("offer_draw"),
   simple("accept_draw"),
   simple("decline_draw"),

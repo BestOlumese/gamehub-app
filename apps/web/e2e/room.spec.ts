@@ -77,7 +77,10 @@ test("Snakes & Ladders: 2 people and 6 bots play an 8-player game to the end", a
   await host.page.getByRole("button", { name: "Next", exact: true }).click(); // players → rules
   await expect(host.page.getByText("Naija Standard")).toBeVisible();
   // Quick board, no exact finish, first to 100 ends it: an 8-player game in a few minutes.
-  await host.page.getByRole("button", { name: /^Quick/ }).click();
+  await host.page
+    .getByRole("dialog")
+    .getByRole("button", { name: /^Quick/ })
+    .click();
   await shot(host.page, "snakes-boards");
   await host.page.getByRole("switch", { name: "Exact roll to finish" }).click();
   await host.page.getByRole("switch", { name: "First to 100 ends it" }).click();

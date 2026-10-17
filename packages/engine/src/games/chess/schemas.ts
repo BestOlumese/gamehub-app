@@ -40,6 +40,8 @@ export const chessActionSchema = z.discriminatedUnion("type", [
       .optional(),
   }),
   simple("resign"),
+  simple("claim_victory"),
+  simple("claim_absent_draw"),
   simple("offer_draw"),
   simple("accept_draw"),
   simple("decline_draw"),

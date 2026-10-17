@@ -554,3 +554,20 @@ describe("draughts properties", () => {
     expect(run()).toEqual(run());
   });
 });
+
+describe("ranked disconnects (no bot takes over)", () => {
+  it("the opponent gone: claim the win or a draw; only then", () => {
+    const r = rules();
+    const s = start(r);
+    expect(reject(s, 0, { type: "claim_victory" }, r)).toBe("NOT_ALLOWED");
+    const gone = act(s, 1, { type: "gone", gone: true }, r).state;
+    expect(gone.gone).toBe(draughts.view(gone, 1).you);
+    const won = act(gone, 0, { type: "claim_victory" }, r).state;
+    expect(won.result?.reason).toBe("claim_win");
+    expect(won.result?.winner).toBe(draughts.view(gone, 0).you);
+    expect(act(gone, 0, { type: "claim_absent_draw" }, r).state.result).toEqual({
+      winner: null,
+      reason: "claim_draw",
+    });
+  });
+});

@@ -103,3 +103,5 @@ Any new realtime feature states its added rows-written and requests per game in 
 - Bot-service calls: per bot move 1 alarm + 2 `Quota` RPCs (requests) + 1 subrequest (`fetch`, not a DO request).
 - Tournament: 2 RPCs per table (`initTable`, `reportTable`) + lobby socket messages ÷ 20.
 - Football playback costs no requests (client-side timing); half starts are alarms.
+
+**Phase 13 (as built):** every finished game in a private or quick room makes one signed call to web (a Vercel function: a handful of small inserts, ratings for ranked games). The matchmaker writes one row per join, leave or match. A quick-match room costs what its game costs.

@@ -12,6 +12,7 @@ import { Check, Copy } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { seatName } from "../rps/names";
+import { RematchLabel } from "../rematch-label";
 
 const REASON: Record<ChessEndReason, string> = {
   checkmate: "by checkmate",
@@ -25,6 +26,8 @@ const REASON: Record<ChessEndReason, string> = {
   fifty: "50 moves with no capture or pawn move",
   seventyfive: "75 moves with no capture or pawn move",
   agreement: "Draw agreed",
+  claim_win: "after the opponent left",
+  claim_draw: "Drawn after the opponent left",
   aborted: "Game aborted",
 };
 
@@ -107,12 +110,13 @@ export function ChessResult({ view, seats, rules, white, black, onRematch }: Pro
         </h2>
         <p className="mt-1 text-center text-ink-2">{how}</p>
         <p className="mt-1 text-center text-sm text-ink-3">
-          {Math.ceil(view.san.length / 2)} moves · {timeLabel(rules.timeControl)}
+          {Math.ceil(view.san.length / 2)} {Math.ceil(view.san.length / 2) === 1 ? "move" : "moves"}{" "}
+          · {timeLabel(rules.timeControl)}
         </p>
         <div className="mt-6 grid gap-2">
           {view.you ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Button variant="secondary" block onClick={copy}>

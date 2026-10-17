@@ -25,6 +25,11 @@ export function Dialog({ open, onClose, title, description, children }: DialogPr
     if (!d) return;
     if (open && !d.open) d.showModal();
     if (!open && d.open) d.close();
+    // Leaving the page with the sheet open (it navigated, or the page was kept but hidden):
+    // a modal left open makes everything else inert, so the next page wouldn't take taps.
+    return () => {
+      if (d.open) d.close();
+    };
   }, [open]);
 
   return (

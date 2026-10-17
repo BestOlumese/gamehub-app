@@ -113,6 +113,8 @@ export type FootballState = {
   /** Best of 3: wins so far. */
   series: [number, number];
   places: SeatIndex[][] | null;
+  /** A finished solo run: wins, matches played and the XI's average rating (for the profile). */
+  soloRun?: { wins: number; played: number; teamRating: number };
 };
 
 export type SlotRef = { slot: number } | { bench: number };

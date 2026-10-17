@@ -549,7 +549,15 @@ export function createFootballGame(
       case "solo": {
         const won = fixtures[0]?.result?.winner === 0;
         if (!won || s.round >= SOLO_BANDS.length - 1) {
-          ev.push({ type: "run_over", wins: s.round + (won ? 1 : 0) });
+          const wins = s.round + (won ? 1 : 0);
+          ev.push({ type: "run_over", wins });
+          // The run's record (the profile shows the best): wins, matches, the XI's rating.
+          const ovr = (s.managers[0]?.sheet?.xi ?? []).map((x) => get(x.id).ovr);
+          s.soloRun = {
+            wins,
+            played: s.round + 1,
+            teamRating: ovr.length ? Math.round(ovr.reduce((a, b) => a + b, 0) / ovr.length) : 0,
+          };
           return finish(s, ev);
         }
         return nextRound();
@@ -959,9 +967,8 @@ export function createFootballGame(
           for (const f of s.rounds[s.round] ?? []) endPause(f, now);
           // Solo: no one else to wait for, so the half plays out at once.
           for (const f of s.rounds[s.round] ?? []) f.startedAt = now - 200 * msPerMinute(rules);
+          // tick() opens the usual break (half time, or between matches): Ready goes on sooner.
           tick(s, rules, now, ev);
-          const after = s.phase as FootballState["phase"]; // tick() moves it on
-          if (after === "break" || after === "between") s.windowEndsAt = now + 1500;
           return ok(s, ev);
         }
         default: {

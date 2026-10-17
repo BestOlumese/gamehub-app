@@ -9,7 +9,9 @@ import {
 import { tournamentResultSchema } from "@gamehub/protocol";
 import { verifyBody } from "@gamehub/protocol/hmac";
 import { inArray } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { getDb } from "@/server/db";
+import { addStats, profileTag } from "@/server/results";
 import { env } from "@/server/env";
 
 // A finished tournament's standings and its tables' games, from the realtime Worker
@@ -100,7 +102,8 @@ export async function POST(req: Request) {
     )
     .onConflictDoNothing();
   if (r.matches.length) {
-    await db
+    // Matches already stored (a retried post) don't count twice in anyone's stats.
+    const fresh = await db
       .insert(match)
       .values(
         r.matches.map((m) => ({
@@ -116,7 +119,8 @@ export async function POST(req: Request) {
           endedAt: new Date(m.endedAt),
         })),
       )
-      .onConflictDoNothing();
+      .onConflictDoNothing()
+      .returning({ id: match.id });
     await db
       .insert(matchPlayer)
       .values(
@@ -134,6 +138,16 @@ export async function POST(req: Request) {
         ),
       )
       .onConflictDoNothing();
+    const added = new Set(fresh.map((x) => x.id));
+    for (const m of r.matches) {
+      if (!added.has(m.id)) continue;
+      const people = m.players.flatMap((p) => {
+        const id = who(p.userId);
+        return id ? [{ userId: id, place: p.place }] : [];
+      });
+      await addStats(m.game, "standard", people, m.players.filter((p) => p.place === 1).length);
+    }
   }
+  for (const id of known) revalidateTag(profileTag(id), { expire: 0 });
   return Response.json({ ok: true });
 }

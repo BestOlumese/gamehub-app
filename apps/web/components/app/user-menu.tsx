@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar } from "@gamehub/ui/data-display/avatar";
-import { ChevronDown, FileText, LogOut, Settings } from "lucide-react";
+import { ChevronDown, FileText, LogOut, Settings, Trophy, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -97,6 +97,24 @@ export function UserMenu({ username, email, image }: UserMenuProps) {
             </div>
           </div>
           <div className="my-1 h-px bg-line" role="separator" />
+          <Link
+            href={`/u/${username}`}
+            role="menuitem"
+            className={itemClass}
+            onClick={() => setOpen(false)}
+          >
+            <UserRound size={18} aria-hidden="true" className="text-ink-2" />
+            Your profile
+          </Link>
+          <Link
+            href="/leaderboards"
+            role="menuitem"
+            className={itemClass}
+            onClick={() => setOpen(false)}
+          >
+            <Trophy size={18} aria-hidden="true" className="text-ink-2" />
+            Leaderboards
+          </Link>
           <Link
             href="/settings"
             role="menuitem"

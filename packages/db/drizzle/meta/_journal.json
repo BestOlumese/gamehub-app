@@ -22,6 +22,20 @@
       "when": 1792223107093,
       "tag": "0002_tournaments",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792229545328,
+      "tag": "0003_ratings",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792231746794,
+      "tag": "0004_solo_runs",
+      "breakpoints": true
     }
   ]
 }

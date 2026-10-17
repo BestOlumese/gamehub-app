@@ -397,6 +397,11 @@ describe("football room", () => {
       expect(Math.abs(b.rating - (SOLO_BANDS[r] as number))).toBeLessThanOrEqual(2),
     );
     expect(sim.events).toContain("run_over");
+    // The run's record for the profile.
+    const run_ = sim.s.soloRun;
+    expect(run_?.played).toBeGreaterThanOrEqual(1);
+    expect(run_?.wins).toBe(run_ ? run_.played - (run_.wins === run_.played ? 0 : 1) : -1);
+    expect(run_?.teamRating).toBeGreaterThan(40);
   });
 
   it("same seed, same room", () => {

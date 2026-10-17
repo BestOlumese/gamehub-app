@@ -260,6 +260,9 @@ export default function DraughtsTable({ snap, send }: Props) {
 
   const opp = you ? other(you) : null;
   const offerFromThem = !ended && opp && view.drawOffer?.by === opp;
+  // Ranked: they left and their grace is over (no bot plays for them). Claim, or wait for them.
+  const [waitForThem, setWaitForThem] = useState(false);
+  const goneThem = !ended && !!opp && view.gone === opp && !waitForThem;
   const takebackFromThem = !ended && opp && view.takeback?.by === opp;
   const canOfferDraw =
     !!you &&
@@ -348,7 +351,19 @@ export default function DraughtsTable({ snap, send }: Props) {
         {timeText(rules)}
       </p>
 
-      {offerFromThem ? (
+      {goneThem ? (
+        <div className="flex items-center gap-2 rounded-control bg-accent-soft px-3 py-2 text-sm font-semibold">
+          <span className="flex-1">
+            {seatName(snap.seats, seatOf(view, opp))} left. Claim the win?
+          </span>
+          <Button size="md" onClick={() => act({ type: "claim_victory" })} disabled={!ready}>
+            Claim win
+          </Button>
+          <Button size="md" variant="secondary" onClick={() => setWaitForThem(true)}>
+            Wait
+          </Button>
+        </div>
+      ) : offerFromThem ? (
         <div className="flex items-center gap-2 rounded-control bg-accent-soft px-3 py-2 text-sm font-semibold">
           <span className="flex-1">{seatName(snap.seats, seatOf(view, opp))} offers a draw</span>
           <Button size="md" onClick={() => act({ type: "accept_draw" })} disabled={!ready}>

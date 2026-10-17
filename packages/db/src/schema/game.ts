@@ -1,6 +1,7 @@
 import {
   boolean,
   index,
+  integer,
   jsonb,
   pgTable,
   primaryKey,
@@ -10,6 +11,7 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { user } from "./auth";
 import { gameSlug } from "./enums";
 
@@ -112,4 +114,66 @@ export const matchPlayer = pgTable(
     primaryKey({ columns: [t.matchId, t.seat] }),
     index("mp_user_idx").on(t.userId, t.matchId),
   ],
+);
+
+/** openskill rating per user, game and variant (chess: bullet/blitz/rapid; draughts: naija10/english8). */
+export const rating = pgTable(
+  "rating",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    game: gameSlug("game").notNull(),
+    variant: text("variant").notNull().default("standard"),
+    mu: real("mu").notNull().default(25),
+    sigma: real("sigma")
+      .notNull()
+      .default(sql`25.0 / 3`),
+    /** mu − 3σ: the conservative number boards sort by. */
+    ordinal: real("ordinal").notNull().default(0),
+    /** The friendly number shown (1000 + 40 × ordinal). */
+    display: integer("display").notNull().default(1000),
+    played: integer("played").notNull().default(0),
+    won: integer("won").notNull().default(0),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.game, t.variant] }),
+    index("rating_board_idx").on(t.game, t.variant, t.ordinal),
+  ],
+);
+
+/** Football Draft solo runs: the profile shows the best (docs/07-database.md). */
+export const footballSoloRun = pgTable(
+  "football_solo_run",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    wins: smallint("wins").notNull(),
+    played: smallint("played").notNull(),
+    teamRating: smallint("team_rating").notNull(),
+    luck: text("luck").notNull(),
+    dataVersion: text("data_version").notNull(),
+    finishedAt: timestamp("finished_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [index("fsr_user_idx").on(t.userId, t.wins)],
+);
+
+/** Every game counted (ranked or not), per user, game and variant. */
+export const userStats = pgTable(
+  "user_stats",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    game: gameSlug("game").notNull(),
+    variant: text("variant").notNull().default("standard"),
+    played: integer("played").notNull().default(0),
+    won: integer("won").notNull().default(0),
+    currentStreak: integer("current_streak").notNull().default(0),
+    bestStreak: integer("best_streak").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.game, t.variant] })],
 );

@@ -2,6 +2,7 @@ import { ArtImage } from "@/components/site/art-image";
 import { games } from "@/lib/games";
 import { isPlayable } from "@/lib/playable-games";
 import { PlayWithFriendsButton } from "./play-with-friends-button";
+import { QuickMatchButton } from "./quick-match-button";
 
 /** Playable games first, then the ones still being built. */
 export function GameGrid() {
@@ -32,7 +33,10 @@ export function GameGrid() {
               </div>
               <div className="mt-4">
                 {isPlayable(g.slug) ? (
-                  <PlayWithFriendsButton game={g.slug} />
+                  <div className="grid gap-2">
+                    <PlayWithFriendsButton game={g.slug} />
+                    <QuickMatchButton game={g.slug} />
+                  </div>
                 ) : (
                   <p className="text-sm text-ink-2">
                     We&apos;re building this table. It opens soon.

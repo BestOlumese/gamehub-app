@@ -7,6 +7,7 @@ import { Button, buttonClasses } from "@gamehub/ui/forms/button";
 import { Bot, Crown } from "lucide-react";
 import Link from "next/link";
 import { seatName } from "./names";
+import { RematchLabel } from "../rematch-label";
 
 function Face({ seats, seat, size }: { seats: SeatPublic[]; seat: number; size: number }) {
   const s = seats[seat];
@@ -126,7 +127,7 @@ export function PodiumCard({ view, seats, you, onRematch }: Props) {
         <div className="mt-6 grid gap-2">
           {you !== "spectator" ? (
             <Button block onClick={onRematch}>
-              Rematch
+              <RematchLabel />
             </Button>
           ) : null}
           <Link href="/home" className={buttonClasses("secondary", "lg", "w-full")}>
