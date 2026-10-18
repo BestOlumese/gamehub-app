@@ -53,10 +53,7 @@ export function MatchReport({
   const bars = mo.buckets;
   const w = 100 / Math.max(1, bars.length);
   return (
-    <section
-      className="space-y-4 rounded-card border border-line bg-surface p-3"
-      aria-label="Match report"
-    >
+    <section className="space-y-4 tile p-3" aria-label="Match report">
       <div className="text-center">
         <p className="text-xs font-semibold tracking-wide text-ink-2 uppercase">Match report</p>
         <p className="font-display text-lg font-bold tabular-nums">
@@ -150,7 +147,7 @@ export function MatchReport({
                 .map((r) => (
                   <li key={r.id} className="flex items-center gap-1.5 text-sm">
                     <span
-                      className={`w-9 shrink-0 rounded px-1 text-center text-xs font-bold tabular-nums ${r.rating >= 7.5 ? "bg-brand text-white" : r.rating < 6 ? "bg-danger-soft text-danger-strong" : "bg-surface-2"}`}
+                      className={`w-9 shrink-0 rounded px-1 text-center text-xs font-bold tabular-nums ${r.rating >= 7.5 ? "bg-brand text-white" : r.rating < 6 ? "bg-danger-soft text-danger-strong shadow-[0_3px_0_var(--color-danger)]" : "bg-surface-2"}`}
                     >
                       {r.rating.toFixed(1)}
                     </span>

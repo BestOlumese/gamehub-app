@@ -188,7 +188,7 @@ export default function WhotTable({ snap, send }: Props) {
       <div className="h-11" aria-live="polite">
         {banner ? (
           <p
-            className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.you ? (pick ? "bg-danger-soft text-danger-strong" : "bg-accent text-ink") : "bg-surface-2 text-ink-2"}`}
+            className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.you ? (pick ? "bg-danger-soft text-danger-strong shadow-[0_3px_0_var(--color-danger)]" : "bg-accent text-ink") : "bg-surface text-ink-2 shadow-[0_2px_0_var(--color-line-edge)]"}`}
           >
             {banner.text}
           </p>

@@ -42,7 +42,7 @@ export function MoveStrip({ san, viewing, onView }: Props) {
                 data-ply={ply}
                 aria-current={on ? "step" : undefined}
                 onClick={() => onView(ply === san.length ? null : ply)}
-                className={`rounded px-1.5 py-0.5 font-semibold ${on ? "bg-accent text-ink" : "text-ink-2 hover:bg-surface-2"}`}
+                className={`rounded px-1.5 py-0.5 font-semibold ${on ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "text-ink-2 hover:bg-surface-2"}`}
               >
                 {m}
               </button>

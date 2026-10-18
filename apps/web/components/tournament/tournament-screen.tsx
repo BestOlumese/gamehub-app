@@ -89,7 +89,9 @@ export function TournamentScreen({
       ) : (
         <TournamentBracket snap={snap} send={send} />
       )}
-      {snap && phase !== "cancelled" ? <ChatDock send={send} meId={meId} soundOn={sound} /> : null}
+      {snap && phase !== "cancelled" ? (
+        <ChatDock send={send} meId={meId} soundOn={sound} lift={phase === "lobby"} />
+      ) : null}
       {snap && go && phase === "running" ? (
         <TableReadySheet
           key={go.code}

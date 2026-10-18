@@ -44,7 +44,7 @@ export function WaitingView({
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6 px-4 py-6">
-      <div className="rounded-card border border-line bg-surface p-5 shadow-sm">
+      <div className="tile p-5">
         <p className="font-display text-xl font-extrabold tracking-tight">{status.title}</p>
         {status.sub ? <p className="mt-1 text-ink-2">{status.sub}</p> : null}
       </div>
@@ -58,7 +58,7 @@ export function WaitingView({
             {live.map((m, i) => {
               const last = m.history.at(-1);
               return (
-                <li key={i} className="rounded-card border border-line bg-surface p-4 shadow-sm">
+                <li key={i} className="tile p-4">
                   <div className="flex items-center justify-between gap-3">
                     {[m.a, m.b].map((seat, side) => (
                       <div

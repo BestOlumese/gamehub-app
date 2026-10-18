@@ -78,7 +78,7 @@ function OpponentSeat({
           </span>
         ) : null}
         <span
-          className={`absolute -right-1.5 -bottom-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold tabular-nums ring-2 ring-paper ${info.place ? "bg-accent text-ink" : "bg-whot text-white"}`}
+          className={`absolute -right-1.5 -bottom-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold tabular-nums ring-2 ring-paper ${info.place ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "bg-whot text-white"}`}
         >
           {info.place ?? info.count}
         </span>

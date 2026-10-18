@@ -6,6 +6,7 @@ import { Button } from "@gamehub/ui/forms/button";
 import { seatName } from "../rps/names";
 import { TEAM_COLOURS } from "./look";
 import { MatchReport } from "./match-report";
+import { ResultHeader } from "../result-shell";
 
 export const teamName = (seats: SeatPublic[], t: Team | "bye", botNames: string) =>
   t === "bye" ? "Bye" : "seat" in t ? seatName(seats, t.seat) : botNames;
@@ -32,8 +33,13 @@ export function ResultsView({
           : `${seatName(seats, champ[0] as number)} won`
         : "A draw";
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-center font-display text-2xl font-bold">{title}</h2>
+    <div className="tone-football flex flex-col gap-4">
+      <ResultHeader
+        title={title}
+        winner={view.mode !== "solo" && champ.length === 1 ? (champ[0] ?? null) : null}
+        seats={seats}
+        className="rounded-card"
+      />
       {view.mode === "league" ? (
         <table className="w-full text-sm tabular-nums">
           <thead className="text-ink-2">
@@ -78,7 +84,7 @@ export function ResultsView({
                     ? `Round ${r + 1}`
                     : `Game ${r + 1}`}
             </p>
-            <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+            <ul className="divide-y divide-line tile">
               {round.map((f) => (
                 <li key={f.id} className="flex items-center gap-2 px-3 py-2 text-sm">
                   <span className="min-w-0 flex-1 truncate text-right">

@@ -67,12 +67,15 @@ export default function ChatDock({
   meId,
   soundOn,
   lift = false,
+  inBar = false,
 }: {
   send: (m: ChatOut) => void;
   meId: string;
   soundOn: () => boolean;
   /** Sits above a sticky bottom bar (the lobby's Start, a result sheet). */
   lift?: boolean;
+  /** In the room's top bar (during a game) instead of floating. */
+  inBar?: boolean;
 }) {
   const open = useChat((s) => s.open);
   const unread = useChat((s) => s.unread);
@@ -89,16 +92,20 @@ export default function ChatDock({
         type="button"
         onClick={() => setChatOpen(true)}
         aria-label={unread ? `Chat, ${unread} new` : "Chat"}
-        className={`fixed right-4 z-30 grid size-12 place-items-center rounded-full border border-line bg-surface text-ink shadow-md transition-[bottom] duration-(--dur-sheet) hover:bg-surface-2 ${
-          lift
-            ? "bottom-[calc(env(safe-area-inset-bottom)+6.5rem)]"
-            : "bottom-[calc(env(safe-area-inset-bottom)+1rem)]"
-        }`}
+        className={
+          inBar
+            ? "relative flex size-10 items-center justify-center rounded-control hover:bg-surface-2"
+            : `fixed right-4 z-30 grid size-12 place-items-center rounded-full border border-line bg-surface text-ink shadow-md transition-[bottom] duration-(--dur-sheet) hover:bg-surface-2 ${
+                lift
+                  ? "bottom-[calc(env(safe-area-inset-bottom)+6.5rem)]"
+                  : "bottom-[calc(env(safe-area-inset-bottom)+1rem)]"
+              }`
+        }
       >
-        <MessageCircle size={22} aria-hidden="true" />
+        <MessageCircle size={inBar ? 20 : 22} aria-hidden="true" />
         {unread ? (
           <span
-            className="absolute top-0.5 right-0.5 size-3 rounded-full border-2 border-surface bg-danger"
+            className={`absolute rounded-full border-2 border-surface bg-danger ${inBar ? "top-1.5 right-1.5 size-2.5" : "top-0.5 right-0.5 size-3"}`}
             aria-hidden="true"
           />
         ) : null}

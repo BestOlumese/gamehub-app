@@ -131,7 +131,7 @@ export default function LudoTable({ snap, send }: Props) {
         {panel(0)}
         {panel(1)}
       </div>
-      <div className="rounded-card border border-line bg-surface p-1.5 shadow-sm">
+      <div className="tile p-1.5">
         <LudoBoard
           state={feed.seeds ? { ...view, seeds: feed.seeds } : view}
           turns={turns}
@@ -164,7 +164,7 @@ export default function LudoTable({ snap, send }: Props) {
       <div className="h-11" aria-live="polite">
         {banner ? (
           <p
-            className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.you ? "bg-accent text-ink" : "bg-surface-2 text-ink-2"}`}
+            className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.you ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "bg-surface text-ink-2 shadow-[0_2px_0_var(--color-line-edge)]"}`}
           >
             {banner.text}
           </p>

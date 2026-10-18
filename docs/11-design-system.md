@@ -286,3 +286,11 @@ Best: the layouts stay; the signed-in app looked "plain and AI" (every page the 
 - **Section labels:** `eyebrow` (12 px, 800, 0.12 em tracking, uppercase); page section titles in Bricolage 20 px.
 - Settings stay calm (tiles only, no banner).
 
+### Game screens (pass 2, decided Oct 18 2026)
+
+- **Table cloth.** Once a game starts, the play area sits on the game's cloth: `cloth` (the game colour mixed 13 % into paper) with its pattern at 7 %. Boards, cards and player bars sit on it as tiles. The quick-match queue uses the same cloth, with the game's drawing bobbing while it searches.
+- **Turn banners.** Yours: gold with a solid darker edge. Someone else's: a white tile on the cloth. "Pick 2!"-type warnings: red tint with a red edge.
+- **End of game** (`ResultShell` / `ResultHeader`, every game): the game's colour across the top with its pattern in white, the winner's avatar crowned, the title in white, the woven strip; a podium (2nd, 1st, 3rd blocks in the game's tint) when three or more people finished; then the game's own details and Rematch / Back home. Football's results page uses the same header.
+- **Chat at the table.** In the lobby the chat button floats bottom right (above the Start bar). From the moment the game starts (and on the result screen) it sits in the top bar next to the menu, so it never covers a game's controls.
+- Room closed, 404 and the queue's waiting state carry a drawing.
+

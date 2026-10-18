@@ -1,5 +1,6 @@
 import { buttonClasses } from "@gamehub/ui/forms/button";
 import Link from "next/link";
+import { ArtImage } from "@/components/site/art-image";
 
 const GONE = {
   title: "This room has closed",
@@ -26,7 +27,8 @@ const copy: Record<number, { title: string; body: string }> = {
 export function RoomClosed({ code }: { code: number }) {
   const c = copy[code] ?? GONE;
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
+    <div className="mx-auto flex max-w-md flex-col items-center px-4 py-20 text-center">
+      <ArtImage name="hero-table" className="mb-6 h-36 w-auto -rotate-2" />
       <h1 className="font-display text-2xl font-extrabold tracking-tight">{c.title}</h1>
       <p className="mt-3 text-ink-2">{c.body}</p>
       <Link href="/home" className={buttonClasses("primary", "lg", "mt-8")}>

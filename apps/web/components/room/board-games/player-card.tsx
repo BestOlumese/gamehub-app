@@ -80,7 +80,7 @@ export function PlayerCard({
       </div>
       {clock ? (
         <span
-          className={`min-w-20 rounded-control px-2.5 py-1 text-right font-display text-2xl font-bold tabular-nums transition-colors duration-(--dur-turn) ${low && clock.running ? "bg-danger-soft text-danger-strong" : clock.running ? "bg-accent text-ink" : "bg-surface-2 text-ink-2"}`}
+          className={`min-w-20 rounded-control px-2.5 py-1 text-right font-display text-2xl font-bold tabular-nums transition-colors duration-(--dur-turn) ${low && clock.running ? "bg-danger-soft text-danger-strong shadow-[0_3px_0_var(--color-danger)]" : clock.running ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "bg-surface text-ink-2 shadow-[0_2px_0_var(--color-line-edge)]"}`}
           aria-label={`${isYou ? "Your" : `${label}'s`} clock: ${mmss(clock.ms)}`}
         >
           {clockText(clock.ms)}

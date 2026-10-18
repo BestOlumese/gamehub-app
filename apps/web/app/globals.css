@@ -168,3 +168,19 @@
   text-transform: uppercase;
   color: var(--color-ink-2);
 }
+
+/* The game's pattern in white, for patterns on a solid game-colour panel. */
+@utility pat-white {
+  background-color: #fff;
+  -webkit-mask-image: var(--g-pat);
+  mask-image: var(--g-pat);
+  -webkit-mask-size: 40px 40px;
+  mask-size: 40px 40px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* The table cloth under a game: the game's colour, lightly, with its pattern. */
+@utility cloth {
+  background-color: color-mix(in oklab, var(--g, var(--color-brand)) 13%, var(--color-paper));
+}

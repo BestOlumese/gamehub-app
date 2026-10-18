@@ -88,7 +88,7 @@ export function DuelView({
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-between gap-3 px-4 py-4">
-      <div className="rounded-card border border-line bg-surface p-3 shadow-sm">
+      <div className="tile p-3">
         {seats[opp] ? (
           <SeatChip
             seat={seats[opp]}

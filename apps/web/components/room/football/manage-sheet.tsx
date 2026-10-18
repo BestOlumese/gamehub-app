@@ -287,7 +287,7 @@ export function ManageSheet({
                 </span>
                 {ratings?.[x.id] !== undefined ? (
                   <span
-                    className={`w-9 shrink-0 rounded px-1 text-center text-xs font-bold tabular-nums ${(ratings[x.id] as number) >= 7.5 ? "bg-brand text-white" : (ratings[x.id] as number) < 6 ? "bg-danger-soft text-danger-strong" : "bg-surface-2"}`}
+                    className={`w-9 shrink-0 rounded px-1 text-center text-xs font-bold tabular-nums ${(ratings[x.id] as number) >= 7.5 ? "bg-brand text-white" : (ratings[x.id] as number) < 6 ? "bg-danger-soft text-danger-strong shadow-[0_3px_0_var(--color-danger)]" : "bg-surface-2"}`}
                     aria-label={`Rating ${(ratings[x.id] as number).toFixed(1)}`}
                   >
                     {(ratings[x.id] as number).toFixed(1)}

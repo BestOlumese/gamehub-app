@@ -93,7 +93,7 @@ export default function SnakesTable({ snap, send }: Props) {
 
       <div>
         <div
-          className="mx-auto w-full rounded-card border border-line bg-surface p-1.5 shadow-sm"
+          className="mx-auto w-full tile p-1.5"
           style={{ maxWidth: "max(16rem, calc(100dvh - 17.5rem))" }}
         >
           <svg

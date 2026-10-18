@@ -89,7 +89,7 @@ export default function FootballTable({ snap, send }: Props) {
         <p className="font-display text-lg font-bold">
           {you === null ? "The managers are drafting" : "Waiting for the others"}
         </p>
-        <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+        <ul className="divide-y divide-line tile">
           {view.managers.map((m, i) => (
             <li key={i} className="flex justify-between px-3 py-2 text-sm">
               <span>{seatName(snap.seats, i)}</span>
@@ -111,7 +111,7 @@ export default function FootballTable({ snap, send }: Props) {
     return wrap(
       <>
         <LastRound view={view} snap={snap} />
-        <details className="rounded-card border border-line bg-surface px-3 py-2">
+        <details className="tile px-3 py-2">
           <summary className="cursor-pointer text-sm font-semibold">Match report</summary>
           <div className="mt-2">
             <LastReport view={view} seats={snap.seats} me={you} />
@@ -174,10 +174,7 @@ export default function FootballTable({ snap, send }: Props) {
         canSkip={view.mode === "solo"}
       />
       {others.length ? (
-        <ul
-          className="mt-2 divide-y divide-line rounded-card border border-line bg-surface text-sm"
-          aria-label="Other matches"
-        >
+        <ul className="mt-2 divide-y divide-line tile text-sm" aria-label="Other matches">
           {others.map((f) => (
             <li key={f.id} className="flex items-center gap-2 px-3 py-1.5">
               <span className="min-w-0 flex-1 truncate text-right">
@@ -254,10 +251,7 @@ function LastRound({ view, snap }: { view: FootballView; snap: Snapshot }) {
   const last = view.rounds[view.round - 1] ?? view.rounds[view.round];
   if (!last) return null;
   return (
-    <ul
-      className="divide-y divide-line rounded-card border border-line bg-surface text-sm"
-      aria-label="Results"
-    >
+    <ul className="divide-y divide-line tile text-sm" aria-label="Results">
       {last.map((f) => (
         <li key={f.id} className="flex items-center gap-2 px-3 py-1.5">
           <span className="min-w-0 flex-1 truncate text-right">

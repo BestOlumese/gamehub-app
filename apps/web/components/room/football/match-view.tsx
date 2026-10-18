@@ -187,7 +187,7 @@ export function MatchView({
     <div className="flex flex-1 flex-col gap-2">
       {/* Scoreboard: managers' names, score, minute. */}
       <div
-        className={`flex items-center gap-2 rounded-card border border-line bg-surface px-3 py-2 shadow-sm transition-transform ${pulse ? "scale-[1.02] ring-2 ring-accent" : ""}`}
+        className={`flex items-center gap-2 tile px-3 py-2 transition-transform ${pulse ? "scale-[1.02] ring-2 ring-accent" : ""}`}
         aria-live="polite"
       >
         <span className="flex min-w-0 flex-1 items-center justify-end gap-1.5 font-bold">

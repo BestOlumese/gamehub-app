@@ -89,31 +89,34 @@ export function RoomScreen({
 
   const playing = snap?.room.phase === "playing";
   const tour = snap?.room.tournament;
+  // At the table (playing, or the result over the final board), chat lives in the top bar so
+  // it never covers the game's own controls; in the lobby it floats bottom right.
+  const atTable = !!snap && snap.room.phase !== "lobby";
+  const chat =
+    snap && !chatOff ? (
+      <ChatDock send={send} meId={meId} soundOn={soundOn} inBar={atTable} lift={!atTable} />
+    ) : null;
   return (
     <div className="flex min-h-dvh flex-col">
       <RoomTopBar
         code={code}
         {...(tour ? { back: { href: `/t/${tour.code}`, label: "Tournament" } } : {})}
         menu={
-          <RoomMenu
-            code={code}
-            game={snap?.room.game ?? null}
-            rules={snap?.room.rules}
-            soundOn={initialSound}
-            playing={playing}
-            onLeave={leave}
-          />
+          <div className="flex items-center">
+            {atTable ? chat : null}
+            <RoomMenu
+              code={code}
+              game={snap?.room.game ?? null}
+              rules={snap?.room.rules}
+              soundOn={initialSound}
+              playing={playing}
+              onLeave={leave}
+            />
+          </div>
         }
       />
       <ConnectionBanner />
-      {snap && !chatOff ? (
-        <ChatDock
-          send={send}
-          meId={meId}
-          soundOn={soundOn}
-          lift={snap.room.phase !== "playing" || snap.room.game === "football"}
-        />
-      ) : null}
+      {atTable ? null : chat}
       {snap && tour ? <TableStrip tour={tour} snap={snap} /> : null}
       {snap?.room.quick ? <QuickStrip snap={snap} /> : null}
       {snap && snap.you === "spectator" ? <WatchingBar snap={snap} /> : null}
@@ -131,24 +134,32 @@ export function RoomScreen({
         ) : (
           <Lobby snap={snap} send={send} notice={notice} />
         )
-      ) : snap.room.game === "rps" ? (
-        <RpsTable snap={snap} send={send} />
-      ) : snap.room.game === "whot" ? (
-        <WhotTable snap={snap} send={send} />
-      ) : snap.room.game === "ludo" ? (
-        <LudoTable snap={snap} send={send} />
-      ) : snap.room.game === "snakes" ? (
-        <SnakesTable snap={snap} send={send} />
-      ) : snap.room.game === "chess" ? (
-        <ChessTable snap={snap} send={send} />
-      ) : snap.room.game === "draughts" ? (
-        <DraughtsTable snap={snap} send={send} />
-      ) : snap.room.game === "plots" ? (
-        <PlotsTable snap={snap} send={send} />
-      ) : snap.room.game === "football" ? (
-        <FootballTable snap={snap} send={send} />
       ) : (
-        <TttTable snap={snap} send={send} />
+        // The table cloth: the game's colour with its pattern, faint, under everything.
+        <div className={`tone-${snap.room.game} cloth relative flex flex-1 flex-col`}>
+          <span aria-hidden="true" className="pat absolute inset-0" style={{ opacity: 0.07 }} />
+          <div className="relative flex flex-1 flex-col">
+            {snap.room.game === "rps" ? (
+              <RpsTable snap={snap} send={send} />
+            ) : snap.room.game === "whot" ? (
+              <WhotTable snap={snap} send={send} />
+            ) : snap.room.game === "ludo" ? (
+              <LudoTable snap={snap} send={send} />
+            ) : snap.room.game === "snakes" ? (
+              <SnakesTable snap={snap} send={send} />
+            ) : snap.room.game === "chess" ? (
+              <ChessTable snap={snap} send={send} />
+            ) : snap.room.game === "draughts" ? (
+              <DraughtsTable snap={snap} send={send} />
+            ) : snap.room.game === "plots" ? (
+              <PlotsTable snap={snap} send={send} />
+            ) : snap.room.game === "football" ? (
+              <FootballTable snap={snap} send={send} />
+            ) : (
+              <TttTable snap={snap} send={send} />
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

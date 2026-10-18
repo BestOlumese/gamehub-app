@@ -1,5 +1,6 @@
 "use client";
 
+import { ResultShell } from "../result-shell";
 import {
   firstTurn,
   pdnMoves,
@@ -107,43 +108,33 @@ export function DraughtsResult({ view, seats, rules, light, dark, onRematch }: P
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 sm:pb-8">
-      <div
-        role="dialog"
-        aria-labelledby="draughts-result"
-        className="mx-auto max-w-md rounded-card border border-line bg-surface p-6 shadow-lg transition-[translate,opacity] duration-(--dur-sheet) ease-standard starting:translate-y-full starting:opacity-0"
-      >
-        <h2
-          id="draughts-result"
-          className="text-center font-display text-2xl font-extrabold tracking-tight"
-        >
-          {title}
-        </h2>
-        <p className="mt-1 text-center text-ink-2">{how}</p>
-        <p className="mt-1 text-center text-sm text-ink-3">
-          {Math.ceil(view.moves.length / 2)}{" "}
-          {Math.ceil(view.moves.length / 2) === 1 ? "move" : "moves"} · {draughtsVariantName(view)}{" "}
-          · {timeLabel(rules.timeControl)}
-        </p>
-        <div className="mt-6 grid gap-2">
-          {view.you ? (
-            <Button block onClick={onRematch}>
-              <RematchLabel />
-            </Button>
-          ) : null}
-          <Button variant="secondary" block onClick={copy}>
-            {copied ? (
-              <Check size={16} aria-hidden="true" />
-            ) : (
-              <Copy size={16} aria-hidden="true" />
-            )}
-            {copied ? "Copied" : "Copy game (PDN)"}
+    <ResultShell
+      game="draughts"
+      labelId="draughts-result"
+      title={title}
+      sub={how}
+      winner={winnerSeat}
+      seats={seats}
+    >
+      <p className="text-center text-sm text-ink-2">
+        {Math.ceil(view.moves.length / 2)}{" "}
+        {Math.ceil(view.moves.length / 2) === 1 ? "move" : "moves"} · {draughtsVariantName(view)} ·{" "}
+        {timeLabel(rules.timeControl)}
+      </p>
+      <div className="mt-6 grid gap-2">
+        {view.you ? (
+          <Button block onClick={onRematch}>
+            <RematchLabel />
           </Button>
-          <Link href="/home" className={buttonClasses("ghost", "lg", "w-full")}>
-            Back home
-          </Link>
-        </div>
+        ) : null}
+        <Button variant="secondary" block onClick={copy}>
+          {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
+          {copied ? "Copied" : "Copy game (PDN)"}
+        </Button>
+        <Link href="/home" className={buttonClasses("ghost", "lg", "w-full")}>
+          Back home
+        </Link>
       </div>
-    </div>
+    </ResultShell>
   );
 }

@@ -87,7 +87,7 @@ export function TttTable({ snap, send }: Props) {
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-between gap-4 px-4 py-4">
-      <div className="rounded-card border border-line bg-surface p-3 shadow-sm">
+      <div className="tile p-3">
         {snap.seats[top] ? (
           <SeatChip
             seat={snap.seats[top]}
@@ -117,7 +117,7 @@ export function TttTable({ snap, send }: Props) {
         <div className="mt-4 h-11" aria-live="polite">
           {banner ? (
             <p
-              className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.tone === "you" ? "bg-accent text-ink" : "bg-surface-2 text-ink-2"}`}
+              className={`flex h-11 items-center justify-center rounded-control px-4 text-center font-semibold ${banner.tone === "you" ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "bg-surface text-ink-2 shadow-[0_2px_0_var(--color-line-edge)]"}`}
             >
               {banner.text}
             </p>

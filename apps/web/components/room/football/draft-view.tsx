@@ -105,7 +105,7 @@ export function DraftView({
                   type="button"
                   disabled={!ready}
                   onClick={() => act({ type: "pick", choice: id })}
-                  className="flex w-full items-center gap-3 rounded-card border border-line bg-surface px-2 py-1.5 text-left shadow-sm active:scale-[0.98]"
+                  className="flex w-full items-center gap-3 tile px-2 py-1.5 text-left active:scale-[0.98]"
                 >
                   <FormationShape id={id as number} className="h-16 w-[3.2rem] shrink-0" />
                   <span className="min-w-0">

@@ -92,7 +92,7 @@ export function Bracket({
           const live = m.winner === null && m.a !== null && m.b !== null;
           const bye = m.a === null || m.b === null;
           return (
-            <li key={i} className="rounded-card border border-line bg-surface p-3 shadow-sm">
+            <li key={i} className="tile p-3">
               {bye ? (
                 <div className="flex items-center justify-between gap-2 text-sm">
                   <span className="font-semibold">{seatName(seats, m.a ?? m.b)}</span>

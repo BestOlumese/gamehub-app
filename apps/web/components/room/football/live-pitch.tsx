@@ -260,7 +260,7 @@ export function LivePitch({
       {penText ? (
         <div className="absolute inset-x-0 top-[6%] z-30 flex justify-center">
           <span
-            className={`rounded-full px-3 py-0.5 text-sm font-bold shadow ${pen?.t === "pen" && pen.scored ? "bg-accent text-ink" : "bg-surface text-ink"}`}
+            className={`rounded-full px-3 py-0.5 text-sm font-bold shadow ${pen?.t === "pen" && pen.scored ? "bg-accent text-ink shadow-[0_3px_0_#b9802a]" : "bg-surface text-ink"}`}
           >
             {penText}
           </span>
