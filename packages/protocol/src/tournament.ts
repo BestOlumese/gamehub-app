@@ -4,6 +4,7 @@ import type { BracketTable, Placement } from "@gamehub/engine/tournament";
 import { z } from "zod";
 import { ROOM_CODE_ALPHABET, TOURNAMENT_CODE_LENGTH } from "./constants";
 import { gameSlugSchema } from "./game-slug";
+import { chatClientMsgs, type ChatServerMsg } from "./chat";
 import { botLevelSchema, type BotLevel, type RoomErrorCode } from "./room";
 
 export const tournamentCodeSchema = z
@@ -55,6 +56,7 @@ export const clientTournamentMsg = z.discriminatedUnion("t", [
   z.object({ t: z.literal("t_start") }),
   z.object({ t: z.literal("t_cancel") }),
   z.object({ t: z.literal("ping"), c: z.number() }),
+  ...chatClientMsgs,
 ]);
 export type ClientTournamentMsg = z.infer<typeof clientTournamentMsg>;
 
@@ -118,7 +120,8 @@ export type ServerTournamentMsg =
   | { t: "t_go"; table: string; code: string }
   /** BAD_STAGES carries the plan's problems in plain words. */
   | { t: "error"; code: TournamentErrorCode; detail?: string[] }
-  | { t: "pong"; c: number; s: number };
+  | { t: "pong"; c: number; s: number }
+  | ChatServerMsg;
 
 // ── Results (Worker → web, HMAC-signed) ──────────────────────────────────────
 

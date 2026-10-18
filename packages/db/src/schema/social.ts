@@ -48,3 +48,47 @@ export const block = pgTable(
     index("block_blocked_idx").on(t.blockedId),
   ],
 );
+
+/** Players' reports (docs/09-chat-moderation.md); `message` only when its signature checked out. */
+export const report = pgTable(
+  "report",
+  {
+    id: text("id").primaryKey(),
+    reporterId: text("reporter_id").references(() => user.id, { onDelete: "set null" }),
+    targetId: text("target_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    roomId: text("room_id").notNull(),
+    reason: text("reason", {
+      enum: ["abuse", "hate", "sexual", "spam", "cheating", "other"],
+    }).notNull(),
+    message: text("message"),
+    status: text("status", { enum: ["open", "actioned", "dismissed"] })
+      .notNull()
+      .default("open"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("report_status_idx").on(t.status, t.createdAt),
+    index("report_target_idx").on(t.targetId),
+  ],
+);
+
+/** Every moderation step; `adminId` null for automatic ones (three reporters in a day). */
+export const moderationAction = pgTable(
+  "moderation_action",
+  {
+    id: text("id").primaryKey(),
+    adminId: text("admin_id").references(() => user.id, { onDelete: "set null" }),
+    targetId: text("target_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    action: text("action", {
+      enum: ["dismiss", "warn", "chat_mute", "ban", "unban", "unmute"],
+    }).notNull(),
+    until: timestamp("until", { withTimezone: true }),
+    note: text("note"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("modact_target_idx").on(t.targetId, t.createdAt)],
+);

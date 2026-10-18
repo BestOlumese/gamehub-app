@@ -44,5 +44,6 @@ export const config = {
     "/u/:path*",
     "/leaderboards",
     "/friends",
+    "/admin",
   ],
 };

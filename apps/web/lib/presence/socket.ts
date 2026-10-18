@@ -11,6 +11,10 @@ export function connectPresence(onMessage: (m: ServerPresenceMsg) => void, onOpe
     room: "global",
     query: async () => {
       const res = await fetch(`/api/realtime/ticket?scope=presence`, { cache: "no-store" });
+      if (res.status === 403) {
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.assign("/banned");
+      }
       if (!res.ok) {
         stopped = true;
         socket.close();
@@ -33,6 +37,13 @@ export function connectPresence(onMessage: (m: ServerPresenceMsg) => void, onOpe
     }
   });
   socket.addEventListener("close", (e: CloseEvent) => {
+    // Banned just now: off to the banned page (tickets are refused from here on).
+    if (e.code === CloseCode.Banned) {
+      socket.close();
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.assign("/banned");
+      return;
+    }
     if (e.code === CloseCode.Replaced || stopped) socket.close();
   });
   return {

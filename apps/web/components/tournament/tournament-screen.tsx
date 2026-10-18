@@ -4,15 +4,27 @@ import { Spinner } from "@gamehub/ui/forms/spinner";
 import { buttonClasses } from "@gamehub/ui/forms/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef } from "react";
 import type { ClientTournamentMsg } from "@gamehub/protocol";
 import { connectTournament, type TournamentConnection } from "@/lib/tournament/socket";
+import { resetChat } from "@/lib/chat/store";
 import { resetTournament, useTournament } from "@/lib/tournament/store";
 import { TableReadySheet } from "./table-ready-sheet";
 import { TournamentBracket } from "./tournament-bracket";
 import { TournamentLobby } from "./tournament-lobby";
 
-export function TournamentScreen({ code }: { code: string }) {
+const ChatDock = dynamic(() => import("../chat/chat-dock"));
+
+export function TournamentScreen({
+  code,
+  meId,
+  soundOn,
+}: {
+  code: string;
+  meId: string;
+  soundOn: boolean;
+}) {
   const conn = useRef<TournamentConnection | null>(null);
   const snap = useTournament((s) => s.snap);
   const go = useTournament((s) => s.go);
@@ -21,6 +33,7 @@ export function TournamentScreen({ code }: { code: string }) {
 
   useEffect(() => {
     resetTournament();
+    resetChat();
     const c = connectTournament(code);
     conn.current = c;
     return () => {
@@ -37,6 +50,7 @@ export function TournamentScreen({ code }: { code: string }) {
 
   const send = useCallback((m: ClientTournamentMsg) => conn.current?.send(m), []);
   const phase = snap?.state.phase;
+  const sound = useCallback(() => soundOn, [soundOn]);
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -74,6 +88,7 @@ export function TournamentScreen({ code }: { code: string }) {
       ) : (
         <TournamentBracket snap={snap} send={send} />
       )}
+      {snap && phase !== "cancelled" ? <ChatDock send={send} meId={meId} soundOn={sound} /> : null}
       {snap && go && phase === "running" ? (
         <TableReadySheet
           key={go.code}

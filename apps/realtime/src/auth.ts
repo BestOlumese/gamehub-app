@@ -43,6 +43,12 @@ export async function verifyTicket(
       name: payload.name,
       avatar: typeof payload.avatar === "string" ? payload.avatar : null,
       scope: expectedScope as TicketClaims["scope"],
+      // Chat: who they've blocked (≤ 200), their account's mute, public chat on or off.
+      blocked: Array.isArray(payload.blocked)
+        ? payload.blocked.filter((x): x is string => typeof x === "string").slice(0, 200)
+        : [],
+      chatMutedUntil: typeof payload.chatMutedUntil === "number" ? payload.chatMutedUntil : null,
+      publicChat: payload.publicChat !== false,
     };
   } catch {
     return null;

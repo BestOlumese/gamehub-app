@@ -43,6 +43,13 @@
       "when": 1792242603056,
       "tag": "0005_friends",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792248258562,
+      "tag": "0006_moderation",
+      "breakpoints": true
     }
   ]
 }

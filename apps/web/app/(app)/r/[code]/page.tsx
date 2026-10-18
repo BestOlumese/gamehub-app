@@ -11,7 +11,7 @@ async function Room({ params }: { params: Promise<{ code: string }> }) {
   const user = await requirePlayer();
   const parsed = roomCodeSchema.safeParse((await params).code);
   if (!parsed.success) notFound();
-  return <RoomScreen code={parsed.data} soundOn={user.soundOn ?? true} />;
+  return <RoomScreen code={parsed.data} meId={user.id} soundOn={user.soundOn ?? true} />;
 }
 
 export default function RoomPage({ params }: { params: Promise<{ code: string }> }) {

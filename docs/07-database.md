@@ -88,9 +88,9 @@ export const report = pgTable("report", {
 
 export const moderationAction = pgTable("moderation_action", {
   id: text("id").primaryKey(),
-  adminId: text("admin_id").notNull().references(() => user.id),
+  adminId: text("admin_id").references(() => user.id, { onDelete: "set null" }), // null = automatic (3 reports)
   targetId: text("target_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-  action: text("action", { enum: ["warn", "chat_mute", "ban", "unban"] }).notNull(),
+  action: text("action", { enum: ["dismiss", "warn", "chat_mute", "ban", "unban", "unmute"] }).notNull(),
   until: timestamp("until", { withTimezone: true }),
   note: text("note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -123,6 +123,8 @@ Well within 0.5 GB for a long time. Prune `email_log` > 30 days on each sign-up 
 - **All-time leaderboard**: `rating where game = ? and played >= 10 order by ordinal desc limit 100`. Cached with `"use cache"` + `cacheLife("minutes")`, tag `leaderboard:<game>`, revalidated on match ingest (`revalidateTag`).
 - **Weekly leaderboard**: sum of `rating_after - rating_before` for ranked matches with `ended_at >= start of week (Monday 00:00 Africa/Lagos)`, grouped by user, min 5 games. Same caching.
 - **Friends**: `friendship where user_a = $me or user_b = $me` (both indexed).
+
+As built (Phase 15, migration `0006_moderation`): `user` also gains `public_chat boolean default true` ("Chat in public games") and `notice text` (a moderator's warning, cleared by "Got it" on Home). The ticket route reads `banned_until`, `chat_muted_until`, `public_chat` and the block list fresh on every ticket.
 
 ## Migrations
 

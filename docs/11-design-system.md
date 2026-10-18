@@ -81,7 +81,7 @@ Game pieces: WhotCard, WhotHand, WhotPile, ShapePicker, LudoBoard, LudoSeed, Die
 
 - Mobile first; max content width 1120 px on desktop.
 - Game screen (portrait): top bar (room code, menu, connection dot) → opponents row → board → your area (hand / seeds / buttons) → emote bar. No page scroll during play.
-- Landscape and desktop: board centred, chat panel on the right.
+- Landscape and desktop: board centred. Chat (as built, Phase 15) is the same sheet everywhere: a round button at the bottom right with an unread dot, 3 s bubbles at the top.
 
 ## Voice & copy
 

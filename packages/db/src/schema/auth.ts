@@ -30,6 +30,10 @@ export const user = pgTable("user", {
   chatMutedUntil: timestamp("chat_muted_until", { withTimezone: true }),
   soundOn: boolean("sound_on").notNull().default(true),
   reducedMotion: boolean("reduced_motion").notNull().default(false),
+  /** "Show chat in public games" (quick match). */
+  publicChat: boolean("public_chat").notNull().default(true),
+  /** A moderator's warning, shown once on Home until dismissed. */
+  notice: text("notice"),
 });
 
 export const session = pgTable(

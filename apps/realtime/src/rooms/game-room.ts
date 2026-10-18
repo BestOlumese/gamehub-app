@@ -23,6 +23,7 @@ import {
   type ServerRoomMsg,
   type TableInit,
   type MatchResult,
+  type ReportRequest,
   type TableReport,
   type TicketClaims,
   type TournamentMatch,
@@ -30,6 +31,7 @@ import {
 import type { BotMoveRequest, BotMoveResponse, DraughtsBotRequest } from "@gamehub/protocol/bots";
 import { signBody } from "@gamehub/protocol/hmac";
 import { Server, type Connection, type ConnectionContext, type WSMessage } from "partyserver";
+import { ChatDesk } from "../chat";
 import { gameFor, type AnyGame } from "./games";
 
 /** Set by the Worker after verifying the ticket; never trusted from clients. */
@@ -98,7 +100,9 @@ type OutboxItem =
   | { kind: "result"; result: MatchResult }
   | { kind: "free"; userIds: string[] }
   /** Presence: these people are in this game now (or not any more). */
-  | { kind: "presence"; userIds: string[]; playing: boolean };
+  | { kind: "presence"; userIds: string[]; playing: boolean }
+  /** A player's report, for the moderators. */
+  | { kind: "report"; report: ReportRequest };
 
 /** A tournament table's own record: its place in the tournament and its series so far. */
 type TableRec = {
@@ -145,6 +149,8 @@ type PersistedRoom = {
   recentActionIds: Record<number, string[]>;
   /** Missing in rooms created before the setting existed: treated as "random". */
   firstPlayer?: FirstPlayer;
+  /** The host turned text chat off (emotes stay). */
+  chatOff?: boolean;
   /** Seat keys of the last game's first player and winner ("Takes turns", "Last winner"). */
   lastFirstKey?: string | undefined;
   lastWinnerKey?: string | undefined;
@@ -161,6 +167,10 @@ type ConnState = {
   name: string;
   avatar: string | null;
   seat: SeatIndex | "spectator";
+  /** From the ticket: who they've blocked, their account's chat mute, public chat on or off. */
+  blocked?: readonly string[];
+  chatMutedUntil?: number | null;
+  publicChat?: boolean;
 };
 
 const emptySeat = (): SeatRec => ({
@@ -237,6 +247,10 @@ export class GameRoom extends Server<Env> {
     return s;
   }
   private lastAlarm: number | null = null;
+  private chat = new ChatDesk(
+    () => this.env.CHAT_SIGN_SECRET,
+    () => this.room?.code ?? "",
+  );
   /** A spectator socket that's closing (not counted while we tell the others). */
   private closing: string | null = null;
   /** Bot service health, in memory (losing it on hibernation just means trying again). */
@@ -312,6 +326,7 @@ export class GameRoom extends Server<Env> {
     // From this room's tournament (never reachable from outside: the Worker routes no HTTP here).
     if (internal === "table") return this.initTable((await req.json()) as TableInit);
     if (internal === "seat_left") return this.seatLeft((await req.json()) as { entrant: string });
+    if (internal === "kick") return this.kickUser((await req.json()) as { userId: string });
     if (internal !== "init") return new Response("Not found", { status: 404 });
     if (this.room) return new Response("in use", { status: 409 });
 
@@ -461,6 +476,26 @@ export class GameRoom extends Server<Env> {
     return new Response(null, { status: 200 });
   }
 
+  /** A ban: their sockets close here; in a game a bot takes their seat, in a lobby it opens up. */
+  private async kickUser(o: { userId: string }): Promise<Response> {
+    const room = this.room;
+    for (const c of this.getConnections<ConnState>())
+      if (c.state?.userId === o.userId) c.close(CloseCode.Banned, "banned");
+    const i = room ? room.seats.findIndex((x) => x.userId === o.userId) : -1;
+    const s = room?.seats[i];
+    if (room && s) {
+      if (room.phase === "playing" || this.fixed) {
+        s.status = "left";
+        s.botLevel = TAKEOVER_BOT;
+        room.deadlines.grace[i] = undefined;
+        this.botTookOver(s);
+        if (room.phase === "playing") this.schedule();
+      } else room.seats[i] = emptySeat();
+      await this.commit();
+    }
+    return new Response(null, { status: 200 });
+  }
+
   /** A person's seat is now played by a bot (it shows on their tournament record). */
   private botTookOver(s: SeatRec) {
     const t = this.room?.tour;
@@ -525,7 +560,15 @@ export class GameRoom extends Server<Env> {
       s.avatar = claims.avatar;
     }
 
-    conn.setState({ userId: claims.sub, name: claims.name, avatar: claims.avatar, seat });
+    conn.setState({
+      userId: claims.sub,
+      name: claims.name,
+      avatar: claims.avatar,
+      seat,
+      blocked: claims.blocked ?? [],
+      chatMutedUntil: claims.chatMutedUntil ?? null,
+      publicChat: claims.publicChat ?? true,
+    });
     if (changed) {
       // A fixed table starts as soon as everyone has arrived.
       if (this.fixed && room.phase === "lobby" && !room.seats.some((x) => x.status === "away"))
@@ -610,16 +653,79 @@ export class GameRoom extends Server<Env> {
     if (!room || !st) return conn.close(CloseCode.RoomGone, "not found");
 
     const msg = parsed.data;
-    if (msg.t === "hello") return this.sendSnapshot(conn);
+    if (msg.t === "hello") {
+      this.sendSnapshot(conn);
+      return this.send(conn, {
+        t: "chat_state",
+        mutedUntil: this.chat.mutedUntil(st),
+        off: this.chatOff(st),
+      });
+    }
     if (msg.t === "ping") return this.send(conn, { t: "pong", c: msg.c, s: Date.now() });
+    if (msg.t === "chat" || msg.t === "emote" || msg.t === "report") return this.onChat(conn, msg);
     if (st.seat === "spectator") return;
 
     const err = await this.handle(msg, st.seat, st.userId, conn);
     if (err) this.send(conn, { t: "error", code: err });
   }
 
+  /** Chat is off: the host turned it off, or you're watching a quick-match game. */
+  private chatOff(st: Pick<ConnState, "seat">): boolean {
+    const room = this.r;
+    return !!room.chatOff || (!!room.quick && st.seat === "spectator");
+  }
+
+  /** Chat, emotes and reports (docs/09-chat-moderation.md). Nothing is stored. */
+  private async onChat(
+    conn: Connection<ConnState>,
+    msg: Extract<ClientRoomMsg, { t: "chat" | "emote" | "report" }>,
+  ) {
+    const st = conn.state as ConnState;
+    const room = this.r;
+    const publicGame = !!room.quick;
+    if (msg.t === "chat") {
+      if (this.chatOff(st)) return this.send(conn, { t: "chat_error", code: "OFF" });
+      const r = await this.chat.line(st, msg.text);
+      if ("error" in r)
+        return this.send(conn, {
+          t: "chat_error",
+          code: r.error,
+          ...(r.until ? { until: r.until } : {}),
+        });
+      for (const c of this.getConnections<ConnState>())
+        if (c.state && ChatDesk.delivers(c.state, st.userId, publicGame)) this.send(c, r.msg);
+      return;
+    }
+    if (msg.t === "emote") {
+      const e = this.chat.emote(st, msg.id);
+      if (!e) return;
+      for (const c of this.getConnections<ConnState>())
+        if (c.state && !c.state.blocked?.includes(st.userId)) this.send(c, e);
+      return;
+    }
+    // A report: about someone at this table (or watching), with the line if it's really theirs.
+    const here =
+      room.seats.some((x) => x.userId === msg.target) ||
+      [...this.getConnections<ConnState>()].some((c) => c.state?.userId === msg.target);
+    if (!here || msg.target === st.userId)
+      return this.send(conn, { t: "chat_error", code: "BAD_REPORT" });
+    const message = await this.chat.verify(msg.line, msg.target);
+    this.send2({
+      kind: "report",
+      report: {
+        reporterId: st.userId,
+        targetId: msg.target,
+        roomId: room.code,
+        reason: msg.reason,
+        message,
+      },
+    });
+    await this.persist();
+    this.send(conn, { t: "chat_error", code: "REPORTED" });
+  }
+
   private async handle(
-    msg: Exclude<ClientRoomMsg, { t: "hello" | "ping" }>,
+    msg: Exclude<ClientRoomMsg, { t: "hello" | "ping" | "chat" | "emote" | "report" }>,
     seat: SeatIndex,
     userId: string,
     conn: Connection<ConnState>,
@@ -744,6 +850,7 @@ export class GameRoom extends Server<Env> {
     room.rules = rules.data;
     room.botLevel = msg.botLevel;
     room.firstPlayer = msg.firstPlayer;
+    if (msg.chat !== undefined) room.chatOff = !msg.chat;
     room.seats = seats;
     this.reseatConnections();
     return this.commit();
@@ -1257,6 +1364,16 @@ export class GameRoom extends Server<Env> {
           });
           // A refusal (bad data) won't get better by retrying; network trouble might.
           if (!res.ok && res.status >= 500) throw new Error(String(res.status));
+        } else if (item.kind === "report") {
+          const body = JSON.stringify(item.report);
+          const { ts, sig } = await signBody(this.env.INTERNAL_HMAC_SECRET, body);
+          const res = await fetch(`${this.env.WEB_ORIGIN}/api/internal/report`, {
+            method: "POST",
+            body,
+            headers: { "content-type": "application/json", "x-gh-ts": ts, "x-gh-sig": sig },
+            signal: AbortSignal.timeout(8000),
+          });
+          if (!res.ok && res.status >= 500) throw new Error(String(res.status));
         } else if (item.kind === "presence") {
           const res = await this.env.Presence.getByName("global").fetch("https://presence/status", {
             method: "POST",
@@ -1605,6 +1722,7 @@ export class GameRoom extends Server<Env> {
       minPlayers: this.def().minPlayers,
       botFill: room.botLevel,
       firstPlayer: room.firstPlayer ?? "random",
+      chat: !room.chatOff,
       spectators: [...this.getConnections<ConnState>()].filter(
         (c) => c.id !== this.closing && c.state?.seat === "spectator",
       ).length,

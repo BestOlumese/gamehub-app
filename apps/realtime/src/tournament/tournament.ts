@@ -39,6 +39,7 @@ import {
 } from "@gamehub/protocol";
 import { signBody } from "@gamehub/protocol/hmac";
 import { Server, type Connection, type ConnectionContext, type WSMessage } from "partyserver";
+import { ChatDesk } from "../chat";
 import { CLAIMS_HEADER } from "../rooms/game-room";
 import { gameFor } from "../rooms/games";
 
@@ -79,7 +80,10 @@ type TourRec = {
   deadlines: { idle?: number; init?: number; post?: number; purge?: number };
 };
 
-type ConnState = Person;
+type ConnState = Person & {
+  blocked?: readonly string[];
+  chatMutedUntil?: number | null;
+};
 
 function randomHex(bytes: number) {
   return [...crypto.getRandomValues(new Uint8Array(bytes))]
@@ -119,6 +123,10 @@ export class Tournament extends Server<Env> {
   private t: TourRec | null = null;
   private lastAlarm: number | null = null;
   private buckets = new Map<string, { tokens: number; at: number }>();
+  private chat = new ChatDesk(
+    () => this.env.CHAT_SIGN_SECRET,
+    () => this.t?.code ?? "",
+  );
 
   override onStart() {
     const sql = this.ctx.storage.sql;
@@ -173,6 +181,13 @@ export class Tournament extends Server<Env> {
     const internal = req.method === "POST" ? req.headers.get("x-gh-internal") : null;
     if (internal === "create") return this.create(await req.json());
     if (internal === "report") return this.onReport((await req.json()) as TableReport);
+    if (internal === "kick") {
+      // A ban (from Presence): their sockets close; their tables already gave the seat to a bot.
+      const { userId } = (await req.json()) as { userId: string };
+      for (const c of this.getConnections<ConnState>())
+        if (c.state?.userId === userId) c.close(CloseCode.Banned, "banned");
+      return new Response(null, { status: 200 });
+    }
     return new Response("Not found", { status: 404 });
   }
 
@@ -220,7 +235,13 @@ export class Tournament extends Server<Env> {
     for (const c of this.getConnections<ConnState>())
       if (c.id !== conn.id && c.state?.userId === claims.sub)
         c.close(CloseCode.Replaced, "replaced");
-    conn.setState({ userId: claims.sub, name: claims.name, avatar: claims.avatar });
+    conn.setState({
+      userId: claims.sub,
+      name: claims.name,
+      avatar: claims.avatar,
+      blocked: claims.blocked ?? [],
+      chatMutedUntil: claims.chatMutedUntil ?? null,
+    });
     // Online dots changed for everyone.
     this.broadcastSnapshots();
   }
@@ -261,14 +282,16 @@ export class Tournament extends Server<Env> {
       this.sendSnapshot(conn);
       const go = this.goFor(st.userId);
       if (go) this.send(conn, go);
+      this.send(conn, { t: "chat_state", mutedUntil: this.chat.mutedUntil(st), off: false });
       return;
     }
+    if (msg.t === "chat" || msg.t === "emote" || msg.t === "report") return this.onChat(conn, msg);
     const err = await this.handle(msg, st);
     if (err) this.send(conn, typeof err === "string" ? { t: "error", code: err } : err);
   }
 
   private async handle(
-    msg: Exclude<ClientTournamentMsg, { t: "t_hello" | "ping" }>,
+    msg: Exclude<ClientTournamentMsg, { t: "t_hello" | "ping" | "chat" | "emote" | "report" }>,
     me: Person,
   ): Promise<TournamentErrorCode | ServerTournamentMsg | null> {
     const t = this.t as TourRec;
@@ -357,6 +380,54 @@ export class Tournament extends Server<Env> {
       default:
         return "BAD_MESSAGE";
     }
+  }
+
+  /** Lobby chat, emotes and reports (the same rules as rooms; nothing stored). */
+  private async onChat(
+    conn: Connection<ConnState>,
+    msg: Extract<ClientTournamentMsg, { t: "chat" | "emote" | "report" }>,
+  ) {
+    const st = conn.state as ConnState;
+    if (msg.t === "chat") {
+      const r = await this.chat.line(st, msg.text);
+      if ("error" in r)
+        return this.send(conn, {
+          t: "chat_error",
+          code: r.error,
+          ...(r.until ? { until: r.until } : {}),
+        });
+      for (const c of this.getConnections<ConnState>())
+        if (c.state && ChatDesk.delivers(c.state, st.userId, false)) this.send(c, r.msg);
+      return;
+    }
+    if (msg.t === "emote") {
+      const e = this.chat.emote(st, msg.id);
+      if (e)
+        for (const c of this.getConnections<ConnState>())
+          if (c.state && !c.state.blocked?.includes(st.userId)) this.send(c, e);
+      return;
+    }
+    if (msg.target === st.userId) return this.send(conn, { t: "chat_error", code: "BAD_REPORT" });
+    const message = await this.chat.verify(msg.line, msg.target);
+    const body = JSON.stringify({
+      reporterId: st.userId,
+      targetId: msg.target,
+      roomId: this.t?.code ?? "",
+      reason: msg.reason,
+      message,
+    });
+    try {
+      const { ts, sig } = await signBody(this.env.INTERNAL_HMAC_SECRET, body);
+      await fetch(`${this.env.WEB_ORIGIN}/api/internal/report`, {
+        method: "POST",
+        body,
+        headers: { "content-type": "application/json", "x-gh-ts": ts, "x-gh-sig": sig },
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch {
+      // Best effort from a lobby; rooms retry from their outbox.
+    }
+    this.send(conn, { t: "chat_error", code: "REPORTED" });
   }
 
   // ── Running it ────────────────────────────────────────────────────────────

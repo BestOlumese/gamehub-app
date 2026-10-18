@@ -4,6 +4,7 @@ import type { BotLevel, ClientRoomMsg } from "@gamehub/protocol";
 import { Avatar } from "@gamehub/ui/data-display/avatar";
 import { Alert } from "@gamehub/ui/forms/alert";
 import { Button } from "@gamehub/ui/forms/button";
+import { Switch } from "@gamehub/ui/forms/switch";
 import { Bot, Crown, Pencil, Shuffle, UserRoundPlus, X } from "lucide-react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -210,6 +211,38 @@ export function Lobby({ snap, send, notice }: Props) {
           </Button>
         ) : null}
       </section>
+
+      {isHost ? (
+        <section className="flex items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm">
+          <div>
+            <h2 id="chat-h" className="font-semibold">
+              Chat
+            </h2>
+            <p id="chat-d" className="text-ink-2">
+              Messages and emotes for everyone in this room.
+            </p>
+          </div>
+          <Switch
+            checked={snap.room.chat !== false}
+            labelledBy="chat-h"
+            describedBy="chat-d"
+            onChange={(on) =>
+              send({
+                t: "config",
+                game: snap.room.game,
+                rules: snap.room.rules,
+                players: snap.room.size,
+                botLevel: snap.room.botFill,
+                firstPlayer,
+                seatBotsNow: false,
+                chat: on,
+              })
+            }
+          />
+        </section>
+      ) : snap.room.chat === false ? (
+        <p className="text-center text-sm text-ink-2">The host turned chat off for this room.</p>
+      ) : null}
 
       {notice === "NOT_ENOUGH_PLAYERS" ? (
         <Alert>Add a bot or wait for a friend to join first.</Alert>

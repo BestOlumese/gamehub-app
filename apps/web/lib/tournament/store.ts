@@ -4,6 +4,7 @@ import type {
   TournamentEventMsg,
 } from "@gamehub/protocol";
 import { create } from "zustand";
+import { receiveChat } from "../chat/store";
 
 export type TSnapshot = Extract<ServerTournamentMsg, { t: "t_snapshot" }>;
 
@@ -34,6 +35,7 @@ export const useTournament = create<TournamentState>(() => initial);
 export const resetTournament = () => useTournament.setState(initial, true);
 
 export function receiveT(msg: ServerTournamentMsg, now = Date.now()) {
+  if (receiveChat(msg, now)) return;
   const s = useTournament.getState();
   switch (msg.t) {
     case "t_snapshot":

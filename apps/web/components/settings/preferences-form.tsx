@@ -5,7 +5,7 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { SettingsRow } from "./settings-row";
 
-type Prefs = { soundOn: boolean; reducedMotion: boolean };
+type Prefs = { soundOn: boolean; reducedMotion: boolean; publicChat: boolean };
 
 /** Saves each switch as it's flipped; flips back if the save fails. */
 export function PreferencesForm({ initial }: { initial: Prefs }) {
@@ -50,6 +50,20 @@ export function PreferencesForm({ initial }: { initial: Prefs }) {
             onChange={(v) => update("reducedMotion", v)}
             labelledBy="motion-label"
             describedBy="motion-desc"
+          />
+        }
+      />
+      <SettingsRow
+        labelId="chat-label"
+        valueId="chat-desc"
+        label="Chat in public games"
+        value="See chat from strangers in quick matches. Friends' rooms always show chat."
+        action={
+          <Switch
+            checked={prefs.publicChat}
+            onChange={(v) => update("publicChat", v)}
+            labelledBy="chat-label"
+            describedBy="chat-desc"
           />
         }
       />

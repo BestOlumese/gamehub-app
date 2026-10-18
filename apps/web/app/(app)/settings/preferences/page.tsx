@@ -18,7 +18,11 @@ async function Preferences() {
       />
       <SettingsGroup>
         <PreferencesForm
-          initial={{ soundOn: user.soundOn ?? true, reducedMotion: user.reducedMotion ?? false }}
+          initial={{
+            soundOn: user.soundOn ?? true,
+            reducedMotion: user.reducedMotion ?? false,
+            publicChat: user.publicChat ?? true,
+          }}
         />
       </SettingsGroup>
     </>

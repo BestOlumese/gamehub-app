@@ -1,7 +1,7 @@
 import "server-only";
 import { user } from "@gamehub/db";
 import { inArray } from "drizzle-orm";
-import { englishDataset, englishRecommendedTransformers, RegExpMatcher } from "obscenity";
+import { isOffensiveName } from "@gamehub/protocol/moderation";
 import { normalizeUsername, USERNAME_MAX, usernameFormatProblem } from "@/lib/username";
 import { getDb } from "./db";
 
@@ -42,51 +42,8 @@ const RESERVED = new Set([
   "ludo",
 ]);
 
-/**
- * Nigerian slurs and vulgar slang that English lists miss. Matched as whole
- * `_`/digit-separated parts so names like "okoro" or "tototo_fan" aren't caught
- * by short words.
- */
-const NAIJA_WORDS = [
-  "ashawo",
-  "ashewo",
-  "olosho",
-  "oloriburuku",
-  "werey",
-  "were",
-  "mumu",
-  "ode",
-  "toto",
-  "oko",
-  "nyash",
-  "dindin",
-  "ewu",
-  "agbaya",
-  "oloshi",
-  "obo",
-  "gbola",
-  "kpekus",
-  "afang",
-  "yansh",
-  "olodo",
-  "ole",
-  "akpi",
-  "anuofia",
-  "onye_ara",
-  "ewo",
-  "efulefu",
-];
-const NAIJA_SUBSTRING = NAIJA_WORDS.filter((w) => w.length >= 6 && !w.includes("_"));
-
-const matcher = new RegExpMatcher({ ...englishDataset.build(), ...englishRecommendedTransformers });
-
-export function isOffensive(name: string): boolean {
-  if (matcher.hasMatch(name.replace(/_/g, " "))) return true;
-  const parts = name.split(/[_0-9]+/).filter(Boolean);
-  if (parts.some((p) => NAIJA_WORDS.includes(p))) return true;
-  if (NAIJA_WORDS.some((w) => w.includes("_") && name.includes(w))) return true;
-  return NAIJA_SUBSTRING.some((w) => name.includes(w));
-}
+/** Offensive names: English profanity or the Naija list (shared with chat moderation). */
+export const isOffensive = isOffensiveName;
 
 export type UsernameCheck =
   | { ok: true; username: string }

@@ -12,6 +12,8 @@ export const CloseCode = {
   Kicked: 4008,
   /** 20 people are already watching. */
   Full: 4009,
+  /** The account was banned: every socket closes, tickets are refused. */
+  Banned: 4010,
   RateLimited: 4029,
 } as const;
 export type CloseCode = (typeof CloseCode)[keyof typeof CloseCode];

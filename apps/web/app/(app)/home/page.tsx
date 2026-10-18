@@ -5,17 +5,22 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
 import { GameGrid } from "@/components/home/game-grid";
+import { NoticeBanner } from "@/components/home/notice-banner";
 import { FriendsStrip } from "@/components/presence/friends-strip";
 import { JoinRoomForm } from "@/components/join/join-room-form";
 import { requirePlayer } from "@/server/session";
 import { tournamentRecord } from "@/server/tournaments";
+import { noticeFor } from "@/server/moderation";
 
 export const metadata: Metadata = { title: "Home", robots: { index: false } };
 
 async function Greeting() {
   const user = await requirePlayer();
   // Results are a bonus line: a database hiccup mustn't take Home down.
-  const record = await tournamentRecord(user.id).catch(() => ({ wins: 0, podiums: 0 }));
+  const [record, notice] = await Promise.all([
+    tournamentRecord(user.id).catch(() => ({ wins: 0, podiums: 0 })),
+    noticeFor(user.id).catch(() => null),
+  ]);
   return (
     <>
       <AppHeader user={user} />
@@ -30,6 +35,11 @@ async function Greeting() {
             {record.wins === 1 ? "1 tournament win" : `${record.wins} tournament wins`} ·{" "}
             {record.podiums === 1 ? "1 podium" : `${record.podiums} podiums`}
           </p>
+        ) : null}
+        {notice ? (
+          <div className="mt-4">
+            <NoticeBanner text={notice} />
+          </div>
         ) : null}
       </section>
     </>

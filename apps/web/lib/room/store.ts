@@ -1,5 +1,6 @@
 import type { RoomErrorCode, ServerRoomMsg } from "@gamehub/protocol";
 import { create } from "zustand";
+import { receiveChat } from "../chat/store";
 
 export type Snapshot = Extract<ServerRoomMsg, { t: "snapshot" }>;
 export type RoomEvent = Extract<ServerRoomMsg, { t: "event" }>["e"];
@@ -47,6 +48,7 @@ export const resetRoom = () => useRoom.setState(initial, true);
 
 /** Applies one server message to the store. Pure state changes, no I/O. */
 export function receive(msg: ServerRoomMsg, now = Date.now()) {
+  if (receiveChat(msg, now)) return;
   const s = useRoom.getState();
   switch (msg.t) {
     case "snapshot":

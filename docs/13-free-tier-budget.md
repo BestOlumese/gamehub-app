@@ -107,3 +107,5 @@ Any new realtime feature states its added rows-written and requests per game in 
 **Phase 13 (as built):** every finished game in a private or quick room makes one signed call to web (a Vercel function: a handful of small inserts, ratings for ranked games). The matchmaker writes one row per join, leave or match. A quick-match room costs what its game costs.
 
 **Phase 14 (as built):** presence costs no writes for being online (its sockets), two small writes per game (in a game at the start, out at the end) and two per tournament. Invites are one web function call and one Worker request each.
+
+**Phase 15 (as built):** chat and emotes cost no storage writes (rate limits and the auto mute are in memory) and no Neon rows (nothing stored). Each line is one incoming WebSocket message (billed at 20:1 as requests) and one HMAC. A report is one row in the room's outbox (one write, one delete), one Worker → web call and one Neon insert; a ban is one web call, one Worker request and one internal fetch to Presence and to the room. Tickets read the user row and up to 200 block rows fresh each time (one more small query per connect).

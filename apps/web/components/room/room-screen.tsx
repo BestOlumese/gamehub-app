@@ -14,6 +14,7 @@ import { RoomTopBar } from "./room-top-bar";
 import { WatchingBar } from "./watching-bar";
 import { playAgainHref, QuickStrip, TableDone, TableStrip, TableWaiting } from "./tournament-table";
 import dynamic from "next/dynamic";
+import { resetChat, useChat } from "@/lib/chat/store";
 
 // Each game's table is its own chunk (docs/10-performance.md: ≤ 60 KB per game).
 const TttTable = dynamic(() => import("./ttt-table").then((m) => m.TttTable));
@@ -25,24 +26,40 @@ const ChessTable = dynamic(() => import("./chess/chess-table"));
 const DraughtsTable = dynamic(() => import("./draughts/draughts-table"));
 const PlotsTable = dynamic(() => import("./plots/plots-table"));
 const FootballTable = dynamic(() => import("./football/football-table"));
+const ChatDock = dynamic(() => import("../chat/chat-dock"));
+const soundOn = () => useRoom.getState().soundOn;
 
-export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }) {
+export function RoomScreen({
+  code,
+  meId,
+  soundOn: initialSound,
+}: {
+  code: string;
+  meId: string;
+  soundOn: boolean;
+}) {
   const router = useRouter();
   const conn = useRef<RoomConnection | null>(null);
   const snap = useRoom((s) => s.snap);
   const closedCode = useRoom((s) => s.closedCode);
   const notice = useRoom((s) => s.notice);
+  // The host turned chat off, or a quick-match spectator (no chat for them).
+  const chatOff = snap?.room.chat === false || (!!snap?.room.quick && snap.you === "spectator");
+  useEffect(() => {
+    if (snap) useChat.setState({ off: chatOff });
+  }, [snap, chatOff]);
 
   useEffect(() => {
     resetRoom();
-    useRoom.setState({ soundOn });
+    resetChat();
+    useRoom.setState({ soundOn: initialSound });
     const c = connectRoom(code);
     conn.current = c;
     return () => {
       c.close();
       conn.current = null;
     };
-  }, [code, soundOn]);
+  }, [code, initialSound]);
 
   // Notices (like "not enough players") fade after a few seconds.
   useEffect(() => {
@@ -82,13 +99,21 @@ export function RoomScreen({ code, soundOn }: { code: string; soundOn: boolean }
             code={code}
             game={snap?.room.game ?? null}
             rules={snap?.room.rules}
-            soundOn={soundOn}
+            soundOn={initialSound}
             playing={playing}
             onLeave={leave}
           />
         }
       />
       <ConnectionBanner />
+      {snap && !chatOff ? (
+        <ChatDock
+          send={send}
+          meId={meId}
+          soundOn={soundOn}
+          lift={snap.room.phase !== "playing" || snap.room.game === "football"}
+        />
+      ) : null}
       {snap && tour ? <TableStrip tour={tour} snap={snap} /> : null}
       {snap?.room.quick ? <QuickStrip snap={snap} /> : null}
       {snap && snap.you === "spectator" ? <WatchingBar snap={snap} /> : null}

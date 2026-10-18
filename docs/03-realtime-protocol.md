@@ -56,12 +56,12 @@ Every message has a short type key `t`.
 | `hello` | `{ lastV?: number }` | First message after connect. Server replies with `snapshot`. |
 | `act` | `{ id: string; v: number; a: GameAction }` | `id` = client UUID (idempotency). `v` = state version the client acted on. |
 | `ready` | `{ ready: boolean }` | Lobby only. |
-| `config` | `{ game; rules: RuleConfig; players: 1–8 (1 only for Football Draft's solo run; clamped to each game's range); botLevel: BotLevel \| null; firstPlayer: "random" \| "rotate" \| "lastWinner" \| "seat1"; seatBotsNow?: boolean }` | Host only, lobby only (before the first game and after each rematch). The whole setup in one message, as the Edit sheet sends it. People keep their seats in order; shrinking drops empty seats first, then bots. `TOO_MANY_PLAYERS` if more people are seated than the new count or game allows. |
+| `config` | `{ game; rules: RuleConfig; players: 1–8 (1 only for Football Draft's solo run; clamped to each game's range); botLevel: BotLevel \| null; firstPlayer: "random" \| "rotate" \| "lastWinner" \| "seat1"; seatBotsNow?: boolean; chat?: boolean }` | Host only, lobby only (before the first game and after each rematch). The whole setup in one message, as the Edit sheet sends it. People keep their seats in order; shrinking drops empty seats first, then bots. `TOO_MANY_PLAYERS` if more people are seated than the new count or game allows. |
 | `shuffle` | `{}` | Host only, lobby only. People and bots in a random order (crypto RNG); empty seats stay at the end. Every connection is told its new seat. |
 | `start` | `{}` | Host only; fills empty seats with bots if `fillBots`. |
-| `emote` | `{ e: EmoteId }` | Rate limited. |
-| `chat` | `{ text: string }` | ≤ 200 chars, rate limited, filtered. |
-| `report` | `{ msg: SignedChat; reason: ReportReason }` | |
+| `emote` | `{ id: EmoteId }` | 1 per 2 s. |
+| `chat` | `{ text: string }` | ≤ 200 chars kept, 1 per 2 s, filtered (docs/09). |
+| `report` | `{ target: userId; reason: ReportReason; line?: { text; ts; sig } }` | `line` is the reported message as received; the DO checks its own signature. |
 | `rematch` | `{}` | After `ended`. |
 | `leave` | `{}` | Voluntary leave (bot takes seat immediately, no grace). |
 | `ping` | `{ c: number }` | App-level RTT measurement (client timestamp). Optional. |
@@ -75,8 +75,10 @@ Every message has a short type key `t`.
 | `reject` | `{ id; code: RuleErrorCode; v }` — followed by a fresh `snapshot`. |
 | `event` | `{ v; e: GameEvent }` — for animation/sound only ("pick2", "general_market", "captured", "snake"). Never needed for correctness. |
 | `seat` | `{ seat; status: "connected" \| "away" \| "bot" \| "left" }` |
-| `emote` | `{ seat; e }` |
-| `chat` | `SignedChat = { seat; name; text; ts; sig }` |
+| `emote` | `{ from: { userId; name }; id; ts }` |
+| `chat` | `{ id; from: { userId; name }; text; ts; sig }` (signed, docs/09) |
+| `chat_state` | `{ mutedUntil: number \| null; off: boolean }` — after `hello` |
+| `chat_error` | `{ code: "LINK" \| "MUTED" \| "OFF" \| "SLOW" \| "REPORTED" \| "BAD_REPORT"; until? }` |
 | `ended` | `{ v; ranking: SeatIndex[][]; ranked: boolean; ratingDeltas?: Record<SeatIndex, number> }` |
 | `pong` | `{ c; s: number }` |
 | `error` | `{ code: "UNAUTHORIZED" \| "ROOM_FULL" \| "NOT_FOUND" \| "CAPACITY" \| "RATE_LIMIT" \| "BAD_MESSAGE" }` |
@@ -131,7 +133,9 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 | 4001 | Replaced by another tab | Show "Opened in another tab"; don't reconnect |
 | 4003 | Unauthorized / ticket bad | Refresh ticket once; if fails, go to login |
 | 4004 | Room not found / ended | Go to room-ended screen |
-| 4008 | Kicked / banned | Show reason, don't reconnect |
+| 4008 | Kicked (by the host) | Show reason, don't reconnect |
+| 4009 | Full (21st watcher) | Show "Too many watching"; don't reconnect |
+| 4010 | Banned | Go to `/banned`; don't reconnect (tickets now answer 403) |
 | 4029 | Rate limited | Reconnect after backoff |
 | other | Network | Reconnect with backoff |
 
@@ -139,7 +143,7 @@ Invites are only delivered if `to` is a friend of `from` — the Worker checks v
 
 `packages/protocol/src/room.ts` is the source of truth. Differences from the tables above:
 
-- Client also sends `seat_bot { seat, level | null }` (host puts/removes a bot in an empty lobby seat) and `kick { seat }` (host, lobby only). `emote`, `chat` and `report` arrive with Phase 9.
+- Client also sends `seat_bot { seat, level | null }` (host puts/removes a bot in an empty lobby seat) and `kick { seat }` (host, lobby only). `emote`, `chat` and `report` arrived in Phase 15 (also on tournament sockets, for lobby chat).
 - `snapshot` carries `serverNow` so the client can estimate clock offset before the first `pong`.
 - Extra error codes: `NOT_HOST`, `NOT_ENOUGH_PLAYERS`, `WRONG_PHASE`.
 - Plain HTTP to `/parties/*` is always 404; rooms are created only through the HMAC-signed `POST /rooms`.

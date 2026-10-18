@@ -158,12 +158,14 @@ Met (Oct 2026): E2E "quick match: ranked chess blitz and draughts" (the tile's s
 Met (Oct 2026): E2E "friends: A invites B from the lobby, B joins from the toast; C watches without seeing hands" (B: Join, and they're seated); DO tests for presence (online/offline, a real room's game start, invites signed and delivered, the watcher count). Draft options for spectators: the football hidden-info tests.
 
 ## Phase 15 — Chat & moderation (was Phase 9)
-- [ ] Emote bar + voice lines (record your clips).
-- [ ] Text chat (private + public, per-user toggle), obscenity + Naija list, link/phone masking, signed messages; chat in tournament lobbies.
-- [ ] Mute/block/report, auto chat-mute rules.
-- [ ] `/admin`: report queue, actions, ban flow closing sockets; trade logs for property gifting reports.
+- [x] Emote bar (12 text emotes, a soft pop each). Voice lines play from `public/sounds/voice/<id>.webm` once recorded and listed in `VOICE_CLIPS` (`components/chat/chat-dock.tsx`).
+- [x] Text chat (private + public, host switch in the lobby, "Chat in public games" setting), obscenity + Naija list, links refused, phone numbers masked, HMAC-signed lines; chat in tournament lobbies. Nothing stored.
+- [x] Mute (this game) / Block / Report… from a name in chat; 5 starred lines in 2 min → 5 min mute in that room; 3 reporters in 24 h → 24 h account chat mute (migration `0006_moderation`).
+- [x] `/admin`: report queue cards (verified line, history), Dismiss / Warn (notice on Home) / Mute / Ban / Unban / Unmute, user lookup; a ban closes presence, room and tournament sockets with 4010 and tickets are refused from then on. Trade logs for property gifting: dropped, the property game is unranked so gifting wins nothing.
+- Designed with Best (Oct 17 2026, mockups): round chat button bottom right + sheet + 3 s bubbles, tap a name for Mute/Block/Report, text emotes now and clips later, report queue cards.
 
 **Exit:** E2E report → ban → banned user disconnected and can't get tickets.
+Met (Oct 2026): E2E "chat: an insult is starred, reported with the line, and a ban throws the sender out" (B lands on /banned from the open room, and going back to the room ends on /banned again); DO tests for cleaning, signing, links, blocking, muting, the host switch, forged report lines and the ban kick.
 
 ## Phase 16 — Polish & launch (was Phase 10)
 - [ ] PWA (manifest, icons, Serwist precache incl. every game chunk and sprite after first visit, offline page).

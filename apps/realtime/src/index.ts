@@ -119,6 +119,27 @@ async function deliverInvite(req: Request, env: Env): Promise<Response> {
   return new Response(res.body, { status: res.status, headers: res.headers });
 }
 
+/** POST /moderation/kick, from `web` (HMAC) when a moderator bans someone. */
+async function kickUser(req: Request, env: Env): Promise<Response> {
+  const body = await req.text();
+  if (
+    !(await verifyBody(
+      env.INTERNAL_HMAC_SECRET,
+      body,
+      req.headers.get("x-gh-ts"),
+      req.headers.get("x-gh-sig"),
+    ))
+  ) {
+    return json({ error: "UNAUTHORIZED" }, 401);
+  }
+  await env.Presence.getByName("global").fetch("https://presence/kick", {
+    method: "POST",
+    headers: { "x-gh-internal": "kick" },
+    body,
+  });
+  return json({ ok: true });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
@@ -127,6 +148,7 @@ export default {
     if (url.pathname === "/tournaments" && req.method === "POST") return createTournament(req, env);
     if (url.pathname === "/presence/invite" && req.method === "POST")
       return deliverInvite(req, env);
+    if (url.pathname === "/moderation/kick" && req.method === "POST") return kickUser(req, env);
 
     const routed = await routePartykitRequest(req, env, {
       locationHint: "weur",

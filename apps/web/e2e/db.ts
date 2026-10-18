@@ -37,3 +37,8 @@ export async function tournamentMatches(code: string) {
   );
   return (rows as unknown as unknown[]).length;
 }
+
+/** Make someone a moderator (there's no UI for that, on purpose). */
+export async function makeAdmin(username: string) {
+  await db.update(user).set({ role: "admin" }).where(eq(user.username, username));
+}

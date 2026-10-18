@@ -12,6 +12,12 @@ async function fetchTicket(code: string): Promise<string> {
     window.location.assign(`/login?next=${encodeURIComponent(`/t/${code}`)}`);
     throw new Error("signed out");
   }
+  if (res.status === 403) {
+    // Banned: tickets are refused from here on.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign("/banned");
+    throw new Error("banned");
+  }
   if (!res.ok) throw new Error(`ticket ${res.status}`);
   return ((await res.json()) as { ticket: string }).ticket;
 }
@@ -46,6 +52,12 @@ export function connectTournament(code: string): TournamentConnection {
     }
   });
   socket.addEventListener("close", (e: CloseEvent) => {
+    if (e.code === CloseCode.Banned) {
+      socket.close();
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.assign("/banned");
+      return;
+    }
     if (FINAL.has(e.code)) {
       socket.close();
       useTournament.setState({ connection: "closed", closedCode: e.code });

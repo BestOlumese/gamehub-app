@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./constants": "./src/constants.ts",
     "./hmac": "./src/hmac.ts",
-    "./bots": "./src/bots.ts"
+    "./bots": "./src/bots.ts",
+    "./moderation": "./src/moderation.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -16,7 +17,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "obscenity": "0.4.6"
   },
   "devDependencies": {
     "@gamehub/config": "workspace:*",

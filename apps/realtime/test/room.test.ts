@@ -1468,9 +1468,14 @@ describe("football draft", () => {
       await fireNow(stub);
     }
     expect(fv(host).rounds[0]?.[0]?.teams).not.toBeNull();
-    // Ticks play the match a few minutes at a time.
-    await fireNow(stub);
-    await until(host, () => (fv(host).rounds[0]?.[0]?.live?.minute ?? 0) >= 3, "first chunk");
+    // Ticks play the match a little ahead of the screens: keep ticking until minute 3 (a slow
+    // CI runner can need several ticks, each only a few seconds of screen time ahead).
+    const chunkBy = Date.now() + 20_000;
+    while ((fv(host).rounds[0]?.[0]?.live?.minute ?? 0) < 3) {
+      if (Date.now() > chunkBy) throw new Error("timed out waiting for first chunk");
+      await fireNow(stub);
+      await new Promise((r) => setTimeout(r, 100));
+    }
     const f = fv(host).rounds[0]?.[0];
     expect(f?.log.some((e) => e.t === "ball")).toBe(true);
     expect(f?.live?.minute).toBeLessThanOrEqual(LEAD_LIMIT);

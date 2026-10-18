@@ -73,6 +73,8 @@ export const sfx = {
         gain: 0.04,
       })),
     ),
+  /** An emote with no voice clip yet. */
+  pop: () => tones([{ f: 520, dur: 0.08, type: "sine", gain: 0.08, to: 780 }]),
   hop: () => tones([{ f: 600, dur: 0.04, type: "triangle", gain: 0.05 }]),
   capture: () =>
     tones([

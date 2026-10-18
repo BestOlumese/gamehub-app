@@ -1,7 +1,32 @@
 import { cloudflareTest } from "@cloudflare/vitest-pool-workers";
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { buildSync } from "esbuild";
 import { defineConfig } from "vitest/config";
 
+// obscenity is CommonJS behind an ESM wrapper, which the workers test runtime can't load (the
+// deployed Worker is bundled by wrangler's esbuild and is fine). Bundle it once to ESM for tests.
+const here = dirname(fileURLToPath(import.meta.url));
+const require = createRequire(join(here, "vitest.config.ts"));
+const obscenityCjs = require.resolve("obscenity", {
+  paths: [join(here, "../../packages/protocol")],
+});
+const obscenityEsm = join(here, "node_modules/.cache/obscenity.mjs");
+buildSync({
+  stdin: {
+    contents: `export { asteriskCensorStrategy, englishDataset, englishRecommendedTransformers, RegExpMatcher, TextCensor } from ${JSON.stringify(obscenityCjs)};`,
+    resolveDir: process.cwd(),
+  },
+  bundle: true,
+  format: "esm",
+  platform: "neutral",
+  outfile: obscenityEsm,
+  logLevel: "error",
+});
+
 export default defineConfig({
+  resolve: { alias: { obscenity: obscenityEsm } },
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
@@ -19,5 +44,8 @@ export default defineConfig({
       },
     }),
   ],
-  test: { include: ["test/**/*.test.ts"], setupFiles: ["./test/setup.ts"] },
+  test: {
+    include: ["test/**/*.test.ts"],
+    setupFiles: ["./test/setup.ts"],
+  },
 });

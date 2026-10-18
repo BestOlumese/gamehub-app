@@ -93,6 +93,8 @@ function createAuth() {
         chatMutedUntil: { type: "date", required: false, input: false },
         soundOn: { type: "boolean", required: false, defaultValue: true },
         reducedMotion: { type: "boolean", required: false, defaultValue: false },
+        notice: { type: "string", required: false, input: false },
+        publicChat: { type: "boolean", required: false, defaultValue: true },
       },
       changeEmail: { enabled: true },
       deleteUser: { enabled: true },

@@ -1,4 +1,7 @@
+import { block, user as userTable } from "@gamehub/db";
 import { roomCodeSchema, tournamentCodeSchema } from "@gamehub/protocol";
+import { eq } from "drizzle-orm";
+import { getDb } from "@/server/db";
 import { SignJWT } from "jose";
 import { realtimeEnv } from "@/server/env";
 import { getSession, isBanned, needsOnboarding } from "@/server/session";
@@ -16,6 +19,25 @@ export async function GET(req: Request) {
     return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: noStore });
   }
   if (isBanned(user)) return Response.json({ error: "BANNED" }, { status: 403, headers: noStore });
+  // Fresh from the database: the session cookie can be minutes old, and a ban or mute is now.
+  const db = getDb();
+  const [row] = await db
+    .select({
+      bannedUntil: userTable.bannedUntil,
+      chatMutedUntil: userTable.chatMutedUntil,
+      publicChat: userTable.publicChat,
+    })
+    .from(userTable)
+    .where(eq(userTable.id, user.id));
+  if (!row || (row.bannedUntil && row.bannedUntil > new Date()))
+    return Response.json({ error: "BANNED" }, { status: 403, headers: noStore });
+  const blocked = (
+    await db
+      .select({ id: block.blockedId })
+      .from(block)
+      .where(eq(block.blockerId, user.id))
+      .limit(200)
+  ).map((b) => b.id);
 
   const scope = new URL(req.url).searchParams.get("scope") ?? "";
   const [kind, name] = scope.split(":");
@@ -30,6 +52,10 @@ export async function GET(req: Request) {
     name: user.username,
     avatar: user.image ?? null,
     scope: scope === "presence" ? "presence" : `${kind}:${name}`,
+    blocked,
+    chatMutedUntil:
+      row.chatMutedUntil && row.chatMutedUntil > new Date() ? row.chatMutedUntil.getTime() : null,
+    publicChat: row.publicChat,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setSubject(user.id)

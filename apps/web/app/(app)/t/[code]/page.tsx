@@ -8,10 +8,10 @@ import { requirePlayer } from "@/server/session";
 export const metadata: Metadata = { title: "Tournament", robots: { index: false } };
 
 async function Tournament({ params }: { params: Promise<{ code: string }> }) {
-  await requirePlayer();
+  const user = await requirePlayer();
   const parsed = tournamentCodeSchema.safeParse((await params).code);
   if (!parsed.success) notFound();
-  return <TournamentScreen code={parsed.data} />;
+  return <TournamentScreen code={parsed.data} meId={user.id} soundOn={user.soundOn ?? true} />;
 }
 
 export default function TournamentPage({ params }: { params: Promise<{ code: string }> }) {

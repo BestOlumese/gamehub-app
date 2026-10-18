@@ -87,6 +87,26 @@ export class Presence extends Server<Env> {
       for (const id of userIds) this.notify(id);
       return new Response(null, { status: 200 });
     }
+    if (internal === "kick") {
+      // A ban: close every socket of theirs here, at the table they're at and in their tournament.
+      const { userId } = (await req.json()) as { userId: string };
+      for (const c of this.getConnections<ConnState>())
+        if (c.state?.userId === userId) c.close(CloseCode.Banned, "banned");
+      const init = {
+        method: "POST",
+        headers: { "x-gh-internal": "kick" },
+        body: JSON.stringify({ userId }),
+      };
+      const game = this.p.games[userId];
+      const tour = this.p.tours[userId];
+      await Promise.all([
+        game ? this.env.Room.getByName(game.code).fetch("https://room/kick", init) : null,
+        tour
+          ? this.env.Tournament.getByName(tour.code).fetch("https://tournament/kick", init)
+          : null,
+      ]).catch(() => null);
+      return new Response(null, { status: 200 });
+    }
     if (internal === "invite") {
       const parsed = inviteRequest.safeParse(await req.json());
       if (!parsed.success) return new Response("bad request", { status: 400 });

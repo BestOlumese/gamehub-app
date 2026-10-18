@@ -1,5 +1,6 @@
 import type { GameSlug, RuleErrorCode, SeatIndex } from "@gamehub/engine";
 import { z } from "zod";
+import { chatClientMsgs, type ChatServerMsg } from "./chat";
 import { gameSlugSchema } from "./game-slug";
 
 // ── Shared shapes ────────────────────────────────────────────────────────────
@@ -22,6 +23,12 @@ export type TicketClaims = {
   name: string;
   avatar: string | null;
   scope: TicketScope;
+  /** People you've blocked (their chat and emotes aren't sent to you; ≤ 200). */
+  blocked?: string[];
+  /** Your account's chat mute (a moderator's, or the automatic one). */
+  chatMutedUntil?: number | null;
+  /** "Show chat in public games" (quick match); off: no chat sent to you there. */
+  publicChat?: boolean;
 };
 
 /** What every client may know about a seat. */
@@ -57,6 +64,8 @@ export type RoomMeta = {
   firstPlayer: FirstPlayer;
   /** People watching (not playing). */
   spectators?: number;
+  /** Text chat on (private rooms: the host can turn it off; emotes stay). */
+  chat?: boolean;
   /** A quick-match room: its rating pool, and whether this game counts. */
   quick?: {
     ranked: boolean;
@@ -107,6 +116,8 @@ export const clientRoomMsg = z.discriminatedUnion("t", [
     firstPlayer: firstPlayerSchema,
     /** Seat bots in the empty seats now ("play a bot" in a 2-player room). */
     seatBotsNow: z.boolean().default(false),
+    /** Text chat in this room (default on). */
+    chat: z.boolean().optional(),
   }),
   z.object({ t: z.literal("shuffle") }),
   z.object({
@@ -119,6 +130,7 @@ export const clientRoomMsg = z.discriminatedUnion("t", [
   z.object({ t: z.literal("rematch") }),
   z.object({ t: z.literal("leave") }),
   z.object({ t: z.literal("ping"), c: z.number() }),
+  ...chatClientMsgs,
 ]);
 export type ClientRoomMsg = z.infer<typeof clientRoomMsg>;
 
@@ -159,7 +171,8 @@ export type ServerRoomMsg =
   | { t: "event"; v: number; e: { type: string } & Record<string, unknown> }
   | { t: "ended"; v: number; ranking: SeatIndex[][]; ranked: boolean }
   | { t: "pong"; c: number; s: number }
-  | { t: "error"; code: RoomErrorCode };
+  | { t: "error"; code: RoomErrorCode }
+  | ChatServerMsg;
 
 /** Light runtime check on the client: the server is trusted, but frames can be garbage. */
 export const serverRoomMsg = z.looseObject({ t: z.string() });

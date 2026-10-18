@@ -11,6 +11,12 @@ async function fetchTicket(): Promise<string> {
     );
     throw new Error("signed out");
   }
+  if (res.status === 403) {
+    // Banned: tickets are refused from here on.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign("/banned");
+    throw new Error("banned");
+  }
   if (!res.ok) throw new Error(`ticket ${res.status}`);
   return ((await res.json()) as { ticket: string }).ticket;
 }
