@@ -50,7 +50,11 @@ export function Lobby({ snap, send, notice }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-6 px-4 py-6">
-      <SharePanel code={snap.room.code ?? ""} gameName={GAME_NAMES[snap.room.game]} />
+      <SharePanel
+        code={snap.room.code ?? ""}
+        gameName={GAME_NAMES[snap.room.game]}
+        tone={snap.room.game}
+      />
       <InviteFriendsButton
         kind="room"
         code={snap.room.code ?? ""}
@@ -61,7 +65,7 @@ export function Lobby({ snap, send, notice }: Props) {
 
       <section aria-labelledby="players-h">
         <div className="mb-2 flex items-baseline justify-between px-1">
-          <h2 id="players-h" className="text-sm font-semibold text-ink-2">
+          <h2 id="players-h" className="eyebrow">
             Players
           </h2>
           <span className="flex items-center gap-3 text-sm text-ink-2 tabular-nums">
@@ -77,7 +81,7 @@ export function Lobby({ snap, send, notice }: Props) {
             {filled}/{snap.room.size}
           </span>
         </div>
-        <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-surface shadow-sm">
+        <ul className="divide-y divide-line overflow-hidden tile">
           {snap.seats.map((seat) => (
             <li key={seat.index} className="flex flex-wrap items-center gap-x-3 gap-y-3 px-4 py-3">
               {seat.status === "empty" ? (
@@ -166,7 +170,7 @@ export function Lobby({ snap, send, notice }: Props) {
 
       {plots && me ? (
         <section aria-labelledby="token-h">
-          <h2 id="token-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+          <h2 id="token-h" className="eyebrow mb-2 px-1">
             Your token
           </h2>
           <div className="grid grid-cols-4 gap-2" role="radiogroup" aria-labelledby="token-h">
@@ -194,10 +198,10 @@ export function Lobby({ snap, send, notice }: Props) {
 
       <section
         aria-labelledby="rules-h"
-        className="flex items-start gap-3 rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm"
+        className={`tone-${snap.room.game} tile flex items-start gap-3 border-l-4 border-l-(--g) px-4 py-3 text-sm`}
       >
         <div className="min-w-0 flex-1 space-y-1">
-          <h2 id="rules-h" className="font-semibold">
+          <h2 id="rules-h" className="font-display text-base font-bold text-(--g)">
             {GAME_NAMES[snap.room.game]}
           </h2>
           <p className="text-ink-2">{describeRules(snap.room.game, snap.room.rules)}</p>
@@ -213,7 +217,7 @@ export function Lobby({ snap, send, notice }: Props) {
       </section>
 
       {isHost ? (
-        <section className="flex items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3 text-sm shadow-sm">
+        <section className="flex items-center justify-between gap-3 tile px-4 py-3 text-sm">
           <div>
             <h2 id="chat-h" className="font-semibold">
               Chat

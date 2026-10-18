@@ -11,6 +11,8 @@
   --color-surface: #ffffff;
   --color-surface-2: #f2efe8;
   --color-line: #e4dfd4;
+  --color-line-edge: #d6cebd; /* the solid edge under tiles and secondary buttons */
+  --color-paper-2: #f3eee3;
   --color-ink: #1a1c20;
   --color-ink-2: #55595f;
   --color-ink-3: #8a8e94;

@@ -12,10 +12,7 @@ export function FriendsStrip() {
   const online = friends.filter((f) => statuses[f.id]?.online);
   if (!online.length) return null;
   return (
-    <section
-      aria-labelledby="fo-h"
-      className="rounded-card border border-line bg-surface p-4 shadow-sm"
-    >
+    <section aria-labelledby="fo-h" className="tile p-4">
       <div className="mb-3 flex items-baseline justify-between">
         <h2 id="fo-h" className="font-bold">
           Friends online · {online.length}

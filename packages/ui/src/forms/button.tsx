@@ -5,17 +5,26 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "dang
 export type ButtonSize = "md" | "lg";
 
 const base =
-  "inline-flex select-none items-center justify-center gap-2 rounded-control font-semibold whitespace-nowrap " +
-  "transition-[background-color,border-color,transform] duration-(--dur-press) ease-out active:scale-[0.98] " +
+  "inline-flex select-none items-center justify-center gap-2 rounded-control font-bold whitespace-nowrap " +
+  "transition-[background-color,border-color,translate,box-shadow] duration-(--dur-press) ease-out " +
   "disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-strong",
-  secondary: "border border-line bg-surface text-ink hover:border-ink-3 hover:bg-surface-2",
-  ghost: "text-brand hover:bg-brand-soft",
-  danger: "bg-danger text-ink hover:brightness-95",
+  // Chunky, like a game piece: a solid edge underneath that the button sinks into when pressed.
+  primary:
+    "bg-brand text-white shadow-[0_4px_0_var(--color-brand-strong)] hover:brightness-110 " +
+    "active:translate-y-[3px] active:shadow-[0_1px_0_var(--color-brand-strong)]",
+  secondary:
+    "border border-line bg-surface text-ink shadow-[0_3px_0_var(--color-line-edge)] hover:bg-paper " +
+    "active:translate-y-[2px] active:shadow-[0_1px_0_var(--color-line-edge)]",
+  ghost: "text-brand hover:bg-brand-soft active:translate-y-px",
+  danger:
+    "bg-danger text-ink shadow-[0_4px_0_var(--color-danger-strong)] hover:brightness-105 " +
+    "active:translate-y-[3px] active:shadow-[0_1px_0_var(--color-danger-strong)]",
   /** Opens a destructive flow without being the final, irreversible click. */
-  "danger-outline": "border border-danger/60 bg-surface text-danger-strong hover:bg-danger-soft",
+  "danger-outline":
+    "border border-danger/60 bg-surface text-danger-strong shadow-[0_3px_0_var(--color-danger-soft)] " +
+    "hover:bg-danger-soft active:translate-y-[2px] active:shadow-none",
 };
 
 const sizes: Record<ButtonSize, string> = {

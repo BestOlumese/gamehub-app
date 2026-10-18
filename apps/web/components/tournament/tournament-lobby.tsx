@@ -80,7 +80,7 @@ export function TournamentLobby({
 
       <section aria-labelledby="plan-h">
         <div className="mb-2 flex items-baseline justify-between px-1">
-          <h2 id="plan-h" className="text-sm font-semibold text-ink-2">
+          <h2 id="plan-h" className="eyebrow">
             The plan
           </h2>
           <span className="flex items-center gap-3">
@@ -98,10 +98,12 @@ export function TournamentLobby({
             ) : null}
           </span>
         </div>
-        <ol className="divide-y divide-line rounded-card border border-line bg-surface">
+        <ol className="divide-y divide-line tile">
           {stages.map((s, i) => (
             <li key={i} className="flex items-center gap-3 px-4 py-3">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-brand-soft font-display font-bold text-brand-strong">
+              <span
+                className={`tone-${s.game} grid size-8 shrink-0 -rotate-3 place-items-center rounded-control bg-(--g) font-display font-bold text-white shadow-[0_2px_0_rgb(0_0_0/0.2)]`}
+              >
                 {i + 1}
               </span>
               <span className="min-w-0">
@@ -117,14 +119,14 @@ export function TournamentLobby({
 
       <section aria-labelledby="who-h">
         <div className="mb-2 flex items-baseline justify-between px-1">
-          <h2 id="who-h" className="text-sm font-semibold text-ink-2">
+          <h2 id="who-h" className="eyebrow">
             Players
           </h2>
           <span className="text-sm text-ink-2 tabular-nums">
             {joined}/{c.entrants}
           </span>
         </div>
-        <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-surface">
+        <ul className="divide-y divide-line overflow-hidden tile">
           {t.entrants.map((e) => (
             <li key={e.id} className="flex items-center gap-3 px-4 py-3">
               <span className={e.online ? "" : "opacity-40 grayscale"}>

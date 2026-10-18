@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
 import { GameGrid } from "@/components/home/game-grid";
 import { NoticeBanner } from "@/components/home/notice-banner";
+import { PageBanner } from "@/components/app/page-banner";
 import { FriendsStrip } from "@/components/presence/friends-strip";
 import { JoinRoomForm } from "@/components/join/join-room-form";
 import { requirePlayer } from "@/server/session";
@@ -24,24 +25,31 @@ async function Greeting() {
   return (
     <>
       <AppHeader user={user} />
-      <section className="mx-auto w-full max-w-content px-4 pt-8 sm:px-8 sm:pt-10">
-        <h1 className="font-display text-3xl leading-[1.1] font-extrabold tracking-tight">
-          Hi, <span className="text-brand">@{user.username}</span>
-        </h1>
-        <p className="mt-1 text-ink-2">What are we playing?</p>
-        {record.podiums ? (
-          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold">
-            <Trophy size={15} aria-hidden="true" className="text-accent" />
-            {record.wins === 1 ? "1 tournament win" : `${record.wins} tournament wins`} ·{" "}
-            {record.podiums === 1 ? "1 podium" : `${record.podiums} podiums`}
-          </p>
-        ) : null}
+      <div className="mx-auto w-full max-w-content px-4 pt-6 sm:px-8 sm:pt-8">
+        <PageBanner
+          title={
+            <>
+              Hi, <span className="text-brand">@{user.username}</span>
+            </>
+          }
+          sub="What are we playing?"
+          art="hero-table"
+          artOnPhones={false}
+        >
+          {record.podiums ? (
+            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-surface px-3 py-1 text-sm font-semibold">
+              <Trophy size={15} aria-hidden="true" className="text-accent" />
+              {record.wins === 1 ? "1 tournament win" : `${record.wins} tournament wins`} ·{" "}
+              {record.podiums === 1 ? "1 podium" : `${record.podiums} podiums`}
+            </p>
+          ) : null}
+        </PageBanner>
         {notice ? (
           <div className="mt-4">
             <NoticeBanner text={notice} />
           </div>
         ) : null}
-      </section>
+      </div>
     </>
   );
 }
@@ -56,10 +64,10 @@ export default function HomePage() {
       <main className="mx-auto w-full max-w-content space-y-8 px-4 py-6 sm:px-8">
         <section
           aria-labelledby="join-h"
-          className="flex flex-col gap-4 rounded-card border border-line bg-surface p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+          className="tile flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
-            <h2 id="join-h" className="font-bold">
+            <h2 id="join-h" className="font-display text-lg font-bold">
               Got a room code?
             </h2>
             <p className="text-sm text-ink-2">Type the 6 letters your friend sent you.</p>
@@ -72,7 +80,7 @@ export default function HomePage() {
         <FriendsStrip />
 
         <section aria-labelledby="games-h">
-          <h2 id="games-h" className="mb-4 text-lg font-bold">
+          <h2 id="games-h" className="mb-4 font-display text-xl font-extrabold tracking-tight">
             Pick a game
           </h2>
           <GameGrid />
@@ -80,14 +88,15 @@ export default function HomePage() {
 
         <section
           aria-labelledby="tour-h"
-          className="flex flex-col gap-4 rounded-card border border-line bg-surface p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+          className="tone-trophy tile relative flex flex-col gap-4 overflow-hidden bg-(--g-soft) p-5 sm:flex-row sm:items-center sm:justify-between"
         >
-          <div className="flex gap-3">
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
-              <Trophy size={22} aria-hidden="true" />
+          <span aria-hidden="true" className="pat absolute inset-0" />
+          <div className="relative flex gap-3">
+            <span className="grid size-12 shrink-0 -rotate-6 place-items-center rounded-control bg-(--g) text-white shadow-[0_3px_0_rgb(0_0_0/0.2)]">
+              <Trophy size={24} aria-hidden="true" />
             </span>
             <div>
-              <h2 id="tour-h" className="font-bold">
+              <h2 id="tour-h" className="font-display text-lg font-bold">
                 Run a tournament
               </h2>
               <p className="text-sm text-ink-2">
@@ -95,7 +104,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <Link href="/t/new" className={buttonClasses("primary", "md", "sm:w-auto")}>
+          <Link href="/t/new" className={buttonClasses("primary", "md", "relative sm:w-auto")}>
             Set one up
           </Link>
         </section>

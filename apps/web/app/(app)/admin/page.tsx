@@ -31,9 +31,7 @@ async function Admin({ searchParams }: { searchParams: Search }) {
             ))}
           </ul>
         ) : (
-          <p className="rounded-card border border-line bg-surface p-4 text-ink-2">
-            Nothing to review.
-          </p>
+          <p className="tile p-4 text-ink-2">Nothing to review.</p>
         )}
       </main>
     </>

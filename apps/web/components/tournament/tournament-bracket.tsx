@@ -148,7 +148,7 @@ function TableCard({
   // Each group's place: one after everyone above it (ties share it).
   const places = order.map((_, k) => 1 + order.slice(0, k).reduce((n, g) => n + g.length, 0));
   return (
-    <div className="overflow-hidden rounded-card border border-line bg-surface">
+    <div className="overflow-hidden tile">
       <TableHead table={table} label={`Table ${table.index + 1}`} />
       <ol className="divide-y divide-line">
         {order.map((group, k) => {
@@ -195,7 +195,7 @@ function Knockout({
       {rounds.map((r) => {
         const inRound = tables.filter((x) => x.round === r).sort((a, b) => a.index - b.index);
         return (
-          <section key={r} className="overflow-hidden rounded-card border border-line bg-surface">
+          <section key={r} className="overflow-hidden tile">
             <h3 className="border-b border-line bg-surface-2 px-4 py-2 text-sm font-bold">
               {roundName(inRound.length)}
             </h3>
@@ -247,10 +247,7 @@ function Standings({ snap, byId }: { snap: TSnapshot; byId: Map<string, EntrantP
   const count = (p: number) => places.filter((x) => x.place === p).length;
   const top = places.filter((p) => p.place <= 8 || p.entrant === snap.you);
   return (
-    <section
-      aria-labelledby="standings-h"
-      className="overflow-hidden rounded-card border border-line bg-surface"
-    >
+    <section aria-labelledby="standings-h" className="overflow-hidden tile">
       <h2
         id="standings-h"
         className="border-b border-line bg-surface-2 px-4 py-2 text-sm font-bold"

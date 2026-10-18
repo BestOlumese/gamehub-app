@@ -48,7 +48,7 @@ export function TableWaiting({ tour, snap }: { tour: Pick<Tour, "startsAt">; sna
             : "Everyone's here. Starting…"}
         </p>
       </div>
-      <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+      <ul className="divide-y divide-line tile">
         {snap.seats.map((s) => (
           <li key={s.index} className="flex items-center gap-3 px-4 py-3">
             {s.userId ? (

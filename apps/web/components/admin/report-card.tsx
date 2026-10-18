@@ -99,7 +99,7 @@ export function ModButtons({ targetId, reportId }: { targetId: string; reportId?
 
 export function ReportCard({ r }: { r: CardReport }) {
   return (
-    <li className="space-y-3 rounded-card border border-line bg-surface p-4">
+    <li className="space-y-3 tile p-4">
       <div>
         <p className="font-semibold">
           @{r.reporter ?? "(deleted)"} → @{r.target.username} ·{" "}

@@ -16,20 +16,27 @@ export function GameGrid() {
         return (
           <li
             key={g.slug}
-            className={`flex flex-col overflow-hidden rounded-card border border-line bg-surface shadow-sm ${playable ? "" : "opacity-75"}`}
+            className={`tone-${g.slug} tile flex flex-col overflow-hidden ${playable ? "" : "opacity-75"}`}
           >
-            <div className="relative flex h-36 items-center justify-center border-b border-line bg-board">
-              <ArtImage name={`game-${g.slug}`} className="h-28 w-auto" lazy />
+            <div className="relative flex h-36 items-center justify-center border-b-4 border-(--g) bg-(--g-soft)">
+              <span aria-hidden="true" className="pat absolute inset-0" />
+              <ArtImage
+                name={`game-${g.slug}`}
+                className="relative h-28 w-auto drop-shadow-[0_4px_0_rgb(0_0_0/0.08)]"
+                lazy
+              />
               {!playable ? (
-                <span className="absolute top-3 right-3 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold">
+                <span className="absolute top-3 right-3 rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold">
                   Soon
                 </span>
               ) : null}
             </div>
             <div className="flex flex-1 flex-col p-4">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="font-display text-lg font-bold">{g.name}</h3>
-                <span className="text-sm whitespace-nowrap text-ink-2">{g.players}</span>
+                <h3 className="font-display text-xl font-extrabold tracking-tight">{g.name}</h3>
+                <span className="rounded-full bg-(--g-soft) px-2.5 py-0.5 text-xs font-bold whitespace-nowrap text-(--g)">
+                  {g.players}
+                </span>
               </div>
               <div className="mt-4">
                 {isPlayable(g.slug) ? (

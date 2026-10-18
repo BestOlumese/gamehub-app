@@ -9,11 +9,14 @@ export function SharePanel({
   code,
   gameName,
   kind = "room",
+  tone = "trophy",
 }: {
   code: string;
   /** Rooms: the game. Tournaments: the tournament's name. */
   gameName: string;
   kind?: "room" | "tournament";
+  /** The game (rooms) or "trophy" (tournaments): colours the code's panel. */
+  tone?: string;
 }) {
   const [copied, setCopied] = useState<"link" | "code" | null>(null);
   const path = `/${kind === "room" ? "r" : "t"}/${code}`;
@@ -35,20 +38,32 @@ export function SharePanel({
   }
 
   return (
-    <div className="rounded-card border border-line bg-surface p-5 text-center shadow-sm sm:p-6">
-      <p className="text-sm font-semibold text-ink-2">{label}</p>
-      <button
-        type="button"
-        onClick={() => copy("code")}
-        className={`mt-1 rounded-control px-2 font-display font-extrabold tabular-nums hover:bg-surface-2 ${kind === "room" ? "text-4xl tracking-[0.25em] sm:text-5xl" : "text-3xl tracking-[0.15em] sm:text-5xl sm:tracking-[0.2em]"}`}
-        aria-label={`${label} ${code.split("").join(" ")}. Tap to copy.`}
-      >
-        {code}
-      </button>
-      <p className="mt-1 h-5 text-sm text-brand" aria-live="polite">
-        {copied === "code" ? "Code copied" : copied === "link" ? "Link copied" : ""}
-      </p>
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+    <div className={`tone-${tone} tile overflow-hidden text-center`}>
+      <div className="relative border-b-4 border-(--g) bg-(--g-soft) px-4 pt-4 pb-3">
+        <span aria-hidden="true" className="pat absolute inset-0" />
+        <p className="eyebrow relative">{label}</p>
+        {/* Each letter on its own tile, like pieces on the table. Tap to copy. */}
+        <button
+          type="button"
+          onClick={() => copy("code")}
+          className="relative mt-2 inline-flex gap-1.5 rounded-control p-1 sm:gap-2"
+          aria-label={`${label} ${code.split("").join(" ")}. Tap to copy.`}
+        >
+          {code.split("").map((ch, i) => (
+            <span
+              key={i}
+              aria-hidden="true"
+              className="grid h-12 w-10 place-items-center rounded-[8px] border border-line bg-surface font-display text-3xl font-extrabold shadow-[0_3px_0_var(--color-line-edge)] sm:h-14 sm:w-12 sm:text-4xl"
+            >
+              {ch}
+            </span>
+          ))}
+        </button>
+        <p className="relative mt-1 h-5 text-sm font-semibold text-(--g)" aria-live="polite">
+          {copied === "code" ? "Code copied" : copied === "link" ? "Link copied" : ""}
+        </p>
+      </div>
+      <div className="grid gap-2 p-4 sm:grid-cols-2 sm:p-5">
         <a
           href={`https://wa.me/?text=${encodeURIComponent(text)}`}
           target="_blank"

@@ -7,7 +7,7 @@ export type HeaderUser = { username: string; email: string; image?: string | nul
 
 export function AppHeader({ user }: { user: HeaderUser }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
+    <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-content items-center justify-between px-4 sm:px-8">
         <Link
           href="/home"
@@ -19,6 +19,7 @@ export function AppHeader({ user }: { user: HeaderUser }) {
         </Link>
         <UserMenu username={user.username} email={user.email} image={user.image ?? null} />
       </div>
+      <div aria-hidden="true" className="strip" />
     </header>
   );
 }

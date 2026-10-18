@@ -54,7 +54,7 @@ export function TournamentScreen({
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="flex h-14 items-center justify-between gap-2 border-b border-line bg-surface px-2 sm:px-4">
+      <header className="flex h-14 items-center justify-between gap-2 bg-surface px-2 sm:px-4">
         <Link
           href="/home"
           className="flex items-center gap-1 rounded-control px-2 py-2 text-sm font-semibold text-ink-2 hover:bg-surface-2"
@@ -71,6 +71,7 @@ export function TournamentScreen({
         </div>
         <span className="w-16" />
       </header>
+      <div aria-hidden="true" className="strip" />
       {connection === "closed" || phase === "cancelled" ? (
         <div className="mx-auto max-w-md space-y-4 px-4 py-16 text-center">
           <p className="font-display text-2xl font-extrabold">This tournament has closed</p>

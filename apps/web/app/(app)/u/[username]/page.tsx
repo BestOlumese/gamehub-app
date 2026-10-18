@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
+import { EmptyState } from "@/components/app/empty-state";
+import { PageBanner } from "@/components/app/page-banner";
 import { GAME_NAMES } from "@/lib/game-meta";
 import { ago, poolName } from "@/lib/ratings/pools";
 import { profileOf, type RecentMatch } from "@/server/profile";
@@ -44,37 +46,35 @@ async function ProfilePage({ params }: { params: Promise<{ username: string }> }
     <>
       <AppHeader user={me} />
       <main className="mx-auto w-full max-w-2xl space-y-6 px-4 py-8 sm:px-8">
-        <section className="flex items-center gap-4">
-          <Avatar username={p.username} image={p.image} size={64} />
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate font-display text-2xl font-extrabold tracking-tight">
-              @{p.username}
-            </h1>
-            <p className="text-ink-2">
-              Playing since{" "}
-              {p.since.toLocaleDateString("en-NG", { month: "long", year: "numeric" })}
+        <PageBanner
+          lead={
+            <span className="block rounded-full border-4 border-surface shadow-[0_3px_0_var(--color-line-edge)]">
+              <Avatar username={p.username} image={p.image} size={64} />
+            </span>
+          }
+          title={<span className="text-2xl break-all">@{p.username}</span>}
+          sub={`Playing since ${p.since.toLocaleDateString("en-NG", { month: "long", year: "numeric" })}`}
+        >
+          {p.podiums ? (
+            <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-surface px-3 py-0.5 text-sm font-semibold">
+              <Trophy size={15} aria-hidden="true" className="text-accent" />
+              {p.wins === 1 ? "1 tournament win" : `${p.wins} tournament wins`} ·{" "}
+              {p.podiums === 1 ? "1 podium" : `${p.podiums} podiums`}
             </p>
-            {p.podiums ? (
-              <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-0.5 text-sm font-semibold">
-                <Trophy size={15} aria-hidden="true" className="text-accent" />
-                {p.wins === 1 ? "1 tournament win" : `${p.wins} tournament wins`} ·{" "}
-                {p.podiums === 1 ? "1 podium" : `${p.podiums} podiums`}
-              </p>
-            ) : null}
-            {p.solo ? (
-              <p className="mt-1 text-sm text-ink-2">
-                Football solo run: best {p.solo.best}/4 ·{" "}
-                {p.solo.runs === 1 ? "1 run" : `${p.solo.runs} runs`}
-              </p>
-            ) : null}
-          </div>
-        </section>
+          ) : null}
+          {p.solo ? (
+            <p className="mt-1 text-sm text-ink-2">
+              Football solo run: best {p.solo.best}/4 ·{" "}
+              {p.solo.runs === 1 ? "1 run" : `${p.solo.runs} runs`}
+            </p>
+          ) : null}
+        </PageBanner>
         {relation && relation !== "self" ? (
           <FriendButton userId={p.id} relation={relation} />
         ) : null}
 
         <section aria-labelledby="games-h">
-          <h2 id="games-h" className="mb-3 font-bold">
+          <h2 id="games-h" className="mb-3 font-display text-xl font-extrabold tracking-tight">
             Games
           </h2>
           {p.cards.length ? (
@@ -82,9 +82,12 @@ async function ProfilePage({ params }: { params: Promise<{ username: string }> }
               {p.cards.map((c) => (
                 <li
                   key={`${c.game}-${c.variant}`}
-                  className="rounded-card border border-line bg-surface p-4"
+                  className={`tone-${c.game} tile relative overflow-hidden p-4 pt-5`}
                 >
-                  <p className="truncate text-sm font-semibold">{poolName(c.game, c.variant)}</p>
+                  <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1.5 bg-(--g)" />
+                  <p className="truncate text-sm font-bold text-(--g)">
+                    {poolName(c.game, c.variant)}
+                  </p>
                   {c.rating !== null ? (
                     <p className="font-display text-3xl font-extrabold tabular-nums">{c.rating}</p>
                   ) : c.ranked ? (
@@ -102,25 +105,29 @@ async function ProfilePage({ params }: { params: Promise<{ username: string }> }
               ))}
             </ul>
           ) : (
-            <p className="rounded-card border border-line bg-surface p-4 text-ink-2">
-              {mine ? "Your games will show here once you've played." : "No games yet."}
-            </p>
+            <EmptyState art="game-chess" title={mine ? "No games yet" : "Nothing played yet"}>
+              {mine ? "Play a quick match or a room with friends, and your stats land here." : null}
+            </EmptyState>
           )}
         </section>
 
         {p.recent.length ? (
           <section aria-labelledby="recent-h">
-            <h2 id="recent-h" className="mb-3 font-bold">
+            <h2 id="recent-h" className="mb-3 font-display text-xl font-extrabold tracking-tight">
               Recent
             </h2>
-            <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+            <ul className="divide-y divide-line tile">
               {p.recent.map((m) => {
                 const delta =
                   m.ratingBefore !== null && m.ratingAfter !== null
                     ? m.ratingAfter - m.ratingBefore
                     : null;
                 return (
-                  <li key={m.id} className="flex items-center gap-3 px-4 py-3 text-sm">
+                  <li
+                    key={m.id}
+                    className={`tone-${m.game} flex items-center gap-3 px-4 py-3 text-sm`}
+                  >
+                    <span aria-hidden="true" className="size-2.5 shrink-0 rounded-full bg-(--g)" />
                     <span className="min-w-0 flex-1 truncate">{where(m)}</span>
                     <span className="font-semibold">{result(m)}</span>
                     {delta !== null ? (

@@ -15,7 +15,7 @@ export async function ProfileSection() {
   return (
     <>
       <SectionHeader title="Profile" description="How other players see you at the table." />
-      <div className="mb-8 flex items-center gap-5 rounded-card border border-line bg-surface p-5 shadow-sm sm:p-6">
+      <div className="mb-8 flex items-center gap-5 tile p-5 sm:p-6">
         <Avatar username={user.username} image={user.image} size={72} />
         <div className="min-w-0">
           <p className="truncate font-display text-2xl font-extrabold tracking-tight">

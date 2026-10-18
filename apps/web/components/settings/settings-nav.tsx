@@ -40,7 +40,7 @@ export function SettingsNav({ variant }: { variant: "sidebar" | "list" }) {
   if (variant === "list") {
     return (
       <nav aria-label="Settings">
-        <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-surface shadow-sm">
+        <ul className="divide-y divide-line overflow-hidden tile">
           {SETTINGS_SECTIONS.map((s) => (
             <li key={s.href}>
               <Link href={s.href} className="flex items-center gap-4 px-4 py-4 hover:bg-surface-2">

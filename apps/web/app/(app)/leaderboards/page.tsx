@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
+import { EmptyState } from "@/components/app/empty-state";
+import { PageBanner, type Tone } from "@/components/app/page-banner";
+import type { ArtName } from "@/components/site/art-image";
 import { GAME_NAMES } from "@/lib/game-meta";
 import { POOLS, variantName } from "@/lib/ratings/pools";
 import { boardOf } from "@/server/profile";
@@ -12,8 +15,12 @@ export const metadata: Metadata = { title: "Leaderboards", robots: { index: fals
 
 type Search = Promise<Record<string, string | string[] | undefined>>;
 
-const chip = (on: boolean) =>
-  `shrink-0 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors duration-(--dur-press) ${on ? "border-brand bg-brand text-white" : "border-line bg-surface hover:border-ink-3"}`;
+// Chips wear the game's colour (a tone-* class on them or a parent) when chosen.
+const chip = (on: boolean, tone = "") =>
+  `${tone} shrink-0 rounded-full border px-3 py-1.5 text-sm font-bold transition-colors duration-(--dur-press) ${on ? "border-(--g,var(--color-brand)) bg-(--g,var(--color-brand)) text-white shadow-[0_2px_0_rgb(0_0_0/0.18)]" : "border-line bg-surface hover:border-ink-3"}`;
+
+/** Gold, silver and bronze for the top three. */
+const MEDAL = ["bg-accent text-ink", "bg-line-edge text-ink", "bg-[#c98a5a] text-ink"];
 
 async function Boards({ searchParams }: { searchParams: Search }) {
   const me = await requirePlayer();
@@ -38,21 +45,26 @@ async function Boards({ searchParams }: { searchParams: Search }) {
     <>
       <AppHeader user={me} />
       <main className="mx-auto w-full max-w-2xl space-y-4 px-4 py-8 sm:px-8">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight">Leaderboards</h1>
+        <PageBanner
+          title="Leaderboards"
+          sub={`${GAME_NAMES[pool.game]} · ${period === "week" ? "this week" : "all time"}`}
+          tone={pool.game as Tone}
+          art={`game-${pool.game}` as ArtName}
+        />
         <nav aria-label="Game" className="flex gap-1.5 overflow-x-auto pb-1">
           {POOLS.map((p) => (
             <Link
               key={p.game}
               href={href({ game: p.game, v: p.variants[0] })}
               aria-current={p.game === pool.game ? "page" : undefined}
-              className={chip(p.game === pool.game)}
+              className={chip(p.game === pool.game, `tone-${p.game}`)}
             >
               {GAME_NAMES[p.game]}
             </Link>
           ))}
         </nav>
         {pool.variants.length > 1 ? (
-          <nav aria-label="Pool" className="flex gap-1.5">
+          <nav aria-label="Pool" className={`tone-${pool.game} flex gap-1.5`}>
             {pool.variants.map((v) => (
               <Link
                 key={v}
@@ -81,13 +93,15 @@ async function Boards({ searchParams }: { searchParams: Search }) {
           ))}
         </nav>
         {rows.length ? (
-          <ol className="divide-y divide-line rounded-card border border-line bg-surface">
+          <ol className="divide-y divide-line tile">
             {rows.map((r, i) => (
               <li
                 key={r.userId}
                 className={`flex items-center gap-3 px-4 py-2.5 text-sm ${i === myIndex ? "bg-brand-soft" : ""}`}
               >
-                <span className="w-7 text-right font-semibold text-ink-2 tabular-nums">
+                <span
+                  className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold tabular-nums ${MEDAL[i] ?? "text-ink-2"}`}
+                >
                   {i + 1}
                 </span>
                 <Avatar username={r.username} image={r.image} size={28} />
@@ -108,11 +122,11 @@ async function Boards({ searchParams }: { searchParams: Search }) {
             ))}
           </ol>
         ) : (
-          <p className="rounded-card border border-line bg-surface p-4 text-ink-2">
+          <EmptyState art={`game-${pool.game}` as ArtName} title="The board is empty">
             {period === "week"
               ? "Nobody has played 5 ranked games here this week yet."
               : "No ranked games here yet. Quick match to get on the board."}
-          </p>
+          </EmptyState>
         )}
         {myIndex < 0 && rows.length ? (
           <p className="px-1 text-sm text-ink-2">You&apos;re not on this board yet.</p>

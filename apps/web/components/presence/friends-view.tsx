@@ -15,6 +15,7 @@ import {
   dropRequest,
   type FriendResult,
 } from "@/app/(app)/friends/actions";
+import { EmptyState } from "@/components/app/empty-state";
 import { GAME_NAMES } from "@/lib/game-meta";
 import { usePresence, type Friend } from "@/lib/presence/store";
 
@@ -112,10 +113,10 @@ export function FriendsView({
 
       {incoming.length ? (
         <section aria-labelledby="req-h">
-          <h2 id="req-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+          <h2 id="req-h" className="eyebrow mb-2 px-1">
             Requests ({incoming.length})
           </h2>
-          <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+          <ul className="divide-y divide-line tile">
             {incoming.map((f) => (
               <Row key={f.id} f={f}>
                 <Button size="md" disabled={pending} onClick={() => run(() => acceptFriend(f.id))}>
@@ -136,11 +137,11 @@ export function FriendsView({
       ) : null}
 
       <section aria-labelledby="on-h">
-        <h2 id="on-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+        <h2 id="on-h" className="eyebrow mb-2 px-1">
           Online ({online.length})
         </h2>
         {online.length ? (
-          <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+          <ul className="divide-y divide-line tile">
             {online.map((f) => {
               const href = watchHref(f, statuses[f.id]);
               return (
@@ -154,21 +155,24 @@ export function FriendsView({
               );
             })}
           </ul>
-        ) : (
-          <p className="rounded-card border border-line bg-surface px-4 py-3 text-sm text-ink-2">
-            {friends.length
-              ? "None of your friends are on right now."
-              : "Add friends by their @username."}
+        ) : friends.length ? (
+          <p className="tile px-4 py-3 text-sm text-ink-2">
+            None of your friends are on right now.
           </p>
+        ) : (
+          <EmptyState art="game-whot" title="No friends here yet">
+            Ask your people for their @username and add them above. Then you can invite them
+            straight into a room.
+          </EmptyState>
         )}
       </section>
 
       {offline.length ? (
         <section aria-labelledby="off-h">
-          <h2 id="off-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+          <h2 id="off-h" className="eyebrow mb-2 px-1">
             Offline
           </h2>
-          <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+          <ul className="divide-y divide-line tile">
             {offline.map((f) => (
               <Row key={f.id} f={f} />
             ))}
@@ -178,10 +182,10 @@ export function FriendsView({
 
       {outgoing.length ? (
         <section aria-labelledby="out-h">
-          <h2 id="out-h" className="mb-2 px-1 text-sm font-semibold text-ink-2">
+          <h2 id="out-h" className="eyebrow mb-2 px-1">
             Requests you sent
           </h2>
-          <ul className="divide-y divide-line rounded-card border border-line bg-surface">
+          <ul className="divide-y divide-line tile">
             {outgoing.map((f) => (
               <Row key={f.id} f={f}>
                 <Button

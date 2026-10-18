@@ -98,7 +98,7 @@ export function TournamentSetup({
         />
       </Field>
 
-      <div className="space-y-4 rounded-card border border-line bg-surface p-4">
+      <div className="space-y-4 tile p-4">
         <Stepper
           label="Players"
           hint="4 to 32, people and bots."
@@ -130,7 +130,7 @@ export function TournamentSetup({
             {counts.join(" → ")}
           </p>
         </div>
-        <ol className="divide-y divide-line rounded-card border border-line bg-surface">
+        <ol className="divide-y divide-line tile">
           {stages.map((s, i) => (
             <li key={i}>
               <button
@@ -138,7 +138,9 @@ export function TournamentSetup({
                 onClick={() => setEditing(i)}
                 className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-surface-2"
               >
-                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-brand-soft font-display font-bold text-brand-strong">
+                <span
+                  className={`tone-${s.game} grid size-8 shrink-0 -rotate-3 place-items-center rounded-control bg-(--g) font-display font-bold text-white shadow-[0_2px_0_rgb(0_0_0/0.2)]`}
+                >
                   {i + 1}
                 </span>
                 <span className="min-w-0 flex-1">
@@ -174,7 +176,7 @@ export function TournamentSetup({
         )}
       </section>
 
-      <div className="divide-y divide-line rounded-card border border-line bg-surface">
+      <div className="divide-y divide-line tile">
         <Toggle
           label="Start by itself when full"
           hint="Otherwise you press Start."

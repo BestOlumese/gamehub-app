@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app/app-header";
+import { PageBanner } from "@/components/app/page-banner";
 import { FriendsView } from "@/components/presence/friends-view";
 import { friendsOf } from "@/server/friends";
 import { requirePlayer } from "@/server/session";
@@ -14,7 +15,12 @@ async function Friends() {
     <>
       <AppHeader user={me} />
       <main className="mx-auto w-full max-w-xl space-y-4 px-4 py-8 sm:px-8">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight">Friends</h1>
+        <PageBanner
+          title="Friends"
+          sub="Your people, and who's on now."
+          tone="ludo"
+          art="game-ludo"
+        />
         <FriendsView {...lists} />
       </main>
     </>

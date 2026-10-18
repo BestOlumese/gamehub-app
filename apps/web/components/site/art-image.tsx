@@ -1,4 +1,4 @@
-type ArtName =
+export type ArtName =
   | "hero-table"
   | "envelope"
   | "game-whot"

@@ -126,7 +126,7 @@ export function QueueScreen({ spec }: { spec: QueueSpecMsg }) {
                       ? `Waiting for people only, up to ${clock(secs(state.giveUpAt))} more`
                       : ""}
                 </p>
-                <div className="rounded-card border border-line bg-surface text-left">
+                <div className="tile text-left">
                   <Toggle
                     label="Keep waiting for players"
                     hint="No bots: wait up to 3 minutes for people."

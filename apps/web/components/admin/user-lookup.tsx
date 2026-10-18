@@ -22,7 +22,7 @@ export function UserLookup({ found, query }: { found: Found | null; query: strin
   const banned = found?.bannedUntil && new Date(found.bannedUntil) > new Date();
   const muted = found?.chatMutedUntil && new Date(found.chatMutedUntil) > new Date();
   return (
-    <section className="space-y-3 rounded-card border border-line bg-surface p-4">
+    <section className="space-y-3 tile p-4">
       <form
         className="flex gap-2"
         onSubmit={(e) => {

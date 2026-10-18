@@ -55,8 +55,8 @@ Colour is never the only signal: Ludo yards are labelled, tokens carry initials,
 
 - 4 px base grid: 4, 8, 12, 16, 24, 32, 48.
 - Radius: 10 px controls, 16 px cards/sheets, 999 px pills. Playing cards 8 px.
-- Shadows: two only — `sm: 0 1px 2px rgb(26 28 32 / .06)` and `lg: 0 8px 24px rgb(26 28 32 / .10)`. Cards in hand use `sm`, lifted card `lg`.
-- No gradients on UI chrome. One subtle paper texture allowed on the board only.
+- Shadows: `sm: 0 1px 2px rgb(26 28 32 / .06)` and `lg: 0 8px 24px rgb(26 28 32 / .10)` for things that float (menus, toasts, sheets; cards in hand `sm`, lifted card `lg`). Things that sit on the table use a **solid edge** instead (see "Naija table look").
+- No visible gradients on UI chrome (a gradient mask may fade a pattern behind text).
 
 ## Motion
 
@@ -255,3 +255,34 @@ Decided with Best (Oct 17 2026, mockups):
 - **Invites:** "Invite friends" under the share panel in room and tournament lobbies opens a sheet of friends (online first) with Invite (then "Invite sent." or "They're not online right now."). The friend sees a card at the top of any page: avatar, "@ada invites you to Whot", a countdown from 2:00, **Join** and Not now.
 - **Watching:** a grey bar under the top bar, "Watching @kemi · Ludo" with an eye icon and Leave; players see an eye and the number watching next to the room code.
 - **Profiles:** Add friend / Request sent · Cancel / Accept friend request / Friends ✓, and a ⋯ menu with Remove friend and Block (Unblock once blocked).
+
+## Naija table look (decided Oct 18 2026)
+
+Best: the layouts stay; the signed-in app looked "plain and AI" (every page the same white card, one green for everything, the art stopping at the sign-up pages). Chosen from mockups: warm and tactile, a colour per game, app pages first (game boards untouched).
+
+- **Tiles, not flat cards.** `tile` utility: surface, 1 px `--line` border, 16 px radius and a solid 3 px edge underneath (`--line-edge #D6CEBD`), like a piece on a table. Floating things (menus, toasts, sheets) keep the soft `lg` shadow.
+- **Press-down buttons.** Primary and danger have a 4 px darker edge (`--brand-strong` / `--danger-strong`), secondary a 3 px `--line-edge` edge; pressed, the button sinks into it (translate 2–3 px, edge shrinks). Labels bold.
+- **Woven strip** (`strip` utility, `public/art/strip.svg`: green, gold, ink, red, paper triangles) under the app header, the tournament header, and at the foot of Ankara banners.
+- **Game colours** (`.tone-<game>` sets `--g`, `--g-soft`, `--g-pat`; white text on `--g` and `--g` text on `--g-soft` both pass AA):
+
+| Game | `--g` | `--g-soft` | Pattern |
+|---|---|---|---|
+| Whot | `#7A1F2B` | `#F7E8EA` | the five shapes |
+| Ludo | `#BB3428` | `#FBE9E6` | yard squares and a ring |
+| Snakes & Ladders | `#467318` | `#EDF4E1` | waves |
+| Tic-tac-toe | `#3B4BB8` | `#E8EAF9` | X and O |
+| Rock Paper Scissors | `#A84D15` | `#FCEDE1` | rock, paper, scissors |
+| Chess | `#7A4F26` | `#F5ECE2` | checks |
+| Draughts | `#17767A` | `#E0F1F1` | men |
+| Naija Plots | `#8A610E` | `#FBF2DC` | houses |
+| Football Draft | `#23793A` | `#E3F2E6` | mowing stripes |
+| Tournaments (`trophy`) | `#9A5F0C` | `#FCF1DD` | stars |
+
+  The `pat` utility paints `--g-pat` in `--g` at 13 % (a CSS mask, so one SVG works in every colour).
+- **Where colour goes:** game tiles (tinted art panel with the pattern, a 4 px game-colour rule, a players pill), the room top bar (a 6 px game-colour stripe), the room code panel, the lobby's rules card, profile game cards and recent rows, leaderboard chips, tournament stage badges.
+- **Page banners** (`PageBanner`): the top of Home (Ankara repeat and the strip), Friends (Ludo), Leaderboards (the chosen game), profile (Ankara, avatar), New tournament (trophy). Title in Bricolage, a drawing on the right (hidden on phones when the title is a username).
+- **Room codes on tiles:** each letter on its own little tile over the game's pattern.
+- **Empty states** (`EmptyState`): a drawing, one line, what to do next, on a dashed paper panel. No empty white boxes.
+- **Section labels:** `eyebrow` (12 px, 800, 0.12 em tracking, uppercase); page section titles in Bricolage 20 px.
+- Settings stay calm (tiles only, no banner).
+

@@ -78,3 +78,93 @@
     animation: none;
   }
 }
+
+/* ── Naija table look (docs/11-design-system.md, Oct 2026) ── */
+
+/* Each game's colour (--g: fills and text, white text on it passes AA; --g-soft: tints) and pattern. */
+.tone-whot {
+  --g: #7a1f2b;
+  --g-soft: #f7e8ea;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%229%22 cy=%229%22 r=%224.5%22/%3E%3Cpath d=%22M29 4l6 10H23z%22/%3E%3Cpath d=%22M7 25h4v4h4v4h-4v4H7v-4H3v-4h4z%22/%3E%3Crect x=%2225%22 y=%2225%22 width=%229%22 height=%229%22 rx=%221%22/%3E%3C/svg%3E");
+}
+.tone-ludo {
+  --g: #bb3428;
+  --g-soft: #fbe9e6;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Crect x=%224%22 y=%224%22 width=%226%22 height=%226%22 rx=%221%22/%3E%3Crect x=%2212%22 y=%224%22 width=%226%22 height=%226%22 rx=%221%22/%3E%3Crect x=%224%22 y=%2212%22 width=%226%22 height=%226%22 rx=%221%22/%3E%3Crect x=%2212%22 y=%2212%22 width=%226%22 height=%226%22 rx=%221%22/%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%225%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.5%22/%3E%3C/svg%3E");
+}
+.tone-snakes {
+  --g: #467318;
+  --g-soft: #edf4e1;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Cpath d=%22M0 12q10-10 20 0t20 0M0 32q10-10 20 0t20 0%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%223%22 stroke-linecap=%22round%22/%3E%3C/svg%3E");
+}
+.tone-tictactoe {
+  --g: #3b4bb8;
+  --g-soft: #e8eaf9;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Cpath d=%22M5 5l10 10M15 5L5 15%22 stroke=%22%23000%22 stroke-width=%223%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%225.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%223%22/%3E%3C/svg%3E");
+}
+.tone-rps {
+  --g: #a84d15;
+  --g-soft: #fcede1;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%225.5%22/%3E%3Crect x=%2224%22 y=%2222%22 width=%2211%22 height=%2214%22 rx=%221.5%22/%3E%3Cpath d=%22M5 37l6-10M15 37L9 27%22 stroke=%22%23000%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/%3E%3C/svg%3E");
+}
+.tone-chess {
+  --g: #7a4f26;
+  --g-soft: #f5ece2;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2220%22 height=%2220%22/%3E%3Crect x=%2220%22 y=%2220%22 width=%2220%22 height=%2220%22/%3E%3C/svg%3E");
+}
+.tone-draughts {
+  --g: #17767a;
+  --g-soft: #e0f1f1;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%226.5%22/%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%226.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.5%22/%3E%3C/svg%3E");
+}
+.tone-plots {
+  --g: #8a610e;
+  --g-soft: #fbf2dc;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Cpath d=%22M4 18V11l6-6 6 6v7zM24 36v-7l6-6 6 6v7z%22/%3E%3C/svg%3E");
+}
+.tone-football {
+  --g: #23793a;
+  --g-soft: #e3f2e6;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2220%22 height=%2240%22/%3E%3C/svg%3E");
+}
+.tone-trophy {
+  --g: #9a5f0c;
+  --g-soft: #fcf1dd;
+  --g-pat: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22 width=%2240%22 height=%2240%22%3E%3Cpath d=%22M20 6l4 10 10 4-10 4-4 10-4-10-10-4 10-4z%22/%3E%3C/svg%3E");
+}
+
+/* The game's pattern, in its colour, faint. Put it in a positioned box (absolute inset-0). */
+@utility pat {
+  background-color: var(--g, var(--color-brand));
+  -webkit-mask-image: var(--g-pat);
+  mask-image: var(--g-pat);
+  -webkit-mask-size: 40px 40px;
+  mask-size: 40px 40px;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+/* A card that sits on the table: a solid edge underneath instead of a blurred shadow. */
+@utility tile {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: 0 3px 0 var(--color-line-edge);
+}
+
+/* Woven strip under the header (green, gold, red, ink triangles). */
+@utility strip {
+  background-image: url("/art/strip.svg");
+  background-size: 24px 6px;
+  background-repeat: repeat-x;
+  height: 6px;
+}
+
+/* Small caps label over a section ("ONLINE (2)"). */
+@utility eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
